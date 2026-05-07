@@ -1,0 +1,9 @@
+[tools]
+node = "latest"
+"npm:pnpm" = "latest"
+buf = "latest"
+just = "latest"
+"npm:@bufbuild/buf" = "latest"
+"npm:@bufbuild/protoc-gen-es" = "latest"
+"npm:@bufbuild/protoc-gen-connect-es" = "latest"
+go = "latest"
