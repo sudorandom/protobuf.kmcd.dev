@@ -1,0 +1,3 @@
+name = "protobuf-explainer"
+pages_build_output_dir = "dist"
+custom_domains = ["protobuf.kmcd.dev"]

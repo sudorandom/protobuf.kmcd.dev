@@ -5,7 +5,7 @@ import {
   Cpu,
   Database,
   Zap,
-  ChevronRight,
+  ChevronRight, ChevronLeft,
   Code2,
   Binary,
   ShieldCheck,
@@ -29,6 +29,7 @@ import {
   Package
 } from 'lucide-react';
 import { fromJson, toJsonString, toBinary, type Registry, type DescMessage } from '@bufbuild/protobuf';
+import { SchemaModal } from './components/SchemaModal';
 import { createValidator, type Violation } from '@bufbuild/protovalidate';
 import VarintExplainer from './components/VarintExplainer';
 import { decodeBinary } from './utils/decoder';
@@ -65,7 +66,7 @@ const HexViewer = ({ bytes }: { bytes: { val: string, raw: number }[] }) => {
   );
 };
 
-const SyntaxHighlighter = ({ code, language, wrap = false }: { code: string, language: 'proto' | 'json', wrap?: boolean }) => {
+export const SyntaxHighlighter = ({ code, language, wrap = false }: { code: string, language: 'proto' | 'json', wrap?: boolean }) => {
   const highlight = (text: string) => {
     let output = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     const placeholders: string[] = [];
@@ -182,56 +183,6 @@ const Hero = () => (
     </div>
   </section>
 );
-
-const SchemaEditor = ({ value, onChange, errors }: { value: string, onChange: (s: string) => void, errors: CompilationError[] }) => {
-  const [scroll, setScroll] = useState({ top: 0, left: 0 });
-
-  return (
-    <div className="relative w-full h-[500px] bg-black/20 rounded overflow-hidden">
-      {/* Background Highlight Layer */}
-      <div
-        className="absolute top-0 left-0 p-4 font-mono text-sm leading-6 whitespace-pre pointer-events-none select-none"
-        style={{
-          transform: `translate(-${scroll.left}px, -${scroll.top}px)`,
-          width: 'max-content',
-          minWidth: '100%'
-        }}
-      >
-        <SyntaxHighlighter language="proto" code={value} />
-        {/* Error markers overlay */}
-        <div className="absolute inset-0 pointer-events-none p-4">
-          {value.split('\n').map((line, i) => {
-            const error = errors.find(e => e.line === i + 1);
-            if (!error) return <div key={i} className="h-6">{''}</div>;
-
-            const col = Math.max(0, error.col - 1);
-            return (
-              <div key={i} className="h-6 relative">
-                <div className="absolute -left-4 right-0 h-6 bg-red-500/10 border-l-2 border-red-500" style={{ width: 'calc(100% + 1000px)' }} />
-                <span className="invisible">{line.slice(0, col)}</span>
-                <motion.span
-                  initial={{ opacity: 0.5 }}
-                  animate={{ opacity: [0.5, 1, 0.5] }}
-                  transition={{ repeat: Infinity, duration: 1 }}
-                  className="inline-block h-5 w-[1ch] bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)] rounded-sm relative z-10"
-                />
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Foreground Interactive Layer */}
-      <textarea
-        className="absolute inset-0 w-full h-full bg-transparent p-4 font-mono text-sm leading-6 text-transparent caret-white focus:outline-none focus:border-cyan-500/50 resize-none whitespace-pre overflow-auto custom-scrollbar border-none shadow-none"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        onScroll={(e) => setScroll({ top: e.currentTarget.scrollTop, left: e.currentTarget.scrollLeft })}
-        spellCheck={false}
-      />
-    </div>
-  );
-};
 
 const ProtobufBasics = () => {
   const [activeTab, setActiveTab] = useState('messages');
@@ -678,13 +629,13 @@ const ProtobufDescriptors = () => (
   </section>
 );
 
-const Introduction = ({ protoSource, setProtoSource, error, compilationErrors, messageSchema, fds }: {
+const Introduction = ({ protoSource, error, compilationErrors, messageSchema, fds, openSchemaEditor }: {
   protoSource: string,
-  setProtoSource: (s: string) => void,
   error: string | null,
   compilationErrors: CompilationError[],
   messageSchema: DescMessage | null,
-  fds: Uint8Array | null
+  fds: Uint8Array | null,
+  openSchemaEditor: () => void
 }) => {
   const [activeFace, setActiveFace] = useState('idl');
   const [protoTextExample, setProtoTextExample] = useState<string | null>(null);
@@ -801,24 +752,15 @@ const Introduction = ({ protoSource, setProtoSource, error, compilationErrors, m
       </div>
 
       <div className="space-y-6 mb-16">
-        <CyberPanel
-          title="SCHEMA_EDITOR (DEMO.PROTO)"
-          className="font-mono text-sm text-[#00ff9f]"
-          headerExtra={
-            <button
-              onClick={() => setProtoSource(INITIAL_PROTO)}
-              className="text-[10px] font-mono px-2 py-0.5 border border-[#00ff9f]/30 text-[#00ff9f]/60 hover:text-[#00ff9f] hover:border-[#00ff9f] transition-all rounded"
-            >
-              RESET_TO_DEFAULT
-            </button>
-          }
+        <div className="flex justify-center mb-16">
+        <button
+          onClick={openSchemaEditor}
+          className="px-8 py-3 bg-[#00ff9f]/10 border border-[#00ff9f] text-[#00ff9f] font-cyber font-bold hover:bg-[#00ff9f]/20 transition-all shadow-[0_0_15px_rgba(0,255,159,0.2)] flex items-center gap-2"
         >
-          <SchemaEditor
-            value={protoSource}
-            onChange={setProtoSource}
-            errors={compilationErrors}
-          />
-        </CyberPanel>
+          <FileCode className="w-5 h-5" />
+          CUSTOMIZE_SCHEMA
+        </button>
+      </div>
         {error && (
           <div className="p-4 bg-red-500/10 border border-red-500/30 rounded text-red-400 text-xs font-mono animate-pulse uppercase">
             SCHEMA_ERROR: {error}
@@ -1011,7 +953,7 @@ async function getGzipSize(data: string | Uint8Array): Promise<number> {
   }
 }
 
-const SizeComparison = ({ messageSchema, fileDescriptorSet }: { messageSchema: DescMessage | null, fileDescriptorSet: Uint8Array | null }) => {
+const SizeComparison = ({ messageSchema, fileDescriptorSet, openSchemaEditor }: { messageSchema: DescMessage | null, fileDescriptorSet: Uint8Array | null, openSchemaEditor: () => void }) => {
   const [activeExample, setActiveExample] = useState<keyof typeof SIZE_EXAMPLES | 'FAUX'>('BASIC');
   const [jsonInput, setJsonInput] = useState(JSON.stringify(SIZE_EXAMPLES.BASIC, null, 2));
   const [isGenerating, setIsGenerating] = useState(false);
@@ -1091,6 +1033,16 @@ const SizeComparison = ({ messageSchema, fileDescriptorSet }: { messageSchema: D
               The binary format strikes a careful balance between extreme efficiency and enough structural simplicity to allow for robust, cross-language decoding.
             </p>
           </div>
+        </div>
+
+        <div className="flex justify-center mb-12">
+          <button
+            onClick={openSchemaEditor}
+            className="px-6 py-2 bg-white/5 border border-white/10 text-slate-300 font-mono text-sm hover:bg-white/10 hover:text-white transition-all rounded flex items-center gap-2"
+          >
+            <FileCode className="w-4 h-4" />
+            CUSTOMIZE_SCHEMA
+          </button>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -1201,6 +1153,13 @@ const SizeComparison = ({ messageSchema, fileDescriptorSet }: { messageSchema: D
             </div>
           </div>
         </div>
+
+        <div className="mt-12 p-6 bg-[#00f3ff]/5 border border-[#00f3ff]/20 rounded-lg text-slate-300 leading-relaxed text-sm">
+          <p>
+            The reduction in payload size ranges from 30-50% for raw payloads. The difference in GZIP compressed payloads is less dramatic at 15-30% but that is also a tradeoff, since compression will add CPU time to requests. It's definitely worth it for larger payloads, but for small ones, maybe it's okay to send the data uncompressed.
+          </p>
+        </div>
+
       </div>
     </section>
   );
@@ -1288,6 +1247,20 @@ const WireFormatBreakdown = () => {
       types: ["string", "bytes", "embedded messages", "packed repeated fields"]
     },
     {
+      id: 3,
+      name: "SGROUP (Start Group)",
+      what: "Start of a group (deprecated).",
+      why: "Deprecated in proto2. Groups were an early attempt at nested messages but were replaced by embedded messages.",
+      types: ["group"]
+    },
+    {
+      id: 4,
+      name: "EGROUP (End Group)",
+      what: "End of a group (deprecated).",
+      why: "Deprecated in proto2. Used to signal the end of a group.",
+      types: ["group"]
+    },
+    {
       id: 5,
       name: "I32 (Fixed 32-bit)",
       what: "A fixed 4-byte payload.",
@@ -1309,45 +1282,51 @@ const WireFormatBreakdown = () => {
       </div>
 
       <div className="space-y-6">
-        {wireTypes.map((wt) => (
-          <div key={wt.id} className="relative group">
-            <div className="absolute -inset-0.5 bg-gradient-to-r from-[#ff00ff]/20 to-[#00f3ff]/20 rounded-xl blur opacity-0 group-hover:opacity-100 transition duration-500" />
-            <div className="relative flex flex-col md:flex-row bg-[#0a0a0a] border border-white/10 rounded-xl overflow-hidden">
-              <div className="w-full md:w-32 bg-white/5 flex items-center justify-center border-b md:border-b-0 md:border-r border-white/10 py-6 md:py-0">
-                <div className="flex flex-col items-center gap-1">
-                  <span className="text-xs font-mono text-slate-500 uppercase tracking-tighter">Wire ID</span>
-                  <span className="text-5xl font-cyber font-black text-[#ff00ff]">{wt.id}</span>
-                </div>
-              </div>
-
-              <div className="flex-1 p-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
-                <div className="lg:col-span-8 space-y-4">
-                  <div>
-                    <h4 className="text-xl font-cyber font-bold text-[#00f3ff] uppercase mb-1">{wt.name}</h4>
-                    <p className="text-sm font-mono text-slate-300">{wt.what}</p>
-                  </div>
-                  <div className="space-y-2">
-                    <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">RATIONALE // WHY_IT_EXISTS</span>
-                    <p className="text-sm text-slate-400 leading-relaxed italic">
-                      {wt.why}
-                    </p>
+        {wireTypes.map((wt) => {
+          const isDeprecated = wt.id === 3 || wt.id === 4;
+          return (
+            <div key={wt.id} className={`relative group ${isDeprecated ? 'opacity-50 grayscale hover:grayscale-0 transition-all duration-500' : ''}`}>
+              {!isDeprecated && <div className="absolute -inset-0.5 bg-gradient-to-r from-[#ff00ff]/20 to-[#00f3ff]/20 rounded-xl blur opacity-0 group-hover:opacity-100 transition duration-500" />}
+              <div className={`relative flex flex-col md:flex-row bg-[#0a0a0a] border ${isDeprecated ? 'border-white/5' : 'border-white/10'} rounded-xl overflow-hidden`}>
+                <div className="w-full md:w-32 bg-white/5 flex items-center justify-center border-b md:border-b-0 md:border-r border-white/10 py-6 md:py-0">
+                  <div className="flex flex-col items-center gap-1">
+                    <span className="text-xs font-mono text-slate-500 uppercase tracking-tighter">Wire ID</span>
+                    <span className={`text-5xl font-cyber font-black ${isDeprecated ? 'text-slate-500' : 'text-[#ff00ff]'}`}>{wt.id}</span>
                   </div>
                 </div>
 
-                <div className="lg:col-span-4 flex flex-col justify-center gap-4 bg-white/5 p-6 rounded-lg border border-white/5">
-                  <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">Mapped Schema Types</span>
-                  <div className="flex flex-wrap gap-2">
-                    {wt.types.map((t) => (
-                      <span key={t} className="px-2 py-1 bg-black/60 border border-[#00f3ff]/20 rounded text-[11px] font-mono text-[#00f3ff]">
-                        {t}
-                      </span>
-                    ))}
+                <div className="flex-1 p-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+                  <div className="lg:col-span-8 space-y-4">
+                    <div>
+                      <h4 className={`text-xl font-cyber font-bold uppercase mb-1 flex items-center gap-2 ${isDeprecated ? 'text-slate-400' : 'text-[#00f3ff]'}`}>
+                        {wt.name}
+                        {isDeprecated && <span className="text-[10px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded tracking-widest">DEPRECATED</span>}
+                      </h4>
+                      <p className="text-sm font-mono text-slate-300">{wt.what}</p>
+                    </div>
+                    <div className="space-y-2">
+                      <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">RATIONALE // WHY_IT_EXISTS</span>
+                      <p className="text-sm text-slate-400 leading-relaxed italic">
+                        {wt.why}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="lg:col-span-4 flex flex-col justify-center gap-4 bg-white/5 p-6 rounded-lg border border-white/5">
+                    <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">Mapped Schema Types</span>
+                    <div className="flex flex-wrap gap-2">
+                      {wt.types.map((t) => (
+                        <span key={t} className={`px-2 py-1 bg-black/60 border rounded text-[11px] font-mono ${isDeprecated ? 'border-slate-500/20 text-slate-500' : 'border-[#00f3ff]/20 text-[#00f3ff]'}`}>
+                          {t}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
@@ -1478,7 +1457,6 @@ const AlternativesLandscape = () => (
 const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) => {
   const [activeExample, setActiveExample] = useState<keyof typeof SIZE_EXAMPLES>('BASIC');
   const [jsonInput, setJsonInput] = useState(JSON.stringify(SIZE_EXAMPLES.BASIC, null, 2));
-  const [activeByte, setActiveByte] = useState<number | null>(null);
   const [selectedByte, setSelectedByte] = useState<number | null>(null);
 
   const handleExampleChange = (key: keyof typeof SIZE_EXAMPLES) => {
@@ -1509,8 +1487,7 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
   };
 
   const safeSelectedByte = selectedByte !== null && selectedByte < stats.segments.length ? selectedByte : null;
-  const safeActiveByte = activeByte !== null && activeByte < stats.segments.length ? activeByte : null;
-  const displayedByteIndex = safeActiveByte !== null ? safeActiveByte : safeSelectedByte;
+  const displayedByteIndex = safeSelectedByte;
 
   const currentSegment = displayedByteIndex !== null ? stats.segments[displayedByteIndex] : null;
   const groupedDataBytes = useMemo(() => {
@@ -1566,8 +1543,6 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
                   return (
                     <motion.div
                       key={i}
-                      onHoverStart={() => setActiveByte(i)}
-                      onHoverEnd={() => setActiveByte(null)}
                       onClick={() => setSelectedByte(selectedByte === i ? null : i)}
                       className={`
                         px-1 cursor-crosshair transition-all border
@@ -1577,8 +1552,7 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
                           ${isPrevData ? 'border-l-0 rounded-l-none' : 'rounded-l'} 
                           ${isNextData ? 'border-r-0 rounded-r-none' : 'rounded-r'}
                         ` : ''}
-                        ${activeByte === i ? 'scale-110 shadow-[0_0_10px_rgba(0,243,255,0.3)] z-10 bg-white/5' : ''}
-                        ${selectedByte === i ? 'bg-[#00f3ff]/20 border-[#00f3ff] shadow-[0_0_15px_rgba(0,243,255,0.4)]' : ''}
+                        ${selectedByte === i ? 'bg-[#00f3ff]/20 border-[#00f3ff] shadow-[0_0_15px_rgba(0,243,255,0.4)] scale-110 z-10' : ''}
                       `}
                     >
                       {b.val}
@@ -1593,7 +1567,25 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
                     <motion.div key={displayedByteIndex} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="flex flex-col gap-8">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div className="flex flex-col gap-2">
-                          <span className="text-xs text-slate-500 font-mono uppercase tracking-widest">Byte Analysis {selectedByte === displayedByteIndex && <span className="text-[#00f3ff] ml-2">[LOCKED]</span>}</span>
+                          <div className="flex items-center gap-4">
+                            <span className="text-xs text-slate-500 font-mono uppercase tracking-widest">Byte Analysis {selectedByte === displayedByteIndex && <span className="text-[#00f3ff] ml-2">[LOCKED]</span>}</span>
+                            <div className="flex gap-1">
+                              <button
+                                onClick={() => setSelectedByte(selectedByte !== null && selectedByte > 0 ? selectedByte - 1 : null)}
+                                disabled={selectedByte === null || selectedByte <= 0}
+                                className="p-1 hover:bg-white/10 rounded disabled:opacity-30 disabled:cursor-not-allowed"
+                              >
+                                <ChevronLeft className="w-4 h-4 text-white" />
+                              </button>
+                              <button
+                                onClick={() => setSelectedByte(selectedByte !== null && selectedByte < stats.segments.length - 1 ? selectedByte + 1 : null)}
+                                disabled={selectedByte === null || selectedByte >= stats.segments.length - 1}
+                                className="p-1 hover:bg-white/10 rounded disabled:opacity-30 disabled:cursor-not-allowed"
+                              >
+                                <ChevronRight className="w-4 h-4 text-white" />
+                              </button>
+                            </div>
+                          </div>
                           <span className="text-white font-mono text-lg">{currentSegment.desc}</span>
                           <div className="text-sm text-slate-400 mt-2 p-2 bg-white/5 rounded border border-white/5">
                             {currentSegment.type === 'tag' && "This byte identifies which field we're looking at and how to decode the following data."}
@@ -1758,11 +1750,10 @@ const VALIDATION_EXAMPLES = {
   }
 };
 
-const ValidationLab = ({ messageSchema, protoSource, setProtoSource, fds }: {
+const ValidationLab = ({ messageSchema, fds, openSchemaEditor }: {
   messageSchema: DescMessage | null,
-  protoSource: string,
-  setProtoSource: (s: string) => void,
-  fds: Uint8Array | null
+  fds: Uint8Array | null,
+  openSchemaEditor: () => void
 }) => {
   const [activeExample, setActiveExample] = useState<keyof typeof VALIDATION_EXAMPLES>('VALID');
   const [jsonInput, setJsonInput] = useState(JSON.stringify(VALIDATION_EXAMPLES.VALID, null, 2));
@@ -1806,19 +1797,14 @@ const ValidationLab = ({ messageSchema, protoSource, setProtoSource, fds }: {
         </div>
 
         {/* Row 2: Schema Rules (Full Width) */}
-        <div className="space-y-4 mb-8">
-          <div className="flex items-center justify-between">
-            <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">Interactive Schema Rules</span>
-            <button
-              onClick={() => setProtoSource(INITIAL_PROTO)}
-              className="text-[10px] font-mono px-2 py-0.5 border border-[#00ff9f]/30 text-[#00ff9f]/60 hover:text-[#00ff9f] hover:border-[#00ff9f] transition-all rounded"
-            >
-              RESET_TO_DEFAULT
-            </button>
-          </div>
-          <CyberPanel title="SCHEMA_RULES" className="bg-slate-900/40">
-            <SchemaEditor value={protoSource} onChange={setProtoSource} errors={[]} />
-          </CyberPanel>
+        <div className="flex justify-center mb-12">
+          <button
+            onClick={openSchemaEditor}
+            className="px-6 py-2 bg-white/5 border border-white/10 text-slate-300 font-mono text-sm hover:bg-white/10 hover:text-white transition-all rounded flex items-center gap-2"
+          >
+            <FileCode className="w-4 h-4" />
+            CUSTOMIZE_SCHEMA_RULES
+          </button>
         </div>
 
         {/* Row 3: Test Data (Full Width) */}
@@ -1940,6 +1926,7 @@ function App() {
   const [fds, setFds] = useState<Uint8Array | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [compilationErrors, setCompilationErrors] = useState<CompilationError[]>([]);
+  const [isSchemaModalOpen, setIsSchemaModalOpen] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -1998,8 +1985,8 @@ function App() {
       <main>
         <Hero />
         <Introduction
+          openSchemaEditor={() => setIsSchemaModalOpen(true)}
           protoSource={protoSource}
-          setProtoSource={setProtoSource}
           error={error}
           compilationErrors={compilationErrors}
           messageSchema={messageSchema}
@@ -2011,17 +1998,35 @@ function App() {
         <CompilationSection />
         <SchemaDrivenAPIs />
         <TypeSystem />
-        <SizeComparison messageSchema={messageSchema} fileDescriptorSet={fds} />
+        <SizeComparison messageSchema={messageSchema} fileDescriptorSet={fds} openSchemaEditor={() => setIsSchemaModalOpen(true)} />
         <BinaryMatrix messageSchema={messageSchema} />
         <ValidationLab
+          openSchemaEditor={() => setIsSchemaModalOpen(true)}
           messageSchema={messageSchema}
-          protoSource={protoSource}
-          setProtoSource={setProtoSource}
           fds={fds}
         />
         <AlternativesLandscape />
+        <section className="py-24 px-8 bg-slate-900/10 border-t border-white/5">
+          <div className="max-w-7xl mx-auto">
+            <SectionTitle icon={Code2} subtitle="BEHIND_THE_SCENES">How This Website Was Created</SectionTitle>
+            <div className="p-6 bg-white/5 border border-white/10 rounded-lg text-slate-300 leading-relaxed text-sm max-w-3xl">
+              <p>
+                It uses WASM + Go to leverage Go libraries for protobuf parsing and formatting. It uses FauxRPC in the same way to generate fake data.
+              </p>
+            </div>
+          </div>
+        </section>
         <References />
       </main>
+
+      <SchemaModal
+        isOpen={isSchemaModalOpen}
+        onClose={() => setIsSchemaModalOpen(false)}
+        protoSource={protoSource}
+        setProtoSource={setProtoSource}
+        errors={compilationErrors}
+      />
+
       <footer className="py-12 border-t border-white/5 px-8 flex flex-col items-center gap-4">
         <div className="flex gap-8">
           <a href="https://github.com/protocolbuffers/protobuf" target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-[#00f3ff] transition-colors" aria-label="Protobuf GitHub">
