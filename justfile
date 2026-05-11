@@ -14,7 +14,9 @@ build-wasm:
 		echo "Building WASM..."; \
 		rm -f web/public/parser.wasm; \
 		GOOS=js GOARCH=wasm go build -C wasm-parser -ldflags="-s -w" -o ../web/public/parser.wasm main.go; \
-		wasm-opt -Oz --all-features web/public/parser.wasm -o web/public/parser.wasm; \
+		if command -v wasm-opt >/dev/null 2>&1; then \
+			wasm-opt -Oz --all-features web/public/parser.wasm -o web/public/parser.wasm; \
+		fi; \
 		gzip -9 -f web/public/parser.wasm; \
 		mv web/public/parser.wasm.gz web/public/parser.wasm; \
 	fi

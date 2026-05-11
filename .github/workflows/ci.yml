@@ -16,6 +16,6 @@ jobs:
         with:
           install: true
       - name: Install dependencies
-        run: pnpm web-install
+        run: just web-install
       - name: Lint
         run: just web-check

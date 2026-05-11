@@ -57,7 +57,7 @@ export async function initWasm() {
       let wasmBuffer = fs.readFileSync(wasmPath);
 
       // Check for gzip magic number (0x1f 0x8b)
-      if (wasmBuffer[0] === 0x1f && wasmBuffer[1] === 0x8b) {
+      if (wasmBuffer.length >= 2 && wasmBuffer[0] === 0x1f && wasmBuffer[1] === 0x8b) {
         const zlib = await import('node:zlib');
         wasmBuffer = zlib.gunzipSync(wasmBuffer);
       }
@@ -78,8 +78,6 @@ export async function initWasm() {
     const response = await fetch("/parser.wasm?v=1");
 
     let wasmResponse = response;
-    const contentType = response.headers.get("Content-Type");
-    const isGzip = contentType === "application/gzip" || contentType === "application/x-gzip";
     
     // Even if the content type isn't set, we can check the body if we want to be sure,
     // but pipeThrough(new DecompressionStream("gzip")) is generally what we want if we know it's gzipped.
@@ -90,7 +88,8 @@ export async function initWasm() {
     const reader = response.body!.getReader();
     const { value, done } = await reader.read();
 
-    if (!done && value[0] === 0x1f && value[1] === 0x8b) {
+    if (!done && value && value.length >= 2 && value[0] === 0x1f && value[1] === 0x8b) {
+
       const ds = new DecompressionStream("gzip");
       const decompressedStream = new ReadableStream({
         start(controller) {
