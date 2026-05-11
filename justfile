@@ -8,7 +8,16 @@ web-build: build-wasm
 	cd web && mise exec -- pnpm run build
 
 build-wasm:
-	cd wasm-parser && GOOS=js GOARCH=wasm mise exec -- go build -o ../web/public/parser.wasm main.go
+	@if [ -f web/public/parser.wasm ] && [ -z "$(find wasm-parser -type f -newer web/public/parser.wasm)" ]; then \
+		echo "WASM is up to date."; \
+	else \
+		echo "Building WASM..."; \
+		rm -f web/public/parser.wasm; \
+		GOOS=js GOARCH=wasm go build -C wasm-parser -ldflags="-s -w" -o ../web/public/parser.wasm main.go; \
+		wasm-opt -Oz --all-features web/public/parser.wasm -o web/public/parser.wasm; \
+		gzip -9 -f web/public/parser.wasm; \
+		mv web/public/parser.wasm.gz web/public/parser.wasm; \
+	fi
 
 web-check:
 	cd web && mise exec -- pnpm run lint

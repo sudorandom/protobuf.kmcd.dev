@@ -42,8 +42,8 @@ github.com/rodaine/protogofakeit v0.1.1 h1:ZKouljuRM3A+TArppfBqnH8tGZHOwM/pjvtXe
 github.com/rodaine/protogofakeit v0.1.1/go.mod h1:pXn/AstBYMaSfc1/RqH3N82pBuxtWgejz1AlYpY1mI0=
 github.com/stretchr/testify v1.11.1 h1:7s2iGBzp5EwR7/aIZr8ao5+dra3wiQyKjjFuvgVKu7U=
 github.com/stretchr/testify v1.11.1/go.mod h1:wZwfW3scLgRK+23gO65QZefKpKQRnfz6sD981Nm4B6U=
-github.com/sudorandom/fauxrpc v0.19.8 h1:h7UbOp67mJTpGbe3SkNi3K2hipOXIRD4MG7Ls1w8Pqc=
-github.com/sudorandom/fauxrpc v0.19.8/go.mod h1:BlZfOksifscu1528CLGQDPoqJsqBFfgbQKEwDyMlz28=
+github.com/sudorandom/fauxrpc v0.19.9 h1:64Ejv/tIPwtoEf5wY4VW0AbMphce3FClMPtgcR0qhcE=
+github.com/sudorandom/fauxrpc v0.19.9/go.mod h1:BlZfOksifscu1528CLGQDPoqJsqBFfgbQKEwDyMlz28=
 go.yaml.in/yaml/v3 v3.0.4 h1:tfq32ie2Jv2UxXFdLJdh3jXuOzWiL1fo0bu/FbuKpbc=
 go.yaml.in/yaml/v3 v3.0.4/go.mod h1:DhzuOOF2ATzADvBadXxruRBLzYTpT36CKvDb3+aBEFg=
 golang.org/x/exp v0.0.0-20260410095643-746e56fc9e2f h1:W3F4c+6OLc6H2lb//N1q4WpJkhzJCK5J6kUi1NTVXfM=
