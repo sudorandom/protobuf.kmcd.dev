@@ -169,15 +169,6 @@ const Hero = () => (
         Language-neutral, platform-neutral, extensible mechanism for serializing structured data.
         The backbone of modern high-performance systems.
       </p>
-
-      <div className="flex gap-4 justify-center">
-        <a href="#matrix" className="px-8 py-3 bg-[#00f3ff]/10 border border-[#00f3ff] text-[#00f3ff] font-cyber font-bold hover:bg-[#00f3ff]/20 transition-all shadow-[0_0_15px_rgba(0,243,255,0.2)]">
-          ENTER_THE_MATRIX
-        </a>
-        <a href="#efficiency" className="px-8 py-3 bg-transparent border border-white/20 text-white font-cyber hover:border-white/40 transition-all">
-          RUN_BENCHMARK
-        </a>
-      </div>
     </motion.div>
 
     <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce opacity-30">
@@ -2320,7 +2311,24 @@ const References = () => (
 
 const INITIAL_PROTO = `syntax = "proto3";\n\npackage demo.v1;\n\nimport "buf/validate/validate.proto";\n\nmessage User {\n  string id = 1 [(buf.validate.field).string.uuid = true];\n  string name = 2 [(buf.validate.field).string.min_len = 1];\n  string email = 3 [(buf.validate.field).string.email = true];\n  \n  // Numeric data for efficiency demo\n  uint32 age = 4 [(buf.validate.field).uint32.lt = 150];\n  float height_cm = 5 [(buf.validate.field).float = {gte: 0, lte: 500}];\n  double weight_kg = 6 [(buf.validate.field).double = {gte: 0, lte: 2000}];\n  \n  Role role = 7;\n  Date birth_date = 8;\n  User manager = 9;\n\n  enum Role {\n    ROLE_UNSPECIFIED = 0;\n    ROLE_USER = 1;\n    ROLE_ADMIN = 2;\n  }\n}\n\nmessage Date {\n  int32 year = 1 [(buf.validate.field).int32 = {gte: 1900, lte: 2100}];\n  int32 month = 2 [(buf.validate.field).int32 = {gte: 1, lte: 12}];\n  int32 day = 3 [(buf.validate.field).int32 = {gte: 1, lte: 31}];\n}`;
 
+const NAV_ITEMS = [
+  { id: 'intro', label: 'INTRO' },
+  { id: 'basics', label: 'BASICS' },
+  { id: 'deepdive', label: 'DEEP DIVE' },
+  { id: 'advanced', label: 'ADVANCED' },
+  { id: 'reflection', label: 'REFLECTION' },
+  { id: 'compile', label: 'COMPILE' },
+  { id: 'schema', label: 'SCHEMA' },
+  { id: 'types', label: 'TYPES' },
+  { id: 'efficiency', label: 'EFFICIENCY' },
+  { id: 'matrix', label: 'BINARY' },
+  { id: 'validation', label: 'VALIDATION' },
+  { id: 'alternatives', label: 'ALTERNATIVES' },
+  { id: 'ecosystem', label: 'ECOSYSTEM' }
+];
+
 function App() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [protoSource, setProtoSource] = useState(INITIAL_PROTO);
   const [registry, setRegistry] = useState<Registry | null>(null);
   const [fds, setFds] = useState<Uint8Array | null>(null);
@@ -2366,17 +2374,84 @@ function App() {
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-[#00f3ff]/10 rounded border border-[#00f3ff]/30 flex items-center justify-center"><Cpu className="w-6 h-6 text-[#00f3ff]" /></div>
           <div>
-            <h1 className="text-xl font-cyber font-bold tracking-tighter text-white uppercase tracking-tighter uppercase text-[#00f3ff]">Protobuf Explainer</h1>
+            <h1 className="text-xl font-cyber font-bold tracking-tighter text-white uppercase tracking-tighter uppercase text-[#00f3ff]">protobuf.kmcd.dev</h1>
             <div className="text-xs font-mono text-[#00f3ff] tracking-widest -mt-1 uppercase opacity-70">Interactive Explainer</div>
           </div>
         </div>
         {error && <div className="ml-8 px-3 py-1 bg-red-500/10 border border-red-500/30 rounded text-red-400 text-xs font-mono animate-pulse uppercase">SCHEMA_ERROR: {error}</div>}
-        <nav className="ml-auto hidden xl:flex gap-6">
-          {[{ id: 'intro', label: 'INTRO' }, { id: 'basics', label: 'BASICS' }, { id: 'deepdive', label: 'DEEP DIVE' }, { id: 'advanced', label: 'ADVANCED' }, { id: 'reflection', label: 'REFLECTION' }, { id: 'compile', label: 'COMPILE' }, { id: 'schema', label: 'SCHEMA' }, { id: 'types', label: 'TYPES' }, { id: 'efficiency', label: 'EFFICIENCY' }, { id: 'matrix', label: 'BINARY' }, { id: 'validation', label: 'VALIDATION' }, { id: 'alternatives', label: 'ALTERNATIVES' }, { id: 'ecosystem', label: 'ECOSYSTEM' }].map((item) => (
-            <a key={item.id} href={`#${item.id}`} className="text-[10px] font-cyber font-bold tracking-[0.1em] text-slate-400 hover:text-[#00f3ff] transition-colors relative group uppercase">{item.label}<span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-[#00f3ff] transition-all group-hover:w-full"></span></a>
-          ))}
-        </nav>
+        
+        <button 
+          onClick={() => setIsMenuOpen(true)}
+          className="ml-auto p-2 text-[#00f3ff] hover:bg-[#00f3ff]/10 rounded border border-[#00f3ff]/20 transition-all group"
+          aria-label="Open Menu"
+        >
+          <AlignLeft className="w-6 h-6 group-hover:scale-110 transition-transform" />
+        </button>
       </header>
+
+      <AnimatePresence>
+        {isMenuOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsMenuOpen(false)}
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[110]"
+            />
+            
+            <motion.div
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+              className="fixed top-0 right-0 bottom-0 w-full max-w-sm z-[120] bg-[#0a0a0f] border-l border-white/10 shadow-2xl flex flex-col"
+            >
+              <div className="h-[80px] flex items-center justify-between px-8 border-b border-white/5">
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 bg-[#00f3ff]/10 rounded border border-[#00f3ff]/30 flex items-center justify-center"><Cpu className="w-3.5 h-3.5 text-[#00f3ff]" /></div>
+                  <span className="font-cyber font-bold text-[#00f3ff] text-[10px] tracking-[0.2em] uppercase">Navigation</span>
+                </div>
+                <button 
+                  onClick={() => setIsMenuOpen(false)}
+                  className="p-2 text-slate-400 hover:text-white transition-colors"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+              
+              <nav className="flex-1 overflow-y-auto py-6 px-8 custom-scrollbar">
+                <div className="flex flex-col gap-1">
+                  {NAV_ITEMS.map((item, i) => (
+                    <a
+                      key={item.id}
+                      href={`#${item.id}`}
+                      onClick={() => setIsMenuOpen(false)}
+                      className="group flex items-center justify-between py-4 border-b border-white/5 hover:border-[#00f3ff]/30 transition-colors"
+                    >
+                      <div className="flex flex-col">
+                        <span className="text-[10px] font-mono text-[#00f3ff]/50 mb-1">0{i + 1}</span>
+                        <span className="font-cyber font-bold text-base tracking-wider text-slate-300 group-hover:text-[#00f3ff] transition-colors">{item.label}</span>
+                      </div>
+                      <ChevronRight className="w-5 h-5 text-white/0 group-hover:text-[#00f3ff] transition-all -translate-x-2 group-hover:translate-x-0" />
+                    </a>
+                  ))}
+                </div>
+              </nav>
+              
+              <div className="p-8 border-t border-white/5 bg-black/20">
+                <div className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-4">Quick Links</div>
+                <div className="flex gap-4">
+                  <a href="https://kmcd.dev" target="_blank" rel="noopener noreferrer" className="p-2 bg-white/5 rounded hover:bg-white/10 transition-colors text-slate-400 hover:text-[#00f3ff]" title="KMCD.DEV"><Fingerprint className="w-4 h-4" /></a>
+                  <a href="https://github.com/sudorandom/protobuf.kmcd.dev" target="_blank" rel="noopener noreferrer" className="p-2 bg-white/5 rounded hover:bg-white/10 transition-colors text-slate-400 hover:text-[#ff00ff]" title="GitHub Repository"><Code2 className="w-4 h-4" /></a>
+                  <a href="https://protobuf.dev/" target="_blank" rel="noopener noreferrer" className="p-2 bg-white/5 rounded hover:bg-white/10 transition-colors text-slate-400 hover:text-[#00ff9f]" title="Protobuf Docs"><Database className="w-4 h-4" /></a>
+                </div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
       <main>
         <Hero />
         <Introduction
@@ -2412,11 +2487,11 @@ function App() {
 
       <footer className="py-12 border-t border-white/5 px-8 flex flex-col items-center gap-4">
         <div className="flex gap-8">
-          <a href="https://github.com/protocolbuffers/protobuf" target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-[#00f3ff] transition-colors" aria-label="Protobuf GitHub">
-            <Code2 className="w-5 h-5" />
+          <a href="https://kmcd.dev" target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-[#00f3ff] transition-colors" aria-label="KMCD.DEV">
+            <Fingerprint className="w-5 h-5" />
           </a>
-          <a href="https://buf.build/" target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-[#ff00ff] transition-colors" aria-label="Buf Build">
-            <Terminal className="w-5 h-5" />
+          <a href="https://github.com/sudorandom/protobuf.kmcd.dev" target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-[#ff00ff] transition-colors" aria-label="GitHub Repository">
+            <Code2 className="w-5 h-5" />
           </a>
           <a href="https://protobuf.dev/" target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-[#00ff9f] transition-colors" aria-label="Protobuf Documentation">
             <Database className="w-5 h-5" />
