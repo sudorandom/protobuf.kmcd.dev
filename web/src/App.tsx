@@ -14,6 +14,7 @@ import {
   CheckCircle2,
   FileCode,
   ArrowRight,
+  ArrowUp,
   Fingerprint,
   Combine,
   Hash,
@@ -25,6 +26,7 @@ import {
   List,
   Braces,
   AlignLeft,
+  MousePointer2,
   HelpCircle,
   GitBranch,
   Package,
@@ -1439,6 +1441,27 @@ const WireFormatBreakdown = () => {
         <p className="text-slate-400 max-w-3xl leading-relaxed">
           The "Wire Type" is the low-level physical format of the data on the disk or wire. While your schema has dozens of types, they all collapse into these four physical representations.
         </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 bg-blue-500/5 border border-blue-500/10 rounded-xl p-8 mb-12">
+          <div className="space-y-4">
+            <h4 className="text-white font-cyber font-bold uppercase text-sm flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-[#00f3ff]" />
+              Why you need a Schema
+            </h4>
+            <p className="text-sm text-slate-400 leading-relaxed">
+              A raw Protobuf stream is <strong>untyped</strong>. Without a <code>.proto</code> file, a decoder can see that <em>"Field #3 is a Length-Delimited blob"</em>, but it doesn't know if that blob is a UTF-8 <code>string</code>, raw <code>bytes</code>, or a nested <code>message</code>.
+            </p>
+          </div>
+          <div className="space-y-4">
+            <h4 className="text-white font-cyber font-bold uppercase text-sm flex items-center gap-2">
+              <Combine className="w-4 h-4 text-[#ff00ff]" />
+              The Minimal Mapping
+            </h4>
+            <p className="text-sm text-slate-400 leading-relaxed">
+              To fully decode a message, you need a registry that maps every <strong>Field Number</strong> to a <strong>Protobuf Type</strong>. This allows the decoder to interpret the bits correctly (e.g., using ZigZag decoding for <code>sint32</code> vs standard varint for <code>int32</code>).
+            </p>
+          </div>
+        </div>
       </div>
 
       <div className="space-y-6">
@@ -1781,7 +1804,7 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
                               </div>
                             ))}
                           </div>
-                          <p className="text-xs text-slate-500 italic">
+                          <p className="text-sm text-slate-300 italic border-l-2 border-[#00f3ff]/30 pl-3 py-1 bg-[#00f3ff]/5 rounded-r">
                             {currentSegment.type === 'tag' ? "Bits 0-2 (last 3) indicate the Wire Type. Bits 3-7 are the Field Number (if < 16)." : "The Most Significant Bit (MSB) at index 0 indicates if more bytes follow."}
                           </p>
                         </div>
@@ -1795,7 +1818,29 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
                       )}
                     </motion.div>
                   ) : (
-                    <div className="flex flex-col items-center justify-center h-40 border border-dashed border-white/10 rounded gap-2 text-slate-600 font-mono text-sm italic text-center">Click hex bytes to analyze...<br />Use the chevrons above to page through the stream.</div>
+                    <motion.div 
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="flex flex-col items-center justify-center h-48 border-2 border-dashed border-[#00f3ff]/20 rounded-xl gap-4 bg-[#00f3ff]/5 text-center group"
+                    >
+                      <motion.div
+                        animate={{ y: [0, -8, 0] }}
+                        transition={{ repeat: Infinity, duration: 2 }}
+                        className="p-3 bg-[#00f3ff]/10 rounded-full border border-[#00f3ff]/30"
+                      >
+                        <ArrowUp className="w-6 h-6 text-[#00f3ff]" />
+                      </motion.div>
+                      <div className="space-y-1">
+                        <p className="text-white font-mono font-bold uppercase tracking-widest flex items-center justify-center gap-2">
+                          <MousePointer2 className="w-4 h-4 text-[#ff00ff]" />
+                          Click a hex byte above
+                        </p>
+                        <p className="text-xs text-slate-400 font-mono">
+                          Analyze the wire format step-by-step.<br />
+                          Use the pagination controls to navigate the stream.
+                        </p>
+                      </div>
+                    </motion.div>
                   )}
                 </AnimatePresence>
               </div>
@@ -2395,6 +2440,9 @@ function App() {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           setActiveSection(entry.target.id);
+          // Update URL without adding to history
+          const hash = entry.target.id === 'hero' ? ' ' : `#${entry.target.id}`;
+          window.history.replaceState(null, '', window.location.pathname + hash);
         }
       });
     }, observerOptions);
