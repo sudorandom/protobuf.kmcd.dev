@@ -1922,32 +1922,33 @@ const SchemaEditorModal = ({ isOpen, onClose, value, onApply }: {
   const [isValidating, setIsValidating] = useState(false);
 
   useEffect(() => {
-    if (isOpen) {
-      setLocalValue(value);
-      setLocalErrors([]);
-    }
-  }, [isOpen, value]);
-
-  useEffect(() => {
     if (!isOpen) return;
     
-    setIsValidating(true);
+    let isMounted = true;
     const timer = setTimeout(async () => {
+      setIsValidating(true);
       try {
         const result = await createDynamicRegistry(localValue);
-        if (result.kind === "success") {
-          setLocalErrors([]);
-        } else {
-          setLocalErrors(result.errors);
+        if (isMounted) {
+          if (result.kind === "success") {
+            setLocalErrors([]);
+          } else {
+            setLocalErrors(result.errors);
+          }
         }
       } catch (e) {
         console.error("Local validation failed:", e);
       } finally {
-        setIsValidating(false);
+        if (isMounted) {
+          setIsValidating(false);
+        }
       }
     }, 500);
 
-    return () => clearTimeout(timer);
+    return () => {
+      isMounted = false;
+      clearTimeout(timer);
+    };
   }, [localValue, isOpen]);
 
   if (!isOpen) return null;
@@ -2093,12 +2094,14 @@ const ValidationLab = ({ messageSchema, fds, protoSource, setProtoSource }: {
               </div>
             </CyberPanel>
 
-            <SchemaEditorModal 
+            <SchemaEditorModal
+              key={isModalOpen ? `open-${protoSource}` : 'closed'}
               isOpen={isModalOpen}
               onClose={() => setIsModalOpen(false)}
               value={protoSource}
               onApply={setProtoSource}
             />
+
           </div>
 
           <div className="space-y-6">

@@ -77,7 +77,7 @@ export async function initWasm() {
     const go = new window.Go();
     const response = await fetch("/parser.wasm?v=1");
 
-    let wasmResponse = response;
+    let wasmResponse: Response;
     
     // Even if the content type isn't set, we can check the body if we want to be sure,
     // but pipeThrough(new DecompressionStream("gzip")) is generally what we want if we know it's gzipped.
@@ -89,7 +89,6 @@ export async function initWasm() {
     const { value, done } = await reader.read();
 
     if (!done && value && value.length >= 2 && value[0] === 0x1f && value[1] === 0x8b) {
-
       const ds = new DecompressionStream("gzip");
       const decompressedStream = new ReadableStream({
         start(controller) {
