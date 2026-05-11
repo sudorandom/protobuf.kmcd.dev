@@ -152,7 +152,7 @@ const CyberPanel = ({ children, title, className = "", headerExtra }: { children
 // --- Sections ---
 
 const Hero = () => (
-  <section className="min-h-screen flex flex-col items-center justify-center p-8 relative overflow-hidden">
+  <section id="hero" className="min-h-screen flex flex-col items-center justify-center p-8 relative overflow-hidden">
     <div className="scanline" />
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -442,13 +442,35 @@ const ProtobufBasics = () => {
 };
 
 const DeepDiveSection = () => {
-  const [activeTab, setActiveTab] = useState('annotations');
+  const [activeTab, setActiveTab] = useState('options');
 
   const tabs = [
     {
-      id: 'annotations',
-      label: 'Annotations / Options',
+      id: 'options',
+      label: 'Standard Options',
       icon: Settings,
+      title: 'Built-in Options',
+      desc: (
+        <div className="space-y-4">
+          <p>
+            Protobuf comes with a wide range of built-in "options" that control everything from how code is generated to how data is mapped to JSON.
+          </p>
+          <p>
+            Options are categorized by their scope: <strong>File</strong> (affects the whole file), <strong>Message</strong>, <strong>Field</strong>, or <strong>Service</strong>.
+          </p>
+          <ul className="list-disc pl-4 space-y-1 text-sm">
+            <li><code>option go_package</code>: Defines the import path for generated Go code.</li>
+            <li><code>[deprecated = true]</code>: Marks a field as old/risky to use.</li>
+            <li><code>[json_name = "custom"]</code>: Changes the key used in JSON serialization.</li>
+          </ul>
+        </div>
+      ),
+      example: 'syntax = "proto3";\n\n// File-level option\noption go_package = "github.com/example/v1";\n\nmessage User {\n  // Field-level options\n  string user_id = 1 [json_name = "uid"];\n  string old_field = 2 [deprecated = true];\n}'
+    },
+    {
+      id: 'annotations',
+      label: 'Custom Extensions',
+      icon: Combine,
       title: 'Custom Options',
       desc: (
         <div className="space-y-4">
@@ -456,11 +478,15 @@ const DeepDiveSection = () => {
             Protobuf schemas are extensible. You can define custom "options" (often called annotations) to attach metadata to messages, fields, or services.
           </p>
           <p>
-            These options don't change how the data is serialized on the wire. Instead, they provide instructions to compiler plugins (like generating validation code with <code>protoc-gen-validate</code>) or are read dynamically at runtime via reflection.
+            These options provide instructions to compiler plugins (like generating validation code) or are read dynamically at runtime via reflection.
           </p>
+          <div className="p-3 bg-blue-500/10 border border-blue-500/20 rounded text-xs space-y-2">
+            <p><strong><span className="text-[#00f3ff]">Historical Note:</span></strong> Custom options were originally a <code>proto2</code> feature that uses the <code>extend</code> keyword. While <code>proto3</code> removed general-purpose extensions, it kept them for descriptor objects specifically so options would continue to work.</p>
+            <p><strong><span className="text-[#00ff9f]">The Future:</span></strong> In <strong>Protobuf Editions</strong> (2023+), this distinction is removed. Editions allow native definition of options and introduce <code>features</code>, a specialized type of option used by the compiler itself to control behavior.</p>
+          </div>
         </div>
       ),
-      example: '// 1. Define the option (extend the descriptor)\nextend google.protobuf.FieldOptions {\n  bool is_pii = 50000;\n}\n\n// 2. Use it in your schema\nmessage User {\n  string ssn = 1 [(is_pii) = true];\n}'
+      example: '// options.proto (Must be proto2 to define)\nsyntax = "proto2";\nimport "google/protobuf/descriptor.proto";\n\nextend google.protobuf.FieldOptions {\n  optional bool is_pii = 50001;\n}\n\n// user.proto (Can be proto3 or Editions)\nsyntax = "proto3";\nimport "options.proto";\n\nmessage User {\n  string ssn = 1 [(is_pii) = true];\n}'
     },
     {
       id: 'breaking',
@@ -1281,7 +1307,7 @@ const SizeComparison = ({ messageSchema, fileDescriptorSet }: { messageSchema: D
 };
 
 const PayloadSizeInsights = () => (
-  <section className="py-24 px-8 bg-black/40 border-t border-white/5">
+  <section id="insights" className="py-24 px-8 bg-black/40 border-t border-white/5">
     <div className="max-w-3xl mx-auto space-y-6">
       <h3 className="text-3xl font-cyber font-bold text-white uppercase tracking-tight">Size vs. Compression</h3>
       <p className="text-slate-400 leading-relaxed">
@@ -2276,7 +2302,7 @@ const AboutProject = () => (
 );
 
 const References = () => (
-  <section className="py-24 px-8 bg-black border-t border-white/5">
+  <section id="references" className="py-24 px-8 bg-black border-t border-white/5">
     <div className="max-w-7xl mx-auto text-slate-400">
       <SectionTitle icon={BookOpen} subtitle="08_BIBLIOGRAPHY">References & Specs</SectionTitle>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -2312,6 +2338,7 @@ const References = () => (
 const INITIAL_PROTO = `syntax = "proto3";\n\npackage demo.v1;\n\nimport "buf/validate/validate.proto";\n\nmessage User {\n  string id = 1 [(buf.validate.field).string.uuid = true];\n  string name = 2 [(buf.validate.field).string.min_len = 1];\n  string email = 3 [(buf.validate.field).string.email = true];\n  \n  // Numeric data for efficiency demo\n  uint32 age = 4 [(buf.validate.field).uint32.lt = 150];\n  float height_cm = 5 [(buf.validate.field).float = {gte: 0, lte: 500}];\n  double weight_kg = 6 [(buf.validate.field).double = {gte: 0, lte: 2000}];\n  \n  Role role = 7;\n  Date birth_date = 8;\n  User manager = 9;\n\n  enum Role {\n    ROLE_UNSPECIFIED = 0;\n    ROLE_USER = 1;\n    ROLE_ADMIN = 2;\n  }\n}\n\nmessage Date {\n  int32 year = 1 [(buf.validate.field).int32 = {gte: 1900, lte: 2100}];\n  int32 month = 2 [(buf.validate.field).int32 = {gte: 1, lte: 12}];\n  int32 day = 3 [(buf.validate.field).int32 = {gte: 1, lte: 31}];\n}`;
 
 const NAV_ITEMS = [
+  { id: 'hero', label: 'HOME' },
   { id: 'intro', label: 'INTRO' },
   { id: 'basics', label: 'BASICS' },
   { id: 'deepdive', label: 'DEEP DIVE' },
@@ -2324,8 +2351,30 @@ const NAV_ITEMS = [
   { id: 'matrix', label: 'BINARY' },
   { id: 'validation', label: 'VALIDATION' },
   { id: 'alternatives', label: 'ALTERNATIVES' },
-  { id: 'ecosystem', label: 'ECOSYSTEM' }
+  { id: 'ecosystem', label: 'ECOSYSTEM' },
+  { id: 'about', label: 'ABOUT' },
+  { id: 'references', label: 'REFERENCES' }
 ];
+
+const SECTION_LABELS: Record<string, string> = {
+  hero: 'Welcome',
+  intro: 'Introduction',
+  basics: 'Protobuf Basics',
+  deepdive: 'Schema Engineering',
+  advanced: 'Advanced Protobuf',
+  reflection: 'Descriptors & Reflection',
+  compile: 'Compilation',
+  schema: 'Schema-Driven APIs',
+  types: 'The Type System',
+  efficiency: 'Efficiency',
+  insights: 'Size vs. Compression',
+  matrix: 'Binary Format',
+  validation: 'Data Validation',
+  alternatives: 'Alternatives',
+  ecosystem: 'Ecosystem',
+  about: 'About',
+  references: 'References'
+};
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -2333,6 +2382,28 @@ function App() {
   const [registry, setRegistry] = useState<Registry | null>(null);
   const [fds, setFds] = useState<Uint8Array | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [activeSection, setActiveSection] = useState('hero');
+
+  useEffect(() => {
+    const observerOptions = {
+      root: null,
+      rootMargin: '-80px 0px -80% 0px',
+      threshold: 0
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    }, observerOptions);
+
+    const sections = document.querySelectorAll('section[id]');
+    sections.forEach((section) => observer.observe(section));
+
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     let active = true;
@@ -2374,12 +2445,23 @@ function App() {
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-[#00f3ff]/10 rounded border border-[#00f3ff]/30 flex items-center justify-center"><Cpu className="w-6 h-6 text-[#00f3ff]" /></div>
           <div>
-            <h1 className="text-xl font-cyber font-bold tracking-tighter text-white uppercase tracking-tighter uppercase text-[#00f3ff]">protobuf.kmcd.dev</h1>
+            <a href="/" className="hover:opacity-80 transition-opacity">
+              <h1 className="text-xl font-mono font-bold tracking-tight text-white">
+                protobuf<span className="text-[#00f3ff]">.kmcd.dev</span>
+              </h1>
+            </a>
             <div className="text-xs font-mono text-[#00f3ff] tracking-widest -mt-1 uppercase opacity-70">Interactive Explainer</div>
           </div>
         </div>
         {error && <div className="ml-8 px-3 py-1 bg-red-500/10 border border-red-500/30 rounded text-red-400 text-xs font-mono animate-pulse uppercase">SCHEMA_ERROR: {error}</div>}
         
+        <div className="absolute left-1/2 -translate-x-1/2 hidden lg:flex flex-col items-center pointer-events-none">
+          <div className="text-[10px] font-mono text-[#00f3ff]/50 uppercase tracking-[0.2em] mb-0.5">Section</div>
+          <div className="text-xs font-mono font-bold text-white uppercase tracking-widest bg-white/5 px-3 py-1 rounded border border-white/10 backdrop-blur-sm">
+            {SECTION_LABELS[activeSection] || 'Welcome'}
+          </div>
+        </div>
+
         <button 
           onClick={() => setIsMenuOpen(true)}
           className="ml-auto p-2 text-[#00f3ff] hover:bg-[#00f3ff]/10 rounded border border-[#00f3ff]/20 transition-all group"

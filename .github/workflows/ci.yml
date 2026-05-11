@@ -17,5 +17,16 @@ jobs:
           install: true
       - name: Install dependencies
         run: just web-install
+      - name: Cache WASM parser
+        id: cache-wasm
+        uses: actions/cache@v4
+        with:
+          path: web/public/parser.wasm
+          key: ${{ runner.os }}-wasm-${{ github.ref_name }}-${{ hashFiles('wasm-parser/**') }}
+          restore-keys: |
+            ${{ runner.os }}-wasm-${{ github.ref_name }}-
+      - name: Touch WASM if cache hit
+        if: steps.cache-wasm.outputs.cache-hit == 'true'
+        run: touch web/public/parser.wasm
       - name: Lint
         run: just web-check

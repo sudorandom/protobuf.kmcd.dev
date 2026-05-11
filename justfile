@@ -21,7 +21,7 @@ build-wasm:
 		mv web/public/parser.wasm.gz web/public/parser.wasm; \
 	fi
 
-web-check:
+web-check: build-wasm
 	cd web && mise exec -- pnpm run lint
 	cd web && mise exec -- pnpm run build
 
