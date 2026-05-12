@@ -2316,52 +2316,6 @@ const EcosystemNextSteps = () => (
   </Section>
 );
 
-const AboutProject = () => (
-  <Section id="about" className="py-24 px-4 sm:px-8 bg-slate-900/40 border-t border-white/10">
-    <div className="max-w-7xl mx-auto">
-      <SectionTitle icon={HelpCircle} subtitle="00_METADATA">How this was built</SectionTitle>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-        <div className="space-y-4">
-          <div className="flex items-center gap-3 text-[#00f3ff]">
-             <Package className="w-5 h-5" />
-             <h4 className="font-cyber font-bold text-sm tracking-widest uppercase">WASM + Go</h4>
-          </div>
-          <p className="text-sm text-slate-400 leading-relaxed">
-            The heart of this explainer is a custom <ExternalLinkText href="https://webassembly.org/">WebAssembly</ExternalLinkText> module written in <ExternalLinkText href="https://go.dev/">Go</ExternalLinkText>. This allows us to leverage the official Google Protobuf libraries for parsing, formatting, and descriptor generation directly in your browser.
-          </p>
-        </div>
-        <div className="space-y-4">
-          <div className="flex items-center gap-3 text-[#ff00ff]">
-             <Zap className="w-5 h-5" />
-             <h4 className="font-cyber font-bold text-sm tracking-widest uppercase">FauxRPC</h4>
-          </div>
-          <p className="text-sm text-slate-400 leading-relaxed">
-            We use <ExternalLinkText href="https://fauxrpc.com">FauxRPC</ExternalLinkText> internally to generate context-aware fake data based on your custom schemas. It analyzes your field names and types to provide realistic samples that satisfy your Protovalidate constraints.
-          </p>
-        </div>
-        <div className="space-y-4">
-          <div className="flex items-center gap-3 text-[#00ff9f]">
-             <Braces className="w-5 h-5" />
-             <h4 className="font-cyber font-bold text-sm tracking-widest uppercase">React + Tailwind</h4>
-          </div>
-          <p className="text-sm text-slate-400 leading-relaxed">
-            The frontend is a modern React application utilizing Tailwind CSS for its "Cyberpunk" aesthetic. It's designed to be a lightweight, interactive companion for anyone learning about high-performance data serialization.
-          </p>
-        </div>
-      </div>
-      <div className="mt-12 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-        <div className="flex items-center gap-4">
-           <div className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">Built by</div>
-           <ExternalLinkText href="https://kmcd.dev">KMCD.DEV</ExternalLinkText>
-        </div>
-        <div className="flex items-center gap-6">
-           <ExternalLinkText href="https://github.com/sudorandom/protobuf-explainer">View on GitHub</ExternalLinkText>
-        </div>
-      </div>
-    </div>
-  </Section>
-);
-
 const References = () => (
   <Section id="references" className="py-24 px-4 sm:px-8 bg-black border-t border-white/5">
     <div className="max-w-7xl mx-auto text-slate-400">
@@ -2413,7 +2367,6 @@ const NAV_ITEMS = [
   { id: 'validation', label: 'VALIDATION' },
   { id: 'alternatives', label: 'ALTERNATIVES' },
   { id: 'ecosystem', label: 'ECOSYSTEM' },
-  { id: 'about', label: 'ABOUT' },
   { id: 'references', label: 'REFERENCES' }
 ];
 
@@ -2433,7 +2386,6 @@ const SECTION_LABELS: Record<string, string> = {
   validation: 'Data Validation',
   alternatives: 'Alternatives',
   ecosystem: 'Ecosystem',
-  about: 'About',
   references: 'References'
 };
 
@@ -2630,7 +2582,6 @@ function App() {
         />
         <AlternativesLandscape />
         <EcosystemNextSteps />
-        <AboutProject />
         <References />
       </main>
 
