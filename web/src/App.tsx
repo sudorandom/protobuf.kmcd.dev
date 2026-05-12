@@ -1567,8 +1567,15 @@ const PayloadSizeInsights = () => (
   </Section>
 );
 
+interface TypeGroupDef {
+  name: string;
+  icon: React.ElementType;
+  types: { name: string, desc: React.ReactNode }[];
+  footer?: React.ReactNode;
+}
+
 const TypeSystem = () => {
-  const groups = [
+  const groups: TypeGroupDef[] = [
     {
       name: "Numeric Types",
       icon: Hash,
@@ -1623,7 +1630,7 @@ const TypeSystem = () => {
         <SectionTitle icon={Combine} subtitle="03_TYPE_REFERENCE">The Type System</SectionTitle>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           {groups.map(g => (
-            <TypeGroup key={g.name} groupName={g.name} groupIcon={g.icon} types={g.types} footer={(g as any).footer} />
+            <TypeGroup key={g.name} groupName={g.name} groupIcon={g.icon} types={g.types} footer={g.footer} />
           ))}
         </div>
       </div>
