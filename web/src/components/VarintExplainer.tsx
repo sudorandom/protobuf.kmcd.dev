@@ -50,13 +50,12 @@ const VarintExplainer = () => {
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-2">
           <label className="text-sm font-mono text-slate-500 uppercase tracking-widest">Input Number</label>
-          <input 
-            type="text" 
-            inputMode="numeric"
+          <input
+            type="number"
+            min="0"
             value={inputValue} 
             onChange={(e) => {
-              const val = e.target.value.replace(/[^0-9]/g, '');
-              setInputValue(val || '0');
+              setInputValue(e.target.value || '0');
             }}
             className="bg-black/40 border border-cyan-500/30 rounded p-4 font-cyber text-2xl text-[#00f3ff] focus:outline-none focus:border-[#00f3ff] w-full"
           />

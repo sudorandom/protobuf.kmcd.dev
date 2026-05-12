@@ -31,6 +31,7 @@ import {
   GitBranch,
   Package,
   Settings,
+  BarChart3,
   X,
   Link as LinkIcon
 } from 'lucide-react';
@@ -421,7 +422,7 @@ const ProtobufBasics = () => {
   return (
     <Section id="basics" className="py-24 px-4 sm:px-8 bg-black/40 border-t border-white/5">
       <div className="max-w-7xl mx-auto">
-        <SectionTitle icon={BookOpen} subtitle="01_CORE_CONCEPTS">Protobuf Basics</SectionTitle>
+        <SectionTitle icon={BookOpen} subtitle="02_CORE_CONCEPTS">Protobuf Basics</SectionTitle>
 
         <div className="flex flex-col lg:flex-row gap-12 min-h-[400px]">
           {/* Left Nav */}
@@ -550,7 +551,7 @@ const DeepDiveSection = () => {
   return (
     <Section id="deepdive" className="py-24 px-4 sm:px-8 bg-slate-900/15 border-t border-white/5">
       <div className="max-w-7xl mx-auto">
-        <SectionTitle icon={Layers} subtitle="02_DEEP_DIVE">Schema Engineering</SectionTitle>
+        <SectionTitle icon={Layers} subtitle="07_DEEP_DIVE">Schema Engineering</SectionTitle>
 
         <div className="flex flex-col lg:flex-row gap-12 min-h-[400px]">
           {/* Left Nav */}
@@ -733,7 +734,7 @@ const AdvancedProtobuf = () => {
   return (
     <Section id="advanced" className="py-24 px-4 sm:px-8 bg-slate-900/10 border-t border-white/5">
       <div className="max-w-7xl mx-auto">
-        <SectionTitle icon={Layers} subtitle="02_ADVANCED_TOPICS">Advanced Protobuf</SectionTitle>
+        <SectionTitle icon={Layers} subtitle="05_ADVANCED_TOPICS">Advanced Protobuf</SectionTitle>
 
         <div className="flex flex-col-reverse lg:flex-row gap-12 min-h-[400px]">
           {/* Content Area */}
@@ -777,7 +778,7 @@ const DescriptorsAndReflection = () => (
   <Section id="reflection" className="py-24 px-4 sm:px-8 bg-slate-900/20 border-t border-white/5">
     <div className="max-w-7xl mx-auto space-y-16">
       <div>
-        <SectionTitle icon={Code2} subtitle="03_META_SCHEMA">Descriptors & Reflection</SectionTitle>
+        <SectionTitle icon={Code2} subtitle="06_META_SCHEMA">Descriptors & Reflection</SectionTitle>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           <div className="space-y-6 text-slate-300">
             <h3 className="text-xl font-cyber font-bold text-white uppercase">Schemas Describing Schemas</h3>
@@ -1015,6 +1016,56 @@ const Introduction = ({ messageSchema, fds }: {
           </div>
         </CyberPanel>
       </div>
+
+      <div className="mt-24 pt-16 border-t border-white/5">
+        <div className="flex flex-col items-center mb-12">
+           <h3 className="text-2xl font-cyber font-bold text-white uppercase tracking-tight mb-2">The Compilation Pipeline</h3>
+           <p className="text-slate-400 text-center max-w-2xl">How your human-readable schema becomes high-performance code.</p>
+        </div>
+        
+        <div className="flex flex-col items-center">
+          <div className="flex flex-col md:flex-row items-center gap-8 w-full justify-between max-w-5xl">
+            <CyberPanel title="SOURCE" className="w-full md:w-64 text-center">
+              <FileCode className="w-12 h-12 text-[#00ff9f] mx-auto mb-4" />
+              <span className="font-cyber text-sm">SCHEMA.PROTO</span>
+            </CyberPanel>
+            <div className="flex flex-col items-center gap-2">
+              <ArrowRight className="w-8 h-8 text-[#00f3ff] rotate-90 md:rotate-0" />
+              <span className="text-xs font-mono text-slate-500 uppercase"><ExternalLinkText href="https://github.com/protocolbuffers/protobuf/releases">protoc</ExternalLinkText> / <ExternalLinkText href="https://buf.build/">Buf</ExternalLinkText></span>
+            </div>
+            <CyberPanel title="COMPILER" className="w-full md:w-64 text-center border-[#00f3ff] shadow-[0_0_15px_rgba(0,243,255,0.2)]">
+              <Cpu className="w-12 h-12 text-[#00f3ff] mx-auto mb-4 animate-pulse" />
+              <span className="font-cyber text-sm text-[#00f3ff]">CODE_GENERATION</span>
+            </CyberPanel>
+            <div className="flex flex-col items-center gap-2">
+              <ArrowRight className="w-8 h-8 text-[#ff00ff] rotate-90 md:rotate-0" />
+              <span className="text-xs font-mono text-slate-500 uppercase">TARGETS</span>
+            </div>
+            <div className="flex flex-col gap-4">
+              <div className="grid grid-cols-2 gap-4 w-full md:w-auto">
+                <CyberPanel className="text-center p-3 text-xs">C++</CyberPanel>
+                <CyberPanel className="text-center p-3 text-xs">Java</CyberPanel>
+                <CyberPanel className="text-center p-3 text-xs">Go</CyberPanel>
+                <CyberPanel className="text-center p-3 text-xs">Ruby</CyberPanel>
+                <CyberPanel className="text-center p-3 text-xs">C#</CyberPanel>
+                <CyberPanel className="text-center p-3 text-xs">Python</CyberPanel>
+              </div>
+              <div className="p-3 bg-[#00ff9f]/5 border border-[#00ff9f]/20 rounded text-center">
+                <span className="text-[10px] font-mono text-[#00ff9f] uppercase block mb-1">Plus Community Tools</span>
+                <div className="flex flex-col gap-1">
+                  <ExternalLinkText href="https://github.com/sudorandom/protoc-gen-connect-openapi"><span className="text-xs">OpenAPI</span></ExternalLinkText>
+                  <ExternalLinkText href="https://github.com/protocolbuffers/protobuf/blob/main/docs/third_party.md"><span className="text-xs italic">And Many, Many More...</span></ExternalLinkText>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="mt-12 max-w-3xl text-center text-slate-400 space-y-4">
+            <p>
+              Compilation translates your language-neutral schema into high-performance source code for your specific language. This generated code handles all the complexity of bit-packing and validation.
+            </p>
+          </div>
+        </div>
+      </div>
     </Section>
   );
 };
@@ -1190,7 +1241,7 @@ const SizeComparison = ({ messageSchema, fileDescriptorSet }: { messageSchema: D
   return (
     <Section id="efficiency" className="py-24 px-4 sm:px-8 bg-slate-900/30 border-t border-white/5">
       <div className="max-w-7xl mx-auto">
-        <SectionTitle icon={Zap} subtitle="02_PERFORMANCE_METRICS">Efficiency</SectionTitle>
+        <SectionTitle icon={Zap} subtitle="09_PERFORMANCE_METRICS">Efficiency</SectionTitle>
 
         <div className="mb-12 grid grid-cols-1 md:grid-cols-2 gap-12 text-slate-300 leading-relaxed">
           <div className="space-y-4">
@@ -1327,17 +1378,80 @@ const SizeComparison = ({ messageSchema, fileDescriptorSet }: { messageSchema: D
 
 const PayloadSizeInsights = () => (
   <Section id="insights" className="py-24 px-4 sm:px-8 bg-black/40 border-t border-white/5">
-    <div className="max-w-3xl mx-auto space-y-6">
-      <h3 className="text-xl sm:text-2xl md:text-3xl font-cyber font-bold text-white uppercase tracking-tight">Size vs. Compression</h3>
-      <p className="text-slate-400 leading-relaxed">
-        While Protobuf provides a massive reduction in <span className="text-[#00ff9f] font-bold">raw payload size (typically 30-50%)</span> compared to JSON, the gap often narrows when GZIP or Brotli compression is applied. For GZIP compressed payloads, the difference is usually in the <span className="text-[#00f3ff] font-bold">15-30% range</span>.
-      </p>
-      <p className="text-slate-400 leading-relaxed">
-        However, there is a critical tradeoff: compression adds significant CPU overhead to every request. For smaller payloads, the time spent compressing and decompressing can be greater than the time saved by the smaller transfer size. In these cases, sending uncompressed Protobuf is often the most optimal path for overall latency.
-      </p>
-      <p className="text-slate-400 leading-relaxed text-sm">
-        Protobuf shines when your data has many numbers, enums, or sparse fields. String-heavy payloads benefit less from binary encoding but still benefit from Protobuf's schema-driven performance and type safety.
-      </p>
+    <div className="max-w-4xl mx-auto space-y-16">
+      <div className="max-w-3xl space-y-6">
+        <h3 className="text-xl sm:text-2xl md:text-3xl font-cyber font-bold text-white uppercase tracking-tight">Size vs. Compression</h3>
+        <p className="text-slate-400 leading-relaxed">
+          While Protobuf provides a massive reduction in <span className="text-[#00ff9f] font-bold">raw payload size (typically 30-50%)</span> compared to JSON, the gap often narrows when GZIP or Brotli compression is applied. For GZIP compressed payloads, the difference is usually in the <span className="text-[#00f3ff] font-bold">15-30% range</span>.
+        </p>
+        <p className="text-slate-400 leading-relaxed">
+          However, there is a critical tradeoff: compression adds significant CPU overhead to every request. For smaller payloads, the time spent compressing and decompressing can be greater than the time saved by the smaller transfer size. In these cases, sending uncompressed Protobuf is often the most optimal path for overall latency.
+        </p>
+        <p className="text-slate-400 leading-relaxed text-sm">
+          Protobuf shines when your data has many numbers, enums, or sparse fields. String-heavy payloads benefit less from binary encoding but still benefit from Protobuf's schema-driven performance and type safety.
+        </p>
+      </div>
+
+      <div className="space-y-8">
+        <div className="flex items-center gap-3 text-[#00f3ff]">
+           <BarChart3 className="w-6 h-6" />
+           <h3 className="text-xl sm:text-2xl font-cyber font-bold text-white uppercase tracking-tight">The Benchmark Landscape</h3>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <div className="space-y-4">
+            <h4 className="text-sm font-cyber font-bold text-[#ff00ff] uppercase tracking-widest">Language Matters</h4>
+            <p className="text-sm text-slate-400 leading-relaxed">
+              Protobuf performance is highly dependent on the language and library implementation. In languages with native binary support like <strong>C++, Go, and Java</strong>, Protobuf can be decodes <strong>5x-10x faster</strong> than JSON.
+            </p>
+            <p className="text-sm text-slate-400 leading-relaxed">
+              In interpreted languages like <strong>JavaScript (Node.js) or Python</strong>, the gap can be smaller due to the overhead of moving data between the runtime and the binary parser, though it still generally outperforms standard JSON libraries in high-throughput scenarios.
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            <h4 className="text-sm font-cyber font-bold text-[#00ff9f] uppercase tracking-widest">Data Type Sensitivity</h4>
+            <p className="text-sm text-slate-400 leading-relaxed">
+              If your payload is 90% long strings (like blog posts), Protobuf will only save you a few percentage points of space. However, if your data is <strong>numeric-heavy</strong> (IDs, timestamps, coordinates, or metrics), Protobuf DECIMATES JSON in both size and speed.
+            </p>
+            <p className="text-sm text-slate-400 leading-relaxed italic border-l-2 border-[#00ff9f]/30 pl-4">
+              "The win isn't just bytes on the wire—it's the CPU cycles saved by not parsing millions of brackets and quotes."
+            </p>
+          </div>
+        </div>
+
+        <CyberPanel title="REPUTABLE_ENGINEERING_REPORTS">
+          <div className="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <a 
+              href="https://auth0.com/blog/beating-json-performance-with-protobuf/" 
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group p-4 bg-white/5 border border-white/5 rounded-lg hover:border-[#00f3ff]/40 transition-all"
+            >
+              <h5 className="font-cyber text-xs text-[#00f3ff] mb-2 group-hover:underline">Auth0 Engineering</h5>
+              <p className="text-[11px] text-slate-500 leading-relaxed">Classic deep dive comparing binary vs text overhead in real-world API requests.</p>
+            </a>
+            <a 
+              href="https://grpc.io/docs/guides/benchmarking/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group p-4 bg-white/5 border border-white/5 rounded-lg hover:border-[#ff00ff]/40 transition-all"
+            >
+              <h5 className="font-cyber text-xs text-[#ff00ff] mb-2 group-hover:underline">Official gRPC Benchmarks</h5>
+              <p className="text-[11px] text-slate-500 leading-relaxed">Throughput and latency metrics for Protobuf-over-HTTP/2 across various languages.</p>
+            </a>
+            <a 
+              href="https://www.atlassian.com/blog/atlassian-engineering/using-protobuf-to-make-jira-cloud-faster"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group p-4 bg-white/5 border border-white/5 rounded-lg hover:border-[#00ff9f]/40 transition-all"
+            >
+              <h5 className="font-cyber text-xs text-[#00ff9f] mb-2 group-hover:underline">Atlassian Engineering</h5>
+              <p className="text-[11px] text-slate-500 leading-relaxed">A detailed case study on how Jira improved p99 latency by 20% and reduced CPU usage by 75% using Protobuf.</p>
+            </a>
+          </div>
+        </CyberPanel>
+      </div>
     </div>
   </Section>
 );
@@ -1389,7 +1503,7 @@ const TypeSystem = () => {
   return (
     <Section id="types" className="py-24 px-4 sm:px-8 bg-slate-900/5 border-t border-white/5">
       <div className="max-w-7xl mx-auto">
-        <SectionTitle icon={Combine} subtitle="05_TYPE_REFERENCE">The Type System</SectionTitle>
+        <SectionTitle icon={Combine} subtitle="03_TYPE_REFERENCE">The Type System</SectionTitle>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           {groups.map(g => (
             <TypeGroup key={g.name} groupName={g.name} groupIcon={g.icon} types={g.types} />
@@ -1540,7 +1654,7 @@ const WireFormatBreakdown = () => {
 const SchemaDrivenAPIs = () => (
   <Section id="schema" className="py-24 px-4 sm:px-8 bg-slate-900/20 border-t border-white/5">
     <div className="max-w-7xl mx-auto">
-      <SectionTitle icon={FileCode} subtitle="06_ARCHITECTURE">Schema-Driven APIs</SectionTitle>
+      <SectionTitle icon={FileCode} subtitle="04_ARCHITECTURE">Schema-Driven APIs</SectionTitle>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
         <div className="space-y-6 text-slate-300">
           <h3 className="text-xl font-cyber font-bold text-white uppercase">The Source of Truth</h3>
@@ -1582,7 +1696,7 @@ const SchemaDrivenAPIs = () => (
 const AlternativesLandscape = () => (
   <Section id="alternatives" className="py-24 px-4 sm:px-8 bg-slate-900/10 border-t border-white/5">
     <div className="max-w-7xl mx-auto">
-      <SectionTitle icon={Layers} subtitle="09_COMPARISON">The Landscape of Alternatives</SectionTitle>
+      <SectionTitle icon={Layers} subtitle="11_COMPARISON">The Landscape of Alternatives</SectionTitle>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
         <div className="space-y-6">
@@ -1711,41 +1825,45 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
   return (
     <Section id="binary" className="py-24 px-4 sm:px-8 bg-slate-900/5 border-t border-white/5">
       <div className="max-w-7xl mx-auto">
-        <SectionTitle icon={Binary} subtitle="03_WIRE_FORMAT">Digging into the binary</SectionTitle>
+        <SectionTitle icon={Binary} subtitle="10_WIRE_FORMAT">Digging into the binary</SectionTitle>
 
         <WireFormatBreakdown />
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-24">
-          <div className="lg:col-span-4 space-y-6 leading-relaxed text-slate-300">
+        <div className="flex flex-col gap-12 mb-24">
+          <div className="space-y-6 leading-relaxed text-slate-300">
             <h3 className="text-2xl font-cyber font-bold text-white uppercase">Decoding the Stream</h3>
-            <div className="flex flex-wrap gap-2 mb-4">
-              {(Object.keys(SIZE_EXAMPLES) as Array<keyof typeof SIZE_EXAMPLES>).map((key) => (
-                <button
-                  key={key}
-                  onClick={() => handleExampleChange(key)}
-                  className={`px-3 py-1 text-xs font-mono border transition-all ${activeExample === key
-                      ? 'bg-[#00f3ff]/10 border-[#00f3ff] text-[#00f3ff]'
-                      : 'border-white/10 text-slate-500 hover:border-white/30'
-                    }`}
-                >
-                  {key}
-                </button>
-              ))}
-            </div>
-            <p>
-              Protobuf is a binary format. Unlike JSON which is a stream of characters, Protobuf is a stream of bytes where every bit has a job.
-            </p>
-            <div className="space-y-4 text-sm">
-              <p>
-                Each field starts with a <strong>Tag</strong> byte (or bytes) which contains the <strong>Field Number</strong> and the <strong>Wire Type</strong>.
-              </p>
-              <p>
-                This allows the decoder to skip fields it doesn't recognize, providing perfect backward and forward compatibility.
-              </p>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+              <div className="space-y-4">
+                <p>
+                  Protobuf is a binary format. Unlike JSON which is a stream of characters, Protobuf is a stream of bytes where every bit has a job.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {(Object.keys(SIZE_EXAMPLES) as Array<keyof typeof SIZE_EXAMPLES>).map((key) => (
+                    <button
+                      key={key}
+                      onClick={() => handleExampleChange(key)}
+                      className={`px-3 py-1 text-xs font-mono border transition-all ${activeExample === key
+                          ? 'bg-[#00f3ff]/10 border-[#00f3ff] text-[#00f3ff]'
+                          : 'border-white/10 text-slate-500 hover:border-white/30'
+                        }`}
+                    >
+                      {key}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="space-y-4 text-sm bg-white/5 p-4 rounded border border-white/10">
+                <p>
+                  Each field starts with a <strong>Tag</strong> byte (or bytes) which contains the <strong>Field Number</strong> and the <strong>Wire Type</strong>.
+                </p>
+                <p>
+                  This allows the decoder to skip fields it doesn't recognize, providing perfect backward and forward compatibility.
+                </p>
+              </div>
             </div>
           </div>
 
-          <div className="lg:col-span-8">
+          <div className="w-full">
             <CyberPanel 
               title="DYNAMIC_BINARY_HEX_STREAM"
               headerExtra={
@@ -1769,34 +1887,68 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
                   </button>
                 </div>
               }            >
-              <div className="flex flex-wrap gap-y-3 gap-x-0 font-mono text-xl md:text-2xl p-4 pr-2">
-                {stats.segments.map((b, i) => {
-                  const isPrevData = i > 0 && stats.segments[i - 1].type === 'data' && stats.segments[i - 1].fieldId === b.fieldId;
-                  const isNextData = i < stats.segments.length - 1 && stats.segments[i + 1].type === 'data' && stats.segments[i + 1].fieldId === b.fieldId;
-                  const isData = b.type === 'data';
+              <div className="grid grid-cols-1 md:grid-cols-5 min-h-[400px]">
+                <div className="md:col-span-3 p-4 border-b md:border-b-0 md:border-r border-white/5">
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">Wire Stream (Hex)</span>
+                    <div className="flex gap-2">
+                      <div className="flex items-center gap-1">
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#00f3ff]" />
+                        <span className="text-[9px] font-mono text-slate-500 uppercase">Tag</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#ff00ff]" />
+                        <span className="text-[9px] font-mono text-slate-500 uppercase">Len</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#00ff9f]" />
+                        <span className="text-[9px] font-mono text-slate-500 uppercase">Data</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap gap-y-3 gap-x-0 font-mono text-xl md:text-2xl">
+                    {stats.segments.map((b, i) => {
+                      const isPrevData = i > 0 && stats.segments[i - 1].type === 'data' && stats.segments[i - 1].fieldId === b.fieldId;
+                      const isNextData = i < stats.segments.length - 1 && stats.segments[i + 1].type === 'data' && stats.segments[i + 1].fieldId === b.fieldId;
+                      const isData = b.type === 'data';
 
-                  return (
-                    <motion.div
-                      key={i}
-                      onClick={() => setSelectedByte(selectedByte === i ? null : i)}
-                      className={`
-                        px-1 cursor-crosshair transition-all border
-                        ${b.type === 'tag' ? 'border-[#00f3ff]/30 text-[#00f3ff] hover:bg-[#00f3ff]/20 rounded' : ''}
-                        ${b.type === 'len' ? 'border-[#ff00ff]/30 text-[#ff00ff] hover:bg-[#ff00ff]/20 rounded' : ''}
-                        ${isData ? `border-[#00ff9f]/30 text-[#00ff9f] hover:bg-[#00ff9f]/20 
-                          ${isPrevData ? 'border-l-0 rounded-l-none' : 'rounded-l'} 
-                          ${isNextData ? 'border-r-0 rounded-r-none' : 'rounded-r'}
-                        ` : ''}
-                        ${selectedByte === i ? 'bg-[#00f3ff]/20 border-[#00f3ff] shadow-[0_0_15px_rgba(0,243,255,0.4)] z-10 scale-110' : 'hover:scale-105'}
-                      `}
-                    >
-                      {b.val}
-                    </motion.div>
-                  );
-                })}
+                      return (
+                        <motion.div
+                          key={i}
+                          onClick={() => setSelectedByte(selectedByte === i ? null : i)}
+                          className={`
+                            px-1 cursor-crosshair transition-all border
+                            ${b.type === 'tag' ? 'border-[#00f3ff]/30 text-[#00f3ff] hover:bg-[#00f3ff]/20 rounded' : ''}
+                            ${b.type === 'len' ? 'border-[#ff00ff]/30 text-[#ff00ff] hover:bg-[#ff00ff]/20 rounded' : ''}
+                            ${isData ? `border-[#00ff9f]/30 text-[#00ff9f] hover:bg-[#00ff9f]/20 
+                              ${isPrevData ? 'border-l-0 rounded-l-none' : 'rounded-l'} 
+                              ${isNextData ? 'border-r-0 rounded-r-none' : 'rounded-r'}
+                            ` : ''}
+                            ${selectedByte === i ? 'bg-[#00f3ff]/20 border-[#00f3ff] shadow-[0_0_15px_rgba(0,243,255,0.4)] z-10 scale-110' : 'hover:scale-105'}
+                          `}
+                        >
+                          {b.val}
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+                </div>
+                <div className="md:col-span-2 bg-black/20 flex flex-col border-t md:border-t-0 border-white/5">
+                  <div className="p-4 border-b border-white/5 flex items-center justify-between">
+                    <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">Message (JSON)</span>
+                    <span className="text-[9px] font-mono text-[#ff00ff]/60 uppercase italic">Editable Input</span>
+                  </div>
+                  <div className="flex-1 min-h-[300px]">
+                    <JsonEditor
+                      value={jsonInput}
+                      onChange={setJsonInput}
+                      className="h-full rounded-none border-none bg-transparent"
+                    />
+                  </div>
+                </div>
               </div>
 
-              <div className="mt-8 border-t border-white/5 pt-6 min-h-[220px]">
+              <div className="p-6 border-t border-white/5 min-h-[220px]">
                 <AnimatePresence mode="wait">
                   {currentSegment ? (
                     <motion.div key={safeSelectedByte} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="flex flex-col gap-8">
@@ -1901,59 +2053,6 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
     </Section>
   );
 };
-
-const CompilationSection = () => (
-  <Section id="compile" className="py-24 px-4 sm:px-8 bg-slate-900/10 border-t border-white/5">
-    <div className="max-w-7xl mx-auto">
-      <SectionTitle icon={Code2} subtitle="07_PIPELINE">Compile</SectionTitle>
-      <div className="flex flex-col items-center">
-        <div className="flex flex-col md:flex-row items-center gap-8 w-full justify-between max-w-5xl">
-          <CyberPanel title="SOURCE" className="w-full md:w-64 text-center">
-            <FileCode className="w-12 h-12 text-[#00ff9f] mx-auto mb-4" />
-            <span className="font-cyber text-sm">SCHEMA.PROTO</span>
-          </CyberPanel>
-          <div className="flex flex-col items-center gap-2">
-            <ArrowRight className="w-8 h-8 text-[#00f3ff] rotate-90 md:rotate-0" />
-            <span className="text-xs font-mono text-slate-500 uppercase"><ExternalLinkText href="https://github.com/protocolbuffers/protobuf/releases">protoc</ExternalLinkText> / <ExternalLinkText href="https://buf.build/">Buf</ExternalLinkText></span>
-          </div>
-          <CyberPanel title="COMPILER" className="w-full md:w-64 text-center border-[#00f3ff] shadow-[0_0_15px_rgba(0,243,255,0.2)]">
-            <Cpu className="w-12 h-12 text-[#00f3ff] mx-auto mb-4 animate-pulse" />
-            <span className="font-cyber text-sm text-[#00f3ff]">CODE_GENERATION</span>
-          </CyberPanel>
-          <div className="flex flex-col items-center gap-2">
-            <ArrowRight className="w-8 h-8 text-[#ff00ff] rotate-90 md:rotate-0" />
-            <span className="text-xs font-mono text-slate-500 uppercase">TARGETS</span>
-          </div>
-          <div className="flex flex-col gap-4">
-            <div className="grid grid-cols-2 gap-4 w-full md:w-auto">
-              <CyberPanel className="text-center p-3 text-xs">C++</CyberPanel>
-              <CyberPanel className="text-center p-3 text-xs">Java</CyberPanel>
-              <CyberPanel className="text-center p-3 text-xs">Go</CyberPanel>
-              <CyberPanel className="text-center p-3 text-xs">Ruby</CyberPanel>
-              <CyberPanel className="text-center p-3 text-xs">C#</CyberPanel>
-              <CyberPanel className="text-center p-3 text-xs">Python</CyberPanel>
-            </div>
-            <div className="p-3 bg-[#00ff9f]/5 border border-[#00ff9f]/20 rounded text-center">
-              <span className="text-[10px] font-mono text-[#00ff9f] uppercase block mb-1">Plus Community Tools</span>
-              <div className="flex flex-col gap-1">
-                <ExternalLinkText href="https://github.com/sudorandom/protoc-gen-connect-openapi"><span className="text-xs">OpenAPI</span></ExternalLinkText>
-                <ExternalLinkText href="https://github.com/protocolbuffers/protobuf/blob/main/docs/third_party.md"><span className="text-xs italic">And Many, Many More...</span></ExternalLinkText>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="mt-12 max-w-3xl text-center text-slate-400 space-y-4">
-          <p>
-            Compilation translates your language-neutral schema into high-performance source code for your specific language. This generated code handles all the complexity of bit-packing and validation.
-          </p>
-          <p className="text-sm">
-            See the full list of <ExternalLinkText href="https://github.com/protocolbuffers/protobuf/blob/main/docs/third_party.md">Officially and Third-Party Supported Languages</ExternalLinkText>.
-          </p>
-        </div>
-      </div>
-    </div>
-  </Section>
-);
 
 const VALIDATION_EXAMPLES = {
   VALID: {
@@ -2138,7 +2237,7 @@ const ValidationLab = ({ messageSchema, fds, protoSource, setProtoSource }: {
   return (
     <Section id="validation" className="py-24 px-4 sm:px-8 bg-slate-900/10 border-t border-white/5">
       <div className="max-w-7xl mx-auto">
-        <SectionTitle icon={ShieldCheck} subtitle="04_PROTOVALIDATE">Data Validation</SectionTitle>
+        <SectionTitle icon={ShieldCheck} subtitle="08_PROTOVALIDATE">Data Validation</SectionTitle>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
           <div className="space-y-6">
@@ -2262,7 +2361,7 @@ const ValidationLab = ({ messageSchema, fds, protoSource, setProtoSource }: {
 const EcosystemNextSteps = () => (
   <Section id="ecosystem" className="py-24 px-4 sm:px-8 bg-slate-900/30 border-t border-white/5">
     <div className="max-w-7xl mx-auto">
-      <SectionTitle icon={Combine} subtitle="10_NEXT_STEPS">Ecosystem & Next Steps</SectionTitle>
+      <SectionTitle icon={Combine} subtitle="12_NEXT_STEPS">Ecosystem & Next Steps</SectionTitle>
       
       <div className="mb-12 text-slate-400 max-w-3xl leading-relaxed">
         <p>
@@ -2319,7 +2418,7 @@ const EcosystemNextSteps = () => (
 const References = () => (
   <Section id="references" className="py-24 px-4 sm:px-8 bg-black border-t border-white/5">
     <div className="max-w-7xl mx-auto text-slate-400">
-      <SectionTitle icon={BookOpen} subtitle="08_BIBLIOGRAPHY">References & Specs</SectionTitle>
+      <SectionTitle icon={BookOpen} subtitle="13_BIBLIOGRAPHY">References & Specs</SectionTitle>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <div className="space-y-4">
           <h4 className="text-[#00f3ff] font-cyber text-sm tracking-widest uppercase">Core Specifications</h4>
@@ -2356,15 +2455,14 @@ const NAV_ITEMS = [
   { id: 'hero', label: 'HOME' },
   { id: 'intro', label: 'INTRO' },
   { id: 'basics', label: 'BASICS' },
-  { id: 'deepdive', label: 'DEEP DIVE' },
+  { id: 'types', label: 'TYPES' },
+  { id: 'schema', label: 'SCHEMA' },
   { id: 'advanced', label: 'ADVANCED' },
   { id: 'reflection', label: 'REFLECTION' },
-  { id: 'compile', label: 'COMPILE' },
-  { id: 'schema', label: 'SCHEMA' },
-  { id: 'types', label: 'TYPES' },
+  { id: 'deepdive', label: 'DEEP DIVE' },
+  { id: 'validation', label: 'VALIDATION' },
   { id: 'efficiency', label: 'EFFICIENCY' },
   { id: 'binary', label: 'BINARY' },
-  { id: 'validation', label: 'VALIDATION' },
   { id: 'alternatives', label: 'ALTERNATIVES' },
   { id: 'ecosystem', label: 'ECOSYSTEM' },
   { id: 'references', label: 'REFERENCES' }
@@ -2374,16 +2472,15 @@ const SECTION_LABELS: Record<string, string> = {
   hero: 'Welcome',
   intro: 'Introduction',
   basics: 'Protobuf Basics',
-  deepdive: 'Schema Engineering',
+  types: 'The Type System',
+  schema: 'Schema-Driven APIs',
   advanced: 'Advanced Protobuf',
   reflection: 'Descriptors & Reflection',
-  compile: 'Compilation',
-  schema: 'Schema-Driven APIs',
-  types: 'The Type System',
+  deepdive: 'Schema Engineering',
+  validation: 'Data Validation',
   efficiency: 'Efficiency',
   insights: 'Size vs. Compression',
   binary: 'Binary Format',
-  validation: 'Data Validation',
   alternatives: 'Alternatives',
   ecosystem: 'Ecosystem',
   references: 'References'
@@ -2560,12 +2657,17 @@ function App() {
           fds={fds}
         />
         <ProtobufBasics />
-        <DeepDiveSection />
+        <TypeSystem />
+        <SchemaDrivenAPIs />
         <AdvancedProtobuf />
         <DescriptorsAndReflection />
-        <CompilationSection />
-        <SchemaDrivenAPIs />
-        <TypeSystem />
+        <DeepDiveSection />
+        <ValidationLab
+          messageSchema={messageSchema}
+          fds={fds}
+          protoSource={protoSource}
+          setProtoSource={setProtoSource}
+        />
         <SizeComparison 
           messageSchema={messageSchema} 
           fileDescriptorSet={fds} 
@@ -2573,12 +2675,6 @@ function App() {
         <PayloadSizeInsights />
         <BinaryMatrix 
           messageSchema={messageSchema} 
-        />
-        <ValidationLab
-          messageSchema={messageSchema}
-          fds={fds}
-          protoSource={protoSource}
-          setProtoSource={setProtoSource}
         />
         <AlternativesLandscape />
         <EcosystemNextSteps />
