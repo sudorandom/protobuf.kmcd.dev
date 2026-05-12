@@ -912,12 +912,13 @@ const VersionTimeline = () => {
 
         <div className="space-y-12 md:space-y-0">
           {versions.map((v, i) => (
-            <div key={v.id} className={`relative flex flex-col md:flex-row items-center gap-8 ${i % 2 === 1 ? 'md:flex-row-reverse' : ''}`}>
+            <div key={v.id} className={`relative flex flex-col md:flex-row items-center gap-8 md:gap-0 ${i % 2 === 1 ? 'md:flex-row-reverse' : ''}`}>
               {/* Dot */}
-              <div className="absolute left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-slate-900 border-2 hidden md:block z-10" style={{ borderColor: v.color }} />
+              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-slate-900 border-2 hidden md:block z-10" style={{ borderColor: v.color }} />
 
-              <div className="w-full md:w-1/2 flex flex-col items-center md:items-stretch">
-                <div className={`p-6 bg-white/5 border border-white/10 rounded-xl hover:border-white/20 transition-all w-full max-w-md ${i % 2 === 1 ? 'md:ml-auto' : 'md:mr-auto'}`}>
+              <div className="w-full md:w-1/2 flex flex-col items-center md:flex-row md:items-center">
+                {i % 2 === 1 && <div className="h-px flex-grow bg-white/10 hidden md:block" style={{ background: `linear-gradient(to right, transparent, ${v.color}40)` }} />}
+                <div className={`p-6 bg-white/5 border border-white/10 rounded-xl hover:border-white/20 transition-all w-full max-w-md shrink-0`}>
                   <div className="flex items-center gap-3 mb-2 text-left">
                     <span className="text-[10px] font-mono opacity-50">{v.date}</span>
                     <span className="px-2 py-0.5 rounded text-[10px] font-cyber font-bold tracking-widest uppercase" style={{ backgroundColor: `${v.color}20`, color: v.color }}>{v.label}</span>
@@ -932,6 +933,7 @@ const VersionTimeline = () => {
                     ))}
                   </ul>
                 </div>
+                {i % 2 === 0 && <div className="h-px flex-grow bg-white/10 hidden md:block" style={{ background: `linear-gradient(to left, transparent, ${v.color}40)` }} />}
               </div>
               <div className="hidden md:block md:w-1/2" />
             </div>
