@@ -1836,20 +1836,6 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
                 <p>
                   Protobuf is a binary format. Unlike JSON which is a stream of characters, Protobuf is a stream of bytes where every bit has a job.
                 </p>
-                <div className="flex flex-wrap gap-2">
-                  {(Object.keys(SIZE_EXAMPLES) as Array<keyof typeof SIZE_EXAMPLES>).map((key) => (
-                    <button
-                      key={key}
-                      onClick={() => handleExampleChange(key)}
-                      className={`px-3 py-1 text-xs font-mono border transition-all ${activeExample === key
-                        ? 'bg-[#00f3ff]/10 border-[#00f3ff] text-[#00f3ff]'
-                        : 'border-white/10 text-slate-500 hover:border-white/30'
-                        }`}
-                    >
-                      {key}
-                    </button>
-                  ))}
-                </div>
               </div>
               <div className="space-y-4 text-sm bg-white/5 p-4 rounded border border-white/10">
                 <p>
@@ -1866,30 +1852,49 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
             <CyberPanel
               title="DYNAMIC_BINARY_HEX_STREAM"
               headerExtra={
-                <div className="flex items-center gap-1 sm:gap-2">
-                  <button
-                    onClick={goToPrev}
-                    disabled={selectedByte === 0 || selectedByte === null}
-                    className="p-1 hover:bg-white/10 rounded disabled:opacity-20"
-                  >
-                    <ChevronLeft className="w-3 h-3 text-[#00f3ff]" />
-                  </button>
-                  <span className="text-[10px] font-mono text-slate-500 min-w-[50px] sm:min-w-[60px] text-center">
-                    {selectedByte !== null ? `${selectedByte + 1} / ${stats.segments.length}` : '-- / --'}
-                  </span>
-                  <button
-                    onClick={goToNext}
-                    disabled={selectedByte === stats.segments.length - 1 || selectedByte === null}
-                    className="p-1 hover:bg-white/10 rounded disabled:opacity-20"
-                  >
-                    <ChevronRight className="w-3 h-3 text-[#00f3ff]" />
-                  </button>
+                <div className="flex flex-wrap gap-2">
+                  {(Object.keys(SIZE_EXAMPLES) as Array<keyof typeof SIZE_EXAMPLES>).map((key) => (
+                    <button
+                      key={key}
+                      onClick={() => handleExampleChange(key)}
+                      className={`px-3 py-1 text-[10px] font-mono border transition-all ${activeExample === key
+                        ? 'bg-[#00f3ff]/10 border-[#00f3ff] text-[#00f3ff]'
+                        : 'border-white/10 text-slate-500 hover:border-white/30'
+                        }`}
+                    >
+                      {key}
+                    </button>
+                  ))}
                 </div>
-              }            >
+              }
+            >
               <div className="grid grid-cols-1 md:grid-cols-5 min-h-[400px]">
                 <div className="md:col-span-3 p-4 border-b md:border-b-0 md:border-r border-white/5">
                   <div className="flex items-center justify-between mb-4">
-                    <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">Wire Stream (Hex)</span>
+                    <div className="flex items-center gap-3">
+                      <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">Wire Stream</span>
+                      <div className="flex items-center gap-1 bg-white/5 rounded px-1.5 py-0.5 border border-white/5">
+                        <button
+                          onClick={goToPrev}
+                          disabled={selectedByte === 0 || (selectedByte === null && stats.segments.length === 0)}
+                          className="p-1 hover:bg-white/10 rounded disabled:opacity-20 transition-colors"
+                          aria-label="Previous byte"
+                        >
+                          <ChevronLeft className="w-3 h-3 text-[#00f3ff]" />
+                        </button>
+                        <span className="text-[10px] font-mono text-[#00f3ff] min-w-[55px] text-center">
+                          {selectedByte !== null ? `BYTE ${selectedByte + 1}` : 'SELECT BYTE'}
+                        </span>
+                        <button
+                          onClick={goToNext}
+                          disabled={selectedByte === stats.segments.length - 1 || (selectedByte === null && stats.segments.length === 0)}
+                          className="p-1 hover:bg-white/10 rounded disabled:opacity-20 transition-colors"
+                          aria-label="Next byte"
+                        >
+                          <ChevronRight className="w-3 h-3 text-[#00f3ff]" />
+                        </button>
+                      </div>
+                    </div>
                     <div className="flex gap-2">
                       <div className="flex items-center gap-1">
                         <div className="w-1.5 h-1.5 rounded-full bg-[#00f3ff]" />
