@@ -28,6 +28,7 @@ import {
   AlignLeft,
   MousePointer2,
   HelpCircle,
+  Info,
   GitBranch,
   Package,
   Settings,
@@ -35,6 +36,21 @@ import {
   X,
   Link as LinkIcon
 } from 'lucide-react';
+
+const TechnicalNuance = ({ children, title = "TECHNICAL_NUANCE" }: { children: React.ReactNode, title?: string }) => (
+  <div className="bg-[#00f3ff]/10 border border-[#00f3ff]/30 rounded-lg p-4 flex gap-4 items-start animate-in fade-in slide-in-from-top-1">
+    <div className="p-2 bg-[#00f3ff]/20 rounded-md">
+       <Info className="w-5 h-5 text-[#00f3ff]" />
+    </div>
+    <div className="space-y-1">
+      <span className="text-[10px] font-mono text-[#00f3ff] uppercase tracking-[0.2em] font-bold">{title}</span>
+      <div className="text-sm text-slate-300 leading-relaxed">
+        {children}
+      </div>
+    </div>
+  </div>
+);
+
 import { fromJson, toJsonString, toBinary, type Registry, type DescMessage } from '@bufbuild/protobuf';
 import { createValidator, type Violation } from '@bufbuild/protovalidate';
 import VarintExplainer from './components/VarintExplainer';
@@ -403,17 +419,17 @@ const ProtobufBasics = () => {
       desc: (
         <div className="space-y-4">
           <p>
-            A major gotcha in Protobuf: default zero-values (like <code>0</code> for integers, <code>false</code> for booleans, or <code>""</code> for strings) are <strong>not serialized</strong> over the wire by default.
+            <strong>The Zero Value Trap:</strong> In <code>proto3</code>, default scalar values (like <code>0</code>, <code>false</code>, or <code>""</code>) are <strong>not serialized</strong>.
+          </p>
+          <p className="text-[#ff00ff] bg-[#ff00ff]/5 p-3 border border-[#ff00ff]/20 rounded text-xs italic">
+            This creates a pitfall: the receiver cannot distinguish between a field explicitly "set to zero" (e.g., 0 degrees temperature) and one that was never sent.
           </p>
           <p>
-            This saves immense space, but it means the receiver cannot distinguish between a field being explicitly "set to zero" and "not set at all".
-          </p>
-          <p>
-            Use the <code>optional</code> keyword if your application needs to explicitly track whether a field was populated (known as tracking "Field Presence").
+            Use the <code>optional</code> keyword to track explicit presence, or migrate to <strong>Protobuf Editions</strong> to globally enforce <code>EXPLICIT</code> presence.
           </p>
         </div>
       ),
-      example: 'message Profile {\n  // 0 is not sent over the wire\n  int32 views = 1;\n  \n  // Tracks if the user explicitly set this to 0\n  // or didn\'t set it at all\n  optional int32 age = 2;\n}'
+      example: 'edition = "2023";\n\nmessage Profile {\n  // Implicit presence (Zero Value Trap)\n  int32 views = 1;\n  \n  // Explicit presence via feature\n  string name = 2 [features.field_presence = EXPLICIT];\n}'
     }
   ];
 
@@ -485,7 +501,7 @@ const DeepDiveSection = () => {
           </ul>
         </div>
       ),
-      example: 'syntax = "proto3";\n\n// File-level option\noption go_package = "github.com/example/v1";\n\nmessage User {\n  // Field-level options\n  string user_id = 1 [json_name = "uid"];\n  string old_field = 2 [deprecated = true];\n}'
+      example: 'edition = "2023";\n\n// File-level option\noption go_package = "github.com/example/v1";\n\nmessage User {\n  // Field-level options\n  string user_id = 1 [json_name = "uid"];\n  string old_field = 2 [deprecated = true];\n}'
     },
     {
       id: 'annotations',
@@ -506,7 +522,7 @@ const DeepDiveSection = () => {
           </div>
         </div>
       ),
-      example: '// options.proto (Must be proto2 to define)\nsyntax = "proto2";\nimport "google/protobuf/descriptor.proto";\n\nextend google.protobuf.FieldOptions {\n  optional bool is_pii = 50001;\n}\n\n// user.proto (Can be proto3 or Editions)\nsyntax = "proto3";\nimport "options.proto";\n\nmessage User {\n  string ssn = 1 [(is_pii) = true];\n}'
+      example: '// options.proto (Must be proto2 to define)\nsyntax = "proto2";\nimport "google/protobuf/descriptor.proto";\n\nextend google.protobuf.FieldOptions {\n  optional bool is_pii = 50001;\n}\n\n// user.proto (Modern Edition)\nedition = "2023";\nimport "options.proto";\n\nmessage User {\n  string ssn = 1 [(is_pii) = true];\n}'
     },
     {
       id: 'breaking',
@@ -610,7 +626,7 @@ const AdvancedProtobuf = () => {
           </p>
         </div>
       ),
-      example: 'syntax = "proto3";\n\n// Import another file\nimport "google/protobuf/timestamp.proto";\nimport "myproject/common.proto";\n\nmessage Event {\n  google.protobuf.Timestamp time = 1;\n  myproject.Status status = 2;\n}'
+      example: 'edition = "2023";\n\n// Import another file\nimport "google/protobuf/timestamp.proto";\nimport "myproject/common.proto";\n\nmessage Event {\n  google.protobuf.Timestamp time = 1;\n  myproject.Status status = 2;\n}'
     },
     {
       id: 'wkt',
@@ -840,6 +856,92 @@ const DescriptorsAndReflection = () => (
   </Section>
 );
 
+const VersionTimeline = () => {
+  const versions = [
+    {
+      id: 'proto2',
+      date: 'JULY 2008',
+      label: 'Proto2',
+      title: 'The Public Debut',
+      features: [
+        'Introduced optional, required, and repeated keywords.',
+        'Explicit presence tracking via has_field() methods.',
+        'Support for custom default values in schema.',
+        'Introduced Extensions for schema extensibility.'
+      ],
+      color: '#ff00ff'
+    },
+    {
+      id: 'proto3',
+      date: 'JULY 2016',
+      label: 'Proto3',
+      title: 'The Simplified Standard',
+      features: [
+        'Removed required fields to improve backward compatibility.',
+        'Introduced Implicit Presence (The Zero Value Trap).',
+        'Added canonical JSON mapping support.',
+        'Preserved unknown enum values (Open Enums).'
+      ],
+      color: '#00f3ff'
+    },
+    {
+      id: 'editions',
+      date: 'MAY 2024',
+      label: 'Editions',
+      title: 'The Unified Future',
+      features: [
+        'Replaces syntax = "proto3" with edition = "2023".',
+        'Unifies Proto2 and Proto3 into a single syntax.',
+        'Reverts default to EXPLICIT presence (lexical features).',
+        'individual feature flags replace sweeping syntax rules.'
+      ],
+      color: '#00ff9f'
+    }
+  ];
+
+  return (
+    <div className="mt-24 space-y-12">
+      <div className="flex flex-col items-center">
+        <h3 className="text-2xl font-cyber font-bold text-white uppercase tracking-tight mb-2">The Evolution of Protobuf</h3>
+        <p className="text-slate-400 text-center max-w-2xl">From internal tool to a multi-edition global standard.</p>
+      </div>
+
+      <div className="relative">
+        {/* Vertical Line */}
+        <div className="absolute left-1/2 top-0 bottom-0 w-px bg-white/10 hidden md:block" />
+
+        <div className="space-y-12 md:space-y-0">
+          {versions.map((v, i) => (
+            <div key={v.id} className={`relative flex flex-col md:flex-row items-center gap-8 ${i % 2 === 1 ? 'md:flex-row-reverse' : ''}`}>
+              {/* Dot */}
+              <div className="absolute left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-slate-900 border-2 hidden md:block z-10" style={{ borderColor: v.color }} />
+
+              <div className="w-full md:w-1/2 flex flex-col items-center md:items-stretch">
+                <div className={`p-6 bg-white/5 border border-white/10 rounded-xl hover:border-white/20 transition-all w-full max-w-md ${i % 2 === 1 ? 'md:ml-auto' : 'md:mr-auto'}`}>
+                  <div className="flex items-center gap-3 mb-2 text-left">
+                    <span className="text-[10px] font-mono opacity-50">{v.date}</span>
+                    <span className="px-2 py-0.5 rounded text-[10px] font-cyber font-bold tracking-widest uppercase" style={{ backgroundColor: `${v.color}20`, color: v.color }}>{v.label}</span>
+                  </div>
+                  <h4 className="text-lg font-cyber font-bold text-white mb-4 uppercase text-left">{v.title}</h4>
+                  <ul className="space-y-2 text-xs text-slate-400 leading-relaxed">
+                    {v.features.map(f => (
+                      <li key={f} className="flex gap-2 items-start text-left">
+                        <ChevronRight className="w-3 h-3 mt-1 shrink-0" style={{ color: v.color }} />
+                        <span className="flex-1">{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              <div className="hidden md:block md:w-1/2" />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Introduction = ({ messageSchema, fds }: {
   messageSchema: DescMessage | null,
   fds: Uint8Array | null
@@ -891,7 +993,7 @@ const Introduction = ({ messageSchema, fds }: {
       icon: FileCode,
       title: 'The Schema (.proto)',
       desc: 'The source of truth. Defines the structure using the Interface Definition Language (IDL).',
-      code: INITIAL_PROTO.split('\n').filter(l => !l.includes('import') && !l.includes('package') && !l.includes('syntax')).join('\n').trim(),
+      code: INITIAL_PROTO.split('\n').filter(l => !l.includes('import') && !l.includes('package') && !l.includes('syntax') && !l.includes('edition')).join('\n').trim(),
       language: 'proto' as const
     },
     {
@@ -908,7 +1010,16 @@ const Introduction = ({ messageSchema, fds }: {
       label: 'ProtoJSON',
       icon: Braces,
       title: 'ProtoJSON Mapping',
-      desc: <>A standardized <ExternalLinkText href="https://protobuf.dev/programming-guides/proto3/#json">JSON mapping</ExternalLinkText>. Every binary payload has a deterministic JSON representation.</>,
+      desc: (
+        <div className="space-y-4">
+          <p>
+            A standardized <ExternalLinkText href="https://protobuf.dev/programming-guides/proto3/#json">JSON mapping</ExternalLinkText>. Every binary payload has a deterministic JSON representation.
+          </p>
+          <TechnicalNuance title="JSON_PRECISION_TRAP">
+            To prevent precision loss in JavaScript (which uses 64-bit floats for all numbers), the ProtoJSON standard requires that <strong>int64</strong> and <strong>uint64</strong> fields be encoded as <strong>strings</strong>.
+          </TechnicalNuance>
+        </div>
+      ),
       code: dynamicExamples?.json || '{\n  "id": "550e8400-e2...",\n  "name": "Hiro Protagonist",\n  "age": 24\n}',
       language: 'json' as const
     },
@@ -1467,7 +1578,12 @@ const TypeSystem = () => {
         { name: "sint32 / sint64", desc: <>Signed integers. More efficient for negative numbers via <ExternalLinkText href="https://en.wikipedia.org/wiki/Variable-length_quantity#Zigzag_encoding">ZigZag</ExternalLinkText>.</> },
         { name: "fixed32 / fixed64", desc: "Always 4/8 bytes. Efficient for large constants (> 2^28)." },
         { name: "float / double", desc: <>32-bit and 64-bit <ExternalLinkText href="https://en.wikipedia.org/wiki/IEEE_754">IEEE 754</ExternalLinkText> floating point numbers.</> },
-      ]
+      ],
+      footer: (
+        <TechnicalNuance title="JSON_64BIT_MAPPING">
+          JavaScript cannot natively represent 64-bit integers with full precision. Consequently, the ProtoJSON standard specifies that <code>int64</code>, <code>uint64</code>, <code>fixed64</code>, and <code>sfixed64</code> are always encoded as <strong>strings</strong>.
+        </TechnicalNuance>
+      )
     },
     {
       name: "Object Types",
@@ -1481,7 +1597,7 @@ const TypeSystem = () => {
     }
   ];
 
-  const TypeGroup = ({ groupName, groupIcon: Icon, types }: { groupName: string, groupIcon: React.ElementType, types: { name: string, desc: React.ReactNode }[] }) => (
+  const TypeGroup = ({ groupName, groupIcon: Icon, types, footer }: { groupName: string, groupIcon: React.ElementType, types: { name: string, desc: React.ReactNode }[], footer?: React.ReactNode }) => (
     <div className="space-y-4">
       <div className="flex items-center gap-2 text-[#00f3ff]">
         <Icon className="w-4 h-4" />
@@ -1497,6 +1613,7 @@ const TypeSystem = () => {
           </div>
         ))}
       </div>
+      {footer && <div className="mt-4">{footer}</div>}
     </div>
   );
 
@@ -1506,7 +1623,7 @@ const TypeSystem = () => {
         <SectionTitle icon={Combine} subtitle="03_TYPE_REFERENCE">The Type System</SectionTitle>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           {groups.map(g => (
-            <TypeGroup key={g.name} groupName={g.name} groupIcon={g.icon} types={g.types} />
+            <TypeGroup key={g.name} groupName={g.name} groupIcon={g.icon} types={g.types} footer={(g as any).footer} />
           ))}
         </div>
       </div>
@@ -1695,7 +1812,7 @@ const SchemaDrivenAPIs = () => (
 const AlternativesLandscape = () => (
   <Section id="alternatives" className="py-24 px-4 sm:px-8 bg-slate-900/10 border-t border-white/5">
     <div className="max-w-7xl mx-auto">
-      <SectionTitle icon={Layers} subtitle="11_COMPARISON">The Landscape of Alternatives</SectionTitle>
+      <SectionTitle icon={Layers} subtitle="12_COMPARISON">The Landscape of Alternatives</SectionTitle>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
         <div className="space-y-6">
@@ -1824,7 +1941,7 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
   return (
     <Section id="binary" className="py-24 px-4 sm:px-8 bg-slate-900/5 border-t border-white/5">
       <div className="max-w-7xl mx-auto">
-        <SectionTitle icon={Binary} subtitle="10_WIRE_FORMAT">Digging into the binary</SectionTitle>
+        <SectionTitle icon={Binary} subtitle="11_WIRE_FORMAT">Digging into the binary</SectionTitle>
 
         <WireFormatBreakdown />
 
@@ -2365,7 +2482,7 @@ const ValidationLab = ({ messageSchema, fds, protoSource, setProtoSource }: {
 const EcosystemNextSteps = () => (
   <Section id="ecosystem" className="py-24 px-4 sm:px-8 bg-slate-900/30 border-t border-white/5">
     <div className="max-w-7xl mx-auto">
-      <SectionTitle icon={Combine} subtitle="12_NEXT_STEPS">Ecosystem & Next Steps</SectionTitle>
+      <SectionTitle icon={Combine} subtitle="13_NEXT_STEPS">Ecosystem & Next Steps</SectionTitle>
 
       <div className="mb-12 text-slate-400 max-w-3xl leading-relaxed">
         <p>
@@ -2422,7 +2539,7 @@ const EcosystemNextSteps = () => (
 const References = () => (
   <Section id="references" className="py-24 px-4 sm:px-8 bg-black border-t border-white/5">
     <div className="max-w-7xl mx-auto text-slate-400">
-      <SectionTitle icon={BookOpen} subtitle="13_BIBLIOGRAPHY">References & Specs</SectionTitle>
+      <SectionTitle icon={BookOpen} subtitle="14_BIBLIOGRAPHY">References & Specs</SectionTitle>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <div className="space-y-4">
           <h4 className="text-[#00f3ff] font-cyber text-sm tracking-widest uppercase">Core Specifications</h4>
@@ -2453,7 +2570,7 @@ const References = () => (
   </Section>
 );
 
-const INITIAL_PROTO = `syntax = "proto3";\n\npackage demo.v1;\n\nimport "buf/validate/validate.proto";\n\nmessage User {\n  string id = 1 [(buf.validate.field).string.uuid = true];\n  string name = 2 [(buf.validate.field).string.min_len = 1];\n  string email = 3 [(buf.validate.field).string.email = true];\n  \n  // Numeric data for efficiency demo\n  uint32 age = 4 [(buf.validate.field).uint32.lt = 150];\n  float height_cm = 5 [(buf.validate.field).float = {gte: 0, lte: 500}];\n  double weight_kg = 6 [(buf.validate.field).double = {gte: 0, lte: 2000}];\n  \n  Role role = 7;\n  Date birth_date = 8;\n  User manager = 9;\n\n  enum Role {\n    ROLE_UNSPECIFIED = 0;\n    ROLE_USER = 1;\n    ROLE_ADMIN = 2;\n  }\n}\n\nmessage Date {\n  int32 year = 1 [(buf.validate.field).int32 = {gte: 1900, lte: 2100}];\n  int32 month = 2 [(buf.validate.field).int32 = {gte: 1, lte: 12}];\n  int32 day = 3 [(buf.validate.field).int32 = {gte: 1, lte: 31}];\n}`;
+const INITIAL_PROTO = `edition = "2023";\n\npackage demo.v1;\n\nimport "buf/validate/validate.proto";\n\nmessage User {\n  string id = 1 [(buf.validate.field).string.uuid = true];\n  string name = 2 [(buf.validate.field).string.min_len = 1];\n  string email = 3 [(buf.validate.field).string.email = true];\n  \n  // Numeric data for efficiency demo\n  uint32 age = 4 [(buf.validate.field).uint32.lt = 150];\n  float height_cm = 5 [(buf.validate.field).float = {gte: 0, lte: 500}];\n  double weight_kg = 6 [(buf.validate.field).double = {gte: 0, lte: 2000}];\n  \n  Role role = 7;\n  Date birth_date = 8;\n  User manager = 9;\n\n  enum Role {\n    ROLE_UNSPECIFIED = 0;\n    ROLE_USER = 1;\n    ROLE_ADMIN = 2;\n  }\n}\n\nmessage Date {\n  int32 year = 1 [(buf.validate.field).int32 = {gte: 1900, lte: 2100}];\n  int32 month = 2 [(buf.validate.field).int32 = {gte: 1, lte: 12}];\n  int32 day = 3 [(buf.validate.field).int32 = {gte: 1, lte: 31}];\n}`;
 
 const NAV_ITEMS = [
   { id: 'hero', label: 'HOME' },
@@ -2466,6 +2583,7 @@ const NAV_ITEMS = [
   { id: 'deepdive', label: 'DEEP DIVE' },
   { id: 'validation', label: 'VALIDATION' },
   { id: 'efficiency', label: 'EFFICIENCY' },
+  { id: 'history', label: 'HISTORY' },
   { id: 'binary', label: 'BINARY' },
   { id: 'alternatives', label: 'ALTERNATIVES' },
   { id: 'ecosystem', label: 'ECOSYSTEM' },
@@ -2484,6 +2602,7 @@ const SECTION_LABELS: Record<string, string> = {
   validation: 'Data Validation',
   efficiency: 'Efficiency',
   insights: 'Size vs. Compression',
+  history: 'Protobuf History',
   binary: 'Binary Format',
   alternatives: 'Alternatives',
   ecosystem: 'Ecosystem',
@@ -2677,6 +2796,12 @@ function App() {
           fileDescriptorSet={fds}
         />
         <PayloadSizeInsights />
+        <Section id="history" className="py-24 px-4 sm:px-8 bg-slate-900/10 border-t border-white/5">
+          <div className="max-w-7xl mx-auto">
+            <SectionTitle icon={GitBranch} subtitle="10_EVOLUTION">Protobuf History</SectionTitle>
+            <VersionTimeline />
+          </div>
+        </Section>
         <BinaryMatrix
           messageSchema={messageSchema}
         />
