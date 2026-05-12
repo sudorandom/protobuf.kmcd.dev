@@ -118,28 +118,34 @@ const VarintExplainer = () => {
             {bitGroups.map((group, i) => {
               const targetByte = varintBytes[i];
               const targetBinary = targetByte !== undefined ? targetByte.toString(2).padStart(8, '0') : '00000000';
-              
+
               return (
-                <div key={i} className="grid grid-cols-[1fr_auto_1fr] items-center gap-4 group/bitgroup">
+                <div key={i} className="flex flex-col sm:grid sm:grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-4 group/bitgroup border-b border-white/5 pb-6 sm:pb-0 sm:border-0 last:border-0">
+                  {/* Source Header (Mobile only) */}
+                  <div className="sm:hidden text-[9px] font-mono text-slate-500 uppercase self-start">Original 7-Bit Chunk</div>
+
                   {/* Left Column: Source */}
-                  <div className="flex flex-col items-end gap-1">
+                  <div className="flex flex-col items-center sm:items-end gap-1 w-full sm:w-auto">
                     <div className="flex items-center gap-3">
                       <div className="p-2 border border-dashed border-white/20 rounded font-mono text-lg text-slate-400 group-hover/bitgroup:border-cyan-500/50 group-hover/bitgroup:text-cyan-200 transition-colors">
                         {group}
                       </div>
                     </div>
-                    <span className="text-[9px] font-mono text-slate-600 uppercase">Group {i}</span>
+                    <span className="hidden sm:inline text-[9px] font-mono text-slate-600 uppercase">Group {i}</span>
                   </div>
 
-                  {/* Middle: Horizontal Connector */}
-                  <div className="flex items-center gap-1">
-                    <div className="h-px w-8 sm:w-16 bg-gradient-to-r from-cyan-500/40 to-[#ff00ff]/40 relative">
-                       <div className="absolute top-1/2 left-full -translate-y-1/2 -ml-[1px] w-1.5 h-1.5 border-t border-r border-[#ff00ff]/40 rotate-45"></div>
+                  {/* Middle: Connector */}
+                  <div className="flex flex-col sm:flex-row items-center gap-1">
+                    <div className="h-4 w-px sm:h-px sm:w-16 bg-gradient-to-b sm:bg-gradient-to-r from-cyan-500/40 to-[#ff00ff]/40 relative">
+                       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 -mb-[1px] w-1.5 h-1.5 border-b border-r border-[#ff00ff]/40 rotate-45 sm:bottom-auto sm:top-1/2 sm:left-full sm:-translate-y-1/2 sm:-ml-[1px] sm:rotate-[-45deg] sm:border-b-0 sm:border-t"></div>
                     </div>
                   </div>
 
+                  {/* Destination Header (Mobile only) */}
+                  <div className="sm:hidden text-[9px] font-mono text-[#ff00ff] uppercase self-start mt-2">Varint Byte (MSB + 7-Bit Payload)</div>
+
                   {/* Right Column: Destination */}
-                  <div className="flex flex-col items-start gap-1">
+                  <div className="flex flex-col items-center sm:items-start gap-1 w-full sm:w-auto">
                     <div className="flex items-center gap-3">
                       <div className="flex border border-[#ff00ff]/30 rounded overflow-hidden shadow-[0_0_10px_rgba(255,0,255,0.05)] group-hover/bitgroup:shadow-[0_0_15px_rgba(255,0,255,0.15)] transition-all">
                         <div className={`px-1.5 py-1.5 font-mono text-lg leading-none ${targetBinary[0] === '1' ? 'bg-[#ff00ff]/20 text-[#ff00ff]' : 'bg-slate-800 text-slate-500'}`}>
@@ -149,8 +155,7 @@ const VarintExplainer = () => {
                             {targetBinary.slice(1)}
                         </div>
                       </div>
-                      <div className="flex flex-col">
-                        <span className="text-[8px] font-mono text-slate-600 uppercase">Byte {i}</span>
+                      <div className="flex flex-col">                        <span className="text-[8px] font-mono text-slate-600 uppercase">Byte {i}</span>
                       </div>
                     </div>
                   </div>

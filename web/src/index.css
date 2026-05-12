@@ -58,7 +58,13 @@ button {
 
 .cyber-panel {
   position: relative;
-  padding: 1.5rem;
+  padding: 1rem;
+}
+
+@media (min-width: 640px) {
+  .cyber-panel {
+    padding: 1.5rem;
+  }
 }
 
 .cyber-panel::before {

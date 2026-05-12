@@ -31,7 +31,8 @@ import {
   GitBranch,
   Package,
   Settings,
-  X
+  X,
+  Link as LinkIcon
 } from 'lucide-react';
 import { fromJson, toJsonString, toBinary, type Registry, type DescMessage } from '@bufbuild/protobuf';
 import { createValidator, type Violation } from '@bufbuild/protovalidate';
@@ -39,6 +40,16 @@ import VarintExplainer from './components/VarintExplainer';
 import { decodeBinary } from './utils/decoder';
 import { createDynamicRegistry } from './utils/dynamic-registry';
 import { generateFake, convertToPrototext, type CompilationError } from './utils/wasm-parser';
+
+const SectionIdContext = React.createContext<string | null>(null);
+
+const Section = ({ id, children, className }: { id: string, children: React.ReactNode, className?: string }) => (
+  <SectionIdContext.Provider value={id}>
+    <section id={id} className={className}>
+      {children}
+    </section>
+  </SectionIdContext.Provider>
+);
 
 // --- Syntax Highlighting ---
 
@@ -122,27 +133,33 @@ const ExternalLinkText = ({ href, children }: { href: string, children: React.Re
   </a>
 );
 
-const SectionTitle = ({ children, icon: Icon, subtitle }: { children: React.ReactNode, icon: React.ElementType, subtitle?: string }) => (
-  <div className="flex flex-col mb-12">
-    <div className="flex items-center gap-4 mb-2">
-      <div className="p-2 bg-cyan-500/10 rounded-lg border border-cyan-500/20">
-        <Icon className="w-6 h-6 text-[#00f3ff]" />
+const SectionTitle = ({ children, icon: Icon, subtitle }: { children: React.ReactNode, icon: React.ElementType, subtitle?: string }) => {
+  const sectionId = React.useContext(SectionIdContext);
+  return (
+    <div className="flex flex-col mb-12">
+      <div className="flex items-center gap-3 md:gap-4 mb-2">
+        <div className="p-2 bg-cyan-500/10 rounded-lg border border-cyan-500/20 shrink-0">
+          <Icon className="w-5 h-5 md:w-6 md:h-6 text-[#00f3ff]" />
+        </div>
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-cyber font-bold tracking-tight text-white uppercase break-words min-w-0 relative group/title">
+          <a href={sectionId ? `#${sectionId}` : '#'} className="hover:text-[#00f3ff] transition-colors">
+            {children}
+            <LinkIcon className="w-4 h-4 inline-block ml-2 opacity-0 group-hover/title:opacity-50 transition-opacity" />
+          </a>
+        </h2>
       </div>
-      <h2 className="text-3xl font-cyber font-bold tracking-tight text-white uppercase">
-        {children}
-      </h2>
+      {subtitle && <p className="text-slate-400 font-mono text-[10px] md:text-sm uppercase tracking-widest ml-11 md:ml-14">{subtitle}</p>}
     </div>
-    {subtitle && <p className="text-slate-400 font-mono text-sm uppercase tracking-widest ml-14">{subtitle}</p>}
-  </div>
-);
+  );
+};
 
 const CyberPanel = ({ children, title, className = "", headerExtra }: { children: React.ReactNode, title?: string, className?: string, headerExtra?: React.ReactNode }) => (
   <div className={`cyber-box cyber-panel ${className}`}>
     {title && (
-      <div className="flex items-center justify-between mb-4 border-b border-cyan-500/20 pb-2">
+      <div className="flex flex-wrap items-center justify-between mb-4 border-b border-cyan-500/20 pb-2 gap-2">
         <div className="flex items-center gap-2">
-          <Terminal className="w-4 h-4 text-[#00f3ff]" />
-          <span className="text-xs font-mono text-[#00f3ff] uppercase tracking-tighter">{title}</span>
+          <Terminal className="w-4 h-4 text-[#00f3ff] shrink-0" />
+          <span className="text-[10px] sm:text-xs font-mono text-[#00f3ff] uppercase tracking-tighter truncate max-w-[150px] sm:max-w-none">{title}</span>
         </div>
         {headerExtra}
       </div>
@@ -154,7 +171,7 @@ const CyberPanel = ({ children, title, className = "", headerExtra }: { children
 // --- Sections ---
 
 const Hero = () => (
-  <section id="hero" className="min-h-screen flex flex-col items-center justify-center p-8 relative overflow-hidden">
+  <Section id="hero" className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-8 relative overflow-hidden">
     <div className="scanline" />
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -162,7 +179,7 @@ const Hero = () => (
       transition={{ duration: 0.8 }}
       className="max-w-4xl z-10 text-center"
     >
-      <h1 className="text-6xl md:text-8xl font-cyber font-black mb-6 tracking-tighter leading-none">
+      <h1 className="text-4xl sm:text-6xl md:text-8xl font-cyber font-black mb-6 tracking-tighter leading-none">
         PROTOBUF<br />
         <span className="cyber-text-gradient">EXPLAINER</span>
       </h1>
@@ -176,7 +193,7 @@ const Hero = () => (
     <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce opacity-30">
       <ChevronRight className="w-6 h-6 rotate-90" />
     </div>
-  </section>
+  </Section>
 );
 
 const SchemaEditor = ({ value, onChange, errors }: { value: string, onChange: (s: string) => void, errors: CompilationError[] }) => {
@@ -402,7 +419,7 @@ const ProtobufBasics = () => {
   const current = tabs.find(t => t.id === activeTab)!;
 
   return (
-    <section id="basics" className="py-24 px-8 bg-black/40 border-t border-white/5">
+    <Section id="basics" className="py-24 px-4 sm:px-8 bg-black/40 border-t border-white/5">
       <div className="max-w-7xl mx-auto">
         <SectionTitle icon={BookOpen} subtitle="01_CORE_CONCEPTS">Protobuf Basics</SectionTitle>
 
@@ -439,7 +456,7 @@ const ProtobufBasics = () => {
             </CyberPanel>          </div>
         </div>
       </div>
-    </section>
+    </Section>
   );
 };
 
@@ -531,7 +548,7 @@ const DeepDiveSection = () => {
   const current = tabs.find(t => t.id === activeTab)!;
 
   return (
-    <section id="deepdive" className="py-24 px-8 bg-slate-900/15 border-t border-white/5">
+    <Section id="deepdive" className="py-24 px-4 sm:px-8 bg-slate-900/15 border-t border-white/5">
       <div className="max-w-7xl mx-auto">
         <SectionTitle icon={Layers} subtitle="02_DEEP_DIVE">Schema Engineering</SectionTitle>
 
@@ -569,7 +586,7 @@ const DeepDiveSection = () => {
           </div>
         </div>
       </div>
-    </section>
+    </Section>
   );
 };
 
@@ -714,7 +731,7 @@ const AdvancedProtobuf = () => {
   const current = tabs.find(t => t.id === activeTab)!;
 
   return (
-    <section id="advanced" className="py-24 px-8 bg-slate-900/10 border-t border-white/5">
+    <Section id="advanced" className="py-24 px-4 sm:px-8 bg-slate-900/10 border-t border-white/5">
       <div className="max-w-7xl mx-auto">
         <SectionTitle icon={Layers} subtitle="02_ADVANCED_TOPICS">Advanced Protobuf</SectionTitle>
 
@@ -752,12 +769,12 @@ const AdvancedProtobuf = () => {
           </div>
         </div>
       </div>
-    </section>
+    </Section>
   );
 };
 
 const DescriptorsAndReflection = () => (
-  <section id="reflection" className="py-24 px-8 bg-slate-900/20 border-t border-white/5">
+  <Section id="reflection" className="py-24 px-4 sm:px-8 bg-slate-900/20 border-t border-white/5">
     <div className="max-w-7xl mx-auto space-y-16">
       <div>
         <SectionTitle icon={Code2} subtitle="03_META_SCHEMA">Descriptors & Reflection</SectionTitle>
@@ -788,7 +805,7 @@ const DescriptorsAndReflection = () => (
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 pt-16 border-t border-white/5">
         <CyberPanel title="SERVER_REFLECTION">
-          <div className="p-4 space-y-4">
+          <div className="p-4 space-y-4 overflow-x-auto">
              <SyntaxHighlighter language="proto" code={`// gRPC Server Reflection Protocol\npackage grpc.reflection.v1alpha;\n\nservice ServerReflection {\n  // The reflection service is queried by clients to\n  // discover the API surface of the server dynamically.\n  rpc ServerReflectionInfo(stream ServerReflectionRequest)\n      returns (stream ServerReflectionResponse);\n}`} />
              <div className="mt-4 text-xs font-mono text-slate-500">
                Client: "What services do you have?"<br/>
@@ -819,7 +836,7 @@ const DescriptorsAndReflection = () => (
         </div>
       </div>
     </div>
-  </section>
+  </Section>
 );
 
 const Introduction = ({ messageSchema, fds }: {
@@ -908,7 +925,7 @@ const Introduction = ({ messageSchema, fds }: {
   const current = faces.find(f => f.id === activeFace)!;
 
   return (
-    <section id="intro" className="py-24 px-8 max-w-7xl mx-auto">
+    <Section id="intro" className="py-24 px-4 sm:px-8 max-w-7xl mx-auto">
       <SectionTitle icon={Database} subtitle="01_DEFINITION_LOGS">What is Protobuf?</SectionTitle>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
@@ -998,7 +1015,7 @@ const Introduction = ({ messageSchema, fds }: {
           </div>
         </CyberPanel>
       </div>
-    </section>
+    </Section>
   );
 };
 
@@ -1171,7 +1188,7 @@ const SizeComparison = ({ messageSchema, fileDescriptorSet }: { messageSchema: D
     fetchGzip();
   }, [stats.jsonStr, stats.binary, stats.error]);
   return (
-    <section id="efficiency" className="py-24 px-8 bg-slate-900/30 border-t border-white/5">
+    <Section id="efficiency" className="py-24 px-4 sm:px-8 bg-slate-900/30 border-t border-white/5">
       <div className="max-w-7xl mx-auto">
         <SectionTitle icon={Zap} subtitle="02_PERFORMANCE_METRICS">Efficiency</SectionTitle>
 
@@ -1197,7 +1214,7 @@ const SizeComparison = ({ messageSchema, fileDescriptorSet }: { messageSchema: D
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-6">
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               {(Object.keys(SIZE_EXAMPLES) as Array<keyof typeof SIZE_EXAMPLES>).map((key) => (
                 <button
                   key={key}
@@ -1304,14 +1321,14 @@ const SizeComparison = ({ messageSchema, fileDescriptorSet }: { messageSchema: D
           </div>
         </div>
       </div>
-    </section>
+    </Section>
   );
 };
 
 const PayloadSizeInsights = () => (
-  <section id="insights" className="py-24 px-8 bg-black/40 border-t border-white/5">
+  <Section id="insights" className="py-24 px-4 sm:px-8 bg-black/40 border-t border-white/5">
     <div className="max-w-3xl mx-auto space-y-6">
-      <h3 className="text-3xl font-cyber font-bold text-white uppercase tracking-tight">Size vs. Compression</h3>
+      <h3 className="text-xl sm:text-2xl md:text-3xl font-cyber font-bold text-white uppercase tracking-tight">Size vs. Compression</h3>
       <p className="text-slate-400 leading-relaxed">
         While Protobuf provides a massive reduction in <span className="text-[#00ff9f] font-bold">raw payload size (typically 30-50%)</span> compared to JSON, the gap often narrows when GZIP or Brotli compression is applied. For GZIP compressed payloads, the difference is usually in the <span className="text-[#00f3ff] font-bold">15-30% range</span>.
       </p>
@@ -1322,7 +1339,7 @@ const PayloadSizeInsights = () => (
         Protobuf shines when your data has many numbers, enums, or sparse fields. String-heavy payloads benefit less from binary encoding but still benefit from Protobuf's schema-driven performance and type safety.
       </p>
     </div>
-  </section>
+  </Section>
 );
 
 const TypeSystem = () => {
@@ -1370,7 +1387,7 @@ const TypeSystem = () => {
   );
 
   return (
-    <section id="types" className="py-24 px-8 bg-slate-900/5 border-t border-white/5">
+    <Section id="types" className="py-24 px-4 sm:px-8 bg-slate-900/5 border-t border-white/5">
       <div className="max-w-7xl mx-auto">
         <SectionTitle icon={Combine} subtitle="05_TYPE_REFERENCE">The Type System</SectionTitle>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -1379,7 +1396,7 @@ const TypeSystem = () => {
           ))}
         </div>
       </div>
-    </section>
+    </Section>
   );
 };
 
@@ -1521,7 +1538,7 @@ const WireFormatBreakdown = () => {
 
 
 const SchemaDrivenAPIs = () => (
-  <section id="schema" className="py-24 px-8 bg-slate-900/20 border-t border-white/5">
+  <Section id="schema" className="py-24 px-4 sm:px-8 bg-slate-900/20 border-t border-white/5">
     <div className="max-w-7xl mx-auto">
       <SectionTitle icon={FileCode} subtitle="06_ARCHITECTURE">Schema-Driven APIs</SectionTitle>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
@@ -1559,11 +1576,11 @@ const SchemaDrivenAPIs = () => (
         </div>
       </div>
     </div>
-  </section>
+  </Section>
 );
 
 const AlternativesLandscape = () => (
-  <section id="alternatives" className="py-24 px-8 bg-slate-900/10 border-t border-white/5">
+  <Section id="alternatives" className="py-24 px-4 sm:px-8 bg-slate-900/10 border-t border-white/5">
     <div className="max-w-7xl mx-auto">
       <SectionTitle icon={Layers} subtitle="09_COMPARISON">The Landscape of Alternatives</SectionTitle>
 
@@ -1638,7 +1655,7 @@ const AlternativesLandscape = () => (
         </div>
       </div>
     </div>
-  </section>
+  </Section>
 );
 
 const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) => {
@@ -1692,7 +1709,7 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
   };
 
   return (
-    <section id="binary" className="py-24 px-8 bg-slate-900/5 border-t border-white/5">
+    <Section id="binary" className="py-24 px-4 sm:px-8 bg-slate-900/5 border-t border-white/5">
       <div className="max-w-7xl mx-auto">
         <SectionTitle icon={Binary} subtitle="03_WIRE_FORMAT">Digging into the binary</SectionTitle>
 
@@ -1732,18 +1749,18 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
             <CyberPanel 
               title="DYNAMIC_BINARY_HEX_STREAM"
               headerExtra={
-                <div className="flex items-center gap-2">
-                  <button 
+                <div className="flex items-center gap-1 sm:gap-2">
+                  <button
                     onClick={goToPrev}
                     disabled={selectedByte === 0 || selectedByte === null}
                     className="p-1 hover:bg-white/10 rounded disabled:opacity-20"
                   >
                     <ChevronLeft className="w-3 h-3 text-[#00f3ff]" />
                   </button>
-                  <span className="text-[10px] font-mono text-slate-500 min-w-[60px] text-center">
+                  <span className="text-[10px] font-mono text-slate-500 min-w-[50px] sm:min-w-[60px] text-center">
                     {selectedByte !== null ? `${selectedByte + 1} / ${stats.segments.length}` : '-- / --'}
                   </span>
-                  <button 
+                  <button
                     onClick={goToNext}
                     disabled={selectedByte === stats.segments.length - 1 || selectedByte === null}
                     className="p-1 hover:bg-white/10 rounded disabled:opacity-20"
@@ -1751,8 +1768,7 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
                     <ChevronRight className="w-3 h-3 text-[#00f3ff]" />
                   </button>
                 </div>
-              }
-            >
+              }            >
               <div className="flex flex-wrap gap-y-3 gap-x-0 font-mono text-xl md:text-2xl p-4 pr-2">
                 {stats.segments.map((b, i) => {
                   const isPrevData = i > 0 && stats.segments[i - 1].type === 'data' && stats.segments[i - 1].fieldId === b.fieldId;
@@ -1882,12 +1898,12 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
           </div>
         </div>
       </div>
-    </section>
+    </Section>
   );
 };
 
 const CompilationSection = () => (
-  <section id="compile" className="py-24 px-8 bg-slate-900/10 border-t border-white/5">
+  <Section id="compile" className="py-24 px-4 sm:px-8 bg-slate-900/10 border-t border-white/5">
     <div className="max-w-7xl mx-auto">
       <SectionTitle icon={Code2} subtitle="07_PIPELINE">Compile</SectionTitle>
       <div className="flex flex-col items-center">
@@ -1936,7 +1952,7 @@ const CompilationSection = () => (
         </div>
       </div>
     </div>
-  </section>
+  </Section>
 );
 
 const VALIDATION_EXAMPLES = {
@@ -2078,7 +2094,7 @@ const SchemaEditorModal = ({ isOpen, onClose, value, onApply }: {
                  }
                }}
                disabled={localErrors.length > 0 || isValidating}
-               className="w-full md:w-auto px-8 py-2 bg-[#00f3ff]/10 border border-[#00f3ff] text-[#00f3ff] font-cyber font-bold hover:bg-[#00f3ff]/20 transition-all text-xs shadow-[0_0_15px_rgba(0,243,255,0.2)] disabled:opacity-30 disabled:cursor-not-allowed"
+               className="w-full md:w-auto px-4 sm:px-8 py-2 bg-[#00f3ff]/10 border border-[#00f3ff] text-[#00f3ff] font-cyber font-bold hover:bg-[#00f3ff]/20 transition-all text-xs shadow-[0_0_15px_rgba(0,243,255,0.2)] disabled:opacity-30 disabled:cursor-not-allowed"
              >
                APPLY_CHANGES
              </button>
@@ -2120,7 +2136,7 @@ const ValidationLab = ({ messageSchema, fds, protoSource, setProtoSource }: {
   }, [jsonInput, validator, messageSchema]);
 
   return (
-    <section id="validation" className="py-24 px-8 bg-slate-900/10 border-t border-white/5">
+    <Section id="validation" className="py-24 px-4 sm:px-8 bg-slate-900/10 border-t border-white/5">
       <div className="max-w-7xl mx-auto">
         <SectionTitle icon={ShieldCheck} subtitle="04_PROTOVALIDATE">Data Validation</SectionTitle>
 
@@ -2239,12 +2255,12 @@ const ValidationLab = ({ messageSchema, fds, protoSource, setProtoSource }: {
           </div>
         </div>
       </div>
-    </section>
+    </Section>
   );
 };
 
 const EcosystemNextSteps = () => (
-  <section id="ecosystem" className="py-24 px-8 bg-slate-900/30 border-t border-white/5">
+  <Section id="ecosystem" className="py-24 px-4 sm:px-8 bg-slate-900/30 border-t border-white/5">
     <div className="max-w-7xl mx-auto">
       <SectionTitle icon={Combine} subtitle="10_NEXT_STEPS">Ecosystem & Next Steps</SectionTitle>
       
@@ -2297,11 +2313,11 @@ const EcosystemNextSteps = () => (
 
       </div>
     </div>
-  </section>
+  </Section>
 );
 
 const AboutProject = () => (
-  <section id="about" className="py-24 px-8 bg-slate-900/40 border-t border-white/10">
+  <Section id="about" className="py-24 px-4 sm:px-8 bg-slate-900/40 border-t border-white/10">
     <div className="max-w-7xl mx-auto">
       <SectionTitle icon={HelpCircle} subtitle="00_METADATA">How this was built</SectionTitle>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
@@ -2343,11 +2359,11 @@ const AboutProject = () => (
         </div>
       </div>
     </div>
-  </section>
+  </Section>
 );
 
 const References = () => (
-  <section id="references" className="py-24 px-8 bg-black border-t border-white/5">
+  <Section id="references" className="py-24 px-4 sm:px-8 bg-black border-t border-white/5">
     <div className="max-w-7xl mx-auto text-slate-400">
       <SectionTitle icon={BookOpen} subtitle="08_BIBLIOGRAPHY">References & Specs</SectionTitle>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -2377,7 +2393,7 @@ const References = () => (
         </div>
       </div>
     </div>
-  </section>
+  </Section>
 );
 
 const INITIAL_PROTO = `syntax = "proto3";\n\npackage demo.v1;\n\nimport "buf/validate/validate.proto";\n\nmessage User {\n  string id = 1 [(buf.validate.field).string.uuid = true];\n  string name = 2 [(buf.validate.field).string.min_len = 1];\n  string email = 3 [(buf.validate.field).string.email = true];\n  \n  // Numeric data for efficiency demo\n  uint32 age = 4 [(buf.validate.field).uint32.lt = 150];\n  float height_cm = 5 [(buf.validate.field).float = {gte: 0, lte: 500}];\n  double weight_kg = 6 [(buf.validate.field).double = {gte: 0, lte: 2000}];\n  \n  Role role = 7;\n  Date birth_date = 8;\n  User manager = 9;\n\n  enum Role {\n    ROLE_UNSPECIFIED = 0;\n    ROLE_USER = 1;\n    ROLE_ADMIN = 2;\n  }\n}\n\nmessage Date {\n  int32 year = 1 [(buf.validate.field).int32 = {gte: 1900, lte: 2100}];\n  int32 month = 2 [(buf.validate.field).int32 = {gte: 1, lte: 12}];\n  int32 day = 3 [(buf.validate.field).int32 = {gte: 1, lte: 31}];\n}`;
@@ -2413,7 +2429,7 @@ const SECTION_LABELS: Record<string, string> = {
   types: 'The Type System',
   efficiency: 'Efficiency',
   insights: 'Size vs. Compression',
-  matrix: 'Binary Format',
+  binary: 'Binary Format',
   validation: 'Data Validation',
   alternatives: 'Alternatives',
   ecosystem: 'Ecosystem',
@@ -2489,7 +2505,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-[#050505] text-slate-300">
-      <header className="h-[80px] border-b border-white/10 bg-[#050505]/90 backdrop-blur-md fixed w-full z-[100] px-8 flex items-center">
+      <header className="h-[80px] border-b border-white/10 bg-[#050505]/90 backdrop-blur-md fixed w-full z-[100] px-4 sm:px-8 flex items-center">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-[#00f3ff]/10 rounded border border-[#00f3ff]/30 flex items-center justify-center"><Cpu className="w-6 h-6 text-[#00f3ff]" /></div>
           <div>
@@ -2498,16 +2514,19 @@ function App() {
                 protobuf<span className="text-[#00f3ff]">.kmcd.dev</span>
               </h1>
             </a>
-            <div className="text-xs font-mono text-[#00f3ff] tracking-widest -mt-1 uppercase opacity-70">Interactive Explainer</div>
+            <a href={`#${activeSection}`} className="text-xs font-mono text-[#00f3ff] tracking-widest -mt-1 uppercase opacity-70 hover:opacity-100 transition-opacity block max-w-[150px] truncate lg:max-w-none">
+              <span className="lg:hidden">{SECTION_LABELS[activeSection] || 'Welcome'}</span>
+              <span className="hidden lg:inline">Interactive Explainer</span>
+            </a>
           </div>
         </div>
         {error && <div className="ml-8 px-3 py-1 bg-red-500/10 border border-red-500/30 rounded text-red-400 text-xs font-mono animate-pulse uppercase">SCHEMA_ERROR: {error}</div>}
         
         <div className="absolute left-1/2 -translate-x-1/2 hidden lg:flex flex-col items-center pointer-events-none">
           <div className="text-[10px] font-mono text-[#00f3ff]/50 uppercase tracking-[0.2em] mb-0.5">Section</div>
-          <div className="text-xs font-mono font-bold text-white uppercase tracking-widest bg-white/5 px-3 py-1 rounded border border-white/10 backdrop-blur-sm">
+          <a href={`#${activeSection}`} className="text-xs font-mono font-bold text-white uppercase tracking-widest bg-white/5 px-3 py-1 rounded border border-white/10 backdrop-blur-sm pointer-events-auto hover:bg-white/10 transition-colors">
             {SECTION_LABELS[activeSection] || 'Welcome'}
-          </div>
+          </a>
         </div>
 
         <button 
@@ -2537,7 +2556,7 @@ function App() {
               transition={{ type: 'spring', damping: 30, stiffness: 300 }}
               className="fixed top-0 right-0 bottom-0 w-full max-w-sm z-[120] bg-[#0a0a0f] border-l border-white/10 shadow-2xl flex flex-col"
             >
-              <div className="h-[80px] flex items-center justify-between px-8 border-b border-white/5">
+              <div className="h-[80px] flex items-center justify-between px-4 sm:px-8 border-b border-white/5">
                 <div className="flex items-center gap-2">
                   <div className="w-6 h-6 bg-[#00f3ff]/10 rounded border border-[#00f3ff]/30 flex items-center justify-center"><Cpu className="w-3.5 h-3.5 text-[#00f3ff]" /></div>
                   <span className="font-cyber font-bold text-[#00f3ff] text-[10px] tracking-[0.2em] uppercase">Navigation</span>
@@ -2550,7 +2569,7 @@ function App() {
                 </button>
               </div>
               
-              <nav className="flex-1 overflow-y-auto py-6 px-8 custom-scrollbar">
+              <nav className="flex-1 overflow-y-auto py-6 px-4 sm:px-8 custom-scrollbar">
                 <div className="flex flex-col gap-1">
                   {NAV_ITEMS.map((item, i) => (
                     <a
@@ -2615,7 +2634,7 @@ function App() {
         <References />
       </main>
 
-      <footer className="py-12 border-t border-white/5 px-8 flex flex-col items-center gap-4">
+      <footer className="py-12 border-t border-white/5 px-4 sm:px-8 flex flex-col items-center gap-4">
         <div className="flex gap-8">
           <a href="https://kmcd.dev" target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-[#00f3ff] transition-colors" aria-label="KMCD.DEV">
             <Fingerprint className="w-5 h-5" />
