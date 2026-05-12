@@ -1692,7 +1692,7 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
   };
 
   return (
-    <section id="matrix" className="py-24 px-8 bg-slate-900/5 border-t border-white/5">
+    <section id="binary" className="py-24 px-8 bg-slate-900/5 border-t border-white/5">
       <div className="max-w-7xl mx-auto">
         <SectionTitle icon={Binary} subtitle="03_WIRE_FORMAT">Digging into the binary</SectionTitle>
 
@@ -2393,7 +2393,7 @@ const NAV_ITEMS = [
   { id: 'schema', label: 'SCHEMA' },
   { id: 'types', label: 'TYPES' },
   { id: 'efficiency', label: 'EFFICIENCY' },
-  { id: 'matrix', label: 'BINARY' },
+  { id: 'binary', label: 'BINARY' },
   { id: 'validation', label: 'VALIDATION' },
   { id: 'alternatives', label: 'ALTERNATIVES' },
   { id: 'ecosystem', label: 'ECOSYSTEM' },
