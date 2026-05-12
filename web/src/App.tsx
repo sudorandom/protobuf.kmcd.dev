@@ -432,8 +432,8 @@ const ProtobufBasics = () => {
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-4 p-4 rounded-lg border transition-all text-left group ${activeTab === tab.id
-                    ? 'bg-[#00f3ff]/10 border-[#00f3ff] text-[#00f3ff]'
-                    : 'bg-white/5 border-white/5 text-slate-500 hover:border-white/20 hover:text-slate-300'
+                  ? 'bg-[#00f3ff]/10 border-[#00f3ff] text-[#00f3ff]'
+                  : 'bg-white/5 border-white/5 text-slate-500 hover:border-white/20 hover:text-slate-300'
                   }`}
               >
                 <tab.icon className={`w-5 h-5 ${activeTab === tab.id ? 'text-[#00f3ff]' : 'text-slate-600 group-hover:text-slate-400'}`} />
@@ -451,9 +451,9 @@ const ProtobufBasics = () => {
               </div>
             </div>
             <CyberPanel title="EXAMPLE_DEFINITION" className="h-full">
-               <div className="p-2">
-                  <SyntaxHighlighter language="proto" code={current.example} wrap={true} />
-               </div>
+              <div className="p-2">
+                <SyntaxHighlighter language="proto" code={current.example} wrap={true} />
+              </div>
             </CyberPanel>          </div>
         </div>
       </div>
@@ -561,8 +561,8 @@ const DeepDiveSection = () => {
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-4 p-4 rounded-lg border transition-all text-left group ${activeTab === tab.id
-                    ? 'bg-[#00ff9f]/10 border-[#00ff9f] text-[#00ff9f]'
-                    : 'bg-white/5 border-white/5 text-slate-500 hover:border-white/20 hover:text-slate-300'
+                  ? 'bg-[#00ff9f]/10 border-[#00ff9f] text-[#00ff9f]'
+                  : 'bg-white/5 border-white/5 text-slate-500 hover:border-white/20 hover:text-slate-300'
                   }`}
               >
                 <tab.icon className={`w-5 h-5 ${activeTab === tab.id ? 'text-[#00ff9f]' : 'text-slate-600 group-hover:text-slate-400'}`} />
@@ -580,9 +580,9 @@ const DeepDiveSection = () => {
               </div>
             </div>
             <CyberPanel title="SCHEMA_EXAMPLE" className="h-full">
-               <div className="p-2">
-                  <SyntaxHighlighter language="proto" code={current.example} wrap={true} />
-               </div>
+              <div className="p-2">
+                <SyntaxHighlighter language="proto" code={current.example} wrap={true} />
+              </div>
             </CyberPanel>
           </div>
         </div>
@@ -759,8 +759,8 @@ const AdvancedProtobuf = () => {
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-4 p-4 rounded-lg border transition-all text-left group ${activeTab === tab.id
-                    ? 'bg-[#ff00ff]/10 border-[#ff00ff] text-[#ff00ff]'
-                    : 'bg-white/5 border-white/5 text-slate-500 hover:border-white/20 hover:text-slate-300'
+                  ? 'bg-[#ff00ff]/10 border-[#ff00ff] text-[#ff00ff]'
+                  : 'bg-white/5 border-white/5 text-slate-500 hover:border-white/20 hover:text-slate-300'
                   }`}
               >
                 <tab.icon className={`w-5 h-5 ${activeTab === tab.id ? 'text-[#ff00ff]' : 'text-slate-600 group-hover:text-slate-400'}`} />
@@ -789,17 +789,17 @@ const DescriptorsAndReflection = () => (
               Fascinatingly, this `FileDescriptorSet` is itself a Protobuf message! Google defines a schema (<ExternalLinkText href="https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/descriptor.proto"><code>descriptor.proto</code></ExternalLinkText>) that describes how to represent `.proto` files. This means you can use Protobuf tools to read and analyze Protobuf schemas dynamically at runtime.
             </p>
             <div className="p-4 bg-cyan-500/5 border border-cyan-500/10 rounded text-sm text-slate-400 space-y-3">
-               <p><strong>Why is this useful?</strong></p>
-               <ul className="space-y-2">
-                 <li className="flex gap-2"><div className="w-1 h-1 bg-[#00f3ff] mt-1.5 shrink-0"></div> <strong>Dynamic Decoding:</strong> Tools like this web explorer use descriptors to decode arbitrary binary data without generating static code.</li>
-                 <li className="flex gap-2"><div className="w-1 h-1 bg-[#00f3ff] mt-1.5 shrink-0"></div> <strong>Validation:</strong> Complex rule engines (like protovalidate) use descriptors to apply constraints dynamically.</li>
-               </ul>
+              <p><strong>Why is this useful?</strong></p>
+              <ul className="space-y-2">
+                <li className="flex gap-2"><div className="w-1 h-1 bg-[#00f3ff] mt-1.5 shrink-0"></div> <strong>Dynamic Decoding:</strong> Tools like this web explorer use descriptors to decode arbitrary binary data without generating static code.</li>
+                <li className="flex gap-2"><div className="w-1 h-1 bg-[#00f3ff] mt-1.5 shrink-0"></div> <strong>Validation:</strong> Complex rule engines (like protovalidate) use descriptors to apply constraints dynamically.</li>
+              </ul>
             </div>
           </div>
           <CyberPanel title="DESCRIPTOR.PROTO (SNIPPET)">
-             <div className="p-4 h-64 overflow-auto">
-               <SyntaxHighlighter language="proto" code={`// The schema that describes a schema\nmessage FileDescriptorSet {\n  repeated FileDescriptorProto file = 1;\n}\n\nmessage FileDescriptorProto {\n  optional string name = 1;\n  optional string package = 2;\n  repeated DescriptorProto message_type = 4;\n  repeated EnumDescriptorProto enum_type = 5;\n  // ...\n}\n\nmessage DescriptorProto {\n  optional string name = 1;\n  repeated FieldDescriptorProto field = 2;\n  // ...\n}`} />
-             </div>
+            <div className="p-4 h-64 overflow-auto">
+              <SyntaxHighlighter language="proto" code={`// The schema that describes a schema\nmessage FileDescriptorSet {\n  repeated FileDescriptorProto file = 1;\n}\n\nmessage FileDescriptorProto {\n  optional string name = 1;\n  optional string package = 2;\n  repeated DescriptorProto message_type = 4;\n  repeated EnumDescriptorProto enum_type = 5;\n  // ...\n}\n\nmessage DescriptorProto {\n  optional string name = 1;\n  repeated FieldDescriptorProto field = 2;\n  // ...\n}`} />
+            </div>
           </CyberPanel>
         </div>
       </div>
@@ -807,13 +807,13 @@ const DescriptorsAndReflection = () => (
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 pt-16 border-t border-white/5">
         <CyberPanel title="SERVER_REFLECTION">
           <div className="p-4 space-y-4 overflow-x-auto">
-             <SyntaxHighlighter language="proto" code={`// gRPC Server Reflection Protocol\npackage grpc.reflection.v1alpha;\n\nservice ServerReflection {\n  // The reflection service is queried by clients to\n  // discover the API surface of the server dynamically.\n  rpc ServerReflectionInfo(stream ServerReflectionRequest)\n      returns (stream ServerReflectionResponse);\n}`} />
-             <div className="mt-4 text-xs font-mono text-slate-500">
-               Client: "What services do you have?"<br/>
-               Server: "I have User Service and Auth Service"<br/>
-               Client: "Send me the descriptors for User Service"<br/>
-               Server: *Sends FileDescriptorSet binary*
-             </div>
+            <SyntaxHighlighter language="proto" code={`// gRPC Server Reflection Protocol\npackage grpc.reflection.v1alpha;\n\nservice ServerReflection {\n  // The reflection service is queried by clients to\n  // discover the API surface of the server dynamically.\n  rpc ServerReflectionInfo(stream ServerReflectionRequest)\n      returns (stream ServerReflectionResponse);\n}`} />
+            <div className="mt-4 text-xs font-mono text-slate-500">
+              Client: "What services do you have?"<br />
+              Server: "I have User Service and Auth Service"<br />
+              Client: "Send me the descriptors for User Service"<br />
+              Server: *Sends FileDescriptorSet binary*
+            </div>
           </div>
         </CyberPanel>
         <div className="space-y-6 text-slate-300">
@@ -973,8 +973,8 @@ const Introduction = ({ messageSchema, fds }: {
                     key={face.id}
                     onClick={() => setActiveFace(face.id)}
                     className={`flex items-center gap-4 p-4 rounded-lg border transition-all text-left group ${activeFace === face.id
-                        ? 'bg-[#00f3ff]/10 border-[#00f3ff] text-[#00f3ff]'
-                        : 'bg-white/5 border-white/5 text-slate-500 hover:border-white/20 hover:text-slate-300'
+                      ? 'bg-[#00f3ff]/10 border-[#00f3ff] text-[#00f3ff]'
+                      : 'bg-white/5 border-white/5 text-slate-500 hover:border-white/20 hover:text-slate-300'
                       }`}
                   >
                     <face.icon className={`w-5 h-5 ${activeFace === face.id ? 'text-[#00f3ff]' : 'text-slate-600 group-hover:text-slate-400'}`} />
@@ -1002,7 +1002,7 @@ const Introduction = ({ messageSchema, fds }: {
                     )}
                   </div>
                 </CyberPanel>
-                
+
                 {activeFace === 'bin' && (
                   <div className="flex gap-3 p-4 bg-[#ff00ff]/5 border border-[#ff00ff]/10 rounded-lg animate-in fade-in slide-in-from-top-2">
                     <Terminal className="w-5 h-5 text-[#ff00ff] shrink-0" />
@@ -1019,10 +1019,10 @@ const Introduction = ({ messageSchema, fds }: {
 
       <div className="mt-24 pt-16 border-t border-white/5">
         <div className="flex flex-col items-center mb-12">
-           <h3 className="text-2xl font-cyber font-bold text-white uppercase tracking-tight mb-2">The Compilation Pipeline</h3>
-           <p className="text-slate-400 text-center max-w-2xl">How your human-readable schema becomes high-performance code.</p>
+          <h3 className="text-2xl font-cyber font-bold text-white uppercase tracking-tight mb-2">The Compilation Pipeline</h3>
+          <p className="text-slate-400 text-center max-w-2xl">How your human-readable schema becomes high-performance code.</p>
         </div>
-        
+
         <div className="flex flex-col items-center">
           <div className="flex flex-col md:flex-row items-center gap-8 w-full justify-between max-w-5xl">
             <CyberPanel title="SOURCE" className="w-full md:w-64 text-center">
@@ -1109,24 +1109,24 @@ const SIZE_EXAMPLES = {
         role: 2,
         birthDate: { year: 1984, month: 3, day: 3 },
         manager: {
-           id: "user-manager",
-           name: "Engineering Manager",
-           email: "em@megacorp.com",
-           age: 35,
-           heightCm: 165.0,
-           weightKg: 65.0,
-           role: 2,
-           birthDate: { year: 1989, month: 4, day: 4 },
-           manager: {
-              id: "user-ic",
-              name: "Software Engineer",
-              email: "swe@megacorp.com",
-              age: 28,
-              heightCm: 175.0,
-              weightKg: 70.0,
-              role: 1,
-              birthDate: { year: 1996, month: 5, day: 5 }
-           }
+          id: "user-manager",
+          name: "Engineering Manager",
+          email: "em@megacorp.com",
+          age: 35,
+          heightCm: 165.0,
+          weightKg: 65.0,
+          role: 2,
+          birthDate: { year: 1989, month: 4, day: 4 },
+          manager: {
+            id: "user-ic",
+            name: "Software Engineer",
+            email: "swe@megacorp.com",
+            age: 28,
+            heightCm: 175.0,
+            weightKg: 70.0,
+            role: 1,
+            birthDate: { year: 1996, month: 5, day: 5 }
+          }
         }
       }
     }
@@ -1271,8 +1271,8 @@ const SizeComparison = ({ messageSchema, fileDescriptorSet }: { messageSchema: D
                   key={key}
                   onClick={() => handleExampleChange(key)}
                   className={`px-4 py-1 text-xs font-mono border transition-all ${activeExample === key
-                      ? 'bg-[#00f3ff]/10 border-[#00f3ff] text-[#00f3ff]'
-                      : 'border-white/10 text-slate-500 hover:border-white/30'
+                    ? 'bg-[#00f3ff]/10 border-[#00f3ff] text-[#00f3ff]'
+                    : 'border-white/10 text-slate-500 hover:border-white/30'
                     }`}
                 >
                   {key}
@@ -1282,8 +1282,8 @@ const SizeComparison = ({ messageSchema, fileDescriptorSet }: { messageSchema: D
                 onClick={generateFauxData}
                 disabled={!messageSchema || !fileDescriptorSet || isGenerating}
                 className={`px-4 py-1 text-xs font-mono border transition-all flex items-center gap-2 ${activeExample === 'FAUX'
-                    ? 'bg-[#ff00ff]/10 border-[#ff00ff] text-[#ff00ff]'
-                    : 'border-[#ff00ff]/30 text-[#ff00ff]/70 hover:border-[#ff00ff] hover:text-[#ff00ff] disabled:opacity-30 disabled:cursor-not-allowed'
+                  ? 'bg-[#ff00ff]/10 border-[#ff00ff] text-[#ff00ff]'
+                  : 'border-[#ff00ff]/30 text-[#ff00ff]/70 hover:border-[#ff00ff] hover:text-[#ff00ff] disabled:opacity-30 disabled:cursor-not-allowed'
                   }`}
               >
                 <Zap className={`w-3 h-3 ${isGenerating ? 'animate-spin' : ''}`} />
@@ -1300,7 +1300,7 @@ const SizeComparison = ({ messageSchema, fileDescriptorSet }: { messageSchema: D
                 <p className="text-sm text-slate-400 leading-relaxed mb-4">
                   Watch as the binary encoder strips away the redundant field names and formatting that bloats JSON payloads.
                 </p>
-                
+
                 {/* Size Bars */}
                 <div className="space-y-4">
                   <div>
@@ -1325,7 +1325,7 @@ const SizeComparison = ({ messageSchema, fileDescriptorSet }: { messageSchema: D
                       <span className="text-[#00ff9f] font-bold">{stats.pbSize} B</span>
                     </div>
                     <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
-                      <motion.div 
+                      <motion.div
                         initial={{ width: 0 }}
                         animate={{ width: `${stats.jsonSize > 0 ? (stats.pbSize / stats.jsonSize) * 100 : 0}%` }}
                         className="h-full bg-[#00ff9f]"
@@ -1347,10 +1347,10 @@ const SizeComparison = ({ messageSchema, fileDescriptorSet }: { messageSchema: D
                   </div>
                   {gzipStats.json > 0 && gzipStats.pb > 0 && (
                     <div className="text-right">
-                       <p className={`text-xl font-cyber font-bold ${gzipStats.pb < gzipStats.json ? 'text-[#00f3ff]' : 'text-yellow-500'}`}>
-                         {gzipStats.pb < gzipStats.json ? '-' : '+'}{Math.abs(Number(((1 - gzipStats.pb / gzipStats.json) * 100).toFixed(1)))}%
-                       </p>
-                       <p className="text-[9px] font-mono text-slate-500 uppercase">GZIPPED_PB vs GZIPPED_JSON</p>
+                      <p className={`text-xl font-cyber font-bold ${gzipStats.pb < gzipStats.json ? 'text-[#00f3ff]' : 'text-yellow-500'}`}>
+                        {gzipStats.pb < gzipStats.json ? '-' : '+'}{Math.abs(Number(((1 - gzipStats.pb / gzipStats.json) * 100).toFixed(1)))}%
+                      </p>
+                      <p className="text-[9px] font-mono text-slate-500 uppercase">GZIPPED_PB vs GZIPPED_JSON</p>
                     </div>
                   )}
                 </div>
@@ -1394,8 +1394,8 @@ const PayloadSizeInsights = () => (
 
       <div className="space-y-8">
         <div className="flex items-center gap-3 text-[#00f3ff]">
-           <BarChart3 className="w-6 h-6" />
-           <h3 className="text-xl sm:text-2xl font-cyber font-bold text-white uppercase tracking-tight">The Benchmark Landscape</h3>
+          <BarChart3 className="w-6 h-6" />
+          <h3 className="text-xl sm:text-2xl font-cyber font-bold text-white uppercase tracking-tight">The Benchmark Landscape</h3>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -1422,8 +1422,8 @@ const PayloadSizeInsights = () => (
 
         <CyberPanel title="REPUTABLE_ENGINEERING_REPORTS">
           <div className="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <a 
-              href="https://auth0.com/blog/beating-json-performance-with-protobuf/" 
+            <a
+              href="https://auth0.com/blog/beating-json-performance-with-protobuf/"
               target="_blank"
               rel="noopener noreferrer"
               className="group p-4 bg-white/5 border border-white/5 rounded-lg hover:border-[#00f3ff]/40 transition-all"
@@ -1431,7 +1431,7 @@ const PayloadSizeInsights = () => (
               <h5 className="font-cyber text-xs text-[#00f3ff] mb-2 group-hover:underline">Auth0 Engineering</h5>
               <p className="text-[11px] text-slate-500 leading-relaxed">Classic deep dive comparing binary vs text overhead in real-world API requests.</p>
             </a>
-            <a 
+            <a
               href="https://grpc.io/docs/guides/benchmarking/"
               target="_blank"
               rel="noopener noreferrer"
@@ -1440,7 +1440,7 @@ const PayloadSizeInsights = () => (
               <h5 className="font-cyber text-xs text-[#ff00ff] mb-2 group-hover:underline">Official gRPC Benchmarks</h5>
               <p className="text-[11px] text-slate-500 leading-relaxed">Throughput and latency metrics for Protobuf-over-HTTP/2 across various languages.</p>
             </a>
-            <a 
+            <a
               href="https://www.atlassian.com/blog/atlassian-engineering/using-protobuf-to-make-jira-cloud-faster"
               target="_blank"
               rel="noopener noreferrer"
@@ -1637,7 +1637,7 @@ const WireFormatBreakdown = () => {
                     </>
                   ) : (
                     <div className="flex items-center justify-center h-full">
-                       <span className="text-[10px] font-mono text-slate-600 uppercase tracking-widest italic">No modern types map here</span>
+                      <span className="text-[10px] font-mono text-slate-600 uppercase tracking-widest italic">No modern types map here</span>
                     </div>
                   )}
                 </div>
@@ -1685,8 +1685,7 @@ const SchemaDrivenAPIs = () => (
             <div className="flex justify-center"><ArrowRight className="w-4 h-4 rotate-90 text-slate-600" /></div>
             <div className="p-3 bg-black/40 border border-[#ff00ff]/30 rounded text-[#ff00ff]/80">2. COMPILE TARGETS (Go, TS, etc.)</div>
             <div className="flex justify-center"><ArrowRight className="w-4 h-4 rotate-90 text-slate-600" /></div>
-            <div className="p-3 bg-black/40 border border-[#00ff9f]/30 rounded text-[#00ff9f]/80">3. SHIP PERFORMANCE</div>
-          </div>
+            <div className="p-3 bg-black/40 border border-[#00ff9f]/30 rounded text-[#00ff9f]/80">3. BUILD & DEPLOY SERVICES</div>          </div>
         </div>
       </div>
     </div>
@@ -1806,7 +1805,7 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
 
   const safeSelectedByte = selectedByte !== null && selectedByte < stats.segments.length ? selectedByte : null;
   const currentSegment = safeSelectedByte !== null ? stats.segments[safeSelectedByte] : null;
-  
+
   const groupedDataBytes = useMemo(() => {
     if (!currentSegment || currentSegment.type !== 'data') return null;
     return stats.segments.filter(s => s.fieldId === currentSegment.fieldId && s.type === 'data');
@@ -1843,8 +1842,8 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
                       key={key}
                       onClick={() => handleExampleChange(key)}
                       className={`px-3 py-1 text-xs font-mono border transition-all ${activeExample === key
-                          ? 'bg-[#00f3ff]/10 border-[#00f3ff] text-[#00f3ff]'
-                          : 'border-white/10 text-slate-500 hover:border-white/30'
+                        ? 'bg-[#00f3ff]/10 border-[#00f3ff] text-[#00f3ff]'
+                        : 'border-white/10 text-slate-500 hover:border-white/30'
                         }`}
                     >
                       {key}
@@ -1864,7 +1863,7 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
           </div>
 
           <div className="w-full">
-            <CyberPanel 
+            <CyberPanel
               title="DYNAMIC_BINARY_HEX_STREAM"
               headerExtra={
                 <div className="flex items-center gap-1 sm:gap-2">
@@ -1986,7 +1985,7 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
                       )}
                     </motion.div>
                   ) : (
-                    <motion.div 
+                    <motion.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       className="flex flex-col items-center justify-center h-48 border-2 border-dashed border-[#00f3ff]/20 rounded-xl gap-4 bg-[#00f3ff]/5 text-center group"
@@ -2088,10 +2087,10 @@ const VALIDATION_EXAMPLES = {
   }
 };
 
-const SchemaEditorModal = ({ isOpen, onClose, value, onApply }: { 
-  isOpen: boolean, 
-  onClose: () => void, 
-  value: string, 
+const SchemaEditorModal = ({ isOpen, onClose, value, onApply }: {
+  isOpen: boolean,
+  onClose: () => void,
+  value: string,
   onApply: (s: string) => void
 }) => {
   const [localValue, setLocalValue] = useState(value);
@@ -2100,7 +2099,7 @@ const SchemaEditorModal = ({ isOpen, onClose, value, onApply }: {
 
   useEffect(() => {
     if (!isOpen) return;
-    
+
     let isMounted = true;
     const timer = setTimeout(async () => {
       setIsValidating(true);
@@ -2129,17 +2128,17 @@ const SchemaEditorModal = ({ isOpen, onClose, value, onApply }: {
   }, [localValue, isOpen]);
 
   if (!isOpen) return null;
-  
+
   return (
     <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 md:p-8">
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={onClose}
         className="absolute inset-0 bg-black/80 backdrop-blur-sm"
       />
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -2160,44 +2159,44 @@ const SchemaEditorModal = ({ isOpen, onClose, value, onApply }: {
             <X className="w-5 h-5 text-slate-500 group-hover:text-white" />
           </button>
         </div>
-        
+
         <div className="flex-1 overflow-hidden p-4">
-           <SchemaEditor value={localValue} onChange={setLocalValue} errors={localErrors} />
-           {localErrors.length > 0 && (
-             <div className="mt-4 space-y-2 overflow-y-auto max-h-32">
-               {localErrors.map((err, i) => (
-                 <div key={i} className="p-3 bg-red-500/10 border border-red-500/30 rounded text-red-400 text-xs font-mono">
-                   [LINE {err.line}] {err.message}
-                 </div>
-               ))}
-             </div>
-           )}
+          <SchemaEditor value={localValue} onChange={setLocalValue} errors={localErrors} />
+          {localErrors.length > 0 && (
+            <div className="mt-4 space-y-2 overflow-y-auto max-h-32">
+              {localErrors.map((err, i) => (
+                <div key={i} className="p-3 bg-red-500/10 border border-red-500/30 rounded text-red-400 text-xs font-mono">
+                  [LINE {err.line}] {err.message}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
-        
+
         <div className="p-4 bg-white/5 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
-           <div className="text-xs text-slate-500">
-             <ExternalLinkText href="https://protovalidate.com/schemas/standard-rules/">View Standard Rules Documentation</ExternalLinkText>
-           </div>
-           <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
-             <button 
-               onClick={onClose}
-               className="w-full md:w-auto px-6 py-2 border border-white/10 text-slate-400 font-cyber font-bold hover:bg-white/5 transition-all text-xs"
-             >
-               CANCEL
-             </button>
-             <button 
-               onClick={() => {
-                 if (localErrors.length === 0) {
-                   onApply(localValue);
-                   onClose();
-                 }
-               }}
-               disabled={localErrors.length > 0 || isValidating}
-               className="w-full md:w-auto px-4 sm:px-8 py-2 bg-[#00f3ff]/10 border border-[#00f3ff] text-[#00f3ff] font-cyber font-bold hover:bg-[#00f3ff]/20 transition-all text-xs shadow-[0_0_15px_rgba(0,243,255,0.2)] disabled:opacity-30 disabled:cursor-not-allowed"
-             >
-               APPLY_CHANGES
-             </button>
-           </div>
+          <div className="text-xs text-slate-500">
+            <ExternalLinkText href="https://protovalidate.com/schemas/standard-rules/">View Standard Rules Documentation</ExternalLinkText>
+          </div>
+          <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
+            <button
+              onClick={onClose}
+              className="w-full md:w-auto px-6 py-2 border border-white/10 text-slate-400 font-cyber font-bold hover:bg-white/5 transition-all text-xs"
+            >
+              CANCEL
+            </button>
+            <button
+              onClick={() => {
+                if (localErrors.length === 0) {
+                  onApply(localValue);
+                  onClose();
+                }
+              }}
+              disabled={localErrors.length > 0 || isValidating}
+              className="w-full md:w-auto px-4 sm:px-8 py-2 bg-[#00f3ff]/10 border border-[#00f3ff] text-[#00f3ff] font-cyber font-bold hover:bg-[#00f3ff]/20 transition-all text-xs shadow-[0_0_15px_rgba(0,243,255,0.2)] disabled:opacity-30 disabled:cursor-not-allowed"
+            >
+              APPLY_CHANGES
+            </button>
+          </div>
         </div>
       </motion.div>
     </div>
@@ -2248,11 +2247,11 @@ const ValidationLab = ({ messageSchema, fds, protoSource, setProtoSource }: {
             <p className="text-sm text-slate-400 leading-relaxed">
               Define constraints like <code>min_len</code>, <code>email</code>, or custom rules to ensure your data adheres to the contract across all services.
             </p>
-            
-            <CyberPanel 
-              title="SCHEMA_EDITOR (.proto)" 
+
+            <CyberPanel
+              title="SCHEMA_EDITOR (.proto)"
               headerExtra={
-                <button 
+                <button
                   onClick={() => setIsModalOpen(true)}
                   className="flex items-center gap-2 text-[10px] font-cyber font-bold text-[#00f3ff] hover:text-[#00f3ff]/80 transition-colors uppercase"
                 >
@@ -2263,7 +2262,7 @@ const ValidationLab = ({ messageSchema, fds, protoSource, setProtoSource }: {
             >
               <div className="h-64 overflow-hidden relative group cursor-pointer" onClick={() => setIsModalOpen(true)}>
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/70 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100 z-10 backdrop-blur-none group-hover:backdrop-blur-[2px]">
-                   <span className="px-4 py-2 bg-[#00f3ff]/10 border border-[#00f3ff] text-[#00f3ff] font-cyber text-xs shadow-[0_0_20px_rgba(0,243,255,0.2)]">EDIT_SCHEMA</span>
+                  <span className="px-4 py-2 bg-[#00f3ff]/10 border border-[#00f3ff] text-[#00f3ff] font-cyber text-xs shadow-[0_0_20px_rgba(0,243,255,0.2)]">EDIT_SCHEMA</span>
                 </div>
                 <div className="p-4 opacity-50 grayscale group-hover:opacity-20 transition-all duration-300">
                   <SyntaxHighlighter language="proto" code={protoSource} wrap />
@@ -2362,7 +2361,7 @@ const EcosystemNextSteps = () => (
   <Section id="ecosystem" className="py-24 px-4 sm:px-8 bg-slate-900/30 border-t border-white/5">
     <div className="max-w-7xl mx-auto">
       <SectionTitle icon={Combine} subtitle="12_NEXT_STEPS">Ecosystem & Next Steps</SectionTitle>
-      
+
       <div className="mb-12 text-slate-400 max-w-3xl leading-relaxed">
         <p>
           Protobuf itself is just a serialization format. Its true power comes from the vast ecosystem of tools built around it. Once you have a strong schema, these tools allow you to generate clients, manage APIs, and enforce quality at scale.
@@ -2370,7 +2369,7 @@ const EcosystemNextSteps = () => (
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        
+
         {/* Schema Management */}
         <CyberPanel title="SCHEMA_MANAGEMENT" className="border-[#ff00ff]/30 shadow-[0_0_15px_rgba(255,0,255,0.05)] hover:border-[#ff00ff]/60 transition-colors">
           <div className="p-4 space-y-4">
@@ -2570,7 +2569,7 @@ function App() {
           </div>
         </div>
         {error && <div className="ml-8 px-3 py-1 bg-red-500/10 border border-red-500/30 rounded text-red-400 text-xs font-mono animate-pulse uppercase">SCHEMA_ERROR: {error}</div>}
-        
+
         <div className="absolute left-1/2 -translate-x-1/2 hidden lg:flex flex-col items-center pointer-events-none">
           <div className="text-[10px] font-mono text-[#00f3ff]/50 uppercase tracking-[0.2em] mb-0.5">Section</div>
           <a href={`#${activeSection}`} className="text-xs font-mono font-bold text-white uppercase tracking-widest bg-white/5 px-3 py-1 rounded border border-white/10 backdrop-blur-sm pointer-events-auto hover:bg-white/10 transition-colors">
@@ -2578,7 +2577,7 @@ function App() {
           </a>
         </div>
 
-        <button 
+        <button
           onClick={() => setIsMenuOpen(true)}
           className="ml-auto p-2 text-[#00f3ff] hover:bg-[#00f3ff]/10 rounded border border-[#00f3ff]/20 transition-all group"
           aria-label="Open Menu"
@@ -2597,7 +2596,7 @@ function App() {
               onClick={() => setIsMenuOpen(false)}
               className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[110]"
             />
-            
+
             <motion.div
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
@@ -2610,14 +2609,14 @@ function App() {
                   <div className="w-6 h-6 bg-[#00f3ff]/10 rounded border border-[#00f3ff]/30 flex items-center justify-center"><Cpu className="w-3.5 h-3.5 text-[#00f3ff]" /></div>
                   <span className="font-cyber font-bold text-[#00f3ff] text-[10px] tracking-[0.2em] uppercase">Navigation</span>
                 </div>
-                <button 
+                <button
                   onClick={() => setIsMenuOpen(false)}
                   className="p-2 text-slate-400 hover:text-white transition-colors"
                 >
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              
+
               <nav className="flex-1 overflow-y-auto py-6 px-4 sm:px-8 custom-scrollbar">
                 <div className="flex flex-col gap-1">
                   {NAV_ITEMS.map((item, i) => (
@@ -2636,7 +2635,7 @@ function App() {
                   ))}
                 </div>
               </nav>
-              
+
               <div className="p-8 border-t border-white/5 bg-black/20">
                 <div className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-4">Quick Links</div>
                 <div className="flex gap-4">
@@ -2668,13 +2667,13 @@ function App() {
           protoSource={protoSource}
           setProtoSource={setProtoSource}
         />
-        <SizeComparison 
-          messageSchema={messageSchema} 
-          fileDescriptorSet={fds} 
+        <SizeComparison
+          messageSchema={messageSchema}
+          fileDescriptorSet={fds}
         />
         <PayloadSizeInsights />
-        <BinaryMatrix 
-          messageSchema={messageSchema} 
+        <BinaryMatrix
+          messageSchema={messageSchema}
         />
         <AlternativesLandscape />
         <EcosystemNextSteps />
