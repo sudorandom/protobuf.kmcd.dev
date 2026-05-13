@@ -115,10 +115,10 @@ export const DecodingVisualization = () => {
              <text x="320" y="-8" fill="var(--cyber-neon-green)" fontSize="12" textAnchor="middle" className="font-mono tracking-widest">01000001 01101100</text>
              <text x="320" y="8" fill="var(--cyber-neon-green)" fontSize="12" textAnchor="middle" className="font-mono tracking-widest">01101001 01100011 01100101</text>
              
-             <text x="25" y="24" fill="var(--text-dim)" fontSize="10" textAnchor="middle" className="font-mono opacity-50">Field</text>
-             <text x="75" y="24" fill="var(--text-dim)" fontSize="10" textAnchor="middle" className="font-mono opacity-50">Type</text>
-             <text x="160" y="24" fill="var(--text-dim)" fontSize="10" textAnchor="middle" className="font-mono opacity-50">Length</text>
-             <text x="320" y="24" fill="var(--text-dim)" fontSize="10" textAnchor="middle" className="font-mono opacity-50">"Alice"</text>
+             <text x="25" y="24" fill="var(--text-dim)" fontSize="10" textAnchor="middle" className="font-mono">Field</text>
+             <text x="75" y="24" fill="var(--text-dim)" fontSize="10" textAnchor="middle" className="font-mono">Type</text>
+             <text x="160" y="24" fill="var(--text-dim)" fontSize="10" textAnchor="middle" className="font-mono">Len</text>
+             <text x="320" y="24" fill="var(--text-dim)" fontSize="10" textAnchor="middle" className="font-mono">"Alice"</text>
           </g>
         </motion.g>
       </svg>
