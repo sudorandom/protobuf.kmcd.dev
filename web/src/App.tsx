@@ -638,11 +638,14 @@ const AdvancedProtobuf = () => {
           </p>
           <div className="p-4 bg-red-500/5 border border-red-500/10 rounded text-sm space-y-3">
             <p className="leading-relaxed">
-              The standard <code>protoc</code> compiler requires you to manually specify every include directory via <code>-I</code> (or <code>--proto_path</code>) flags. If your paths are inconsistent (e.g., <code>import "proto/user.proto"</code> vs <code>import "user.proto"</code>), the compiler will treat them as different types, leading to "Duplicate Symbol" errors or failed builds.
+              The standard <code>protoc</code> compiler requires you to manually specify every include directory via <code>-I</code> (or <code>--proto_path</code>) flags. The compiler resolves files based on the current working directory combined with these flags.
+            </p>
+            <p className="leading-relaxed text-red-200/80">
+              If your import paths are inconsistent across your project (e.g., one file uses <code>import "proto/user.proto"</code> and another uses <code>import "user.proto"</code> depending on how <code>protoc</code> was invoked), the compiler will treat them as entirely different types. This commonly leads to baffling "Duplicate Symbol" errors or "Type not found" failures when compiling.
             </p>
           </div>
           <p>
-            <ExternalLinkText href="https://buf.build/">Buf</ExternalLinkText> eliminates this by using a <code>buf.yaml</code> to define your module root. It handles imports gracefully, allows for remote dependencies (like NPM/Cargo), and ensures paths are always consistent across your entire team.
+            <ExternalLinkText href="https://buf.build/">Buf</ExternalLinkText> eliminates this by using a <code>buf.yaml</code> to define your deterministic module root. It handles imports gracefully, allows for remote dependencies (like NPM/Cargo), and ensures paths are always consistent across your entire team regardless of where the build command is run.
           </p>
         </div>
       ),
@@ -720,17 +723,28 @@ const AdvancedProtobuf = () => {
           <p>
             Protobuf is strictly designed for forward and backward compatibility. However, there are strict rules about what you <strong>CANNOT</strong> change.
           </p>
-          <div className="p-4 bg-[#ff00ff]/5 border border-[#ff00ff]/20 rounded text-xs space-y-3">
-            <p className="font-bold text-[#ff00ff]">Wire-Breaking (NEVER DO THIS):</p>
-            <ul className="list-disc pl-4 space-y-1">
-              <li>Changing a <strong>Field Number</strong>.</li>
-              <li>Changing a field type to an incompatible wire type (e.g., <code>string</code> to <code>int32</code>).</li>
-              <li>Changing the type of a field in a way that changes its binary representation (e.g., <code>int32</code> to <code>fixed32</code>).</li>
-              <li>Removing a field without <strong>reserving</strong> its number.</li>
-            </ul>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="p-4 bg-red-500/5 border border-red-500/20 rounded text-xs space-y-3">
+              <p className="font-bold text-red-400">Wire-Breaking (NEVER DO THIS):</p>
+              <ul className="list-disc pl-4 space-y-1 text-slate-300">
+                <li>Changing a <strong>Field Number</strong> (e.g., moving <code>id</code> from 1 to 2).</li>
+                <li>Reusing a <strong>Field Number</strong> for a new field without reserving it first, leading to data corruption for old clients.</li>
+                <li>Changing a field type to an incompatible wire type (e.g., <code>string</code> to <code>int32</code>).</li>
+                <li>Changing the type of a field in a way that changes its binary representation (e.g., <code>int32</code> to <code>fixed32</code>).</li>
+              </ul>
+            </div>
+            <div className="p-4 bg-[#00ff9f]/5 border border-[#00ff9f]/20 rounded text-xs space-y-3">
+              <p className="font-bold text-[#00ff9f]">Safe Operations:</p>
+              <ul className="list-disc pl-4 space-y-1 text-slate-300">
+                <li>Adding new fields with <strong>new numbers</strong>.</li>
+                <li>Renaming a field (this may break JSON clients, but is safe on the wire).</li>
+                <li>Deleting a field (as long as you use the <code>reserved</code> keyword to prevent future reuse of its number/name).</li>
+                <li>Changing between compatible types (e.g., <code>int32</code> to <code>int64</code>).</li>
+              </ul>
+            </div>
           </div>
           <p>
-            As long as you preserve field numbers and use compatible types, old clients can read new messages (ignoring unknown fields), and new clients can read old messages (using default values for missing fields).
+            As long as you follow these rules, old clients can read new messages (ignoring unknown fields), and new clients can read old messages (using default values for missing fields).
           </p>
         </div>
       ),
@@ -1691,7 +1705,7 @@ const TypeSystem = () => {
                     { pb: "int32, float, double", json: "Number" },
                     { pb: "bool", json: "Boolean (true/false)" },
                     { pb: "int64, uint64", json: "\"String\" (Precision safety)" },
-                    { pb: "enum", json: "\"NAME\" (Always string)" },
+                    { pb: "enum", json: "\"STRING\"" },
                     { pb: "bytes", json: "\"Base64 String\"" },
                     { pb: "google.protobuf.Timestamp", json: "\"2023-10-01T12:00:00Z\"" },
                   ].map(row => (
