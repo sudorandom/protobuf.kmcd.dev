@@ -2171,11 +2171,16 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
                     })}
                   </div>
                 </div>
-                <div className="md:col-span-2 bg-[var(--overlay-bg)] flex flex-col border-t md:border-t-0 border-[var(--border-light)]">
+                <div className="md:col-span-2 bg-[var(--overlay-bg)] flex flex-col border-t md:border-t-0 border-[var(--border-light)] relative">
                   <div className="p-4 border-b border-[var(--border-light)] flex items-center justify-between">
                     <span className="text-[10px] font-mono text-[var(--text-dim)] uppercase tracking-widest">Message (JSON)</span>
                     <span className="text-[9px] font-mono text-[var(--cyber-neon-pink)]/60 uppercase italic">Editable Input</span>
                   </div>
+                  {stats.error && (
+                    <div className="absolute top-[52px] left-0 right-0 p-2 bg-red-500/10 border-b border-red-500/30 text-red-400 text-xs font-mono z-10 break-words line-clamp-2" title={stats.error}>
+                      {stats.error}
+                    </div>
+                  )}
                   <div className="flex-1 min-h-[300px]">
                     <JsonEditor
                       value={jsonInput}
