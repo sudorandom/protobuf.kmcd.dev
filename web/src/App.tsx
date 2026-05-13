@@ -34,17 +34,20 @@ import {
   Settings,
   BarChart3,
   X,
+  SearchCheck,
+  Sun,
+  Moon,
   Link as LinkIcon
 } from 'lucide-react';
 
 const TechnicalNuance = ({ children, title = "TECHNICAL_NUANCE" }: { children: React.ReactNode, title?: string }) => (
   <div className="bg-[#00f3ff]/10 border border-[#00f3ff]/30 rounded-lg p-4 flex gap-4 items-start animate-in fade-in slide-in-from-top-1">
     <div className="p-2 bg-[#00f3ff]/20 rounded-md">
-       <Info className="w-5 h-5 text-[#00f3ff]" />
+       <Info className="w-5 h-5 text-[var(--cyber-neon-blue)]" />
     </div>
     <div className="space-y-1">
-      <span className="text-[10px] font-mono text-[#00f3ff] uppercase tracking-[0.2em] font-bold">{title}</span>
-      <div className="text-sm text-slate-300 leading-relaxed">
+      <span className="text-[10px] font-mono text-[var(--cyber-neon-blue)] uppercase tracking-[0.2em] font-bold">{title}</span>
+      <div className="text-sm text-[var(--text-color)] leading-relaxed">
         {children}
       </div>
     </div>
@@ -77,19 +80,19 @@ const HexViewer = ({ bytes }: { bytes: { val: string, raw: number }[] }) => {
   }
 
   return (
-    <div className="font-mono text-xs text-slate-400 bg-black/40 p-4 rounded border border-white/10 space-y-1 max-h-64 overflow-y-auto custom-scrollbar">
-      <div className="grid grid-cols-[60px_max-content_1fr] gap-8 pb-2 border-b border-white/5 opacity-50 mb-2">
+    <div className="font-mono text-xs text-[var(--text-dim)] bg-[var(--section-bg-dark)] p-4 rounded border border-[var(--border-light)] space-y-1 max-h-64 overflow-y-auto custom-scrollbar">
+      <div className="grid grid-cols-[60px_max-content_1fr] gap-8 pb-2 border-b border-[var(--border-light)] opacity-50 mb-2">
         <span>OFFSET</span>
         <span>HEX</span>
         <span>ASCII</span>
       </div>
       {chunks.map((chunk, i) => (
-        <div key={i} className="grid grid-cols-[60px_max-content_1fr] gap-8 group hover:bg-white/5">
+        <div key={i} className="grid grid-cols-[60px_max-content_1fr] gap-8 group hover:bg-[var(--overlay-bg)]">
           <span className="opacity-50">{(i * 8).toString(16).padStart(4, '0')}</span>
-          <span className="text-[#00ff9f]/80">
+          <span className="text-[var(--cyber-neon-green)]/80">
             {chunk.map(b => b.val).join(' ').padEnd(23, ' ')}
           </span>
-          <span className="text-white">
+          <span className="text-[var(--text-color)]">
             {chunk.map(b => (b.raw >= 32 && b.raw <= 126 ? String.fromCharCode(b.raw) : '.')).join('')}
           </span>
         </div>
@@ -110,16 +113,16 @@ const SyntaxHighlighter = ({ code, language, wrap = false }: { code: string, lan
     };
 
     if (language === 'json') {
-      output = output.replace(/"([^"]+)":/g, (_, p1) => push(`<span class="text-[#00f3ff]">"${p1}"</span>`) + ':');
-      output = output.replace(/: "([^"]+)"/g, (_, p1) => ': ' + push(`<span class="text-[#00ff9f]">"${p1}"</span>`));
-      output = output.replace(/: (-?\d+\.?\d*)/g, (_, p1) => ': ' + push(`<span class="text-[#ff00ff]">${p1}</span>`));
-      output = output.replace(/: (true|false)/g, (_, p1) => ': ' + push(`<span class="text-[#ff00ff]">${p1}</span>`));
+      output = output.replace(/"([^"]+)":/g, (_, p1) => push(`<span class="text-[var(--cyber-neon-blue)]">"${p1}"</span>`) + ':');
+      output = output.replace(/: "([^"]+)"/g, (_, p1) => ': ' + push(`<span class="text-[var(--cyber-neon-green)]">"${p1}"</span>`));
+      output = output.replace(/: (-?\d+\.?\d*)/g, (_, p1) => ': ' + push(`<span class="text-[var(--cyber-neon-pink)]">${p1}</span>`));
+      output = output.replace(/: (true|false)/g, (_, p1) => ': ' + push(`<span class="text-[var(--cyber-neon-pink)]">${p1}</span>`));
     } else {
-      output = output.replace(/\/\/.*$/gm, (match) => push(`<span class="text-slate-500">${match}</span>`));
-      output = output.replace(/"([^"]+)"/g, (match) => push(`<span class="text-[#00ff9f]">${match}</span>`));
-      output = output.replace(/\b(message|enum|syntax|package|import|option|returns|rpc|service)\b/g, (match) => push(`<span class="text-[#ff00ff]">${match}</span>`));
-      output = output.replace(/\b(string|uint32|int32|bool|float|double|bytes|fixed32|fixed64|sint32|sint64)\b/g, (match) => push(`<span class="text-[#00f3ff]">${match}</span>`));
-      output = output.replace(/= (\d+)/g, (_, p1) => '= ' + push(`<span class="text-white">${p1}</span>`));
+      output = output.replace(/\/\/.*$/gm, (match) => push(`<span class="text-[var(--text-dim)]">${match}</span>`));
+      output = output.replace(/"([^"]+)"/g, (match) => push(`<span class="text-[var(--cyber-neon-green)]">${match}</span>`));
+      output = output.replace(/\b(message|enum|syntax|package|import|option|returns|rpc|service)\b/g, (match) => push(`<span class="text-[var(--cyber-neon-pink)]">${match}</span>`));
+      output = output.replace(/\b(string|uint32|int32|bool|float|double|bytes|fixed32|fixed64|sint32|sint64)\b/g, (match) => push(`<span class="text-[var(--cyber-neon-blue)]">${match}</span>`));
+      output = output.replace(/= (\d+)/g, (_, p1) => '= ' + push(`<span class="text-[var(--text-color)]">${p1}</span>`));
     }
 
     for (let i = placeholders.length - 1; i >= 0; i--) {
@@ -143,7 +146,7 @@ const ExternalLinkText = ({ href, children }: { href: string, children: React.Re
     href={href}
     target="_blank"
     rel="noopener noreferrer"
-    className="text-[#00f3ff] hover:underline inline-flex items-center gap-0.5 group"
+    className="text-[var(--cyber-neon-blue)] hover:underline inline-flex items-center gap-0.5 group"
   >
     {children}
     <ExternalLink className="w-2.5 h-2.5 opacity-60 group-hover:opacity-100 transition-opacity" />
@@ -156,16 +159,16 @@ const SectionTitle = ({ children, icon: Icon, subtitle }: { children: React.Reac
     <div className="flex flex-col mb-12">
       <div className="flex items-center gap-3 md:gap-4 mb-2">
         <div className="p-2 bg-cyan-500/10 rounded-lg border border-cyan-500/20 shrink-0">
-          <Icon className="w-5 h-5 md:w-6 md:h-6 text-[#00f3ff]" />
+          <Icon className="w-5 h-5 md:w-6 md:h-6 text-[var(--cyber-neon-blue)]" />
         </div>
-        <h2 className="text-xl sm:text-2xl md:text-3xl font-cyber font-bold tracking-tight text-white uppercase break-words min-w-0 relative group/title">
-          <a href={sectionId ? `#${sectionId}` : '#'} className="hover:text-[#00f3ff] transition-colors">
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-cyber font-bold tracking-tight text-[var(--text-color)] uppercase break-words min-w-0 relative group/title">
+          <a href={sectionId ? `#${sectionId}` : '#'} className="hover:text-[var(--cyber-neon-blue)] transition-colors">
             {children}
             <LinkIcon className="w-4 h-4 inline-block ml-2 opacity-0 group-hover/title:opacity-50 transition-opacity" />
           </a>
         </h2>
       </div>
-      {subtitle && <p className="text-slate-400 font-mono text-[10px] md:text-sm uppercase tracking-widest ml-11 md:ml-14">{subtitle}</p>}
+      {subtitle && <p className="text-[var(--text-dim)] font-mono text-[10px] md:text-sm uppercase tracking-widest ml-11 md:ml-14">{subtitle}</p>}
     </div>
   );
 };
@@ -175,8 +178,8 @@ const CyberPanel = ({ children, title, className = "", headerExtra }: { children
     {title && (
       <div className="flex flex-wrap items-center justify-between mb-4 border-b border-cyan-500/20 pb-2 gap-2">
         <div className="flex items-center gap-2">
-          <Terminal className="w-4 h-4 text-[#00f3ff] shrink-0" />
-          <span className="text-[10px] sm:text-xs font-mono text-[#00f3ff] uppercase tracking-tighter truncate max-w-[150px] sm:max-w-none">{title}</span>
+          <Terminal className="w-4 h-4 text-[var(--cyber-neon-blue)] shrink-0" />
+          <span className="text-[10px] sm:text-xs font-mono text-[var(--cyber-neon-blue)] uppercase tracking-tighter truncate max-w-[150px] sm:max-w-none">{title}</span>
         </div>
         {headerExtra}
       </div>
@@ -201,7 +204,7 @@ const Hero = () => (
         <span className="cyber-text-gradient">EXPLAINER</span>
       </h1>
 
-      <p className="text-slate-400 text-xl max-w-2xl mx-auto mb-12 leading-relaxed">
+      <p className="text-[var(--text-dim)] text-xl max-w-2xl mx-auto mb-12 leading-relaxed">
         Language-neutral, platform-neutral, extensible mechanism for serializing structured data.
         The backbone of modern high-performance systems.
       </p>
@@ -217,7 +220,7 @@ const SchemaEditor = ({ value, onChange, errors }: { value: string, onChange: (s
   const [scroll, setScroll] = useState({ top: 0, left: 0 });
 
   return (
-    <div className="relative w-full h-[500px] bg-black/20 rounded overflow-hidden">
+    <div className="relative w-full h-[500px] bg-[var(--overlay-bg)] rounded overflow-hidden">
       {/* Background Highlight Layer */}
       <div
         className="absolute top-0 left-0 p-4 font-mono text-sm leading-6 whitespace-pre pointer-events-none select-none"
@@ -398,7 +401,7 @@ const ProtobufBasics = () => {
             <li><strong>Keys:</strong> Can be any integral or string type. <em>Messages, enums, floats, and bytes cannot be keys.</em></li>
             <li><strong>Values:</strong> Can be any type, including another message, but <em>cannot</em> be another map or a repeated field.</li>
           </ul>
-          <p className="text-xs text-slate-500 italic">
+          <p className="text-xs text-[var(--text-dim)] italic">
             Behind the scenes, maps are actually just <code>repeated</code> messages with <code>key</code> and <code>value</code> fields, ensuring backward compatibility with older decoders.
           </p>
         </div>
@@ -435,7 +438,7 @@ const ProtobufBasics = () => {
           <p>
             In <code>proto3</code>, default scalar values (like <code>0</code>, <code>false</code>, or <code>""</code>) are <strong>not serialized</strong> to save space.
           </p>
-          <p className="text-[#ff00ff] bg-[#ff00ff]/5 p-3 border border-[#ff00ff]/20 rounded text-xs italic">
+          <p className="text-[var(--cyber-neon-pink)] bg-[#ff00ff]/5 p-3 border border-[#ff00ff]/20 rounded text-xs italic">
             <strong>The Pitfall:</strong> The receiver cannot distinguish between a field explicitly "set to zero" (e.g., 0 degrees) and one that was never sent.
           </p>
           <p>
@@ -450,7 +453,7 @@ const ProtobufBasics = () => {
   const current = tabs.find(t => t.id === activeTab)!;
 
   return (
-    <Section id="basics" className="py-24 px-4 sm:px-8 bg-black/40 border-t border-white/5">
+    <Section id="basics" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-dark)] border-t border-[var(--border-light)]">
       <div className="max-w-7xl mx-auto">
         <SectionTitle icon={BookOpen} subtitle="02_BUILDING_BLOCKS">Protobuf Basics</SectionTitle>
 
@@ -462,11 +465,11 @@ const ProtobufBasics = () => {
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-4 p-4 rounded-lg border transition-all text-left group ${activeTab === tab.id
-                  ? 'bg-[#00f3ff]/10 border-[#00f3ff] text-[#00f3ff]'
-                  : 'bg-white/5 border-white/5 text-slate-500 hover:border-white/20 hover:text-slate-300'
+                  ? 'bg-[#00f3ff]/10 border-[#00f3ff] text-[var(--cyber-neon-blue)]'
+                  : 'bg-[var(--overlay-bg)] border-[var(--border-light)] text-[var(--text-dim)] hover:border-white/20 hover:text-[var(--text-color)]'
                   }`}
               >
-                <tab.icon className={`w-5 h-5 ${activeTab === tab.id ? 'text-[#00f3ff]' : 'text-slate-600 group-hover:text-slate-400'}`} />
+                <tab.icon className={`w-5 h-5 ${activeTab === tab.id ? 'text-[var(--cyber-neon-blue)]' : 'text-[var(--text-dim)] group-hover:text-[var(--text-dim)]'}`} />
                 <span className="font-cyber font-bold text-sm tracking-widest uppercase">{tab.label}</span>
               </button>
             ))}
@@ -476,8 +479,8 @@ const ProtobufBasics = () => {
           <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
             <div className="space-y-6">
               <div className="space-y-2">
-                <h3 className="text-2xl font-cyber font-bold text-white uppercase">{current.title}</h3>
-                <div className="text-slate-400 leading-relaxed text-sm">{current.desc}</div>
+                <h3 className="text-2xl font-cyber font-bold text-[var(--text-color)] uppercase">{current.title}</h3>
+                <div className="text-[var(--text-dim)] leading-relaxed text-sm">{current.desc}</div>
               </div>
             </div>
             <CyberPanel title="EXAMPLE_DEFINITION" className="h-full">
@@ -532,8 +535,8 @@ const DeepDiveSection = () => {
             These options provide instructions to compiler plugins (like generating validation code) or are read dynamically at runtime via reflection.
           </p>
           <div className="p-3 bg-blue-500/10 border border-blue-500/20 rounded text-xs space-y-2">
-            <p><strong><span className="text-[#00f3ff]">Historical Note:</span></strong> Custom options were originally a <code>proto2</code> feature that uses the <code>extend</code> keyword. While <code>proto3</code> removed general-purpose extensions, it kept them for descriptor objects specifically so options would continue to work.</p>
-            <p><strong><span className="text-[#00ff9f]">The Future:</span></strong> In <strong>Protobuf Editions</strong> (2023+), this distinction is removed. Editions allow native definition of options and introduce <code>features</code>, a specialized type of option used by the compiler itself to control behavior.</p>
+            <p><strong><span className="text-[var(--cyber-neon-blue)]">Historical Note:</span></strong> Custom options were originally a <code>proto2</code> feature that uses the <code>extend</code> keyword. While <code>proto3</code> removed general-purpose extensions, it kept them for descriptor objects specifically so options would continue to work.</p>
+            <p><strong><span className="text-[var(--cyber-neon-green)]">The Future:</span></strong> In <strong>Protobuf Editions</strong> (2023+), this distinction is removed. Editions allow native definition of options and introduce <code>features</code>, a specialized type of option used by the compiler itself to control behavior.</p>
           </div>
         </div>
       ),
@@ -580,7 +583,7 @@ const DeepDiveSection = () => {
   const current = tabs.find(t => t.id === activeTab)!;
 
   return (
-    <Section id="deepdive" className="py-24 px-4 sm:px-8 bg-slate-900/15 border-t border-white/5">
+    <Section id="deepdive" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]">
       <div className="max-w-7xl mx-auto">
         <SectionTitle icon={Layers} subtitle="07_DEEP_DIVE">Schema Engineering</SectionTitle>
 
@@ -592,11 +595,11 @@ const DeepDiveSection = () => {
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-4 p-4 rounded-lg border transition-all text-left group ${activeTab === tab.id
-                  ? 'bg-[#00ff9f]/10 border-[#00ff9f] text-[#00ff9f]'
-                  : 'bg-white/5 border-white/5 text-slate-500 hover:border-white/20 hover:text-slate-300'
+                  ? 'bg-[#00ff9f]/10 border-[#00ff9f] text-[var(--cyber-neon-green)]'
+                  : 'bg-[var(--overlay-bg)] border-[var(--border-light)] text-[var(--text-dim)] hover:border-white/20 hover:text-[var(--text-color)]'
                   }`}
               >
-                <tab.icon className={`w-5 h-5 ${activeTab === tab.id ? 'text-[#00ff9f]' : 'text-slate-600 group-hover:text-slate-400'}`} />
+                <tab.icon className={`w-5 h-5 ${activeTab === tab.id ? 'text-[var(--cyber-neon-green)]' : 'text-[var(--text-dim)] group-hover:text-[var(--text-dim)]'}`} />
                 <span className="font-cyber font-bold text-sm tracking-widest uppercase">{tab.label}</span>
               </button>
             ))}
@@ -606,8 +609,8 @@ const DeepDiveSection = () => {
           <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
             <div className="space-y-6">
               <div className="space-y-2">
-                <h3 className="text-2xl font-cyber font-bold text-white uppercase">{current.title}</h3>
-                <div className="text-slate-400 leading-relaxed text-sm">{current.desc}</div>
+                <h3 className="text-2xl font-cyber font-bold text-[var(--text-color)] uppercase">{current.title}</h3>
+                <div className="text-[var(--text-dim)] leading-relaxed text-sm">{current.desc}</div>
               </div>
             </div>
             <CyberPanel title="SCHEMA_EXAMPLE" className="h-full">
@@ -640,7 +643,7 @@ const AdvancedProtobuf = () => {
             <p className="leading-relaxed">
               The standard <code>protoc</code> compiler requires you to manually specify every include directory via <code>-I</code> (or <code>--proto_path</code>) flags. The compiler resolves files based on the current working directory combined with these flags.
             </p>
-            <p className="leading-relaxed text-red-200/80">
+            <p className="leading-relaxed text-[var(--text-error)]">
               If your import paths are inconsistent across your project (e.g., one file uses <code>import "proto/user.proto"</code> and another uses <code>import "user.proto"</code> depending on how <code>protoc</code> was invoked), the compiler will treat them as entirely different types. This commonly leads to baffling "Duplicate Symbol" errors or "Type not found" failures when compiling.
             </p>
           </div>
@@ -726,7 +729,7 @@ const AdvancedProtobuf = () => {
           <div className="grid grid-cols-1 gap-4">
             <div className="p-4 bg-red-500/5 border border-red-500/20 rounded text-xs space-y-3">
               <p className="font-bold text-red-400">Wire-Breaking (NEVER DO THIS):</p>
-              <ul className="list-disc pl-4 space-y-1 text-slate-300">
+              <ul className="list-disc pl-4 space-y-1 text-[var(--text-color)]">
                 <li>Changing a <strong>Field Number</strong> (e.g., moving <code>id</code> from 1 to 2).</li>
                 <li>Reusing a <strong>Field Number</strong> for a new field without reserving it first, leading to data corruption for old clients.</li>
                 <li>Changing a field type to an incompatible wire type (e.g., <code>string</code> to <code>int32</code>).</li>
@@ -734,8 +737,8 @@ const AdvancedProtobuf = () => {
               </ul>
             </div>
             <div className="p-4 bg-[#00ff9f]/5 border border-[#00ff9f]/20 rounded text-xs space-y-3">
-              <p className="font-bold text-[#00ff9f]">Safe Operations:</p>
-              <ul className="list-disc pl-4 space-y-1 text-slate-300">
+              <p className="font-bold text-[var(--cyber-neon-green)]">Safe Operations:</p>
+              <ul className="list-disc pl-4 space-y-1 text-[var(--text-color)]">
                 <li>Adding new fields with <strong>new numbers</strong>.</li>
                 <li>Renaming a field (this may break JSON clients, but is safe on the wire).</li>
                 <li>Deleting a field (as long as you use the <code>reserved</code> keyword to prevent future reuse of its number/name).</li>
@@ -746,27 +749,38 @@ const AdvancedProtobuf = () => {
           <p>
             As long as you follow these rules, old clients can read new messages (ignoring unknown fields), and new clients can read old messages (using default values for missing fields).
           </p>
+          <div className="p-3 bg-blue-500/10 border border-blue-500/20 rounded text-xs space-y-2">
+            <p className="font-bold text-blue-400">Automated Enforcement</p>
+            <p className="text-[var(--text-color)]">
+              Tools like <ExternalLinkText href="https://buf.build/docs/breaking/"><code>buf breaking</code></ExternalLinkText> automate these checks by comparing your local changes against a previous version (e.g., your main branch) and failing if any wire-breaking changes are detected.
+            </p>
+          </div>
         </div>
       ),
-      example: '// V1 schema\nmessage Config {\n  bool feature_enabled = 1;\n}\n\n// V2 schema - safely added a field\nmessage Config {\n  bool feature_enabled = 1;\n  int32 max_retries = 2; // Old clients ignore this\n}'
+      example: '// Check for breaking changes against main branch\n$ buf breaking --against .git#branch=main\n\n// Example failure output:\n// user.proto:10:3: Field "1" changed type\n//   from "string" to "int32".\n// user.proto:12:3: Previously present\n//   field "3" deleted.'
     },
     {
-      id: 'checks',
-      label: 'Checks',
-      icon: AlertTriangle,
-      title: 'Linting and Compatibility',
+      id: 'linting',
+      label: 'Linting',
+      icon: SearchCheck,
+      title: 'Enforcing Standards',
       desc: (
         <div className="space-y-4">
           <p>
-            Because Protobuf schemas are contracts, maintaining their quality and backwards compatibility is critical. Tools like <ExternalLinkText href="https://buf.build/">Buf</ExternalLinkText> or <ExternalLinkText href="https://github.com/yoheimuta/protolint">protolint</ExternalLinkText> provide automated checks.
+            Linting ensures your schemas are consistent, readable, and follow industry best practices. This is vital in large organizations where hundreds of developers might be defining messages.
           </p>
-          <ul className="list-disc pl-4 space-y-1">
-            <li><strong>Linting:</strong> Enforces consistent style (e.g., <code>buf lint</code>).</li>
-            <li><strong>Breaking Change Detection:</strong> Ensures changes don't break existing consumers (e.g., <code>buf breaking</code>).</li>
+          <p>
+            Tools like <ExternalLinkText href="https://buf.build/">Buf</ExternalLinkText> and <ExternalLinkText href="https://github.com/yoheimuta/protolint">protolint</ExternalLinkText> enforce rules such as:
+          </p>
+          <ul className="list-disc pl-4 space-y-2 text-sm text-[var(--text-color)]">
+            <li><strong>Naming:</strong> Fields should be <code>snake_case</code>, messages should be <code>PascalCase</code>.</li>
+            <li><strong>Structure:</strong> Enforce the use of <code>package</code> statements and directory matching.</li>
+            <li><strong>Documentation:</strong> Require comments on all public messages and fields.</li>
+            <li><strong>Best Practices:</strong> Avoid using <code>required</code> (in proto2) or deeply nested messages.</li>
           </ul>
         </div>
       ),
-      example: '// Check for breaking changes against main branch\n$ buf breaking --against .git#branch=main\n\n// Output if you break a rule:\n// user.proto:10:3: Field "1" changed type\n//   from "string" to "int32".\n// user.proto:12:3: Previously present\n//   field "3" deleted.'
+      example: '// Run linter\n$ buf lint\n\n// Output:\n// user.proto:5:1: Field name "userID" should be\n//   lower_snake_case, such as "user_id".\n// user.proto:8:1: Message "user" should be\n//   PascalCase, such as "User".'
     },
     {
       id: 'editions',
@@ -790,7 +804,7 @@ const AdvancedProtobuf = () => {
   const current = tabs.find(t => t.id === activeTab)!;
 
   return (
-    <Section id="advanced" className="py-24 px-4 sm:px-8 bg-slate-900/10 border-t border-white/5">
+    <Section id="advanced" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]">
       <div className="max-w-7xl mx-auto">
         <SectionTitle icon={Layers} subtitle="05_ADVANCED_TOPICS">Advanced Protobuf</SectionTitle>
 
@@ -799,8 +813,8 @@ const AdvancedProtobuf = () => {
           <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
             <div className="space-y-6">
               <div className="space-y-2">
-                <h3 className="text-2xl font-cyber font-bold text-white uppercase">{current.title}</h3>
-                <div className="text-slate-400 leading-relaxed text-sm">{current.desc}</div>
+                <h3 className="text-2xl font-cyber font-bold text-[var(--text-color)] uppercase">{current.title}</h3>
+                <div className="text-[var(--text-dim)] leading-relaxed text-sm">{current.desc}</div>
               </div>
             </div>
             <CyberPanel title={current.id === 'checks' ? 'TERMINAL_OUTPUT' : 'EXAMPLE_DEFINITION'} className="h-full">
@@ -817,11 +831,11 @@ const AdvancedProtobuf = () => {
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-4 p-4 rounded-lg border transition-all text-left group ${activeTab === tab.id
-                  ? 'bg-[#ff00ff]/10 border-[#ff00ff] text-[#ff00ff]'
-                  : 'bg-white/5 border-white/5 text-slate-500 hover:border-white/20 hover:text-slate-300'
+                  ? 'bg-[#ff00ff]/10 border-[#ff00ff] text-[var(--cyber-neon-pink)]'
+                  : 'bg-[var(--overlay-bg)] border-[var(--border-light)] text-[var(--text-dim)] hover:border-white/20 hover:text-[var(--text-color)]'
                   }`}
               >
-                <tab.icon className={`w-5 h-5 ${activeTab === tab.id ? 'text-[#ff00ff]' : 'text-slate-600 group-hover:text-slate-400'}`} />
+                <tab.icon className={`w-5 h-5 ${activeTab === tab.id ? 'text-[var(--cyber-neon-pink)]' : 'text-[var(--text-dim)] group-hover:text-[var(--text-dim)]'}`} />
                 <span className="font-cyber font-bold text-sm tracking-widest uppercase">{tab.label}</span>
               </button>
             ))}
@@ -833,20 +847,20 @@ const AdvancedProtobuf = () => {
 };
 
 const DescriptorsAndReflection = () => (
-  <Section id="reflection" className="py-24 px-4 sm:px-8 bg-slate-900/20 border-t border-white/5">
+  <Section id="reflection" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]">
     <div className="max-w-7xl mx-auto space-y-16">
       <div>
         <SectionTitle icon={Code2} subtitle="06_META_SCHEMA">Descriptors & Reflection</SectionTitle>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          <div className="space-y-6 text-slate-300">
-            <h3 className="text-xl font-cyber font-bold text-white uppercase">Schemas Describing Schemas</h3>
+          <div className="space-y-6 text-[var(--text-color)]">
+            <h3 className="text-xl font-cyber font-bold text-[var(--text-color)] uppercase">Schemas Describing Schemas</h3>
             <p className="text-sm leading-relaxed">
               When you run the Protobuf compiler (`protoc`), it doesn't just generate code. It can also output a binary representation of your schema called a <strong>FileDescriptorSet</strong>.
             </p>
             <p className="text-sm leading-relaxed">
               Fascinatingly, this `FileDescriptorSet` is itself a Protobuf message! Google defines a schema (<ExternalLinkText href="https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/descriptor.proto"><code>descriptor.proto</code></ExternalLinkText>) that describes how to represent `.proto` files. This means you can use Protobuf tools to read and analyze Protobuf schemas dynamically at runtime.
             </p>
-            <div className="p-4 bg-cyan-500/5 border border-cyan-500/10 rounded text-sm text-slate-400 space-y-3">
+            <div className="p-4 bg-cyan-500/5 border border-cyan-500/10 rounded text-sm text-[var(--text-dim)] space-y-3">
               <p><strong>Why is this useful?</strong></p>
               <ul className="space-y-2">
                 <li className="flex gap-2"><div className="w-1 h-1 bg-[#00f3ff] mt-1.5 shrink-0"></div> <strong>Dynamic Decoding:</strong> Tools like this web explorer use descriptors to decode arbitrary binary data without generating static code.</li>
@@ -862,11 +876,11 @@ const DescriptorsAndReflection = () => (
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 pt-16 border-t border-white/5">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 pt-16 border-t border-[var(--border-light)]">
         <CyberPanel title="SERVER_REFLECTION">
           <div className="p-4 space-y-4 overflow-x-auto">
             <SyntaxHighlighter language="proto" code={`// gRPC Server Reflection Protocol\npackage grpc.reflection.v1alpha;\n\nservice ServerReflection {\n  // The reflection service is queried by clients to\n  // discover the API surface of the server dynamically.\n  rpc ServerReflectionInfo(stream ServerReflectionRequest)\n      returns (stream ServerReflectionResponse);\n}`} />
-            <div className="mt-4 text-xs font-mono text-slate-500">
+            <div className="mt-4 text-xs font-mono text-[var(--text-dim)]">
               Client: "What services do you have?"<br />
               Server: "I have User Service and Auth Service"<br />
               Client: "Send me the descriptors for User Service"<br />
@@ -874,22 +888,22 @@ const DescriptorsAndReflection = () => (
             </div>
           </div>
         </CyberPanel>
-        <div className="space-y-6 text-slate-300">
-          <h3 className="text-xl font-cyber font-bold text-white uppercase flex items-center gap-3">
-            <ShieldCheck className="w-6 h-6 text-[#ff00ff]" />
+        <div className="space-y-6 text-[var(--text-color)]">
+          <h3 className="text-xl font-cyber font-bold text-[var(--text-color)] uppercase flex items-center gap-3">
+            <ShieldCheck className="w-6 h-6 text-[var(--cyber-neon-pink)]" />
             Server Reflection
           </h3>
           <p className="text-sm leading-relaxed">
             By combining the standardized RPC mechanism of gRPC with Protobuf Descriptors, servers can implement <strong>Server Reflection</strong>. This is a standardized service that allows clients to ask the server for its own schema.
           </p>
           <div className="space-y-4 text-sm">
-            <h4 className="font-cyber font-bold text-[#00f3ff] uppercase text-xs tracking-widest">The Ecosystem it Enables</h4>
+            <h4 className="font-cyber font-bold text-[var(--cyber-neon-blue)] uppercase text-xs tracking-widest">The Ecosystem it Enables</h4>
             <ul className="list-disc pl-4 space-y-2">
               <li><strong>CLI Tools:</strong> Tools like <ExternalLinkText href="https://github.com/fullstorydev/grpcurl"><code>grpcurl</code></ExternalLinkText> can interact with your server just like <code>curl</code> does for REST, without needing you to share `.proto` files beforehand.</li>
               <li><strong>GUI Clients:</strong> Postman, Insomnia, and Buf Studio can dynamically generate UI forms for testing your APIs by reading the reflected descriptors.</li>
             </ul>
           </div>
-          <div className="p-3 bg-red-500/10 border border-red-500/20 rounded text-red-200/80 text-sm">
+          <div className="p-3 bg-red-500/10 border border-red-500/20 rounded text-[var(--text-error)] text-sm">
             <strong>Security Warning:</strong> Enabling Server Reflection on a public-facing API exposes your entire internal data model and service structure to the internet. It is highly recommended to <em>only enable reflection in development environments or internal private networks.</em>
           </div>
         </div>
@@ -911,7 +925,10 @@ const VersionTimeline = () => {
         'Support for custom default values in schema.',
         'Introduced Extensions for schema extensibility.'
       ],
-      color: '#ff00ff'
+      color: 'var(--cyber-neon-pink)',
+      accentClass: 'text-[var(--cyber-neon-pink)]',
+      bgClass: 'bg-[var(--cyber-neon-pink)]/10',
+      borderClass: 'border-[var(--cyber-neon-pink)]/30'
     },
     {
       id: 'proto3',
@@ -924,7 +941,10 @@ const VersionTimeline = () => {
         'Added canonical JSON mapping support.',
         'Preserved unknown enum values (Open Enums).'
       ],
-      color: '#00f3ff'
+      color: 'var(--cyber-neon-blue)',
+      accentClass: 'text-[var(--cyber-neon-blue)]',
+      bgClass: 'bg-[var(--cyber-neon-blue)]/10',
+      borderClass: 'border-[var(--cyber-neon-blue)]/30'
     },
     {
       id: 'editions',
@@ -937,45 +957,48 @@ const VersionTimeline = () => {
         'Reverts default to EXPLICIT presence (lexical features).',
         'individual feature flags replace sweeping syntax rules.'
       ],
-      color: '#00ff9f'
+      color: 'var(--cyber-neon-green)',
+      accentClass: 'text-[var(--cyber-neon-green)]',
+      bgClass: 'bg-[var(--cyber-neon-green)]/10',
+      borderClass: 'border-[var(--cyber-neon-green)]/30'
     }
   ];
 
   return (
     <div className="mt-24 space-y-12">
       <div className="flex flex-col items-center">
-        <h3 className="text-2xl font-cyber font-bold text-white uppercase tracking-tight mb-2">The Evolution of Protobuf</h3>
-        <p className="text-slate-400 text-center max-w-2xl">From internal tool to a multi-edition global standard.</p>
+        <h3 className="text-2xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight mb-2">The Evolution of Protobuf</h3>
+        <p className="text-[var(--text-dim)] text-center max-w-2xl">From internal tool to a multi-edition global standard.</p>
       </div>
 
       <div className="relative">
         {/* Vertical Line */}
-        <div className="absolute left-1/2 top-0 bottom-0 w-px bg-white/10 hidden md:block" />
+        <div className="absolute left-1/2 top-0 bottom-0 w-px bg-[var(--border-light)] hidden md:block" />
 
         <div className="space-y-12 md:space-y-0">
           {versions.map((v, i) => (
             <div key={v.id} className={`relative flex flex-col md:flex-row items-center gap-8 md:gap-0 ${i % 2 === 1 ? 'md:flex-row-reverse' : ''}`}>
               {/* Dot */}
-              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-slate-900 border-2 hidden md:block z-10" style={{ borderColor: v.color }} />
+              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-[var(--bg-color)] border-2 hidden md:block z-10" style={{ borderColor: v.color }} />
 
               <div className="w-full md:w-1/2 flex flex-col items-center md:flex-row md:items-center">
-                {i % 2 === 1 && <div className="h-px flex-grow bg-white/10 hidden md:block" style={{ background: `linear-gradient(to right, transparent, ${v.color}40)` }} />}
-                <div className={`p-6 bg-white/5 border border-white/10 rounded-xl hover:border-white/20 transition-all w-full max-w-md shrink-0`}>
+                {i % 2 === 1 && <div className="h-px flex-grow bg-[var(--border-light)] hidden md:block" style={{ background: `linear-gradient(to right, transparent, ${v.color})`, opacity: 0.2 }} />}
+                <div className={`p-6 bg-[var(--panel-bg)] border border-[var(--border-light)] rounded-xl hover:border-white/20 transition-all w-full max-w-md shrink-0`}>
                   <div className="flex items-center gap-3 mb-2 text-left">
-                    <span className="text-[10px] font-mono opacity-50">{v.date}</span>
-                    <span className="px-2 py-0.5 rounded text-[10px] font-cyber font-bold tracking-widest uppercase" style={{ backgroundColor: `${v.color}20`, color: v.color }}>{v.label}</span>
+                    <span className="text-[10px] font-mono text-[var(--text-color)]">{v.date}</span>
+                    <span className={`px-2 py-0.5 rounded text-[10px] font-cyber font-bold tracking-widest uppercase ${v.bgClass} ${v.accentClass}`}>{v.label}</span>
                   </div>
-                  <h4 className="text-lg font-cyber font-bold text-white mb-4 uppercase text-left">{v.title}</h4>
-                  <ul className="space-y-2 text-xs text-slate-400 leading-relaxed">
+                  <h4 className="text-lg font-cyber font-bold text-[var(--text-color)] mb-4 uppercase text-left">{v.title}</h4>
+                  <ul className="space-y-2 text-xs text-[var(--text-color)] leading-relaxed">
                     {v.features.map(f => (
                       <li key={f} className="flex gap-2 items-start text-left">
-                        <ChevronRight className="w-3 h-3 mt-1 shrink-0" style={{ color: v.color }} />
+                        <ChevronRight className={`w-3 h-3 mt-1 shrink-0 ${v.accentClass}`} />
                         <span className="flex-1">{f}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
-                {i % 2 === 0 && <div className="h-px flex-grow bg-white/10 hidden md:block" style={{ background: `linear-gradient(to left, transparent, ${v.color}40)` }} />}
+                {i % 2 === 0 && <div className="h-px flex-grow bg-[var(--border-light)] hidden md:block" style={{ background: `linear-gradient(to left, transparent, ${v.color})`, opacity: 0.2 }} />}
               </div>
               <div className="hidden md:block md:w-1/2" />
             </div>
@@ -1087,27 +1110,27 @@ const Introduction = ({ messageSchema, fds }: {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
         <div className="space-y-4">
-          <p className="text-xl text-white font-cyber">
+          <p className="text-xl text-[var(--text-color)] font-cyber">
             <ExternalLinkText href="https://protobuf.dev/">Protocol Buffers</ExternalLinkText> (Protobuf) is a schema-driven, binary serialization format.
           </p>
-          <p className="text-slate-300 leading-relaxed">
+          <p className="text-[var(--text-color)] leading-relaxed">
             Developed by <ExternalLinkText href="https://google.com">Google</ExternalLinkText> as a more efficient alternative to text-based formats, it provides a language-neutral and platform-neutral way to structure and exchange data. Think <ExternalLinkText href="https://developer.mozilla.org/en-US/docs/Web/XML/XML_introduction">XML</ExternalLinkText> or <ExternalLinkText href="https://www.json.org/">JSON</ExternalLinkText>, but with a focus on machine performance and strict contracts.
           </p>
         </div>
 
         <div className="space-y-4">
-          <h3 className="text-[#00f3ff] font-cyber uppercase text-sm tracking-widest">Why it matters:</h3>
-          <ul className="space-y-3 text-slate-300">
+          <h3 className="text-[var(--cyber-neon-blue)] font-cyber uppercase text-sm tracking-widest">Why it matters:</h3>
+          <ul className="space-y-3 text-[var(--text-color)]">
             <li className="flex gap-3">
-              <ChevronRight className="w-4 h-4 text-[#ff00ff] shrink-0 mt-1" />
+              <ChevronRight className="w-4 h-4 text-[var(--cyber-neon-pink)] shrink-0 mt-1" />
               <span><strong>Performance:</strong> Binary encoding is significantly faster to parse and smaller to transmit than text-based formats.</span>
             </li>
             <li className="flex gap-3">
-              <ChevronRight className="w-4 h-4 text-[#ff00ff] shrink-0 mt-1" />
+              <ChevronRight className="w-4 h-4 text-[var(--cyber-neon-pink)] shrink-0 mt-1" />
               <span><strong>Type Safety:</strong> Strong schemas prevent a whole class of bugs before they even hit production.</span>
             </li>
             <li className="flex gap-3">
-              <ChevronRight className="w-4 h-4 text-[#ff00ff] shrink-0 mt-1" />
+              <ChevronRight className="w-4 h-4 text-[var(--cyber-neon-pink)] shrink-0 mt-1" />
               <span><strong>Backward Compatibility:</strong> Fields can be added or removed without breaking existing deployed services.</span>
             </li>
           </ul>
@@ -1117,8 +1140,8 @@ const Introduction = ({ messageSchema, fds }: {
       <div className="grid grid-cols-1 gap-8 mt-12">
         <CyberPanel title="THE_MANY_FACES_OF_PROTO">
           <div className="p-6 space-y-8">
-            <p className="text-sm text-slate-400 max-w-3xl leading-relaxed">
-              "Protobuf" is often used as a catch-all term, but it actually refers to an entire ecosystem of specifications. Here is how a single <code className="text-[#00f3ff]">{messageSchema?.name || 'User'}</code> message looks in each format:
+            <p className="text-sm text-[var(--text-dim)] max-w-3xl leading-relaxed">
+              "Protobuf" is often used as a catch-all term, but it actually refers to an entire ecosystem of specifications. Here is how a single <code className="text-[var(--cyber-neon-blue)]">{messageSchema?.name || 'User'}</code> message looks in each format:
             </p>
 
             <div className="flex flex-col lg:flex-row gap-12 min-h-[350px]">
@@ -1129,11 +1152,11 @@ const Introduction = ({ messageSchema, fds }: {
                     key={face.id}
                     onClick={() => setActiveFace(face.id)}
                     className={`flex items-center gap-4 p-4 rounded-lg border transition-all text-left group ${activeFace === face.id
-                      ? 'bg-[#00f3ff]/10 border-[#00f3ff] text-[#00f3ff]'
-                      : 'bg-white/5 border-white/5 text-slate-500 hover:border-white/20 hover:text-slate-300'
+                      ? 'bg-[#00f3ff]/10 border-[#00f3ff] text-[var(--cyber-neon-blue)]'
+                      : 'bg-[var(--overlay-bg)] border-[var(--border-light)] text-[var(--text-dim)] hover:border-white/20 hover:text-[var(--text-color)]'
                       }`}
                   >
-                    <face.icon className={`w-5 h-5 ${activeFace === face.id ? 'text-[#00f3ff]' : 'text-slate-600 group-hover:text-slate-400'}`} />
+                    <face.icon className={`w-5 h-5 ${activeFace === face.id ? 'text-[var(--cyber-neon-blue)]' : 'text-[var(--text-dim)] group-hover:text-[var(--text-dim)]'}`} />
                     <span className="font-cyber font-bold text-sm tracking-widest uppercase">{face.label}</span>
                   </button>
                 ))}
@@ -1143,8 +1166,8 @@ const Introduction = ({ messageSchema, fds }: {
               <div className="flex-1 space-y-8">
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <h3 className="text-2xl font-cyber font-bold text-white uppercase">{current.title}</h3>
-                    <div className="text-slate-400 leading-relaxed text-sm max-w-3xl">{current.desc}</div>
+                    <h3 className="text-2xl font-cyber font-bold text-[var(--text-color)] uppercase">{current.title}</h3>
+                    <div className="text-[var(--text-dim)] leading-relaxed text-sm max-w-3xl">{current.desc}</div>
                   </div>
                 </div>
                 <CyberPanel title="ENCODED_OUTPUT">
@@ -1152,7 +1175,7 @@ const Introduction = ({ messageSchema, fds }: {
                     {current.language ? (
                       <SyntaxHighlighter language={current.language} code={current.code} />
                     ) : (
-                      <pre className="font-mono text-sm leading-6 text-[#ff00ff]/80 break-all whitespace-pre-wrap m-0">
+                      <pre className="font-mono text-sm leading-6 text-[var(--cyber-neon-pink)]/80 break-all whitespace-pre-wrap m-0">
                         {current.code}
                       </pre>
                     )}
@@ -1161,9 +1184,9 @@ const Introduction = ({ messageSchema, fds }: {
 
                 {activeFace === 'bin' && (
                   <div className="flex gap-3 p-4 bg-[#ff00ff]/5 border border-[#ff00ff]/10 rounded-lg animate-in fade-in slide-in-from-top-2">
-                    <Terminal className="w-5 h-5 text-[#ff00ff] shrink-0" />
-                    <p className="text-xs text-slate-400 leading-relaxed italic">
-                      If you're currently trying to "read" the hex block above and failing: congratulations, you're human. We'll be investigating how machines actually make sense of this chaos in the <a href="#matrix" className="text-[#ff00ff] hover:underline"><strong>Digging into the binary</strong></a> section further down.
+                    <Terminal className="w-5 h-5 text-[var(--cyber-neon-pink)] shrink-0" />
+                    <p className="text-xs text-[var(--text-dim)] leading-relaxed italic">
+                      If you're currently trying to "read" the hex block above and failing: congratulations, you're human. We'll be investigating how machines actually make sense of this chaos in the <a href="#matrix" className="text-[var(--cyber-neon-pink)] hover:underline"><strong>Digging into the binary</strong></a> section further down.
                     </p>
                   </div>
                 )}
@@ -1173,29 +1196,29 @@ const Introduction = ({ messageSchema, fds }: {
         </CyberPanel>
       </div>
 
-      <div className="mt-24 pt-16 border-t border-white/5">
+      <div className="mt-24 pt-16 border-t border-[var(--border-light)]">
         <div className="flex flex-col items-center mb-12">
-          <h3 className="text-2xl font-cyber font-bold text-white uppercase tracking-tight mb-2">The Compilation Pipeline</h3>
-          <p className="text-slate-400 text-center max-w-2xl">How your human-readable schema becomes high-performance code.</p>
+          <h3 className="text-2xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight mb-2">The Compilation Pipeline</h3>
+          <p className="text-[var(--text-dim)] text-center max-w-2xl">How your human-readable schema becomes high-performance code.</p>
         </div>
 
         <div className="flex flex-col items-center">
           <div className="flex flex-col md:flex-row items-center gap-8 w-full justify-between max-w-5xl">
             <CyberPanel title="SOURCE" className="w-full md:w-64 text-center">
-              <FileCode className="w-12 h-12 text-[#00ff9f] mx-auto mb-4" />
+              <FileCode className="w-12 h-12 text-[var(--cyber-neon-green)] mx-auto mb-4" />
               <span className="font-cyber text-sm">SCHEMA.PROTO</span>
             </CyberPanel>
             <div className="flex flex-col items-center gap-2">
-              <ArrowRight className="w-8 h-8 text-[#00f3ff] rotate-90 md:rotate-0" />
-              <span className="text-xs font-mono text-slate-500 uppercase"><ExternalLinkText href="https://github.com/protocolbuffers/protobuf/releases">protoc</ExternalLinkText> / <ExternalLinkText href="https://buf.build/">Buf</ExternalLinkText></span>
+              <ArrowRight className="w-8 h-8 text-[var(--cyber-neon-blue)] rotate-90 md:rotate-0" />
+              <span className="text-xs font-mono text-[var(--text-dim)] uppercase"><ExternalLinkText href="https://github.com/protocolbuffers/protobuf/releases">protoc</ExternalLinkText> / <ExternalLinkText href="https://buf.build/">Buf</ExternalLinkText></span>
             </div>
             <CyberPanel title="COMPILER" className="w-full md:w-64 text-center border-[#00f3ff] shadow-[0_0_15px_rgba(0,243,255,0.2)]">
-              <Cpu className="w-12 h-12 text-[#00f3ff] mx-auto mb-4 animate-pulse" />
-              <span className="font-cyber text-sm text-[#00f3ff]">CODE_GENERATION</span>
+              <Cpu className="w-12 h-12 text-[var(--cyber-neon-blue)] mx-auto mb-4 animate-pulse" />
+              <span className="font-cyber text-sm text-[var(--cyber-neon-blue)]">CODE_GENERATION</span>
             </CyberPanel>
             <div className="flex flex-col items-center gap-2">
-              <ArrowRight className="w-8 h-8 text-[#ff00ff] rotate-90 md:rotate-0" />
-              <span className="text-xs font-mono text-slate-500 uppercase">TARGETS</span>
+              <ArrowRight className="w-8 h-8 text-[var(--cyber-neon-pink)] rotate-90 md:rotate-0" />
+              <span className="text-xs font-mono text-[var(--text-dim)] uppercase">TARGETS</span>
             </div>
             <div className="flex flex-col gap-4">
               <div className="grid grid-cols-2 gap-4 w-full md:w-auto">
@@ -1207,7 +1230,7 @@ const Introduction = ({ messageSchema, fds }: {
                 <CyberPanel className="text-center p-3 text-xs">Python</CyberPanel>
               </div>
               <div className="p-3 bg-[#00ff9f]/5 border border-[#00ff9f]/20 rounded text-center">
-                <span className="text-[10px] font-mono text-[#00ff9f] uppercase block mb-1">Plus Community Tools</span>
+                <span className="text-[10px] font-mono text-[var(--cyber-neon-green)] uppercase block mb-1">Plus Community Tools</span>
                 <div className="flex flex-col gap-1">
                   <ExternalLinkText href="https://github.com/sudorandom/protoc-gen-connect-openapi"><span className="text-xs">OpenAPI</span></ExternalLinkText>
                   <ExternalLinkText href="https://github.com/protocolbuffers/protobuf/blob/main/docs/third_party.md"><span className="text-xs italic">And Many, Many More...</span></ExternalLinkText>
@@ -1215,7 +1238,7 @@ const Introduction = ({ messageSchema, fds }: {
               </div>
             </div>
           </div>
-          <div className="mt-12 max-w-3xl text-center text-slate-400 space-y-4">
+          <div className="mt-12 max-w-3xl text-center text-[var(--text-dim)] space-y-4">
             <p>
               Compilation translates your language-neutral schema into high-performance source code for your specific language. This generated code handles all the complexity of bit-packing and validation.
             </p>
@@ -1300,7 +1323,7 @@ const JsonEditor = ({ value, onChange, className = "h-80" }: { value: string, on
   const [scroll, setScroll] = useState({ top: 0, left: 0 });
 
   return (
-    <div className={`relative w-full ${className} bg-black/20 rounded overflow-hidden`}>
+    <div className={`relative w-full ${className} bg-[var(--overlay-bg)] rounded overflow-hidden`}>
       {/* Background Highlight Layer */}
       <div
         className="absolute top-0 left-0 p-4 font-mono text-sm leading-6 whitespace-pre pointer-events-none select-none"
@@ -1395,25 +1418,25 @@ const SizeComparison = ({ messageSchema, fileDescriptorSet }: { messageSchema: D
     fetchGzip();
   }, [stats.jsonStr, stats.binary, stats.error]);
   return (
-    <Section id="efficiency" className="py-24 px-4 sm:px-8 bg-slate-900/30 border-t border-white/5">
+    <Section id="efficiency" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]">
       <div className="max-w-7xl mx-auto">
         <SectionTitle icon={Zap} subtitle="09_PERFORMANCE_METRICS">Efficiency</SectionTitle>
 
-        <div className="mb-12 grid grid-cols-1 md:grid-cols-2 gap-12 text-slate-300 leading-relaxed">
+        <div className="mb-12 grid grid-cols-1 md:grid-cols-2 gap-12 text-[var(--text-color)] leading-relaxed">
           <div className="space-y-4">
             <p>
               The message size savings you can expect from Protobuf highly depend on your data. Large strings will always take space, but numeric data and sparse messages (many optional fields) see massive reductions compared to JSON.
             </p>
             <p>
-              Try a few different scenarios below: use the preset examples, <span className="text-[#ff00ff]">generate fake data</span> (powered by <ExternalLinkText href="https://fauxrpc.com"><strong>FauxRPC</strong></ExternalLinkText>), or fill in your own.
+              Try a few different scenarios below: use the preset examples, <span className="text-[var(--cyber-neon-pink)]">generate fake data</span> (powered by <ExternalLinkText href="https://fauxrpc.com"><strong>FauxRPC</strong></ExternalLinkText>), or fill in your own.
             </p>
           </div>
           <div className="space-y-4">
-            <h4 className="text-white font-cyber font-bold uppercase text-sm">Beyond Just Size: Parsing Speed</h4>
-            <p className="text-sm text-slate-400">
+            <h4 className="text-[var(--text-color)] font-cyber font-bold uppercase text-sm">Beyond Just Size: Parsing Speed</h4>
+            <p className="text-sm text-[var(--text-dim)]">
               While size is a major benefit, Protobuf's real superpower is <strong>parsing performance</strong>. Because the format is binary and avoids expensive string-parsing logic, it can be <ExternalLinkText href="https://auth0.com/blog/beating-json-performance-with-protobuf/">up to 6x faster to parse than JSON</ExternalLinkText>.
             </p>
-            <p className="text-sm text-slate-400">
+            <p className="text-sm text-[var(--text-dim)]">
               The binary format strikes a careful balance between extreme efficiency and enough structural simplicity to allow for robust, cross-language decoding.
             </p>
           </div>
@@ -1427,8 +1450,8 @@ const SizeComparison = ({ messageSchema, fileDescriptorSet }: { messageSchema: D
                   key={key}
                   onClick={() => handleExampleChange(key)}
                   className={`px-4 py-1 text-xs font-mono border transition-all ${activeExample === key
-                    ? 'bg-[#00f3ff]/10 border-[#00f3ff] text-[#00f3ff]'
-                    : 'border-white/10 text-slate-500 hover:border-white/30'
+                    ? 'bg-[#00f3ff]/10 border-[#00f3ff] text-[var(--cyber-neon-blue)]'
+                    : 'border-[var(--border-light)] text-[var(--text-dim)] hover:border-white/30'
                     }`}
                 >
                   {key}
@@ -1438,8 +1461,8 @@ const SizeComparison = ({ messageSchema, fileDescriptorSet }: { messageSchema: D
                 onClick={generateFauxData}
                 disabled={!messageSchema || !fileDescriptorSet || isGenerating}
                 className={`px-4 py-1 text-xs font-mono border transition-all flex items-center gap-2 ${activeExample === 'FAUX'
-                  ? 'bg-[#ff00ff]/10 border-[#ff00ff] text-[#ff00ff]'
-                  : 'border-[#ff00ff]/30 text-[#ff00ff]/70 hover:border-[#ff00ff] hover:text-[#ff00ff] disabled:opacity-30 disabled:cursor-not-allowed'
+                  ? 'bg-[#ff00ff]/10 border-[#ff00ff] text-[var(--cyber-neon-pink)]'
+                  : 'border-[#ff00ff]/30 text-[var(--cyber-neon-pink)]/70 hover:border-[#ff00ff] hover:text-[var(--cyber-neon-pink)] disabled:opacity-30 disabled:cursor-not-allowed'
                   }`}
               >
                 <Zap className={`w-3 h-3 ${isGenerating ? 'animate-spin' : ''}`} />
@@ -1453,7 +1476,7 @@ const SizeComparison = ({ messageSchema, fileDescriptorSet }: { messageSchema: D
           <div className="space-y-6">
             <CyberPanel title="REAL_TIME_ANALYSIS">
               <div className="space-y-6 py-4">
-                <p className="text-sm text-slate-400 leading-relaxed mb-4">
+                <p className="text-sm text-[var(--text-dim)] leading-relaxed mb-4">
                   Watch as the binary encoder strips away the redundant field names and formatting that bloats JSON payloads.
                 </p>
 
@@ -1462,13 +1485,13 @@ const SizeComparison = ({ messageSchema, fileDescriptorSet }: { messageSchema: D
                   <div>
                     <div className="flex justify-between text-xs font-mono mb-2">
                       <span>JSON_RAW</span>
-                      <span className="text-white">{stats.jsonSize} B</span>
+                      <span className="text-[var(--text-color)]">{stats.jsonSize} B</span>
                     </div>
-                    <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
+                    <div className="h-1.5 bg-[var(--border-light)] rounded-full overflow-hidden">
                       <div className="h-full bg-slate-400" style={{ width: '100%' }}></div>
                     </div>
                     {gzipStats.json > 0 && (
-                      <div className="flex justify-between text-[10px] font-mono mt-1 text-slate-500">
+                      <div className="flex justify-between text-[10px] font-mono mt-1 text-[var(--text-dim)]">
                         <span>WITH_GZIP</span>
                         <span>{gzipStats.json} B</span>
                       </div>
@@ -1476,11 +1499,11 @@ const SizeComparison = ({ messageSchema, fileDescriptorSet }: { messageSchema: D
                   </div>
 
                   <div>
-                    <div className="flex justify-between text-xs font-mono mb-2 text-[#00ff9f]">
+                    <div className="flex justify-between text-xs font-mono mb-2 text-[var(--cyber-neon-green)]">
                       <span>PROTOBUF_BINARY</span>
-                      <span className="text-[#00ff9f] font-bold">{stats.pbSize} B</span>
+                      <span className="text-[var(--cyber-neon-green)] font-bold">{stats.pbSize} B</span>
                     </div>
-                    <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
+                    <div className="h-1.5 bg-[var(--border-light)] rounded-full overflow-hidden">
                       <motion.div
                         initial={{ width: 0 }}
                         animate={{ width: `${stats.jsonSize > 0 ? (stats.pbSize / stats.jsonSize) * 100 : 0}%` }}
@@ -1488,7 +1511,7 @@ const SizeComparison = ({ messageSchema, fileDescriptorSet }: { messageSchema: D
                       />
                     </div>
                     {gzipStats.pb > 0 && (
-                      <div className="flex justify-between text-[10px] font-mono mt-1 text-[#00ff9f]/60">
+                      <div className="flex justify-between text-[10px] font-mono mt-1 text-[var(--cyber-neon-green)]/60">
                         <span>WITH_GZIP</span>
                         <span>{gzipStats.pb} B</span>
                       </div>
@@ -1496,30 +1519,30 @@ const SizeComparison = ({ messageSchema, fileDescriptorSet }: { messageSchema: D
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-white/5 flex items-end justify-between">
+                <div className="pt-4 border-t border-[var(--border-light)] flex items-end justify-between">
                   <div>
-                    <p className="text-4xl font-cyber font-bold text-[#00ff9f]">-{stats.ratio}%</p>
-                    <p className="text-[10px] font-mono text-slate-500 mt-1 uppercase">RAW_PAYLOAD_REDUCTION</p>
+                    <p className="text-4xl font-cyber font-bold text-[var(--cyber-neon-green)]">-{stats.ratio}%</p>
+                    <p className="text-[10px] font-mono text-[var(--text-dim)] mt-1 uppercase">RAW_PAYLOAD_REDUCTION</p>
                   </div>
                   {gzipStats.json > 0 && gzipStats.pb > 0 && (
                     <div className="text-right">
-                      <p className={`text-xl font-cyber font-bold ${gzipStats.pb < gzipStats.json ? 'text-[#00f3ff]' : 'text-yellow-500'}`}>
+                      <p className={`text-xl font-cyber font-bold ${gzipStats.pb < gzipStats.json ? 'text-[var(--cyber-neon-blue)]' : 'text-yellow-500'}`}>
                         {gzipStats.pb < gzipStats.json ? '-' : '+'}{Math.abs(Number(((1 - gzipStats.pb / gzipStats.json) * 100).toFixed(1)))}%
                       </p>
-                      <p className="text-[9px] font-mono text-slate-500 uppercase">GZIPPED_PB vs GZIPPED_JSON</p>
+                      <p className="text-[9px] font-mono text-[var(--text-dim)] uppercase">GZIPPED_PB vs GZIPPED_JSON</p>
                     </div>
                   )}
                 </div>
               </div>
             </CyberPanel>
-            <div className="p-4 bg-cyan-500/5 border border-cyan-500/10 rounded text-sm text-slate-400 space-y-3">
+            <div className="p-4 bg-cyan-500/5 border border-cyan-500/10 rounded text-sm text-[var(--text-dim)] space-y-3">
               <p><strong>How it works:</strong></p>
               <ul className="space-y-2">
                 <li className="flex gap-2"><div className="w-1 h-1 bg-[#00f3ff] mt-1.5 shrink-0"></div> No field names in payload (replaced by small numeric tags).</li>
                 <li className="flex gap-2"><div className="w-1 h-1 bg-[#00f3ff] mt-1.5 shrink-0"></div> Varint encoding shrinks small integers to 1-2 bytes.</li>
                 <li className="flex gap-2"><div className="w-1 h-1 bg-[#00f3ff] mt-1.5 shrink-0"></div> Optional fields take zero space if not set.</li>
               </ul>
-              <div className="pt-2 border-t border-white/5">
+              <div className="pt-2 border-t border-[var(--border-light)]">
                 <p className="text-xs">
                   <strong>Pro Tip:</strong> For specialized high-performance Go applications, <ExternalLinkText href="https://github.com/bufbuild/hyperpb-go"><strong>hyperpb</strong></ExternalLinkText> provides an even faster implementation that avoids reflection and allocation.
                 </p>
@@ -1533,44 +1556,44 @@ const SizeComparison = ({ messageSchema, fileDescriptorSet }: { messageSchema: D
 };
 
 const PayloadSizeInsights = () => (
-  <Section id="insights" className="py-24 px-4 sm:px-8 bg-black/40 border-t border-white/5">
+  <Section id="insights" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-dark)] border-t border-[var(--border-light)]">
     <div className="max-w-4xl mx-auto space-y-16">
       <div className="max-w-3xl space-y-6">
-        <h3 className="text-xl sm:text-2xl md:text-3xl font-cyber font-bold text-white uppercase tracking-tight">Size vs. Compression</h3>
-        <p className="text-slate-400 leading-relaxed">
-          While Protobuf provides a massive reduction in <span className="text-[#00ff9f] font-bold">raw payload size (typically 30-50%)</span> compared to JSON, the gap often narrows when GZIP or Brotli compression is applied. For GZIP compressed payloads, the difference is usually in the <span className="text-[#00f3ff] font-bold">15-30% range</span>.
+        <h3 className="text-xl sm:text-2xl md:text-3xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">Size vs. Compression</h3>
+        <p className="text-[var(--text-dim)] leading-relaxed">
+          While Protobuf provides a massive reduction in <span className="text-[var(--cyber-neon-green)] font-bold">raw payload size (typically 30-50%)</span> compared to JSON, the gap often narrows when GZIP or Brotli compression is applied. For GZIP compressed payloads, the difference is usually in the <span className="text-[var(--cyber-neon-blue)] font-bold">15-30% range</span>.
         </p>
-        <p className="text-slate-400 leading-relaxed">
+        <p className="text-[var(--text-dim)] leading-relaxed">
           However, there is a critical tradeoff: compression adds significant CPU overhead to every request. For smaller payloads, the time spent compressing and decompressing can be greater than the time saved by the smaller transfer size. In these cases, sending uncompressed Protobuf is often the most optimal path for overall latency.
         </p>
-        <p className="text-slate-400 leading-relaxed text-sm">
+        <p className="text-[var(--text-dim)] leading-relaxed text-sm">
           Protobuf shines when your data has many numbers, enums, or sparse fields. String-heavy payloads benefit less from binary encoding but still benefit from Protobuf's schema-driven performance and type safety.
         </p>
       </div>
 
       <div className="space-y-8">
-        <div className="flex items-center gap-3 text-[#00f3ff]">
+        <div className="flex items-center gap-3 text-[var(--cyber-neon-blue)]">
           <BarChart3 className="w-6 h-6" />
-          <h3 className="text-xl sm:text-2xl font-cyber font-bold text-white uppercase tracking-tight">The Benchmark Landscape</h3>
+          <h3 className="text-xl sm:text-2xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">The Benchmark Landscape</h3>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           <div className="space-y-4">
-            <h4 className="text-sm font-cyber font-bold text-[#ff00ff] uppercase tracking-widest">Language Matters</h4>
-            <p className="text-sm text-slate-400 leading-relaxed">
+            <h4 className="text-sm font-cyber font-bold text-[var(--cyber-neon-pink)] uppercase tracking-widest">Language Matters</h4>
+            <p className="text-sm text-[var(--text-dim)] leading-relaxed">
               Protobuf performance is highly dependent on the language and library implementation. In languages with native binary support like <strong>C++, Go, and Java</strong>, Protobuf can be decodes <strong>5x-10x faster</strong> than JSON.
             </p>
-            <p className="text-sm text-slate-400 leading-relaxed">
+            <p className="text-sm text-[var(--text-dim)] leading-relaxed">
               In interpreted languages like <strong>JavaScript (Node.js) or Python</strong>, the gap can be smaller due to the overhead of moving data between the runtime and the binary parser, though it still generally outperforms standard JSON libraries in high-throughput scenarios.
             </p>
           </div>
 
           <div className="space-y-4">
-            <h4 className="text-sm font-cyber font-bold text-[#00ff9f] uppercase tracking-widest">Data Type Sensitivity</h4>
-            <p className="text-sm text-slate-400 leading-relaxed">
+            <h4 className="text-sm font-cyber font-bold text-[var(--cyber-neon-green)] uppercase tracking-widest">Data Type Sensitivity</h4>
+            <p className="text-sm text-[var(--text-dim)] leading-relaxed">
               If your payload is 90% long strings (like blog posts), Protobuf will only save you a few percentage points of space. However, if your data is <strong>numeric-heavy</strong> (IDs, timestamps, coordinates, or metrics), Protobuf DECIMATES JSON in both size and speed.
             </p>
-            <p className="text-sm text-slate-400 leading-relaxed italic border-l-2 border-[#00ff9f]/30 pl-4">
+            <p className="text-sm text-[var(--text-dim)] leading-relaxed italic border-l-2 border-[#00ff9f]/30 pl-4">
               "The win isn't just bytes on the wire—it's the CPU cycles saved by not parsing millions of brackets and quotes."
             </p>
           </div>
@@ -1582,28 +1605,28 @@ const PayloadSizeInsights = () => (
               href="https://auth0.com/blog/beating-json-performance-with-protobuf/"
               target="_blank"
               rel="noopener noreferrer"
-              className="group p-4 bg-white/5 border border-white/5 rounded-lg hover:border-[#00f3ff]/40 transition-all"
+              className="group p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg hover:border-[#00f3ff]/40 transition-all"
             >
-              <h5 className="font-cyber text-xs text-[#00f3ff] mb-2 group-hover:underline">Auth0 Engineering</h5>
-              <p className="text-[11px] text-slate-500 leading-relaxed">Classic deep dive comparing binary vs text overhead in real-world API requests.</p>
+              <h5 className="font-cyber text-xs text-[var(--cyber-neon-blue)] mb-2 group-hover:underline">Auth0 Engineering</h5>
+              <p className="text-[11px] text-[var(--text-dim)] leading-relaxed">Classic deep dive comparing binary vs text overhead in real-world API requests.</p>
             </a>
             <a
               href="https://grpc.io/docs/guides/benchmarking/"
               target="_blank"
               rel="noopener noreferrer"
-              className="group p-4 bg-white/5 border border-white/5 rounded-lg hover:border-[#ff00ff]/40 transition-all"
+              className="group p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg hover:border-[#ff00ff]/40 transition-all"
             >
-              <h5 className="font-cyber text-xs text-[#ff00ff] mb-2 group-hover:underline">Official gRPC Benchmarks</h5>
-              <p className="text-[11px] text-slate-500 leading-relaxed">Throughput and latency metrics for Protobuf-over-HTTP/2 across various languages.</p>
+              <h5 className="font-cyber text-xs text-[var(--cyber-neon-pink)] mb-2 group-hover:underline">Official gRPC Benchmarks</h5>
+              <p className="text-[11px] text-[var(--text-dim)] leading-relaxed">Throughput and latency metrics for Protobuf-over-HTTP/2 across various languages.</p>
             </a>
             <a
               href="https://www.atlassian.com/blog/atlassian-engineering/using-protobuf-to-make-jira-cloud-faster"
               target="_blank"
               rel="noopener noreferrer"
-              className="group p-4 bg-white/5 border border-white/5 rounded-lg hover:border-[#00ff9f]/40 transition-all"
+              className="group p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg hover:border-[#00ff9f]/40 transition-all"
             >
-              <h5 className="font-cyber text-xs text-[#00ff9f] mb-2 group-hover:underline">Atlassian Engineering</h5>
-              <p className="text-[11px] text-slate-500 leading-relaxed">A detailed case study on how Jira improved p99 latency by 20% and reduced CPU usage by 75% using Protobuf.</p>
+              <h5 className="font-cyber text-xs text-[var(--cyber-neon-green)] mb-2 group-hover:underline">Atlassian Engineering</h5>
+              <p className="text-[11px] text-[var(--text-dim)] leading-relaxed">A detailed case study on how Jira improved p99 latency by 20% and reduced CPU usage by 75% using Protobuf.</p>
             </a>
           </div>
         </CyberPanel>
@@ -1646,17 +1669,17 @@ const TypeSystem = () => {
 
   const TypeGroup = ({ groupName, groupIcon: Icon, types }: { groupName: string, groupIcon: React.ElementType, types: { name: string, desc: React.ReactNode }[] }) => (
     <div className="space-y-4">
-      <div className="flex items-center gap-2 text-[#00f3ff]">
+      <div className="flex items-center gap-2 text-[var(--cyber-neon-blue)]">
         <Icon className="w-4 h-4" />
         <h4 className="font-cyber font-bold text-sm tracking-widest uppercase">{groupName}</h4>
       </div>
       <div className="grid gap-3">
         {types.map(t => (
-          <div key={t.name as string} className="p-3 bg-white/5 border border-white/5 rounded-lg group hover:border-[#00f3ff]/30 transition-colors">
+          <div key={t.name as string} className="p-3 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg group hover:border-[#00f3ff]/30 transition-colors">
             <div className="flex justify-between items-start mb-1">
-              <span className="font-mono text-xs font-bold text-white group-hover:text-[#00f3ff]">{t.name}</span>
+              <span className="font-mono text-xs font-bold text-[var(--text-color)] group-hover:text-[var(--cyber-neon-blue)]">{t.name}</span>
             </div>
-            <div className="text-xs text-slate-400 leading-relaxed">{t.desc}</div>
+            <div className="text-xs text-[var(--text-dim)] leading-relaxed">{t.desc}</div>
           </div>
         ))}
       </div>
@@ -1664,7 +1687,7 @@ const TypeSystem = () => {
   );
 
   return (
-    <Section id="types" className="py-24 px-4 sm:px-8 bg-slate-900/5 border-t border-white/5">
+    <Section id="types" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)]/20 border-t border-[var(--border-light)]">
       <div className="max-w-7xl mx-auto space-y-16">
         <div>
           <SectionTitle icon={Combine} subtitle="04_TYPE_REFERENCE">The Type System</SectionTitle>
@@ -1675,20 +1698,20 @@ const TypeSystem = () => {
           </div>
         </div>
 
-        <div className="pt-16 border-t border-white/5">
+        <div className="pt-16 border-t border-[var(--border-light)]">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            <div className="space-y-6 text-slate-300">
-              <h3 className="text-xl font-cyber font-bold text-white uppercase">ProtoJSON Mapping</h3>
+            <div className="space-y-6 text-[var(--text-color)]">
+              <h3 className="text-xl font-cyber font-bold text-[var(--text-color)] uppercase">ProtoJSON Mapping</h3>
               <p>
                 While Protobuf is primarily binary, it defines a canonical <ExternalLinkText href="https://protobuf.dev/programming-guides/json/">ProtoJSON</ExternalLinkText> mapping. This ensures that every binary payload has a deterministic representation in JSON.
               </p>
               
-              <div className="p-4 bg-yellow-500/5 border border-yellow-500/20 rounded-lg space-y-4">
-                <h4 className="text-yellow-500 font-cyber font-bold text-xs uppercase tracking-widest">The 64-bit Precision Trap</h4>
-                <p className="text-sm leading-relaxed">
+              <div className="p-4 bg-[var(--cyber-neon-yellow)]/5 border border-[var(--cyber-neon-yellow)]/20 rounded-lg space-y-4">
+                <h4 className="text-[var(--cyber-neon-yellow)] font-cyber font-bold text-sm uppercase tracking-wider">The 64-bit Precision Trap</h4>
+                <p className="text-sm leading-relaxed text-[var(--text-color)]/90">
                   JavaScript numbers are 64-bit floats, which lose precision for integers above 2^53 - 1. 
                 </p>
-                <p className="text-sm leading-relaxed font-bold">
+                <p className="text-sm leading-relaxed font-bold text-[var(--text-color)]">
                   To prevent data loss, <code>int64</code> and <code>uint64</code> types MUST be encoded as strings in JSON.
                 </p>
               </div>
@@ -1697,7 +1720,7 @@ const TypeSystem = () => {
             <div className="space-y-4">
               <CyberPanel title="JSON_MAPPING_RULES">
                 <div className="p-4 space-y-4 text-sm">
-                  <div className="grid grid-cols-2 gap-4 pb-2 border-b border-white/5 font-mono text-[10px] text-slate-500 uppercase">
+                  <div className="grid grid-cols-2 gap-4 pb-2 border-b border-[var(--border-light)] font-mono text-[10px] text-[var(--text-dim)] uppercase">
                     <span>Protobuf Type</span>
                     <span>JSON Representation</span>
                   </div>
@@ -1710,8 +1733,8 @@ const TypeSystem = () => {
                     { pb: "google.protobuf.Timestamp", json: "\"2023-10-01T12:00:00Z\"" },
                   ].map(row => (
                     <div key={row.pb} className="grid grid-cols-2 gap-4 py-1">
-                      <code className="text-[#00f3ff]">{row.pb}</code>
-                      <code className="text-[#00ff9f]">{row.json}</code>
+                      <code className="text-[var(--cyber-neon-blue)]">{row.pb}</code>
+                      <code className="text-[var(--cyber-neon-green)]">{row.json}</code>
                     </div>
                   ))}
                 </div>
@@ -1775,30 +1798,30 @@ const WireFormatBreakdown = () => {
   return (
     <div className="mb-24 space-y-8">
       <div className="flex flex-col gap-2 mb-12">
-        <h3 className="text-2xl font-cyber font-bold text-white uppercase flex items-center gap-3">
-          <Fingerprint className="w-6 h-6 text-[#ff00ff]" />
+        <h3 className="text-2xl font-cyber font-bold text-[var(--text-color)] uppercase flex items-center gap-3">
+          <Fingerprint className="w-6 h-6 text-[var(--cyber-neon-pink)]" />
           Wire Type Registry
         </h3>
-        <p className="text-slate-400 max-w-3xl leading-relaxed">
+        <p className="text-[var(--text-dim)] max-w-3xl leading-relaxed">
           The "Wire Type" is the low-level physical format of the data on the disk or wire. While your schema has dozens of types, they all collapse into these four physical representations.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 bg-blue-500/5 border border-blue-500/10 rounded-xl p-8 mb-12">
           <div className="space-y-4">
-            <h4 className="text-white font-cyber font-bold uppercase text-sm flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-[#00f3ff]" />
+            <h4 className="text-[var(--text-color)] font-cyber font-bold uppercase text-sm flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-[var(--cyber-neon-blue)]" />
               Why you need a Schema
             </h4>
-            <p className="text-sm text-slate-400 leading-relaxed">
+            <p className="text-sm text-[var(--text-dim)] leading-relaxed">
               A raw Protobuf stream is <strong>untyped</strong>. Without a <code>.proto</code> file, a decoder can see that <em>"Field #3 is a Length-Delimited blob"</em>, but it doesn't know if that blob is a UTF-8 <code>string</code>, raw <code>bytes</code>, or a nested <code>message</code>.
             </p>
           </div>
           <div className="space-y-4">
-            <h4 className="text-white font-cyber font-bold uppercase text-sm flex items-center gap-2">
-              <Combine className="w-4 h-4 text-[#ff00ff]" />
+            <h4 className="text-[var(--text-color)] font-cyber font-bold uppercase text-sm flex items-center gap-2">
+              <Combine className="w-4 h-4 text-[var(--cyber-neon-pink)]" />
               The Minimal Mapping
             </h4>
-            <p className="text-sm text-slate-400 leading-relaxed">
+            <p className="text-sm text-[var(--text-dim)] leading-relaxed">
               To fully decode a message, you need a registry that maps every <strong>Field Number</strong> to a <strong>Protobuf Type</strong>. This allows the decoder to interpret the bits correctly (e.g., using ZigZag decoding for <code>sint32</code> vs standard varint for <code>int32</code>).
             </p>
           </div>
@@ -1809,37 +1832,36 @@ const WireFormatBreakdown = () => {
         {wireTypes.map((wt) => (
           <div key={wt.id} className={`relative group ${wt.deprecated ? 'opacity-70 hover:opacity-100 transition-opacity' : ''}`}>
             <div className={`absolute -inset-0.5 bg-gradient-to-r ${wt.deprecated ? 'from-slate-500/20 to-slate-500/20' : 'from-[#ff00ff]/20 to-[#00f3ff]/20'} rounded-xl blur opacity-0 group-hover:opacity-100 transition duration-500`} />
-            <div className={`relative flex flex-col md:flex-row bg-[#0a0a0a] border ${wt.deprecated ? 'border-white/10' : 'border-white/10'} rounded-xl overflow-hidden`}>
-              <div className="w-full md:w-32 bg-white/5 flex items-center justify-center border-b md:border-b-0 md:border-r border-white/10 py-6 md:py-0">
+            <div className={`relative flex flex-col md:flex-row bg-[var(--panel-bg)] border ${wt.deprecated ? 'border-[var(--border-light)]' : 'border-[var(--border-light)]'} rounded-xl overflow-hidden`}>
+              <div className="w-full md:w-32 bg-[var(--overlay-bg)] flex items-center justify-center border-b md:border-b-0 md:border-r border-[var(--border-light)] py-6 md:py-0">
                 <div className="flex flex-col items-center gap-1">
-                  <span className="text-xs font-mono text-slate-500 uppercase tracking-tighter">Wire ID</span>
-                  <span className={`text-5xl font-cyber font-black ${wt.deprecated ? 'text-slate-500' : 'text-[#ff00ff]'}`}>{wt.id}</span>
+                  <span className="text-xs font-mono text-[var(--text-dim)] uppercase tracking-tighter">Wire ID</span>
+                  <span className={`text-5xl font-cyber font-black ${wt.deprecated ? 'text-[var(--text-dim)]' : 'text-[var(--cyber-neon-pink)]'}`}>{wt.id}</span>
                 </div>
               </div>
 
               <div className="flex-1 p-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
                 <div className="lg:col-span-8 space-y-4">
                   <div>
-                    <h4 className={`text-xl font-cyber font-bold ${wt.deprecated ? 'text-slate-300' : 'text-[#00f3ff]'} uppercase mb-1`}>
-                      {wt.name} {wt.deprecated && <span className="text-[10px] bg-white/10 px-2 py-0.5 rounded ml-2 text-slate-400">DEPRECATED</span>}
+                    <h4 className={`text-xl font-cyber font-bold ${wt.deprecated ? 'text-[var(--text-color)]' : 'text-[var(--cyber-neon-blue)]'} uppercase mb-1`}>
+                      {wt.name} {wt.deprecated && <span className="text-[10px] bg-[var(--border-light)] px-2 py-0.5 rounded ml-2 text-[var(--text-dim)]">DEPRECATED</span>}
                     </h4>
-                    <p className="text-sm font-mono text-slate-300">{wt.what}</p>
+                    <p className="text-sm font-mono text-[var(--text-color)]">{wt.what}</p>
                   </div>
                   <div className="space-y-2">
-                    <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">RATIONALE // WHY_IT_EXISTS</span>
-                    <p className="text-sm text-slate-400 leading-relaxed italic">
+                    <span className="text-[10px] font-mono text-[var(--text-dim)] uppercase tracking-widest">RATIONALE // WHY_IT_EXISTS</span>
+                    <p className="text-sm text-[var(--text-dim)] leading-relaxed italic">
                       {wt.why}
                     </p>
                   </div>
                 </div>
 
-                <div className={`lg:col-span-4 flex flex-col justify-center gap-4 bg-white/5 p-6 rounded-lg border ${wt.deprecated ? 'border-white/0' : 'border-white/5'}`}>
+                <div className={`lg:col-span-4 flex flex-col justify-center gap-4 bg-[var(--overlay-bg)] p-6 rounded-lg border ${wt.deprecated ? 'border-white/0' : 'border-[var(--border-light)]'}`}>
                   {wt.types.length > 0 ? (
                     <>
-                      <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">Mapped Schema Types</span>
-                      <div className="flex flex-wrap gap-2">
-                        {wt.types.map((t) => (
-                          <span key={t} className="px-2 py-1 bg-black/60 border border-[#00f3ff]/20 rounded text-[11px] font-mono text-[#00f3ff]">
+                      <span className="text-[10px] font-mono text-[var(--text-color)] uppercase tracking-widest font-bold">Mapped Schema Types</span>
+                      <div className="flex flex-wrap gap-2">                        {wt.types.map((t) => (
+                          <span key={t} className="px-2 py-1 bg-[var(--cyber-neon-blue)]/10 border border-[var(--cyber-neon-blue)]/20 rounded text-[11px] font-mono text-[var(--cyber-neon-blue)]">
                             {t}
                           </span>
                         ))}
@@ -1847,7 +1869,7 @@ const WireFormatBreakdown = () => {
                     </>
                   ) : (
                     <div className="flex items-center justify-center h-full">
-                      <span className="text-[10px] font-mono text-slate-600 uppercase tracking-widest italic">No modern types map here</span>
+                      <span className="text-[10px] font-mono text-[var(--text-dim)] uppercase tracking-widest italic">No modern types map here</span>
                     </div>
                   )}
                 </div>
@@ -1862,40 +1884,40 @@ const WireFormatBreakdown = () => {
 
 
 const SchemaDrivenAPIs = () => (
-  <Section id="schema" className="py-24 px-4 sm:px-8 bg-slate-900/20 border-t border-white/5">
+  <Section id="schema" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]">
     <div className="max-w-7xl mx-auto">
       <SectionTitle icon={FileCode} subtitle="03_ARCHITECTURE">Schema-Driven APIs</SectionTitle>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-        <div className="space-y-6 text-slate-300">
-          <h3 className="text-xl font-cyber font-bold text-white uppercase">The Source of Truth</h3>
+        <div className="space-y-6 text-[var(--text-color)]">
+          <h3 className="text-xl font-cyber font-bold text-[var(--text-color)] uppercase">The Source of Truth</h3>
           <p>
             In the Protobuf world, the <strong>.proto</strong> file is the contract. This encourages <strong>Contract-First</strong> development, where the data model and API surface are defined before any code is written.
           </p>
           <ul className="space-y-4">
             <li className="flex gap-4">
-              <div className="w-1.5 h-1.5 bg-[#00f3ff] mt-2 shrink-0"></div>
+              <div className="w-1.5 h-1.5 bg-[var(--cyber-neon-blue)] mt-2 shrink-0"></div>
               <p><strong>Universal Tooling:</strong> Generate clients and servers for various languages from the same file using <ExternalLinkText href="https://buf.build/docs/bsr/introduction">BSR</ExternalLinkText> or local compilers.</p>
             </li>
             <li className="flex gap-4">
-              <div className="w-1.5 h-1.5 bg-[#ff00ff] mt-2 shrink-0"></div>
+              <div className="w-1.5 h-1.5 bg-[var(--cyber-neon-pink)] mt-2 shrink-0"></div>
               <p><strong>Compatibility:</strong> Robust rules for adding/removing fields without breaking old clients, essential for distributed systems.</p>
             </li>
             <li className="flex gap-4">
-              <div className="w-1.5 h-1.5 bg-[#00ff9f] mt-2 shrink-0"></div>
+              <div className="w-1.5 h-1.5 bg-[var(--cyber-neon-green)] mt-2 shrink-0"></div>
               <p>
                 <strong>Native RPC:</strong> Unlike most serialization formats, Protobuf includes native <code>service</code> and <code>rpc</code> definitions. This allows you to define your entire API surface in one place, powering frameworks like <ExternalLinkText href="https://grpc.io/">gRPC</ExternalLinkText>, <ExternalLinkText href="https://connectrpc.com/">ConnectRPC</ExternalLinkText>, and <ExternalLinkText href="https://twitchtv.github.io/twirp/">Twirp</ExternalLinkText>.
               </p>
             </li>
           </ul>
         </div>
-        <div className="p-8 bg-white/5 border border-white/5 rounded-xl flex flex-col justify-center">
-          <h4 className="text-[#00f3ff] font-cyber font-bold text-sm tracking-widest uppercase mb-4 text-center">THE_WORKFLOW</h4>
+        <div className="p-8 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-xl flex flex-col justify-center">
+          <h4 className="text-[var(--cyber-neon-blue)] font-cyber font-bold text-sm tracking-widest uppercase mb-4 text-center">THE_WORKFLOW</h4>
           <div className="space-y-4 font-mono text-xs">
-            <div className="p-3 bg-black/40 border border-[#00f3ff]/30 rounded text-[#00f3ff]/80">1. DEFINE SCHEMA (.proto)</div>
-            <div className="flex justify-center"><ArrowRight className="w-4 h-4 rotate-90 text-slate-600" /></div>
-            <div className="p-3 bg-black/40 border border-[#ff00ff]/30 rounded text-[#ff00ff]/80">2. COMPILE TARGETS (Go, TS, etc.)</div>
-            <div className="flex justify-center"><ArrowRight className="w-4 h-4 rotate-90 text-slate-600" /></div>
-            <div className="p-3 bg-black/40 border border-[#00ff9f]/30 rounded text-[#00ff9f]/80">3. BUILD & DEPLOY SERVICES</div>          </div>
+            <div className="p-3 bg-[var(--section-bg-dark)] border border-[#00f3ff]/30 rounded text-[var(--cyber-neon-blue)]/80">1. DEFINE SCHEMA (.proto)</div>
+            <div className="flex justify-center"><ArrowRight className="w-4 h-4 rotate-90 text-[var(--text-dim)]" /></div>
+            <div className="p-3 bg-[var(--section-bg-dark)] border border-[#ff00ff]/30 rounded text-[var(--cyber-neon-pink)]/80">2. COMPILE TARGETS (Go, TS, etc.)</div>
+            <div className="flex justify-center"><ArrowRight className="w-4 h-4 rotate-90 text-[var(--text-dim)]" /></div>
+            <div className="p-3 bg-[var(--section-bg-dark)] border border-[#00ff9f]/30 rounded text-[var(--cyber-neon-green)]/80">3. BUILD & DEPLOY SERVICES</div>          </div>
         </div>
       </div>
     </div>
@@ -1903,17 +1925,17 @@ const SchemaDrivenAPIs = () => (
 );
 
 const AlternativesLandscape = () => (
-  <Section id="alternatives" className="py-24 px-4 sm:px-8 bg-slate-900/10 border-t border-white/5">
+  <Section id="alternatives" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]">
     <div className="max-w-7xl mx-auto">
       <SectionTitle icon={Layers} subtitle="12_COMPARISON">The Landscape of Alternatives</SectionTitle>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
         <div className="space-y-6">
-          <h3 className="text-xl font-cyber font-bold text-white uppercase flex items-center gap-3">
-            <Code2 className="w-5 h-5 text-[#ff00ff]" />
+          <h3 className="text-xl font-cyber font-bold text-[var(--text-color)] uppercase flex items-center gap-3">
+            <Code2 className="w-5 h-5 text-[var(--cyber-neon-pink)]" />
             The Alternatives
           </h3>
-          <p className="text-slate-400">
+          <p className="text-[var(--text-dim)]">
             While Protobuf is the industry standard for high-performance microservices, other formats exist with different trade-offs. Protobuf is unique in its balance of performance, message size, and complete ecosystem.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1923,9 +1945,9 @@ const AlternativesLandscape = () => (
               { name: "MessagePack", href: "https://msgpack.org/", desc: "A compact binary 'JSON'. Efficient for size, but lacks the strict schema evolution of Protobuf." },
               { name: "Cap'n Proto", href: "https://capnproto.org/", desc: "Zero-copy format with schema evolution. Incredible performance but slightly narrower language support." },
             ].map((alt) => (
-              <div key={alt.name} className="p-4 bg-white/5 border border-white/5 rounded-lg group hover:border-white/10 transition-colors">
-                <ExternalLinkText href={alt.href}><span className="font-bold text-white">{alt.name}</span></ExternalLinkText>
-                <p className="text-xs text-slate-500 mt-1 leading-relaxed">{alt.desc}</p>
+              <div key={alt.name} className="p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg group hover:border-[var(--border-light)] transition-colors">
+                <ExternalLinkText href={alt.href}><span className="font-bold text-[var(--text-color)]">{alt.name}</span></ExternalLinkText>
+                <p className="text-xs text-[var(--text-dim)] mt-1 leading-relaxed">{alt.desc}</p>
               </div>
             ))}
           </div>
@@ -1934,7 +1956,7 @@ const AlternativesLandscape = () => (
         <div className="flex flex-col gap-4">
           <CyberPanel title="OPENAPI vs PROTOBUF">
             <div className="space-y-6 py-2">
-              <div className="grid grid-cols-3 text-[10px] font-mono text-slate-500 uppercase tracking-widest pb-2 border-b border-white/5">
+              <div className="grid grid-cols-3 text-[10px] font-mono text-[var(--text-dim)] uppercase tracking-widest pb-2 border-b border-[var(--border-light)]">
                 <span>Feature</span>
                 <span>REST / OpenAPI</span>
                 <span>gRPC / Protobuf</span>
@@ -1947,9 +1969,9 @@ const AlternativesLandscape = () => (
                 { label: "Streaming", rest: "Request/Response", pb: "Bidirectional" },
               ].map((row) => (
                 <div key={row.label} className="grid grid-cols-3 text-sm items-center">
-                  <span className="text-slate-400 font-mono text-xs">{row.label}</span>
-                  <span className="text-[#ff00ff]/80">{row.rest}</span>
-                  <span className="text-[#00f3ff]/80 font-bold">{row.pb}</span>
+                  <span className="text-[var(--text-dim)] font-mono text-xs">{row.label}</span>
+                  <span className="text-[var(--cyber-neon-pink)]/80">{row.rest}</span>
+                  <span className="text-[var(--cyber-neon-blue)]/80 font-bold">{row.pb}</span>
                 </div>
               ))}
             </div>
@@ -1960,7 +1982,7 @@ const AlternativesLandscape = () => (
       <div className="bg-[#ff00ff]/5 border border-[#ff00ff]/10 rounded-xl p-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="md:col-span-1">
-            <h4 className="text-[#ff00ff] font-cyber font-bold text-sm tracking-widest uppercase">The Protobuf Balance</h4>
+            <h4 className="text-[var(--cyber-neon-pink)] font-cyber font-bold text-sm tracking-widest uppercase">The Protobuf Balance</h4>
           </div>
           <div className="md:col-span-3 grid grid-cols-1 sm:grid-cols-2 gap-4">
             {[
@@ -1970,8 +1992,8 @@ const AlternativesLandscape = () => (
               { title: "Completeness", icon: CheckCircle2, text: "Defines both data AND communication (RPC)." },
             ].map((item) => (
               <div key={item.title} className="flex gap-3">
-                <item.icon className="w-4 h-4 text-[#ff00ff] shrink-0" />
-                <p className="text-xs text-slate-400"><strong>{item.title}:</strong> {item.text}</p>
+                <item.icon className="w-4 h-4 text-[var(--cyber-neon-pink)] shrink-0" />
+                <p className="text-xs text-[var(--text-dim)]"><strong>{item.title}:</strong> {item.text}</p>
               </div>
             ))}
           </div>
@@ -2032,22 +2054,22 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
   };
 
   return (
-    <Section id="binary" className="py-24 px-4 sm:px-8 bg-slate-900/5 border-t border-white/5">
+    <Section id="binary" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)]/20 border-t border-[var(--border-light)]">
       <div className="max-w-7xl mx-auto">
         <SectionTitle icon={Binary} subtitle="11_WIRE_FORMAT">Digging into the binary</SectionTitle>
 
         <WireFormatBreakdown />
 
         <div className="flex flex-col gap-12 mb-24">
-          <div className="space-y-6 leading-relaxed text-slate-300">
-            <h3 className="text-2xl font-cyber font-bold text-white uppercase">Decoding the Stream</h3>
+          <div className="space-y-6 leading-relaxed text-[var(--text-color)]">
+            <h3 className="text-2xl font-cyber font-bold text-[var(--text-color)] uppercase">Decoding the Stream</h3>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
               <div className="space-y-4">
                 <p>
                   Protobuf is a binary format. Unlike JSON which is a stream of characters, Protobuf is a stream of bytes where every bit has a job.
                 </p>
               </div>
-              <div className="space-y-4 text-sm bg-white/5 p-4 rounded border border-white/10">
+              <div className="space-y-4 text-sm bg-[var(--overlay-bg)] p-4 rounded border border-[var(--border-light)]">
                 <p>
                   Each field starts with a <strong>Tag</strong> byte (or bytes) which contains the <strong>Field Number</strong> and the <strong>Wire Type</strong>.
                 </p>
@@ -2068,8 +2090,8 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
                       key={key}
                       onClick={() => handleExampleChange(key)}
                       className={`px-3 py-1 text-[10px] font-mono border transition-all ${activeExample === key
-                        ? 'bg-[#00f3ff]/10 border-[#00f3ff] text-[#00f3ff]'
-                        : 'border-white/10 text-slate-500 hover:border-white/30'
+                        ? 'bg-[#00f3ff]/10 border-[#00f3ff] text-[var(--cyber-neon-blue)]'
+                        : 'border-[var(--border-light)] text-[var(--text-dim)] hover:border-white/30'
                         }`}
                     >
                       {key}
@@ -2079,44 +2101,44 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
               }
             >
               <div className="grid grid-cols-1 md:grid-cols-5 min-h-[400px]">
-                <div className="md:col-span-3 p-4 border-b md:border-b-0 md:border-r border-white/5">
+                <div className="md:col-span-3 p-4 border-b md:border-b-0 md:border-r border-[var(--border-light)]">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-3">
-                      <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">Wire Stream</span>
-                      <div className="flex items-center gap-1 bg-white/5 rounded px-1.5 py-0.5 border border-white/5">
+                      <span className="text-[10px] font-mono text-[var(--text-dim)] uppercase tracking-widest">Wire Stream</span>
+                      <div className="flex items-center gap-1 bg-[var(--overlay-bg)] rounded px-1.5 py-0.5 border border-[var(--border-light)]">
                         <button
                           onClick={goToPrev}
                           disabled={selectedByte === 0 || (selectedByte === null && stats.segments.length === 0)}
-                          className="p-1 hover:bg-white/10 rounded disabled:opacity-20 transition-colors"
+                          className="p-1 hover:bg-[var(--border-light)] rounded disabled:opacity-20 transition-colors"
                           aria-label="Previous byte"
                         >
-                          <ChevronLeft className="w-3 h-3 text-[#00f3ff]" />
+                          <ChevronLeft className="w-3 h-3 text-[var(--cyber-neon-blue)]" />
                         </button>
-                        <span className="text-[10px] font-mono text-[#00f3ff] min-w-[55px] text-center">
+                        <span className="text-[10px] font-mono text-[var(--cyber-neon-blue)] min-w-[55px] text-center">
                           {selectedByte !== null ? `BYTE ${selectedByte + 1}` : 'SELECT BYTE'}
                         </span>
                         <button
                           onClick={goToNext}
                           disabled={selectedByte === stats.segments.length - 1 || (selectedByte === null && stats.segments.length === 0)}
-                          className="p-1 hover:bg-white/10 rounded disabled:opacity-20 transition-colors"
+                          className="p-1 hover:bg-[var(--border-light)] rounded disabled:opacity-20 transition-colors"
                           aria-label="Next byte"
                         >
-                          <ChevronRight className="w-3 h-3 text-[#00f3ff]" />
+                          <ChevronRight className="w-3 h-3 text-[var(--cyber-neon-blue)]" />
                         </button>
                       </div>
                     </div>
                     <div className="flex gap-2">
                       <div className="flex items-center gap-1">
                         <div className="w-1.5 h-1.5 rounded-full bg-[#00f3ff]" />
-                        <span className="text-[9px] font-mono text-slate-500 uppercase">Tag</span>
+                        <span className="text-[9px] font-mono text-[var(--text-dim)] uppercase">Tag</span>
                       </div>
                       <div className="flex items-center gap-1">
                         <div className="w-1.5 h-1.5 rounded-full bg-[#ff00ff]" />
-                        <span className="text-[9px] font-mono text-slate-500 uppercase">Len</span>
+                        <span className="text-[9px] font-mono text-[var(--text-dim)] uppercase">Len</span>
                       </div>
                       <div className="flex items-center gap-1">
                         <div className="w-1.5 h-1.5 rounded-full bg-[#00ff9f]" />
-                        <span className="text-[9px] font-mono text-slate-500 uppercase">Data</span>
+                        <span className="text-[9px] font-mono text-[var(--text-dim)] uppercase">Data</span>
                       </div>
                     </div>
                   </div>
@@ -2132,9 +2154,9 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
                           onClick={() => setSelectedByte(selectedByte === i ? null : i)}
                           className={`
                             px-1 cursor-crosshair transition-all border
-                            ${b.type === 'tag' ? 'border-[#00f3ff]/30 text-[#00f3ff] hover:bg-[#00f3ff]/20 rounded' : ''}
-                            ${b.type === 'len' ? 'border-[#ff00ff]/30 text-[#ff00ff] hover:bg-[#ff00ff]/20 rounded' : ''}
-                            ${isData ? `border-[#00ff9f]/30 text-[#00ff9f] hover:bg-[#00ff9f]/20 
+                            ${b.type === 'tag' ? 'border-[#00f3ff]/30 text-[var(--cyber-neon-blue)] hover:bg-[#00f3ff]/20 rounded' : ''}
+                            ${b.type === 'len' ? 'border-[#ff00ff]/30 text-[var(--cyber-neon-pink)] hover:bg-[#ff00ff]/20 rounded' : ''}
+                            ${isData ? `border-[#00ff9f]/30 text-[var(--cyber-neon-green)] hover:bg-[#00ff9f]/20 
                               ${isPrevData ? 'border-l-0 rounded-l-none' : 'rounded-l'} 
                               ${isNextData ? 'border-r-0 rounded-r-none' : 'rounded-r'}
                             ` : ''}
@@ -2147,10 +2169,10 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
                     })}
                   </div>
                 </div>
-                <div className="md:col-span-2 bg-black/20 flex flex-col border-t md:border-t-0 border-white/5">
-                  <div className="p-4 border-b border-white/5 flex items-center justify-between">
-                    <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">Message (JSON)</span>
-                    <span className="text-[9px] font-mono text-[#ff00ff]/60 uppercase italic">Editable Input</span>
+                <div className="md:col-span-2 bg-[var(--overlay-bg)] flex flex-col border-t md:border-t-0 border-[var(--border-light)]">
+                  <div className="p-4 border-b border-[var(--border-light)] flex items-center justify-between">
+                    <span className="text-[10px] font-mono text-[var(--text-dim)] uppercase tracking-widest">Message (JSON)</span>
+                    <span className="text-[9px] font-mono text-[var(--cyber-neon-pink)]/60 uppercase italic">Editable Input</span>
                   </div>
                   <div className="flex-1 min-h-[300px]">
                     <JsonEditor
@@ -2162,39 +2184,39 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
                 </div>
               </div>
 
-              <div className="p-6 border-t border-white/5 min-h-[220px]">
+              <div className="p-6 border-t border-[var(--border-light)] min-h-[220px]">
                 <AnimatePresence mode="wait">
                   {currentSegment ? (
                     <motion.div key={safeSelectedByte} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="flex flex-col gap-8">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div className="flex flex-col gap-2">
-                          <span className="text-xs text-slate-500 font-mono uppercase tracking-widest">Byte Analysis <span className="text-[#00f3ff] ml-2">[INDEX {safeSelectedByte}]</span></span>
-                          <span className="text-white font-mono text-lg">{currentSegment.desc}</span>
-                          <div className="text-sm text-slate-400 mt-2 p-2 bg-white/5 rounded border border-white/5">
+                          <span className="text-xs text-[var(--text-dim)] font-mono uppercase tracking-widest">Byte Analysis <span className="text-[var(--cyber-neon-blue)] ml-2">[INDEX {safeSelectedByte}]</span></span>
+                          <span className="text-[var(--text-color)] font-mono text-lg">{currentSegment.desc}</span>
+                          <div className="text-sm text-[var(--text-dim)] mt-2 p-2 bg-[var(--overlay-bg)] rounded border border-[var(--border-light)]">
                             {currentSegment.type === 'tag' && "This byte identifies which field we're looking at and how to decode the following data."}
                             {currentSegment.type === 'len' && "For strings and sub-messages, this byte tells us exactly how many bytes of data follow."}
                             {currentSegment.type === 'data' && "The actual payload of the field. Below you can see the raw hex and ASCII representation of this field's data."}
                           </div>
                         </div>
                         <div className="flex flex-col gap-4">
-                          <span className="text-xs text-slate-500 font-mono uppercase tracking-widest">Bit Breakdown (0x{currentSegment.val})</span>
+                          <span className="text-xs text-[var(--text-dim)] font-mono uppercase tracking-widest">Bit Breakdown (0x{currentSegment.val})</span>
                           <div className="flex gap-1">
                             {getBits(currentSegment.raw).map((bit, i) => (
                               <div key={i} className="flex flex-col items-center">
-                                <div className={`w-8 h-10 flex items-center justify-center font-mono text-lg border ${bit.isMSB ? 'border-[#ff00ff]/50 text-[#ff00ff] bg-[#ff00ff]/5' : bit.isType && currentSegment.type === 'tag' ? 'border-[#00f3ff]/50 text-[#00f3ff] bg-[#00f3ff]/5' : 'border-white/10 text-white'}`}>{bit.bit}</div>
-                                <span className="text-[10px] font-mono mt-1 text-slate-600">{i === 0 ? 'MSB' : i >= 5 && currentSegment.type === 'tag' ? 'TYPE' : `B${7 - i}`}</span>
+                                <div className={`w-8 h-10 flex items-center justify-center font-mono text-lg border ${bit.isMSB ? 'border-[#ff00ff]/50 text-[var(--cyber-neon-pink)] bg-[#ff00ff]/5' : bit.isType && currentSegment.type === 'tag' ? 'border-[#00f3ff]/50 text-[var(--cyber-neon-blue)] bg-[#00f3ff]/5' : 'border-[var(--border-light)] text-[var(--text-color)]'}`}>{bit.bit}</div>
+                                <span className="text-[10px] font-mono mt-1 text-[var(--text-dim)]">{i === 0 ? 'MSB' : i >= 5 && currentSegment.type === 'tag' ? 'TYPE' : `B${7 - i}`}</span>
                               </div>
                             ))}
                           </div>
-                          <p className="text-sm text-slate-300 italic border-l-2 border-[#00f3ff]/30 pl-3 py-1 bg-[#00f3ff]/5 rounded-r">
+                          <p className="text-sm text-[var(--text-color)] italic border-l-2 border-[#00f3ff]/30 pl-3 py-1 bg-[#00f3ff]/5 rounded-r">
                             {currentSegment.type === 'tag' ? "Bits 0-2 (last 3) indicate the Wire Type. Bits 3-7 are the Field Number (if < 16)." : "The Most Significant Bit (MSB) at index 0 indicates if more bytes follow."}
                           </p>
                         </div>
                       </div>
 
                       {currentSegment.type === 'data' && groupedDataBytes && (
-                        <div className="flex flex-col gap-4 border-t border-white/5 pt-6">
-                          <span className="text-xs text-slate-500 font-mono uppercase tracking-widest">Field Data Viewer</span>
+                        <div className="flex flex-col gap-4 border-t border-[var(--border-light)] pt-6">
+                          <span className="text-xs text-[var(--text-dim)] font-mono uppercase tracking-widest">Field Data Viewer</span>
                           <HexViewer bytes={groupedDataBytes} />
                         </div>
                       )}
@@ -2210,14 +2232,14 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
                         transition={{ repeat: Infinity, duration: 2 }}
                         className="p-3 bg-[#00f3ff]/10 rounded-full border border-[#00f3ff]/30"
                       >
-                        <ArrowUp className="w-6 h-6 text-[#00f3ff]" />
+                        <ArrowUp className="w-6 h-6 text-[var(--cyber-neon-blue)]" />
                       </motion.div>
                       <div className="space-y-1">
-                        <p className="text-white font-mono font-bold uppercase tracking-widest flex items-center justify-center gap-2">
-                          <MousePointer2 className="w-4 h-4 text-[#ff00ff]" />
+                        <p className="text-[var(--text-color)] font-mono font-bold uppercase tracking-widest flex items-center justify-center gap-2">
+                          <MousePointer2 className="w-4 h-4 text-[var(--cyber-neon-pink)]" />
                           Click a hex byte above
                         </p>
-                        <p className="text-xs text-slate-400 font-mono">
+                        <p className="text-xs text-[var(--text-dim)] font-mono">
                           Analyze the wire format step-by-step.<br />
                           Use the pagination controls to navigate the stream.
                         </p>
@@ -2230,13 +2252,13 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 pt-12 border-t border-white/5">
-          <div className="lg:col-span-7 space-y-8 text-slate-300">
-            <h3 className="text-2xl font-cyber font-bold text-[#ff00ff] uppercase">Varint Encoding</h3>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 pt-12 border-t border-[var(--border-light)]">
+          <div className="lg:col-span-7 space-y-8 text-[var(--text-color)]">
+            <h3 className="text-2xl font-cyber font-bold text-[var(--cyber-neon-pink)] uppercase">Varint Encoding</h3>
             <p>Varints are the secret sauce of Protobuf efficiency. They allow us to store integers using between 1 and 10 bytes, where smaller numbers take fewer bytes.</p>
-            <div className="p-6 bg-slate-900/50 border-l-2 border-[#ff00ff] space-y-6">
+            <div className="p-6 bg-[var(--section-bg-alt)]/50 border-l-2 border-[#ff00ff] space-y-6">
               <div>
-                <h4 className="text-[#ff00ff] font-cyber uppercase text-sm mb-4 text-[#ff00ff]">How it works (Step-by-Step)</h4>
+                <h4 className="text-[var(--cyber-neon-pink)] font-cyber uppercase text-sm mb-4 text-[var(--cyber-neon-pink)]">How it works (Step-by-Step)</h4>
                 <ol className="list-decimal list-inside space-y-3 text-sm">
                   <li>Take the binary representation of your number.</li>
                   <li>Split it into groups of 7 bits, starting from the right (LSB).</li>
@@ -2245,14 +2267,14 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
                   <li>The resulting bytes are stored in the stream, smallest group first.</li>
                 </ol>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-white/5">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-[var(--border-light)]">
                 <div className="space-y-2">
-                  <h5 className="text-xs font-mono text-[#00f3ff] uppercase text-[#00f3ff]">Why use Varints?</h5>
-                  <p className="text-xs text-slate-400">In most applications, small integers are far more common than large ones. If you have an `int32` but its value is usually `5`, why waste 4 bytes? Varints allow `5` to take only 1 byte.</p>
+                  <h5 className="text-xs font-mono text-[var(--cyber-neon-blue)] uppercase text-[var(--cyber-neon-blue)]">Why use Varints?</h5>
+                  <p className="text-xs text-[var(--text-dim)]">In most applications, small integers are far more common than large ones. If you have an `int32` but its value is usually `5`, why waste 4 bytes? Varints allow `5` to take only 1 byte.</p>
                 </div>
                 <div className="space-y-2">
-                  <h5 className="text-xs font-mono text-[#ff00ff] uppercase text-[#ff00ff]">The Trade-off</h5>
-                  <p className="text-xs text-slate-400 text-slate-400">Large numbers (greater than 2^28) actually take 5 bytes instead of 4. However, the savings on small numbers usually far outweigh this penalty in real-world data.</p>
+                  <h5 className="text-xs font-mono text-[var(--cyber-neon-pink)] uppercase text-[var(--cyber-neon-pink)]">The Trade-off</h5>
+                  <p className="text-xs text-[var(--text-dim)] text-[var(--text-dim)]">Large numbers (greater than 2^28) actually take 5 bytes instead of 4. However, the savings on small numbers usually far outweigh this penalty in real-world data.</p>
                 </div>
               </div>
             </div>
@@ -2357,21 +2379,21 @@ const SchemaEditorModal = ({ isOpen, onClose, value, onApply }: {
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-        className="relative w-full max-w-5xl bg-[#0a0a0a] border border-cyan-500/30 rounded-xl overflow-hidden shadow-[0_0_50px_rgba(0,243,255,0.1)] flex flex-col max-h-[90vh]"
+        className="relative w-full max-w-5xl bg-[var(--panel-bg)] border border-cyan-500/30 rounded-xl overflow-hidden shadow-[0_0_50px_rgba(0,243,255,0.1)] flex flex-col max-h-[90vh]"
       >
-        <div className="p-4 border-b border-white/10 flex items-center justify-between bg-white/5">
+        <div className="p-4 border-b border-[var(--border-light)] flex items-center justify-between bg-[var(--overlay-bg)]">
           <div className="flex items-center gap-3">
-            <Settings className="w-5 h-5 text-[#00f3ff]" />
-            <h2 className="font-cyber font-bold text-white uppercase tracking-wider">Edit_Protobuf_Schema</h2>
+            <Settings className="w-5 h-5 text-[var(--cyber-neon-blue)]" />
+            <h2 className="font-cyber font-bold text-[var(--text-color)] uppercase tracking-wider">Edit_Protobuf_Schema</h2>
             {isValidating && (
               <div className="flex items-center gap-2 ml-4">
                 <div className="w-2 h-2 bg-[#00f3ff] rounded-full animate-pulse" />
-                <span className="text-[10px] font-mono text-[#00f3ff]/60 uppercase tracking-widest">Validating...</span>
+                <span className="text-[10px] font-mono text-[var(--cyber-neon-blue)]/60 uppercase tracking-widest">Validating...</span>
               </div>
             )}
           </div>
-          <button onClick={onClose} className="p-2 hover:bg-white/10 rounded-lg transition-colors group">
-            <X className="w-5 h-5 text-slate-500 group-hover:text-white" />
+          <button onClick={onClose} className="p-2 hover:bg-[var(--border-light)] rounded-lg transition-colors group">
+            <X className="w-5 h-5 text-[var(--text-dim)] group-hover:text-[var(--text-color)]" />
           </button>
         </div>
 
@@ -2388,14 +2410,14 @@ const SchemaEditorModal = ({ isOpen, onClose, value, onApply }: {
           )}
         </div>
 
-        <div className="p-4 bg-white/5 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="text-xs text-slate-500">
+        <div className="p-4 bg-[var(--overlay-bg)] border-t border-[var(--border-light)] flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="text-xs text-[var(--text-dim)]">
             <ExternalLinkText href="https://protovalidate.com/schemas/standard-rules/">View Standard Rules Documentation</ExternalLinkText>
           </div>
           <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
             <button
               onClick={onClose}
-              className="w-full md:w-auto px-6 py-2 border border-white/10 text-slate-400 font-cyber font-bold hover:bg-white/5 transition-all text-xs"
+              className="w-full md:w-auto px-6 py-2 border border-[var(--border-light)] text-[var(--text-dim)] font-cyber font-bold hover:bg-[var(--overlay-bg)] transition-all text-xs"
             >
               CANCEL
             </button>
@@ -2407,7 +2429,7 @@ const SchemaEditorModal = ({ isOpen, onClose, value, onApply }: {
                 }
               }}
               disabled={localErrors.length > 0 || isValidating}
-              className="w-full md:w-auto px-4 sm:px-8 py-2 bg-[#00f3ff]/10 border border-[#00f3ff] text-[#00f3ff] font-cyber font-bold hover:bg-[#00f3ff]/20 transition-all text-xs shadow-[0_0_15px_rgba(0,243,255,0.2)] disabled:opacity-30 disabled:cursor-not-allowed"
+              className="w-full md:w-auto px-4 sm:px-8 py-2 bg-[#00f3ff]/10 border border-[#00f3ff] text-[var(--cyber-neon-blue)] font-cyber font-bold hover:bg-[#00f3ff]/20 transition-all text-xs shadow-[0_0_15px_rgba(0,243,255,0.2)] disabled:opacity-30 disabled:cursor-not-allowed"
             >
               APPLY_CHANGES
             </button>
@@ -2449,17 +2471,17 @@ const ValidationLab = ({ messageSchema, fds, protoSource, setProtoSource }: {
   }, [jsonInput, validator, messageSchema]);
 
   return (
-    <Section id="validation" className="py-24 px-4 sm:px-8 bg-slate-900/10 border-t border-white/5">
+    <Section id="validation" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]">
       <div className="max-w-7xl mx-auto">
         <SectionTitle icon={ShieldCheck} subtitle="08_PROTOVALIDATE">Data Validation</SectionTitle>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
           <div className="space-y-6">
-            <h3 className="text-xl font-cyber font-bold text-white uppercase">The Source of Truth</h3>
-            <p className="text-sm text-slate-400 leading-relaxed">
+            <h3 className="text-xl font-cyber font-bold text-[var(--text-color)] uppercase">The Source of Truth</h3>
+            <p className="text-sm text-[var(--text-dim)] leading-relaxed">
               Protobuf goes beyond simple types. With <ExternalLinkText href="https://protovalidate.com/"><strong>protovalidate</strong></ExternalLinkText>, you can embed complex business rules directly into your schema using <ExternalLinkText href="https://cel.dev/"><strong>CEL</strong></ExternalLinkText>.
             </p>
-            <p className="text-sm text-slate-400 leading-relaxed">
+            <p className="text-sm text-[var(--text-dim)] leading-relaxed">
               Define constraints like <code>min_len</code>, <code>email</code>, or custom rules to ensure your data adheres to the contract across all services.
             </p>
 
@@ -2468,7 +2490,7 @@ const ValidationLab = ({ messageSchema, fds, protoSource, setProtoSource }: {
               headerExtra={
                 <button
                   onClick={() => setIsModalOpen(true)}
-                  className="flex items-center gap-2 text-[10px] font-cyber font-bold text-[#00f3ff] hover:text-[#00f3ff]/80 transition-colors uppercase"
+                  className="flex items-center gap-2 text-[10px] font-cyber font-bold text-[var(--cyber-neon-blue)] hover:text-[var(--cyber-neon-blue)]/80 transition-colors uppercase"
                 >
                   <Settings className="w-3 h-3" />
                   OPEN_EDITOR
@@ -2476,8 +2498,8 @@ const ValidationLab = ({ messageSchema, fds, protoSource, setProtoSource }: {
               }
             >
               <div className="h-64 overflow-hidden relative group cursor-pointer" onClick={() => setIsModalOpen(true)}>
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/70 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100 z-10 backdrop-blur-none group-hover:backdrop-blur-[2px]">
-                  <span className="px-4 py-2 bg-[#00f3ff]/10 border border-[#00f3ff] text-[#00f3ff] font-cyber text-xs shadow-[0_0_20px_rgba(0,243,255,0.2)]">EDIT_SCHEMA</span>
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100 z-10 backdrop-blur-none group-hover:backdrop-blur-[2px]">
+                  <span className="px-4 py-2 bg-[#00f3ff]/10 border border-[#00f3ff] text-[var(--cyber-neon-blue)] font-cyber text-xs shadow-[0_0_20px_rgba(0,243,255,0.2)]">EDIT_SCHEMA</span>
                 </div>
                 <div className="p-4 opacity-50 grayscale group-hover:opacity-20 transition-all duration-300">
                   <SyntaxHighlighter language="proto" code={protoSource} wrap />
@@ -2496,12 +2518,12 @@ const ValidationLab = ({ messageSchema, fds, protoSource, setProtoSource }: {
           </div>
 
           <div className="space-y-6">
-            <h3 className="text-xl font-cyber font-bold text-white uppercase">Interactive Playground</h3>
+            <h3 className="text-xl font-cyber font-bold text-[var(--text-color)] uppercase">Interactive Playground</h3>
             <div className="space-y-4">
               <div className="flex flex-wrap gap-2 items-center justify-between">
                 <div className="flex flex-wrap gap-2">
                   {(Object.keys(VALIDATION_EXAMPLES) as Array<keyof typeof VALIDATION_EXAMPLES>).map((key) => (
-                    <button key={key} onClick={() => handleExampleChange(key)} className={`px-3 py-1 text-xs font-mono border transition-all ${activeExample === key ? 'bg-[#00f3ff]/10 border-[#00f3ff] text-[#00f3ff]' : 'border-white/10 text-slate-500 hover:border-white/30'}`}>{key}</button>
+                    <button key={key} onClick={() => handleExampleChange(key)} className={`px-3 py-1 text-xs font-mono border transition-all ${activeExample === key ? 'bg-[#00f3ff]/10 border-[#00f3ff] text-[var(--cyber-neon-blue)]' : 'border-[var(--border-light)] text-[var(--text-dim)] hover:border-white/30'}`}>{key}</button>
                   ))}
                 </div>
                 <button
@@ -2516,7 +2538,7 @@ const ValidationLab = ({ messageSchema, fds, protoSource, setProtoSource }: {
                     }
                   }}
                   disabled={!messageSchema || !fds}
-                  className="px-3 py-1 text-xs font-mono border border-[#ff00ff]/30 text-[#ff00ff]/70 hover:border-[#ff00ff] hover:text-[#ff00ff] transition-all flex items-center gap-1 disabled:opacity-30"
+                  className="px-3 py-1 text-xs font-mono border border-[#ff00ff]/30 text-[var(--cyber-neon-pink)]/70 hover:border-[#ff00ff] hover:text-[var(--cyber-neon-pink)] transition-all flex items-center gap-1 disabled:opacity-30"
                 >
                   <Zap className="w-3 h-3" />
                   GENERATE_DATA
@@ -2532,11 +2554,11 @@ const ValidationLab = ({ messageSchema, fds, protoSource, setProtoSource }: {
                 {validationResults.error ? (
                   <div className="p-4 bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-mono">SCHEMA_MISMATCH: {validationResults.error}</div>
                 ) : (validationResults.results?.violations?.length ?? 0) === 0 ? (
-                  <div className="flex flex-col items-center justify-center h-full gap-4 text-[#00ff9f]">
+                  <div className="flex flex-col items-center justify-center h-full gap-4 text-[var(--cyber-neon-green)]">
                     <CheckCircle2 className="w-12 h-12" />
                     <div className="flex flex-col items-center">
                       <span className="font-mono text-sm uppercase tracking-widest">Validation Passed</span>
-                      <span className="text-[10px] text-slate-500 mt-1 uppercase">Contract terms satisfied</span>
+                      <span className="text-[10px] text-[var(--text-dim)] mt-1 uppercase">Contract terms satisfied</span>
                     </div>
                   </div>
                 ) : (
@@ -2546,7 +2568,7 @@ const ValidationLab = ({ messageSchema, fds, protoSource, setProtoSource }: {
                         <AlertTriangle className="w-4 h-4 text-yellow-500 shrink-0" />
                         <div className="flex flex-col gap-1">
                           <span className="text-xs font-mono text-yellow-500 uppercase">{v.field.toString()}</span>
-                          <p className="text-sm text-slate-300">{v.message}</p>
+                          <p className="text-sm text-[var(--text-color)]">{v.message}</p>
                         </div>
                       </div>
                     ))}
@@ -2559,11 +2581,11 @@ const ValidationLab = ({ messageSchema, fds, protoSource, setProtoSource }: {
 
         {/* Row 4: Pro Tip & External Playground */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="md:col-span-2 p-4 bg-yellow-500/5 border border-yellow-500/10 rounded text-sm text-slate-400">
+          <div className="md:col-span-2 p-4 bg-[var(--cyber-neon-yellow)]/5 border border-[var(--cyber-neon-yellow)]/10 rounded text-sm text-[var(--text-dim)]">
             <p><strong>Pro Tip:</strong> By putting validation in the schema, you ensure that every service enforcing the contract (Go, Java, TS) applies the same rules consistently. This is easier to implement in languages with robust CEL support.</p>
           </div>
-          <div className="p-4 bg-cyan-500/5 border border-cyan-500/10 rounded text-sm text-slate-400 flex flex-col justify-center">
-            <span className="text-xs font-mono text-cyan-500 uppercase mb-2">Dive Deeper</span>
+          <div className="p-4 bg-[var(--cyber-neon-cyan)]/5 border border-[var(--cyber-neon-cyan)]/20 rounded-lg text-sm flex flex-col justify-center hover:bg-[var(--cyber-neon-cyan)]/10 transition-colors group/dive">
+            <span className="text-xs font-cyber font-bold text-[var(--cyber-neon-cyan)] uppercase mb-2 tracking-widest">Dive Deeper</span>
             <ExternalLinkText href="https://protovalidate.com/playground/">Official protovalidate Playground</ExternalLinkText>
           </div>
         </div>
@@ -2573,11 +2595,11 @@ const ValidationLab = ({ messageSchema, fds, protoSource, setProtoSource }: {
 };
 
 const EcosystemNextSteps = () => (
-  <Section id="ecosystem" className="py-24 px-4 sm:px-8 bg-slate-900/30 border-t border-white/5">
+  <Section id="ecosystem" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]">
     <div className="max-w-7xl mx-auto">
       <SectionTitle icon={Combine} subtitle="13_NEXT_STEPS">Ecosystem & Next Steps</SectionTitle>
 
-      <div className="mb-12 text-slate-400 max-w-3xl leading-relaxed">
+      <div className="mb-12 text-[var(--text-dim)] max-w-3xl leading-relaxed">
         <p>
           Protobuf itself is just a serialization format. Its true power comes from the vast ecosystem of tools built around it. Once you have a strong schema, these tools allow you to generate clients, manage APIs, and enforce quality at scale.
         </p>
@@ -2588,11 +2610,11 @@ const EcosystemNextSteps = () => (
         {/* Schema Management */}
         <CyberPanel title="SCHEMA_MANAGEMENT" className="border-[#ff00ff]/30 shadow-[0_0_15px_rgba(255,0,255,0.05)] hover:border-[#ff00ff]/60 transition-colors">
           <div className="p-4 space-y-4">
-            <h4 className="font-cyber font-bold text-white">Buf & BSR</h4>
-            <p className="text-sm text-slate-400">
+            <h4 className="font-cyber font-bold text-[var(--text-color)]">Buf & BSR</h4>
+            <p className="text-sm text-[var(--text-dim)]">
               The <ExternalLinkText href="https://buf.build/">Buf CLI</ExternalLinkText> revolutionized Protobuf development. It replaces complex `protoc` bash scripts with a simple `buf.yaml` configuration.
             </p>
-            <p className="text-sm text-slate-400">
+            <p className="text-sm text-[var(--text-dim)]">
               The Buf Schema Registry (BSR) acts like NPM for Protobuf. You can push your schemas there, and it automatically manages dependencies, linting, and breaking change detection across your organization.
             </p>
           </div>
@@ -2601,11 +2623,11 @@ const EcosystemNextSteps = () => (
         {/* RPC Frameworks */}
         <CyberPanel title="RPC_FRAMEWORKS" className="border-[#00f3ff]/30 shadow-[0_0_15px_rgba(0,243,255,0.05)] hover:border-[#00f3ff]/60 transition-colors">
           <div className="p-4 space-y-4">
-            <h4 className="font-cyber font-bold text-white">gRPC & ConnectRPC</h4>
-            <p className="text-sm text-slate-400">
+            <h4 className="font-cyber font-bold text-[var(--text-color)]">gRPC & ConnectRPC</h4>
+            <p className="text-sm text-[var(--text-dim)]">
               <ExternalLinkText href="https://grpc.io/">gRPC</ExternalLinkText> is the standard high-performance RPC framework, but it requires HTTP/2 and complex proxies for web clients.
             </p>
-            <p className="text-sm text-slate-400">
+            <p className="text-sm text-[var(--text-dim)]">
               <ExternalLinkText href="https://connectrpc.com/">ConnectRPC</ExternalLinkText> is a modern alternative that provides full gRPC compatibility but also supports standard HTTP/1.1 and JSON, making it incredibly easy to use directly from web browsers without a proxy like Envoy.
             </p>
           </div>
@@ -2614,11 +2636,11 @@ const EcosystemNextSteps = () => (
         {/* Testing Tools */}
         <CyberPanel title="TESTING_&_MOCKING" className="border-[#00ff9f]/30 shadow-[0_0_15px_rgba(0,255,159,0.05)] hover:border-[#00ff9f]/60 transition-colors">
           <div className="p-4 space-y-4">
-            <h4 className="font-cyber font-bold text-white">FauxRPC & Validation</h4>
-            <p className="text-sm text-slate-400">
+            <h4 className="font-cyber font-bold text-[var(--text-color)]">FauxRPC & Validation</h4>
+            <p className="text-sm text-[var(--text-dim)]">
               Tools like <ExternalLinkText href="https://fauxrpc.com">FauxRPC</ExternalLinkText> (which powers the "Generate Data" buttons on this site) can read your schemas and Protovalidate rules to instantly spin up mock servers and generate realistic test data.
             </p>
-            <p className="text-sm text-slate-400">
+            <p className="text-sm text-[var(--text-dim)]">
               This allows frontend teams to build against the schema long before the backend API is actually implemented.
             </p>
           </div>
@@ -2630,12 +2652,12 @@ const EcosystemNextSteps = () => (
 );
 
 const References = () => (
-  <Section id="references" className="py-24 px-4 sm:px-8 bg-black border-t border-white/5">
-    <div className="max-w-7xl mx-auto text-slate-400">
+  <Section id="references" className="py-24 px-4 sm:px-8 bg-[var(--bg-color)] border-t border-[var(--border-light)]">
+    <div className="max-w-7xl mx-auto text-[var(--text-color)]">
       <SectionTitle icon={BookOpen} subtitle="14_BIBLIOGRAPHY">References & Specs</SectionTitle>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <div className="space-y-4">
-          <h4 className="text-[#00f3ff] font-cyber text-sm tracking-widest uppercase">Core Specifications</h4>
+          <h4 className="text-[var(--cyber-neon-blue)] font-cyber text-sm tracking-widest uppercase">Core Specifications</h4>
           <ul className="space-y-2 text-sm">
             <li><ExternalLinkText href="https://protobuf.dev/programming-guides/encoding/">Protobuf Encoding Specification</ExternalLinkText></li>
             <li><ExternalLinkText href="https://protobuf.dev/programming-guides/proto3/">Proto3 Language Guide</ExternalLinkText></li>
@@ -2643,7 +2665,7 @@ const References = () => (
           </ul>
         </div>
         <div className="space-y-4">
-          <h4 className="text-[#ff00ff] font-cyber text-sm tracking-widest uppercase uppercase">Tooling & Ecosystem</h4>
+          <h4 className="text-[var(--cyber-neon-pink)] font-cyber text-sm tracking-widest uppercase uppercase">Tooling & Ecosystem</h4>
           <ul className="space-y-2 text-sm">
             <li><ExternalLinkText href="https://buf.build/">Buf Schema Registry (BSR)</ExternalLinkText></li>
             <li><ExternalLinkText href="https://github.com/bufbuild/protovalidate">Protovalidate GitHub</ExternalLinkText></li>
@@ -2651,7 +2673,7 @@ const References = () => (
           </ul>
         </div>
         <div className="space-y-4">
-          <h4 className="text-[#00ff9f] font-cyber text-sm tracking-widest uppercase uppercase tracking-widest">Standards & Protocols</h4>
+          <h4 className="text-[var(--cyber-neon-green)] font-cyber text-sm tracking-widest uppercase uppercase tracking-widest">Standards & Protocols</h4>
           <ul className="space-y-2 text-sm">
             <li><ExternalLinkText href="https://grpc.io/">gRPC Remote Procedure Calls</ExternalLinkText></li>
             <li><ExternalLinkText href="https://en.wikipedia.org/wiki/IEEE_754">IEEE 754 Floating Point</ExternalLinkText></li>
@@ -2709,6 +2731,26 @@ function App() {
   const [fds, setFds] = useState<Uint8Array | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState('hero');
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('theme');
+      if (saved === 'light' || saved === 'dark') return saved;
+      return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    }
+    return 'dark';
+  });
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (theme === 'light') {
+      root.classList.add('light');
+    } else {
+      root.classList.remove('light');
+    }
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => setTheme(prev => prev === 'light' ? 'dark' : 'light');
 
   useEffect(() => {
     const observerOptions = {
@@ -2769,17 +2811,17 @@ function App() {
   const messageSchema = useMemo(() => registry?.getMessage("demo.v1.User") || null, [registry]);
 
   return (
-    <div className="min-h-screen bg-[#050505] text-slate-300">
-      <header className="h-[80px] border-b border-white/10 bg-[#050505]/90 backdrop-blur-md fixed w-full z-[100] px-4 sm:px-8 flex items-center">
+    <div className="min-h-screen bg-[var(--bg-color)] text-[var(--text-color)]">
+      <header className="h-[80px] border-b border-[var(--border-light)] bg-[var(--bg-color)]/90 backdrop-blur-md fixed w-full z-[100] px-4 sm:px-8 flex items-center">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-[#00f3ff]/10 rounded border border-[#00f3ff]/30 flex items-center justify-center"><Cpu className="w-6 h-6 text-[#00f3ff]" /></div>
+          <div className="w-10 h-10 bg-[var(--cyber-neon-blue)]/10 rounded border border-[var(--cyber-neon-blue)]/30 flex items-center justify-center"><Cpu className="w-6 h-6 text-[var(--cyber-neon-blue)]" /></div>
           <div>
             <a href="/" className="hover:opacity-80 transition-opacity">
-              <h1 className="text-xl font-mono font-bold tracking-tight text-white">
-                protobuf<span className="text-[#00f3ff]">.kmcd.dev</span>
+              <h1 className="text-xl font-mono font-bold tracking-tight text-[var(--text-color)]">
+                protobuf<span className="text-[var(--cyber-neon-blue)]">.kmcd.dev</span>
               </h1>
             </a>
-            <a href={`#${activeSection}`} className="text-xs font-mono text-[#00f3ff] tracking-widest -mt-1 uppercase opacity-70 hover:opacity-100 transition-opacity block max-w-[150px] truncate lg:max-w-none">
+            <a href={`#${activeSection}`} className="text-xs font-mono text-[var(--cyber-neon-blue)] tracking-widest -mt-1 uppercase opacity-70 hover:opacity-100 transition-opacity block max-w-[150px] truncate lg:max-w-none">
               <span className="lg:hidden">{SECTION_LABELS[activeSection] || 'Welcome'}</span>
               <span className="hidden lg:inline">Interactive Explainer</span>
             </a>
@@ -2788,19 +2830,33 @@ function App() {
         {error && <div className="ml-8 px-3 py-1 bg-red-500/10 border border-red-500/30 rounded text-red-400 text-xs font-mono animate-pulse uppercase">SCHEMA_ERROR: {error}</div>}
 
         <div className="absolute left-1/2 -translate-x-1/2 hidden lg:flex flex-col items-center pointer-events-none">
-          <div className="text-[10px] font-mono text-[#00f3ff]/50 uppercase tracking-[0.2em] mb-0.5">Section</div>
-          <a href={`#${activeSection}`} className="text-xs font-mono font-bold text-white uppercase tracking-widest bg-white/5 px-3 py-1 rounded border border-white/10 backdrop-blur-sm pointer-events-auto hover:bg-white/10 transition-colors">
+          <div className="text-[10px] font-mono text-[var(--cyber-neon-blue)]/50 uppercase tracking-[0.2em] mb-0.5">Section</div>
+          <a href={`#${activeSection}`} className="text-xs font-mono font-bold text-[var(--text-color)] uppercase tracking-widest bg-[var(--overlay-bg)] px-3 py-1 rounded border border-[var(--border-light)] backdrop-blur-sm pointer-events-auto hover:bg-[var(--border-light)] transition-colors">
             {SECTION_LABELS[activeSection] || 'Welcome'}
           </a>
         </div>
 
-        <button
-          onClick={() => setIsMenuOpen(true)}
-          className="ml-auto p-2 text-[#00f3ff] hover:bg-[#00f3ff]/10 rounded border border-[#00f3ff]/20 transition-all group"
-          aria-label="Open Menu"
-        >
-          <AlignLeft className="w-6 h-6 group-hover:scale-110 transition-transform" />
-        </button>
+        <div className="ml-auto flex items-center gap-4">
+          <button
+            onClick={toggleTheme}
+            className="p-2 text-[var(--cyber-neon-blue)] hover:bg-[#00f3ff]/10 rounded border border-[#00f3ff]/20 transition-all group"
+            aria-label="Toggle Theme"
+          >
+            {theme === 'dark' ? (
+              <Sun className="w-5 h-5 group-hover:scale-110 transition-transform" />
+            ) : (
+              <Moon className="w-5 h-5 group-hover:scale-110 transition-transform" />
+            )}
+          </button>
+
+          <button
+            onClick={() => setIsMenuOpen(true)}
+            className="p-2 text-[var(--cyber-neon-blue)] hover:bg-[#00f3ff]/10 rounded border border-[#00f3ff]/20 transition-all group"
+            aria-label="Open Menu"
+          >
+            <AlignLeft className="w-6 h-6 group-hover:scale-110 transition-transform" />
+          </button>
+        </div>
       </header>
 
       <AnimatePresence>
@@ -2819,16 +2875,16 @@ function App() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-              className="fixed top-0 right-0 bottom-0 w-full max-w-sm z-[120] bg-[#0a0a0f] border-l border-white/10 shadow-2xl flex flex-col"
+              className="fixed top-0 right-0 bottom-0 w-full max-w-sm z-[120] bg-[var(--panel-bg)] border-l border-[var(--border-light)] shadow-2xl flex flex-col"
             >
-              <div className="h-[80px] flex items-center justify-between px-4 sm:px-8 border-b border-white/5">
+              <div className="h-[80px] flex items-center justify-between px-4 sm:px-8 border-b border-[var(--border-light)]">
                 <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 bg-[#00f3ff]/10 rounded border border-[#00f3ff]/30 flex items-center justify-center"><Cpu className="w-3.5 h-3.5 text-[#00f3ff]" /></div>
-                  <span className="font-cyber font-bold text-[#00f3ff] text-[10px] tracking-[0.2em] uppercase">Navigation</span>
+                  <div className="w-6 h-6 bg-[#00f3ff]/10 rounded border border-[#00f3ff]/30 flex items-center justify-center"><Cpu className="w-3.5 h-3.5 text-[var(--cyber-neon-blue)]" /></div>
+                  <span className="font-cyber font-bold text-[var(--cyber-neon-blue)] text-[10px] tracking-[0.2em] uppercase">Navigation</span>
                 </div>
                 <button
                   onClick={() => setIsMenuOpen(false)}
-                  className="p-2 text-slate-400 hover:text-white transition-colors"
+                  className="p-2 text-[var(--text-dim)] hover:text-[var(--text-color)] transition-colors"
                 >
                   <X className="w-6 h-6" />
                 </button>
@@ -2841,24 +2897,24 @@ function App() {
                       key={item.id}
                       href={`#${item.id}`}
                       onClick={() => setIsMenuOpen(false)}
-                      className="group flex items-center justify-between py-4 border-b border-white/5 hover:border-[#00f3ff]/30 transition-colors"
+                      className="group flex items-center justify-between py-4 border-b border-[var(--border-light)] hover:border-[#00f3ff]/30 transition-colors"
                     >
                       <div className="flex flex-col">
-                        <span className="text-[10px] font-mono text-[#00f3ff]/50 mb-1">0{i + 1}</span>
-                        <span className="font-cyber font-bold text-base tracking-wider text-slate-300 group-hover:text-[#00f3ff] transition-colors">{item.label}</span>
+                        <span className="text-[10px] font-mono text-[var(--cyber-neon-blue)]/50 mb-1">0{i + 1}</span>
+                        <span className="font-cyber font-bold text-base tracking-wider text-[var(--text-color)] group-hover:text-[var(--cyber-neon-blue)] transition-colors">{item.label}</span>
                       </div>
-                      <ChevronRight className="w-5 h-5 text-white/0 group-hover:text-[#00f3ff] transition-all -translate-x-2 group-hover:translate-x-0" />
+                      <ChevronRight className="w-5 h-5 text-[var(--text-color)]/0 group-hover:text-[var(--cyber-neon-blue)] transition-all -translate-x-2 group-hover:translate-x-0" />
                     </a>
                   ))}
                 </div>
               </nav>
 
-              <div className="p-8 border-t border-white/5 bg-black/20">
-                <div className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-4">Quick Links</div>
+              <div className="p-8 border-t border-[var(--border-light)] bg-[var(--overlay-bg)]">
+                <div className="text-[10px] font-mono text-[var(--text-dim)] uppercase tracking-widest mb-4">Quick Links</div>
                 <div className="flex gap-4">
-                  <a href="https://kmcd.dev" target="_blank" rel="noopener noreferrer" className="p-2 bg-white/5 rounded hover:bg-white/10 transition-colors text-slate-400 hover:text-[#00f3ff]" title="KMCD.DEV"><Fingerprint className="w-4 h-4" /></a>
-                  <a href="https://github.com/sudorandom/protobuf.kmcd.dev" target="_blank" rel="noopener noreferrer" className="p-2 bg-white/5 rounded hover:bg-white/10 transition-colors text-slate-400 hover:text-[#ff00ff]" title="GitHub Repository"><Code2 className="w-4 h-4" /></a>
-                  <a href="https://protobuf.dev/" target="_blank" rel="noopener noreferrer" className="p-2 bg-white/5 rounded hover:bg-white/10 transition-colors text-slate-400 hover:text-[#00ff9f]" title="Protobuf Docs"><Database className="w-4 h-4" /></a>
+                  <a href="https://kmcd.dev" target="_blank" rel="noopener noreferrer" className="p-2 bg-[var(--overlay-bg)] rounded hover:bg-[var(--border-light)] transition-colors text-[var(--text-dim)] hover:text-[var(--cyber-neon-blue)]" title="KMCD.DEV"><Fingerprint className="w-4 h-4" /></a>
+                  <a href="https://github.com/sudorandom/protobuf.kmcd.dev" target="_blank" rel="noopener noreferrer" className="p-2 bg-[var(--overlay-bg)] rounded hover:bg-[var(--border-light)] transition-colors text-[var(--text-dim)] hover:text-[var(--cyber-neon-pink)]" title="GitHub Repository"><Code2 className="w-4 h-4" /></a>
+                  <a href="https://protobuf.dev/" target="_blank" rel="noopener noreferrer" className="p-2 bg-[var(--overlay-bg)] rounded hover:bg-[var(--border-light)] transition-colors text-[var(--text-dim)] hover:text-[var(--cyber-neon-green)]" title="Protobuf Docs"><Database className="w-4 h-4" /></a>
                 </div>
               </div>
             </motion.div>
@@ -2892,7 +2948,7 @@ function App() {
         <BinaryMatrix
           messageSchema={messageSchema}
         />
-        <Section id="history" className="py-24 px-4 sm:px-8 bg-slate-900/10 border-t border-white/5">
+        <Section id="history" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]">
           <div className="max-w-7xl mx-auto">
             <SectionTitle icon={GitBranch} subtitle="12_EVOLUTION">The History of Protobuf</SectionTitle>
             <VersionTimeline />
@@ -2903,19 +2959,19 @@ function App() {
         <References />
       </main>
 
-      <footer className="py-12 border-t border-white/5 px-4 sm:px-8 flex flex-col items-center gap-4">
+      <footer className="py-12 border-t border-[var(--border-light)] px-4 sm:px-8 flex flex-col items-center gap-4">
         <div className="flex gap-8">
-          <a href="https://kmcd.dev" target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-[#00f3ff] transition-colors" aria-label="KMCD.DEV">
+          <a href="https://kmcd.dev" target="_blank" rel="noopener noreferrer" className="text-[var(--text-dim)] hover:text-[var(--cyber-neon-blue)] transition-colors" aria-label="KMCD.DEV">
             <Fingerprint className="w-5 h-5" />
           </a>
-          <a href="https://github.com/sudorandom/protobuf.kmcd.dev" target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-[#ff00ff] transition-colors" aria-label="GitHub Repository">
+          <a href="https://github.com/sudorandom/protobuf.kmcd.dev" target="_blank" rel="noopener noreferrer" className="text-[var(--text-dim)] hover:text-[var(--cyber-neon-pink)] transition-colors" aria-label="GitHub Repository">
             <Code2 className="w-5 h-5" />
           </a>
-          <a href="https://protobuf.dev/" target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-[#00ff9f] transition-colors" aria-label="Protobuf Documentation">
+          <a href="https://protobuf.dev/" target="_blank" rel="noopener noreferrer" className="text-[var(--text-dim)] hover:text-[var(--cyber-neon-green)] transition-colors" aria-label="Protobuf Documentation">
             <Database className="w-5 h-5" />
           </a>
         </div>
-        <p className="text-xs font-mono text-slate-600 uppercase tracking-[0.2em]">Powered by Protobuf-ES & KMCD.DEV // Dynamic Schema Enabled</p>
+        <p className="text-xs font-mono text-[var(--text-dim)] uppercase tracking-[0.2em]">Powered by Protobuf-ES & KMCD.DEV // Dynamic Schema Enabled</p>
       </footer>
     </div>
   );
