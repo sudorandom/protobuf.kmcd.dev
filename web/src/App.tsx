@@ -275,10 +275,10 @@ const ProtobufBasics = () => {
       desc: (
         <div className="space-y-4">
           <p>
-            Messages are the primary logical structure in Protobuf. They act as containers for your data, analogous to a struct in C/Rust, a class in Java/TypeScript, or a dictionary in Python.
+            Messages are the primary logical structure in Protobuf. They act as containers for your data, analogous to a <code>struct</code> in C/Rust, a <code>class</code> in Java/TypeScript, or a <code>dict</code> in Python.
           </p>
           <p>
-            Once defined in a schema, the Protobuf compiler generates native, type-safe code for every language your team uses.
+            Think of a message as a <strong>strictly-enforced contract</strong>. Once defined in a schema, the Protobuf compiler ensures that every system interacting with this data—regardless of the programming language—agrees on its structure.
           </p>
           <p>
             Crucially, <ExternalLinkText href="https://protobuf.dev/programming-guides/proto3/#updating">Protobuf is designed to be evolvable</ExternalLinkText>. You can add new fields to these messages without breaking existing code, allowing servers and clients to upgrade at their own pace.
@@ -300,6 +300,9 @@ const ProtobufBasics = () => {
           <p>
             Because Protobuf is strictly typed, it eliminates an entire class of runtime errors common in dynamically typed formats like JSON. If a client expects an integer, they will never accidentally receive a string.
           </p>
+          <p>
+            While names are used in your code for readability, they are <strong>mostly ignored on the wire</strong>. This allows you to rename fields in your schema without breaking binary compatibility (though it may break JSON consumers).
+          </p>
         </div>
       ),
       example: 'message User {\n  string username = 1;\n  bool is_active = 2;\n  uint32 login_count = 3;\n}'
@@ -308,19 +311,18 @@ const ProtobufBasics = () => {
       id: 'numbers',
       label: 'Field Numbers',
       icon: Hash,
-      title: 'Field Identifiers',
+      title: 'The Wire Identity',
       desc: (
         <div className="space-y-4">
           <p>
-            Field numbers are the most critical part of a Protobuf message. Instead of sending long string names (like "username") over the wire, Protobuf only sends this integer ID. This saves immense amounts of bandwidth.
+            Field numbers are the most critical part of a Protobuf message. Instead of sending long string names (like <code>"username"</code>) over the wire, Protobuf only sends this integer ID.
           </p>
           <p>
-            Because these numbers identify fields, they <strong>must never be changed</strong> once a message type is in use. Reusing a number will cause data corruption.
+            This <strong>"Tag"</strong> is what makes Protobuf so compact. Because these numbers identify fields, they <strong>must never be changed</strong> once a message type is in use. Reusing a number for a different field will cause catastrophic data corruption.
           </p>
-          <ul className="list-disc pl-4 space-y-1 mt-2">
-            <li>Numbers 1-15 take 1 byte to encode (ideal for frequent fields).</li>
-            <li>Numbers 16-2047 take 2 bytes.</li>
-          </ul>
+          <div className="p-3 bg-cyan-500/10 border border-cyan-500/20 rounded text-xs space-y-2">
+            <p><strong>Optimization Tip:</strong> Numbers 1 through 15 take <strong>1 byte</strong> to encode (including the field number and wire type). Numbers 16 through 2047 take 2 bytes. Use 1-15 for your most frequently sent fields!</p>
+          </div>
         </div>
       ),
       example: 'message User {\n  // "1" is the ID on the wire\n  string id = 1;\n  \n  // Small numbers (1-15) take 1 byte to encode\n  string name = 2;\n}'
@@ -329,14 +331,17 @@ const ProtobufBasics = () => {
       id: 'enums',
       label: 'Enums',
       icon: List,
-      title: 'Enumerations',
+      title: 'The Choices',
       desc: (
         <div className="space-y-4">
           <p>
             Enums allow you to define a restricted set of named constants. This is crucial for states, roles, or configurations.
           </p>
           <p>
-            In proto3, the first constant <strong>must always map to zero</strong>, which serves as the default value when the field is not explicitly set in the binary payload.
+            In proto3, the first constant <strong>must always map to zero</strong>. This serves as the default value when the field is not explicitly set in the binary payload.
+          </p>
+          <p>
+            <strong>Open Enums:</strong> Modern Protobuf implementations support "open" enums, meaning if a server sends a value that a client doesn't recognize (e.g., a new state added later), the client will still preserve that value instead of crashing or defaulting to zero.
           </p>
         </div>
       ),
@@ -346,14 +351,17 @@ const ProtobufBasics = () => {
       id: 'nested',
       label: 'Embedded',
       icon: Combine,
-      title: 'Nesting Messages',
+      title: 'Composition',
       desc: (
         <div className="space-y-4">
           <p>
             Protobuf supports complex, hierarchical data structures. You can define messages within other messages, or use previously defined messages as field types.
           </p>
           <p>
-            This composition allows you to build highly reusable domains of data models.
+            This <strong>Composition</strong> allows you to build highly reusable domains of data models. For example, a <code>Location</code> message can be used across <code>User</code>, <code>Event</code>, and <code>Office</code> messages.
+          </p>
+          <p>
+            On the wire, embedded messages are "length-delimited", allowing decoders to skip the entire sub-message if they don't have the schema for it.
           </p>
         </div>
       ),
@@ -361,16 +369,16 @@ const ProtobufBasics = () => {
     },
     {
       id: 'repeated',
-      label: 'Repeated Fields',
+      label: 'Repeated',
       icon: Layers,
-      title: 'Arrays and Lists',
+      title: 'Collections',
       desc: (
         <div className="space-y-4">
           <p>
             To represent an array or list of items, use the <code>repeated</code> keyword. These fields can contain zero or more elements of the specified type.
           </p>
           <p>
-            In modern Protobuf, repeated scalar numeric fields are "packed" by default, meaning they are stored with extreme efficiency in the binary stream.
+            In modern Protobuf, repeated scalar numeric fields (like <code>int32</code>, <code>float</code>, etc.) are <strong>"packed"</strong> by default. Instead of repeating the field tag for every element, they are stored as one single block with a length prefix. This is significantly more efficient for large arrays.
           </p>
         </div>
       ),
@@ -390,22 +398,28 @@ const ProtobufBasics = () => {
             <li><strong>Keys:</strong> Can be any integral or string type. <em>Messages, enums, floats, and bytes cannot be keys.</em></li>
             <li><strong>Values:</strong> Can be any type, including another message, but <em>cannot</em> be another map or a repeated field.</li>
           </ul>
+          <p className="text-xs text-slate-500 italic">
+            Behind the scenes, maps are actually just <code>repeated</code> messages with <code>key</code> and <code>value</code> fields, ensuring backward compatibility with older decoders.
+          </p>
         </div>
       ),
       example: 'message Project {\n  string name = 1;\n  \n  // A dictionary of string keys to string values\n  map<string, string> labels = 2;\n}'
     },
     {
       id: 'oneof',
-      label: 'Oneof (Unions)',
+      label: 'Oneof',
       icon: GitBranch,
-      title: 'Mutually Exclusive Fields',
+      title: 'Mutual Exclusion',
       desc: (
         <div className="space-y-4">
           <p>
-            If you have a message with multiple fields where only one can be set at a time, you can enforce this behavior and save memory using the <code>oneof</code> keyword.
+            If you have a message with multiple fields where <strong>only one can be set at a time</strong>, you can enforce this behavior and save memory using the <code>oneof</code> keyword.
           </p>
           <p>
-            Setting any field within the <code>oneof</code> automatically clears all other fields in that same <code>oneof</code>. This is Protobuf's equivalent to a tagged union or variant.
+            Setting any field within the <code>oneof</code> automatically clears all other fields in that same <code>oneof</code>. This is Protobuf's equivalent to a <strong>tagged union</strong> or <code>variant</code>.
+          </p>
+          <p>
+            This is perfect for polymorphism, such as an <code>Event</code> that could be a <code>ClickEvent</code>, <code>HoverEvent</code>, or <code>ScrollEvent</code>.
           </p>
         </div>
       ),
@@ -413,19 +427,19 @@ const ProtobufBasics = () => {
     },
     {
       id: 'presence',
-      label: 'Field Presence',
+      label: 'Presence',
       icon: HelpCircle,
-      title: 'Default Values & Presence',
+      title: 'The Zero Value Trap',
       desc: (
         <div className="space-y-4">
           <p>
-            <strong>The Zero Value Trap:</strong> In <code>proto3</code>, default scalar values (like <code>0</code>, <code>false</code>, or <code>""</code>) are <strong>not serialized</strong>.
+            In <code>proto3</code>, default scalar values (like <code>0</code>, <code>false</code>, or <code>""</code>) are <strong>not serialized</strong> to save space.
           </p>
           <p className="text-[#ff00ff] bg-[#ff00ff]/5 p-3 border border-[#ff00ff]/20 rounded text-xs italic">
-            This creates a pitfall: the receiver cannot distinguish between a field explicitly "set to zero" (e.g., 0 degrees temperature) and one that was never sent.
+            <strong>The Pitfall:</strong> The receiver cannot distinguish between a field explicitly "set to zero" (e.g., 0 degrees) and one that was never sent.
           </p>
           <p>
-            Use the <code>optional</code> keyword to track explicit presence, or migrate to <strong>Protobuf Editions</strong> to globally enforce <code>EXPLICIT</code> presence.
+            To solve this, use the <code>optional</code> keyword to enable <strong>Explicit Presence</strong> tracking. In the modern <strong>Protobuf Editions</strong> (2023+), you can globally enforce explicit presence, returning to the more predictable behavior of Proto2.
           </p>
         </div>
       ),
@@ -438,7 +452,7 @@ const ProtobufBasics = () => {
   return (
     <Section id="basics" className="py-24 px-4 sm:px-8 bg-black/40 border-t border-white/5">
       <div className="max-w-7xl mx-auto">
-        <SectionTitle icon={BookOpen} subtitle="02_CORE_CONCEPTS">Protobuf Basics</SectionTitle>
+        <SectionTitle icon={BookOpen} subtitle="02_BUILDING_BLOCKS">Protobuf Basics</SectionTitle>
 
         <div className="flex flex-col lg:flex-row gap-12 min-h-[400px]">
           {/* Left Nav */}
@@ -470,7 +484,8 @@ const ProtobufBasics = () => {
               <div className="p-2">
                 <SyntaxHighlighter language="proto" code={current.example} wrap={true} />
               </div>
-            </CyberPanel>          </div>
+            </CyberPanel>
+          </div>
         </div>
       </div>
     </Section>
@@ -615,14 +630,19 @@ const AdvancedProtobuf = () => {
       id: 'imports',
       label: 'Imports',
       icon: FileCode,
-      title: 'Schema Composition',
+      title: 'Dependency Management',
       desc: (
         <div className="space-y-4">
           <p>
-            You can use definitions from other .proto files using the <code>import</code> statement. This allows you to break large schemas into manageable, reusable modules.
+            You can use definitions from other .proto files using the <code>import</code> statement. However, this is where many developers encounter the "Include Path Nightmare."
           </p>
+          <div className="p-4 bg-red-500/5 border border-red-500/10 rounded text-sm space-y-3">
+            <p className="leading-relaxed">
+              The standard <code>protoc</code> compiler requires you to manually specify every include directory via <code>-I</code> (or <code>--proto_path</code>) flags. If your paths are inconsistent (e.g., <code>import "proto/user.proto"</code> vs <code>import "user.proto"</code>), the compiler will treat them as different types, leading to "Duplicate Symbol" errors or failed builds.
+            </p>
+          </div>
           <p>
-            The compiler needs to know where to find these files during build time. Modern tools like the <ExternalLinkText href="https://buf.build/">Buf Schema Registry</ExternalLinkText> make this dependency management feel just like NPM or Cargo.
+            <ExternalLinkText href="https://buf.build/">Buf</ExternalLinkText> eliminates this by using a <code>buf.yaml</code> to define your module root. It handles imports gracefully, allows for remote dependencies (like NPM/Cargo), and ensures paths are always consistent across your entire team.
           </p>
         </div>
       ),
@@ -698,12 +718,20 @@ const AdvancedProtobuf = () => {
       desc: (
         <div className="space-y-4">
           <p>
-            Protobuf is strictly designed for forward and backward compatibility.
+            Protobuf is strictly designed for forward and backward compatibility. However, there are strict rules about what you <strong>CANNOT</strong> change.
           </p>
-          <ul className="list-disc pl-4 space-y-1">
-            <li><strong>Forward:</strong> Old code can read new messages (unknown fields are parsed and preserved, but safely ignored by the application).</li>
-            <li><strong>Backward:</strong> New code can read old messages (missing fields get safe default values like <code>0</code> or <code>""</code>).</li>
-          </ul>
+          <div className="p-4 bg-[#ff00ff]/5 border border-[#ff00ff]/20 rounded text-xs space-y-3">
+            <p className="font-bold text-[#ff00ff]">Wire-Breaking (NEVER DO THIS):</p>
+            <ul className="list-disc pl-4 space-y-1">
+              <li>Changing a <strong>Field Number</strong>.</li>
+              <li>Changing a field type to an incompatible wire type (e.g., <code>string</code> to <code>int32</code>).</li>
+              <li>Changing the type of a field in a way that changes its binary representation (e.g., <code>int32</code> to <code>fixed32</code>).</li>
+              <li>Removing a field without <strong>reserving</strong> its number.</li>
+            </ul>
+          </div>
+          <p>
+            As long as you preserve field numbers and use compatible types, old clients can read new messages (ignoring unknown fields), and new clients can read old messages (using default values for missing fields).
+          </p>
         </div>
       ),
       example: '// V1 schema\nmessage Config {\n  bool feature_enabled = 1;\n}\n\n// V2 schema - safely added a field\nmessage Config {\n  bool feature_enabled = 1;\n  int32 max_retries = 2; // Old clients ignore this\n}'
@@ -1040,7 +1068,8 @@ const Introduction = ({ messageSchema, fds }: {
 
   return (
     <Section id="intro" className="py-24 px-4 sm:px-8 max-w-7xl mx-auto">
-      <SectionTitle icon={Database} subtitle="01_DEFINITION_LOGS">What is Protobuf?</SectionTitle>
+      <SectionTitle icon={Database} subtitle="01_DEFINITION">What is Protobuf?</SectionTitle>
+
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
         <div className="space-y-4">
@@ -1587,12 +1616,7 @@ const TypeSystem = () => {
         { name: "sint32 / sint64", desc: <>Signed integers. More efficient for negative numbers via <ExternalLinkText href="https://en.wikipedia.org/wiki/Variable-length_quantity#Zigzag_encoding">ZigZag</ExternalLinkText>.</> },
         { name: "fixed32 / fixed64", desc: "Always 4/8 bytes. Efficient for large constants (> 2^28)." },
         { name: "float / double", desc: <>32-bit and 64-bit <ExternalLinkText href="https://en.wikipedia.org/wiki/IEEE_754">IEEE 754</ExternalLinkText> floating point numbers.</> },
-      ],
-      footer: (
-        <TechnicalNuance title="JSON_64BIT_MAPPING">
-          JavaScript cannot natively represent 64-bit integers with full precision. Consequently, the ProtoJSON standard specifies that <code>int64</code>, <code>uint64</code>, <code>fixed64</code>, and <code>sfixed64</code> are always encoded as <strong>strings</strong>.
-        </TechnicalNuance>
-      )
+      ]
     },
     {
       name: "Object Types",
@@ -1606,7 +1630,7 @@ const TypeSystem = () => {
     }
   ];
 
-  const TypeGroup = ({ groupName, groupIcon: Icon, types, footer }: { groupName: string, groupIcon: React.ElementType, types: { name: string, desc: React.ReactNode }[], footer?: React.ReactNode }) => (
+  const TypeGroup = ({ groupName, groupIcon: Icon, types }: { groupName: string, groupIcon: React.ElementType, types: { name: string, desc: React.ReactNode }[] }) => (
     <div className="space-y-4">
       <div className="flex items-center gap-2 text-[#00f3ff]">
         <Icon className="w-4 h-4" />
@@ -1622,18 +1646,64 @@ const TypeSystem = () => {
           </div>
         ))}
       </div>
-      {footer && <div className="mt-4">{footer}</div>}
     </div>
   );
 
   return (
     <Section id="types" className="py-24 px-4 sm:px-8 bg-slate-900/5 border-t border-white/5">
-      <div className="max-w-7xl mx-auto">
-        <SectionTitle icon={Combine} subtitle="03_TYPE_REFERENCE">The Type System</SectionTitle>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          {groups.map(g => (
-            <TypeGroup key={g.name} groupName={g.name} groupIcon={g.icon} types={g.types} footer={g.footer} />
-          ))}
+      <div className="max-w-7xl mx-auto space-y-16">
+        <div>
+          <SectionTitle icon={Combine} subtitle="04_TYPE_REFERENCE">The Type System</SectionTitle>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            {groups.map(g => (
+              <TypeGroup key={g.name} groupName={g.name} groupIcon={g.icon} types={g.types} />
+            ))}
+          </div>
+        </div>
+
+        <div className="pt-16 border-t border-white/5">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <div className="space-y-6 text-slate-300">
+              <h3 className="text-xl font-cyber font-bold text-white uppercase">ProtoJSON Mapping</h3>
+              <p>
+                While Protobuf is primarily binary, it defines a canonical <ExternalLinkText href="https://protobuf.dev/programming-guides/json/">ProtoJSON</ExternalLinkText> mapping. This ensures that every binary payload has a deterministic representation in JSON.
+              </p>
+              
+              <div className="p-4 bg-yellow-500/5 border border-yellow-500/20 rounded-lg space-y-4">
+                <h4 className="text-yellow-500 font-cyber font-bold text-xs uppercase tracking-widest">The 64-bit Precision Trap</h4>
+                <p className="text-sm leading-relaxed">
+                  JavaScript numbers are 64-bit floats, which lose precision for integers above 2^53 - 1. 
+                </p>
+                <p className="text-sm leading-relaxed font-bold">
+                  To prevent data loss, <code>int64</code> and <code>uint64</code> types MUST be encoded as strings in JSON.
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <CyberPanel title="JSON_MAPPING_RULES">
+                <div className="p-4 space-y-4 text-sm">
+                  <div className="grid grid-cols-2 gap-4 pb-2 border-b border-white/5 font-mono text-[10px] text-slate-500 uppercase">
+                    <span>Protobuf Type</span>
+                    <span>JSON Representation</span>
+                  </div>
+                  {[
+                    { pb: "int32, float, double", json: "Number" },
+                    { pb: "bool", json: "Boolean (true/false)" },
+                    { pb: "int64, uint64", json: "\"String\" (Precision safety)" },
+                    { pb: "enum", json: "\"NAME\" (Always string)" },
+                    { pb: "bytes", json: "\"Base64 String\"" },
+                    { pb: "google.protobuf.Timestamp", json: "\"2023-10-01T12:00:00Z\"" },
+                  ].map(row => (
+                    <div key={row.pb} className="grid grid-cols-2 gap-4 py-1">
+                      <code className="text-[#00f3ff]">{row.pb}</code>
+                      <code className="text-[#00ff9f]">{row.json}</code>
+                    </div>
+                  ))}
+                </div>
+              </CyberPanel>
+            </div>
+          </div>
         </div>
       </div>
     </Section>
@@ -1780,7 +1850,7 @@ const WireFormatBreakdown = () => {
 const SchemaDrivenAPIs = () => (
   <Section id="schema" className="py-24 px-4 sm:px-8 bg-slate-900/20 border-t border-white/5">
     <div className="max-w-7xl mx-auto">
-      <SectionTitle icon={FileCode} subtitle="04_ARCHITECTURE">Schema-Driven APIs</SectionTitle>
+      <SectionTitle icon={FileCode} subtitle="03_ARCHITECTURE">Schema-Driven APIs</SectionTitle>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
         <div className="space-y-6 text-slate-300">
           <h3 className="text-xl font-cyber font-bold text-white uppercase">The Source of Truth</h3>
@@ -2585,15 +2655,15 @@ const NAV_ITEMS = [
   { id: 'hero', label: 'HOME' },
   { id: 'intro', label: 'INTRO' },
   { id: 'basics', label: 'BASICS' },
-  { id: 'types', label: 'TYPES' },
   { id: 'schema', label: 'SCHEMA' },
+  { id: 'types', label: 'TYPES' },
   { id: 'advanced', label: 'ADVANCED' },
   { id: 'reflection', label: 'REFLECTION' },
   { id: 'deepdive', label: 'DEEP DIVE' },
   { id: 'validation', label: 'VALIDATION' },
   { id: 'efficiency', label: 'EFFICIENCY' },
-  { id: 'history', label: 'HISTORY' },
   { id: 'binary', label: 'BINARY' },
+  { id: 'history', label: 'HISTORY' },
   { id: 'alternatives', label: 'ALTERNATIVES' },
   { id: 'ecosystem', label: 'ECOSYSTEM' },
   { id: 'references', label: 'REFERENCES' }
@@ -2603,18 +2673,18 @@ const SECTION_LABELS: Record<string, string> = {
   hero: 'Welcome',
   intro: 'Introduction',
   basics: 'Protobuf Basics',
-  types: 'The Type System',
   schema: 'Schema-Driven APIs',
+  types: 'The Type System',
   advanced: 'Advanced Protobuf',
   reflection: 'Descriptors & Reflection',
   deepdive: 'Schema Engineering',
   validation: 'Data Validation',
-  efficiency: 'Efficiency',
+  efficiency: 'Performance & Efficiency',
   insights: 'Size vs. Compression',
-  history: 'Protobuf History',
-  binary: 'Binary Format',
-  alternatives: 'Alternatives',
-  ecosystem: 'Ecosystem',
+  binary: 'Digging into Binary',
+  history: 'The Evolution',
+  alternatives: 'Landscape & Alternatives',
+  ecosystem: 'The Ecosystem',
   references: 'References'
 };
 
@@ -2789,8 +2859,8 @@ function App() {
           fds={fds}
         />
         <ProtobufBasics />
-        <TypeSystem />
         <SchemaDrivenAPIs />
+        <TypeSystem />
         <AdvancedProtobuf />
         <DescriptorsAndReflection />
         <DeepDiveSection />
@@ -2805,15 +2875,15 @@ function App() {
           fileDescriptorSet={fds}
         />
         <PayloadSizeInsights />
-        <Section id="history" className="py-24 px-4 sm:px-8 bg-slate-900/10 border-t border-white/5">
-          <div className="max-w-7xl mx-auto">
-            <SectionTitle icon={GitBranch} subtitle="10_EVOLUTION">Protobuf History</SectionTitle>
-            <VersionTimeline />
-          </div>
-        </Section>
         <BinaryMatrix
           messageSchema={messageSchema}
         />
+        <Section id="history" className="py-24 px-4 sm:px-8 bg-slate-900/10 border-t border-white/5">
+          <div className="max-w-7xl mx-auto">
+            <SectionTitle icon={GitBranch} subtitle="12_EVOLUTION">The History of Protobuf</SectionTitle>
+            <VersionTimeline />
+          </div>
+        </Section>
         <AlternativesLandscape />
         <EcosystemNextSteps />
         <References />
