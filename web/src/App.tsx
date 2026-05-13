@@ -723,7 +723,7 @@ const AdvancedProtobuf = () => {
           <p>
             Protobuf is strictly designed for forward and backward compatibility. However, there are strict rules about what you <strong>CANNOT</strong> change.
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4">
             <div className="p-4 bg-red-500/5 border border-red-500/20 rounded text-xs space-y-3">
               <p className="font-bold text-red-400">Wire-Breaking (NEVER DO THIS):</p>
               <ul className="list-disc pl-4 space-y-1 text-slate-300">
@@ -1705,7 +1705,7 @@ const TypeSystem = () => {
                     { pb: "int32, float, double", json: "Number" },
                     { pb: "bool", json: "Boolean (true/false)" },
                     { pb: "int64, uint64", json: "\"String\" (Precision safety)" },
-                    { pb: "enum", json: "\"STRING\"" },
+                    { pb: "enum", json: "\"String\"" },
                     { pb: "bytes", json: "\"Base64 String\"" },
                     { pb: "google.protobuf.Timestamp", json: "\"2023-10-01T12:00:00Z\"" },
                   ].map(row => (
