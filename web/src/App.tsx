@@ -2552,7 +2552,14 @@ const ValidationLab = ({ messageSchema, fds, protoSource, setProtoSource }: {
                 </button>
               </div>
               <CyberPanel title="TEST_DATA (JSON)">
-                <JsonEditor value={jsonInput} onChange={setJsonInput} className="h-64" />
+                <div className="relative h-64">
+                  {validationResults.error && validationResults.error !== "NO_SCHEMA" && (
+                    <div className="absolute top-0 left-0 right-0 p-2 bg-red-500/10 border-b border-red-500/30 text-red-400 text-xs font-mono z-10 break-words line-clamp-2" title={validationResults.error}>
+                      {validationResults.error}
+                    </div>
+                  )}
+                  <JsonEditor value={jsonInput} onChange={setJsonInput} className="h-full rounded-none border-none bg-transparent" />
+                </div>
               </CyberPanel>
             </div>
 
