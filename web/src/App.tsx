@@ -1470,8 +1470,17 @@ const SizeComparison = ({ messageSchema, fileDescriptorSet }: { messageSchema: D
                 {isGenerating ? 'GENERATING...' : 'GENERATE_FAUX_DATA'}
               </button>
             </div>
-            <CyberPanel title="DATA_INPUT (JSON)" headerExtra={stats.error && <span className="text-xs text-red-500 font-mono">PARSE_ERROR</span>}>
-              <JsonEditor value={jsonInput} onChange={setJsonInput} className="h-80" />
+            <CyberPanel title="DATA_INPUT (JSON)" headerExtra={stats.error && stats.error !== "NO_SCHEMA" && <span className="text-xs text-red-500 font-mono">PARSE_ERROR</span>}>
+              <div className="flex flex-col h-80">
+                <div className="flex-1 min-h-0">
+                  <JsonEditor value={jsonInput} onChange={setJsonInput} className="h-full rounded-none border-none bg-transparent" />
+                </div>
+                {stats.error && stats.error !== "NO_SCHEMA" && (
+                  <div className="p-2 bg-red-500/10 border-t border-red-500/30 text-red-400 text-xs font-mono break-words line-clamp-2" title={stats.error}>
+                    {stats.error}
+                  </div>
+                )}
+              </div>
             </CyberPanel>
           </div>
           <div className="space-y-6">
@@ -2016,15 +2025,15 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
   };
 
   const stats = useMemo(() => {
-    if (!messageSchema) return { segments: [] };
+    if (!messageSchema) return { segments: [], error: null as string | null };
     try {
       const obj = JSON.parse(jsonInput);
       const user = fromJson(messageSchema, obj, { ignoreUnknownFields: true });
       const binary = toBinary(messageSchema, user);
       const segments = decodeBinary(binary);
-      return { segments };
-    } catch {
-      return { segments: [] };
+      return { segments, error: null };
+    } catch (e: any) {
+      return { segments: [], error: e.message || 'Error processing JSON' };
     }
   }, [jsonInput, messageSchema]);
 
@@ -2086,7 +2095,8 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
             <CyberPanel
               title="DYNAMIC_BINARY_HEX_STREAM"
               headerExtra={
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2 items-center">
+                  {stats.error && <span className="text-xs text-red-500 font-mono mr-2">PARSE_ERROR</span>}
                   {(Object.keys(SIZE_EXAMPLES) as Array<keyof typeof SIZE_EXAMPLES>).map((key) => (
                     <button
                       key={key}
@@ -2171,22 +2181,24 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
                     })}
                   </div>
                 </div>
-                <div className="md:col-span-2 bg-[var(--overlay-bg)] flex flex-col border-t md:border-t-0 border-[var(--border-light)] relative">
+                <div className="md:col-span-2 bg-[var(--overlay-bg)] flex flex-col border-t md:border-t-0 border-[var(--border-light)]">
                   <div className="p-4 border-b border-[var(--border-light)] flex items-center justify-between">
                     <span className="text-[10px] font-mono text-[var(--text-dim)] uppercase tracking-widest">Message (JSON)</span>
                     <span className="text-[9px] font-mono text-[var(--cyber-neon-pink)]/60 uppercase italic">Editable Input</span>
                   </div>
-                  {stats.error && (
-                    <div className="absolute top-[52px] left-0 right-0 p-2 bg-red-500/10 border-b border-red-500/30 text-red-400 text-xs font-mono z-10 break-words line-clamp-2" title={stats.error}>
-                      {stats.error}
+                  <div className="flex-1 min-h-[300px] flex flex-col">
+                    <div className="flex-1 min-h-0">
+                      <JsonEditor
+                        value={jsonInput}
+                        onChange={setJsonInput}
+                        className="h-full rounded-none border-none bg-transparent"
+                      />
                     </div>
-                  )}
-                  <div className="flex-1 min-h-[300px]">
-                    <JsonEditor
-                      value={jsonInput}
-                      onChange={setJsonInput}
-                      className="h-full rounded-none border-none bg-transparent"
-                    />
+                    {stats.error && (
+                      <div className="p-2 bg-red-500/10 border-t border-red-500/30 text-red-400 text-xs font-mono break-words line-clamp-2" title={stats.error}>
+                        {stats.error}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -2554,7 +2566,7 @@ const ValidationLab = ({ messageSchema, fds, protoSource, setProtoSource }: {
               <CyberPanel title="TEST_DATA (JSON)">
                 <div className="relative h-64">
                   {validationResults.error && validationResults.error !== "NO_SCHEMA" && (
-                    <div className="absolute top-0 left-0 right-0 p-2 bg-red-500/10 border-b border-red-500/30 text-red-400 text-xs font-mono z-10 break-words line-clamp-2" title={validationResults.error}>
+                    <div className="absolute top-0 left-0 right-0 p-2 bg-red-500/10 border-b border-red-500/30 text-red-400 text-xs font-mono z-30 break-words line-clamp-2" title={validationResults.error}>
                       {validationResults.error}
                     </div>
                   )}
