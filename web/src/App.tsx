@@ -57,6 +57,7 @@ const TechnicalNuance = ({ children, title = "TECHNICAL_NUANCE" }: { children: R
 import { fromJson, toJsonString, toBinary, type Registry, type DescMessage } from '@bufbuild/protobuf';
 import { createValidator, type Violation } from '@bufbuild/protovalidate';
 import VarintExplainer from './components/VarintExplainer';
+import TopVisualization from './components/TopVisualization';
 import { decodeBinary } from './utils/decoder';
 import { createDynamicRegistry } from './utils/dynamic-registry';
 import { generateFake, convertToPrototext, type CompilationError } from './utils/wasm-parser';
@@ -191,13 +192,13 @@ const CyberPanel = ({ children, title, className = "", headerExtra }: { children
 // --- Sections ---
 
 const Hero = () => (
-  <Section id="hero" className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-8 relative overflow-hidden">
+  <Section id="hero" className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-8 relative overflow-hidden pt-24">
     <div className="scanline" />
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8 }}
-      className="max-w-4xl z-10 text-center"
+      className="max-w-4xl z-10 text-center w-full"
     >
       <h1 className="text-4xl sm:text-6xl md:text-8xl font-cyber font-black mb-6 tracking-tighter leading-none">
         PROTOBUF<br />
@@ -1136,6 +1137,8 @@ const Introduction = ({ messageSchema, fds }: {
           </ul>
         </div>
       </div>
+
+      <TopVisualization />
 
       <div className="grid grid-cols-1 gap-8 mt-12">
         <CyberPanel title="THE_MANY_FACES_OF_PROTO">
