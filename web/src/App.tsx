@@ -57,7 +57,7 @@ const TechnicalNuance = ({ children, title = "TECHNICAL_NUANCE" }: { children: R
 import { fromJson, toJsonString, toBinary, type Registry, type DescMessage } from '@bufbuild/protobuf';
 import { createValidator, type Violation } from '@bufbuild/protovalidate';
 import VarintExplainer from './components/VarintExplainer';
-import TopVisualization from './components/TopVisualization';
+import DecodingVisualization from './components/DecodingVisualization';
 import { decodeBinary } from './utils/decoder';
 import { createDynamicRegistry } from './utils/dynamic-registry';
 import { generateFake, convertToPrototext, type CompilationError } from './utils/wasm-parser';
@@ -2064,6 +2064,7 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
         <div className="flex flex-col gap-12 mb-24">
           <div className="space-y-6 leading-relaxed text-[var(--text-color)]">
             <h3 className="text-2xl font-cyber font-bold text-[var(--text-color)] uppercase">Decoding the Stream</h3>
+            <DecodingVisualization />
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
               <div className="space-y-4">
                 <p>
@@ -2973,13 +2974,6 @@ function App() {
           </a>
         </div>
         <p className="text-xs font-mono text-[var(--text-dim)] uppercase tracking-[0.2em]">Powered by Protobuf-ES & KMCD.DEV // Dynamic Schema Enabled</p>
-      </footer>
-    </div>
-  );
-}
-
-export default App;
-nabled</p>
       </footer>
     </div>
   );
