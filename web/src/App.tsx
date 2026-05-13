@@ -1138,8 +1138,6 @@ const Introduction = ({ messageSchema, fds }: {
         </div>
       </div>
 
-      <TopVisualization />
-
       <div className="grid grid-cols-1 gap-8 mt-12">
         <CyberPanel title="THE_MANY_FACES_OF_PROTO">
           <div className="p-6 space-y-8">
@@ -2975,6 +2973,13 @@ function App() {
           </a>
         </div>
         <p className="text-xs font-mono text-[var(--text-dim)] uppercase tracking-[0.2em]">Powered by Protobuf-ES & KMCD.DEV // Dynamic Schema Enabled</p>
+      </footer>
+    </div>
+  );
+}
+
+export default App;
+nabled</p>
       </footer>
     </div>
   );

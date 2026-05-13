@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 
-export const TopVisualization = () => {
+export const DecodingVisualization = () => {
   return (
     <div className="w-full max-w-4xl mx-auto my-12 overflow-hidden flex justify-center">
       <svg
@@ -128,4 +128,4 @@ export const TopVisualization = () => {
   );
 };
 
-export default TopVisualization;
+export default DecodingVisualization;
