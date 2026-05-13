@@ -42,18 +42,16 @@ export const DecodingVisualization = () => {
           <text x="65" y="40" fill="var(--text-dim)" fontSize="12" letterSpacing="2" className="uppercase font-bold">Schema</text>
         </motion.g>
 
-        {/* JSON Box */}
+        {/* Data Box */}
         <motion.g
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
           <rect x="470" y="50" width="280" height="120" rx="8" fill="var(--panel-bg)" stroke="var(--cyber-neon-green)" strokeWidth="1" opacity="0.9" />
-          <text x="485" y="80" fill="currentColor" fontSize="14">{"{"}</text>
-          <text x="500" y="110" fill="var(--cyber-neon-blue)" fontSize="14">"name"</text>
-          <text x="550" y="110" fill="currentColor" fontSize="14">:</text>
-          <text x="565" y="110" fill="var(--cyber-neon-green)" fontSize="14">"Alice"</text>
-          <text x="485" y="140" fill="currentColor" fontSize="14">{"}"}</text>
+          <text x="485" y="95" fill="var(--cyber-neon-blue)" fontSize="14">name</text>
+          <text x="525" y="95" fill="currentColor" fontSize="14">:</text>
+          <text x="540" y="95" fill="var(--cyber-neon-green)" fontSize="14">"Alice"</text>
           <text x="485" y="40" fill="var(--text-dim)" fontSize="12" letterSpacing="2" className="uppercase font-bold">Data</text>
         </motion.g>
 
