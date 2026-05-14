@@ -1,4 +1,4 @@
-import { createFileRegistry, fromBinary, create, toBinary, type Registry } from "@bufbuild/protobuf";
+import { createFileRegistry, fromBinary, create, toBinary, type FileRegistry } from "@bufbuild/protobuf";
 import { 
   FileDescriptorSetSchema, 
   file_google_protobuf_any,
@@ -39,7 +39,7 @@ const standardFiles = [
  * Result of creating a dynamic registry.
  */
 export type RegistryResult = 
-  | { kind: "success"; registry: Registry; fileDescriptorSet: Uint8Array }
+  | { kind: "success"; registry: FileRegistry; fileDescriptorSet: Uint8Array; userFileDescriptorSet: Uint8Array }
   | { kind: "error"; errors: CompilationError[] };
 
 /**
@@ -98,6 +98,14 @@ export async function createDynamicRegistry(protoSource: string): Promise<Regist
     };
   }
 
-  console.log("createDynamicRegistry: Registry created successfully with package:", file.proto.package);
-  return { kind: "success", registry, fileDescriptorSet };
+  const targetPackage = file.proto.package;
+
+  // Filter to only include the files that were actually in the input AND match the target package
+  const userFds = create(FileDescriptorSetSchema, {
+    file: fds.file.filter(f => f.package === targetPackage),
+  });
+  const userFileDescriptorSet = toBinary(FileDescriptorSetSchema, userFds);
+
+  console.log("createDynamicRegistry: Registry created successfully with package:", targetPackage);
+  return { kind: "success", registry, fileDescriptorSet, userFileDescriptorSet };
 }

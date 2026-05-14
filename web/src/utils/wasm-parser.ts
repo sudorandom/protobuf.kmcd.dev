@@ -5,7 +5,7 @@ declare global {
   interface Window {
     Go: { new(): { importObject: WebAssembly.Imports; run(instance: WebAssembly.Instance): void } };
     parseProto: (input: string) => { error?: string; compilationErrors?: string; fileDescriptorSet?: Uint8Array };
-    generateFakeData: (messageName: string, fileDescriptorSet: Uint8Array) => string | { error: string };
+    generateFakeData: (messageName: string, fileDescriptorSet: Uint8Array, maxDepth?: number) => string | { error: string };
     formatPrototext: (messageName: string, fileDescriptorSet: Uint8Array, jsonString: string) => string | { error: string };
     formatProtoscope: (binaryData: Uint8Array) => string | { error: string };
   }
@@ -159,10 +159,10 @@ export async function parseWithWasm(files: Record<string, string>) {
   return { fileDescriptorSet: result.fileDescriptorSet! };
 }
 
-export async function generateFake(messageName: string, fileDescriptorSet: Uint8Array): Promise<string> {
+export async function generateFake(messageName: string, fileDescriptorSet: Uint8Array, maxDepth?: number): Promise<string> {
   await initWasm();
   const g = typeof window !== 'undefined' ? (window as unknown as Window) : (globalThis as unknown as Window);
-  const result = g.generateFakeData(messageName, fileDescriptorSet);
+  const result = g.generateFakeData(messageName, fileDescriptorSet, maxDepth);
   if (typeof result === 'object' && result.error) {
     throw new Error(result.error);
   }

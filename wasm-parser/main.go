@@ -106,6 +106,11 @@ func generateFakeData(this js.Value, args []js.Value) any {
 	fdsBytes := make([]byte, args[1].Get("length").Int())
 	js.CopyBytesToGo(fdsBytes, args[1])
 
+	maxDepth := 2
+	if len(args) >= 3 && !args[2].IsUndefined() && !args[2].IsNull() {
+		maxDepth = args[2].Int()
+	}
+
 	fds := &descriptorpb.FileDescriptorSet{}
 	if err := proto.Unmarshal(fdsBytes, fds); err != nil {
 		return js.ValueOf(map[string]any{"error": "failed to unmarshal file descriptor set: " + err.Error()})
@@ -126,7 +131,9 @@ func generateFakeData(this js.Value, args []js.Value) any {
 		return js.ValueOf(map[string]any{"error": "descriptor is not a message: " + messageName})
 	}
 
-	msg, err := fauxrpc.NewMessage(messageDesc, fauxrpc.GenOptions{})
+	msg, err := fauxrpc.NewMessage(messageDesc, fauxrpc.GenOptions{
+		MaxDepth: maxDepth,
+	})
 	if err != nil {
 		return js.ValueOf(map[string]any{"error": "failed to generate fake data: " + err.Error()})
 	}

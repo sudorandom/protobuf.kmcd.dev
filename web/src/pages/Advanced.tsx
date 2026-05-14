@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import {
   Settings,
   Combine,
@@ -10,20 +10,27 @@ import {
   Code2,
   SearchCheck,
   Zap,
-  CheckCircle2
+  CheckCircle2,
+  Download,
+  Terminal,
+  Settings2
 } from 'lucide-react';
-import { fromJson, type DescMessage } from '@bufbuild/protobuf';
+import { fromJson, type DescMessage, fromBinary, toJson, type Registry, type FileRegistry } from '@bufbuild/protobuf';
+import { FileDescriptorSetSchema } from '@bufbuild/protobuf/wkt';
 import { createValidator, type Violation } from '@bufbuild/protovalidate';
 import {
   Section,
   SectionTitle,
   CyberPanel,
   ExternalLinkText,
-  SyntaxHighlighter
+  SyntaxHighlighter,
+  TechnicalNuance
 } from '../components/shared/Common';
 import { JsonEditor } from '../components/shared/JsonEditor';
+import { Modal } from '../components/shared/Modal';
 import { generateFake } from '../utils/wasm-parser';
 import { InteractiveSchemaEditor } from '../components/shared/InteractiveSchemaEditor';
+import { DESCRIPTOR_PROTO, INITIAL_PROTO } from '../utils/constants';
 
 const TopicSection = ({ id, icon, title, subtitle, panelTitle, desc, example, bgClass = "bg-[var(--section-bg-dark)]" }: {
   id: string,
@@ -225,71 +232,185 @@ export const AdvancedProtobuf = () => {
   );
 };
 
-export const DescriptorsAndReflection = () => (
-  <Section id="reflection" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]">
-    <div className="max-w-7xl mx-auto space-y-16">
-      <div>
-        <SectionTitle icon={Code2} subtitle="03h_REFLECTION">Descriptors & Reflection</SectionTitle>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          <div className="space-y-6 text-[var(--text-color)]">
-            <h3 className="text-xl font-cyber font-bold text-[var(--text-color)] uppercase">Schemas Describing Schemas</h3>
-            <p className="text-sm leading-relaxed">
-              When you run the Protobuf compiler (`protoc`), it doesn't just generate code. It can also output a binary representation of your schema called a <strong>FileDescriptorSet</strong>.
-            </p>
-            <p className="text-sm leading-relaxed">
-              Fascinatingly, this `FileDescriptorSet` is itself a Protobuf message! Google defines a schema (<ExternalLinkText href="https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/descriptor.proto"><code>descriptor.proto</code></ExternalLinkText>) that describes how to represent `.proto` files. This means you can use Protobuf tools to read and analyze Protobuf schemas dynamically at runtime.
-            </p>
-            <div className="p-4 bg-[var(--cyber-neon-blue)]/5 border border-[var(--cyber-neon-blue)]/10 rounded text-sm text-[var(--text-dim)] space-y-3">
-              <p><strong>Why is this useful?</strong></p>
-              <ul className="space-y-2">
-                <li className="flex gap-2"><div className="w-1 h-1 bg-[var(--cyber-neon-blue)] mt-1.5 shrink-0"></div> <strong>Dynamic Decoding:</strong> Tools like this web explorer use descriptors to decode arbitrary binary data without generating static code.</li>
-                <li className="flex gap-2"><div className="w-1 h-1 bg-[var(--cyber-neon-blue)] mt-1.5 shrink-0"></div> <strong>Validation:</strong> Complex rule engines (like protovalidate) use descriptors to apply constraints dynamically.</li>
-              </ul>
+export const DescriptorsAndReflection = () => {
+  const [localFds, setLocalFds] = useState<Uint8Array | null>(null);
+  const [localRegistry, setLocalRegistry] = useState<FileRegistry | null>(null);
+
+  const handleCompileSuccess = useCallback((result: { fds: Uint8Array, userFds: Uint8Array, registry: FileRegistry }) => {
+    setLocalFds(result.userFds);
+    setLocalRegistry(result.registry);
+  }, []);
+
+  const descriptorJson = useMemo(() => {
+    if (!localFds) return null;
+    try {
+      const message = fromBinary(FileDescriptorSetSchema, localFds);
+      return JSON.stringify(toJson(FileDescriptorSetSchema, message, { registry: localRegistry ?? undefined }), null, 2);
+    } catch (e) {
+      console.error("Failed to convert FDS to JSON:", e);
+      return null;
+    }
+  }, [localFds, localRegistry]);
+
+  const downloadBinary = () => {
+    if (!localFds) return;
+    const blob = new Blob([localFds.slice()], { type: 'application/octet-stream' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'descriptor.bin';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const downloadJson = () => {
+    if (!descriptorJson) return;
+    const blob = new Blob([descriptorJson], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'descriptor.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  return (
+    <Section id="reflection" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]">
+      <div className="max-w-7xl mx-auto space-y-16">
+        <div>
+          <SectionTitle icon={Code2} subtitle="03h_REFLECTION">Descriptors & Reflection</SectionTitle>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <div className="space-y-6 text-[var(--text-color)]">
+              <h3 className="text-xl font-cyber font-bold text-[var(--text-color)] uppercase">Schemas Describing Schemas</h3>
+              <p className="text-sm leading-relaxed">
+                When you run the Protobuf compiler (`protoc`), it doesn't just generate code. It can also output a binary representation of your schema called a <strong>FileDescriptorSet</strong>.
+              </p>
+              <p className="text-sm leading-relaxed">
+                Fascinatingly, this `FileDescriptorSet` is itself a Protobuf message! Google defines a schema (<ExternalLinkText href="https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/descriptor.proto"><code>descriptor.proto</code></ExternalLinkText>) that describes how to represent `.proto` files. This means you can use Protobuf tools to read and analyze Protobuf schemas dynamically at runtime.
+              </p>
+              <div className="p-4 bg-[var(--cyber-neon-blue)]/5 border border-[var(--cyber-neon-blue)]/10 rounded text-sm text-[var(--text-dim)] space-y-3">
+                <p><strong>Why is this useful?</strong></p>
+                <ul className="space-y-2">
+                  <li className="flex gap-2"><div className="w-1 h-1 bg-[var(--cyber-neon-blue)] mt-1.5 shrink-0"></div> <strong>Dynamic Decoding:</strong> Tools like this web explorer use descriptors to decode arbitrary binary data without generating static code.</li>
+                  <li className="flex gap-2"><div className="w-1 h-1 bg-[var(--cyber-neon-blue)] mt-1.5 shrink-0"></div> <strong>Validation:</strong> Complex rule engines (like protovalidate) use descriptors to apply constraints dynamically.</li>
+                </ul>
+              </div>
+            </div>
+            <CyberPanel title="DESCRIPTOR.PROTO (SNIPPET)">
+              <div className="p-4 h-64 overflow-auto">
+                <SyntaxHighlighter language="proto" code={`// The schema that describes a schema\nmessage FileDescriptorSet {\n  repeated FileDescriptorProto file = 1;\n}\n\nmessage FileDescriptorProto {\n  optional string name = 1;\n  optional string package = 2;\n  repeated DescriptorProto message_type = 4;\n  repeated EnumDescriptorProto enum_type = 5;\n  // ...\n}\n\nmessage DescriptorProto {\n  optional string name = 1;\n  repeated FieldDescriptorProto field = 2;\n  // ...\n}`} />
+              </div>
+            </CyberPanel>
+          </div>
+        </div>
+
+        <div className="pt-16 border-t border-[var(--border-light)]">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+            <InteractiveSchemaEditor
+              initialValue={DESCRIPTOR_PROTO}
+              defaultValue={DESCRIPTOR_PROTO}
+              onCompileSuccess={handleCompileSuccess}
+              title="SCHEMA_EDITOR (.proto)"
+            />
+            <div className="flex flex-col space-y-4">
+              <CyberPanel
+                title={
+                  <div className="flex items-center gap-2">
+                    DESCRIPTOR_OUTPUT
+                    {localFds && <CheckCircle2 className="w-3.5 h-3.5 text-[var(--cyber-neon-green)]" />}
+                  </div>
+                }
+                headerExtra={
+                  <div className="flex gap-2">
+                    {localFds && (
+                      <>
+                        <button
+                          onClick={downloadBinary}
+                          className="px-2 py-0.5 text-[9px] font-mono rounded border border-[var(--cyber-neon-blue)]/50 text-[var(--cyber-neon-blue)] bg-[var(--cyber-neon-blue)]/10 hover:bg-[var(--cyber-neon-blue)]/20 transition-all uppercase flex items-center gap-1"
+                        >
+                          <Download className="w-3 h-3" /> SAVE_PB
+                        </button>
+                        <button
+                          onClick={downloadJson}
+                          className="px-2 py-0.5 text-[9px] font-mono rounded border border-[var(--cyber-neon-pink)]/50 text-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/10 hover:bg-[var(--cyber-neon-pink)]/20 transition-all uppercase flex items-center gap-1"
+                        >
+                          <Download className="w-3 h-3" /> SAVE_JSON
+                        </button>
+                      </>
+                    )}
+                  </div>
+                }
+              >
+                <div className="h-[400px] lg:h-[500px] flex flex-col">
+                  <div className="flex-1 overflow-auto p-4 custom-scrollbar">
+                    {descriptorJson ? (
+                      <div className="flex-1 min-h-0">
+                        <SyntaxHighlighter language="json" code={descriptorJson} wrap />
+                      </div>
+                    ) : (
+                      <div className="flex flex-col items-center justify-center h-full text-[var(--text-dim)] gap-4 py-20">
+                        <Terminal className="w-12 h-12 opacity-20" />
+                        <p className="font-cyber text-xs uppercase tracking-widest opacity-40 text-center">Correct compilation errors<br />to view descriptor</p>
+                      </div>
+                    )}
+                  </div>
+                  {localFds && (
+                    <div className="p-4 border-t border-[var(--border-light)] bg-[var(--overlay-bg)]">
+                      <div className="flex items-start gap-3">
+                        <div className="p-2 bg-[var(--cyber-neon-blue)]/10 rounded">
+                          <Database className="w-4 h-4 text-[var(--cyber-neon-blue)]" />
+                        </div>
+                        <div className="space-y-1">
+                          <h5 className="text-[10px] font-cyber font-bold text-[var(--text-color)] uppercase tracking-wider">Reflection Ready</h5>
+                          <p className="text-[10px] text-[var(--text-dim)] leading-relaxed uppercase">
+                            This schema is now representable as a <code>FileDescriptorSet</code> message, enabling dynamic tools and reflection.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </CyberPanel>
             </div>
           </div>
-          <CyberPanel title="DESCRIPTOR.PROTO (SNIPPET)">
-            <div className="p-4 h-64 overflow-auto">
-              <SyntaxHighlighter language="proto" code={`// The schema that describes a schema\nmessage FileDescriptorSet {\n  repeated FileDescriptorProto file = 1;\n}\n\nmessage FileDescriptorProto {\n  optional string name = 1;\n  optional string package = 2;\n  repeated DescriptorProto message_type = 4;\n  repeated EnumDescriptorProto enum_type = 5;\n  // ...\n}\n\nmessage DescriptorProto {\n  optional string name = 1;\n  repeated FieldDescriptorProto field = 2;\n  // ...\n}`} />
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 pt-16 border-t border-[var(--border-light)]">
+          <CyberPanel title="SERVER_REFLECTION">
+            <div className="p-4 space-y-4 overflow-x-auto">
+              <SyntaxHighlighter language="proto" code={`// gRPC Server Reflection Protocol\npackage grpc.reflection.v1alpha;\n\nservice ServerReflection {\n  // The reflection service is queried by clients to\n  // discover the API surface of the server dynamically.\n  rpc ServerReflectionInfo(stream ServerReflectionRequest)\n      returns (stream ServerReflectionResponse);\n}`} />
+              <div className="mt-4 text-xs font-mono text-[var(--text-dim)]">
+                Client: "What services do you have?"<br />
+                Server: "I have User Service and Auth Service"<br />
+                Client: "Send me the descriptors for User Service"<br />
+                Server: *Sends FileDescriptorSet binary*
+              </div>
             </div>
           </CyberPanel>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 pt-16 border-t border-[var(--border-light)]">
-        <CyberPanel title="SERVER_REFLECTION">
-          <div className="p-4 space-y-4 overflow-x-auto">
-            <SyntaxHighlighter language="proto" code={`// gRPC Server Reflection Protocol\npackage grpc.reflection.v1alpha;\n\nservice ServerReflection {\n  // The reflection service is queried by clients to\n  // discover the API surface of the server dynamically.\n  rpc ServerReflectionInfo(stream ServerReflectionRequest)\n      returns (stream ServerReflectionResponse);\n}`} />
-            <div className="mt-4 text-xs font-mono text-[var(--text-dim)]">
-              Client: "What services do you have?"<br />
-              Server: "I have User Service and Auth Service"<br />
-              Client: "Send me the descriptors for User Service"<br />
-              Server: *Sends FileDescriptorSet binary*
+          <div className="space-y-6 text-[var(--text-color)]">
+            <h3 className="text-xl font-cyber font-bold text-[var(--text-color)] uppercase flex items-center gap-3">
+              <ShieldCheck className="w-6 h-6 text-[var(--cyber-neon-pink)]" />
+              Server Reflection
+            </h3>
+            <p className="text-sm leading-relaxed">
+              By combining the standardized RPC mechanism of gRPC with Protobuf Descriptors, servers can implement <strong>Server Reflection</strong>. This is a standardized service that allows clients to ask the server for its own schema.
+            </p>
+            <div className="space-y-4 text-sm">
+              <h4 className="font-cyber font-bold text-[var(--cyber-neon-blue)] uppercase text-xs tracking-widest">The Ecosystem it Enables</h4>
+              <ul className="list-disc pl-4 space-y-2">
+                <li><strong>CLI Tools:</strong> Tools like <ExternalLinkText href="https://github.com/fullstorydev/grpcurl"><code>grpcurl</code></ExternalLinkText> can interact with your server just like <code>curl</code> does for REST, without needing you to share `.proto` files beforehand.</li>
+                <li><strong>GUI Clients:</strong> Postman, Insomnia, and Buf Studio can dynamically generate UI forms for testing your APIs by reading the reflected descriptors.</li>
+              </ul>
+            </div>
+            <div className="p-3 bg-[var(--warning-bg)] border border-[var(--warning-border)] rounded text-[var(--warning-text)] text-sm">
+              <strong>Security Warning:</strong> Enabling Server Reflection on a public-facing API exposes your entire internal data model and service structure to the internet. It is highly recommended to <em>only enable reflection in development environments or internal private networks.</em>
             </div>
           </div>
-        </CyberPanel>
-        <div className="space-y-6 text-[var(--text-color)]">
-          <h3 className="text-xl font-cyber font-bold text-[var(--text-color)] uppercase flex items-center gap-3">
-            <ShieldCheck className="w-6 h-6 text-[var(--cyber-neon-pink)]" />
-            Server Reflection
-          </h3>
-          <p className="text-sm leading-relaxed">
-            By combining the standardized RPC mechanism of gRPC with Protobuf Descriptors, servers can implement <strong>Server Reflection</strong>. This is a standardized service that allows clients to ask the server for its own schema.
-          </p>
-          <div className="space-y-4 text-sm">
-            <h4 className="font-cyber font-bold text-[var(--cyber-neon-blue)] uppercase text-xs tracking-widest">The Ecosystem it Enables</h4>
-            <ul className="list-disc pl-4 space-y-2">
-              <li><strong>CLI Tools:</strong> Tools like <ExternalLinkText href="https://github.com/fullstorydev/grpcurl"><code>grpcurl</code></ExternalLinkText> can interact with your server just like <code>curl</code> does for REST, without needing you to share `.proto` files beforehand.</li>
-              <li><strong>GUI Clients:</strong> Postman, Insomnia, and Buf Studio can dynamically generate UI forms for testing your APIs by reading the reflected descriptors.</li>
-            </ul>
-          </div>
-          <div className="p-3 bg-[var(--warning-bg)] border border-[var(--warning-border)] rounded text-[var(--warning-text)] text-sm">
-            <strong>Security Warning:</strong> Enabling Server Reflection on a public-facing API exposes your entire internal data model and service structure to the internet. It is highly recommended to <em>only enable reflection in development environments or internal private networks.</em>
-          </div>
         </div>
       </div>
-    </div>
-  </Section>
-);
+    </Section>
+  );
+};
 
 export const SchemaEngineering = () => {
   const topics = [
@@ -374,7 +495,7 @@ export const SchemaEngineering = () => {
           </ol>
         </div>
       ),
-      example: 'message Product {\n  // Step 3: Block reuse permanently\n  reserved 1, "old_price";\n\n  // Step 1: Warn developers\n  int32 price_cents = 2 [deprecated = true];\n\n  // The new way\n  int64 price_micros = 3;\n}'
+      example: 'message Product {\n  // Step 3: Block reuse permanently\n  reserved 1, "old_price";\n\n  // Step 1: Warn developers\n  int32 price_cents = 2 [deprecated = true];\n  \n  // The new way\n  int64 price_micros = 3;\n}'
     }
   ];
 
@@ -431,21 +552,27 @@ const VALIDATION_EXAMPLES = {
   }
 };
 
-export const ValidationLab = ({ messageSchema, fds, protoSource, setProtoSource }: {
+export const ValidationLab = ({ messageSchema, fds, registry, protoSource, setProtoSource }: {
   messageSchema: DescMessage | null,
   fds: Uint8Array | null,
+  registry: Registry | null,
   protoSource: string,
   setProtoSource: (s: string) => void
 }) => {
   const [activeExample, setActiveExample] = useState<keyof typeof VALIDATION_EXAMPLES | null>('VALID');
   const [jsonInput, setJsonInput] = useState(JSON.stringify(VALIDATION_EXAMPLES.VALID, null, 2));
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleExampleChange = (key: keyof typeof VALIDATION_EXAMPLES) => {
     setActiveExample(key);
     setJsonInput(JSON.stringify(VALIDATION_EXAMPLES[key], null, 2));
   };
 
-  const validator = useMemo(() => createValidator(), []);
+  const validator = useMemo(() => {
+    return createValidator({
+      registry: registry ?? undefined
+    });
+  }, [registry]);
 
   const validationResults = useMemo(() => {
     if (!messageSchema) return { results: null, error: "NO_SCHEMA" };
@@ -465,68 +592,69 @@ export const ValidationLab = ({ messageSchema, fds, protoSource, setProtoSource 
       <div className="max-w-7xl mx-auto">
         <SectionTitle icon={ShieldCheck} subtitle="03m_PROTOVALIDATE">Data Validation</SectionTitle>
 
-        <div className="mb-16 space-y-12">
+        <div className="mb-16 space-y-8">
           <div className="space-y-6 max-w-4xl">
             <h3 className="text-2xl font-cyber font-bold text-[var(--text-color)] uppercase">The Source of Truth</h3>
-            <p className="text-[var(--text-dim)] leading-relaxed">
+            <p className="text-[var(--text-dim)] leading-relaxed text-sm">
               Protobuf goes beyond simple types. With <ExternalLinkText href="https://protovalidate.com/"><strong>protovalidate</strong></ExternalLinkText>, you can embed complex business rules directly into your schema using <ExternalLinkText href="https://cel.dev/"><strong>CEL</strong></ExternalLinkText>.
-            </p>
-            <p className="text-[var(--text-dim)] leading-relaxed">
-              Define constraints like <code>min_len</code>, <code>email</code>, or custom rules to ensure your data adheres to the contract across all services.
             </p>
           </div>
 
-          <InteractiveSchemaEditor
-            initialValue={protoSource}
-            onApply={setProtoSource}
-            title="SCHEMA_EDITOR (.proto)"
-          />
-        </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
+            {/* Left Column: Payload Input */}
+            <div className="space-y-4 flex flex-col">
+              <div className="flex items-center justify-between h-8">
+                <div className="flex items-center gap-4">
+                  <h3 className="text-sm font-cyber font-bold text-[var(--text-color)] uppercase flex items-center gap-2 tracking-widest">
+                    <Database className="w-4 h-4 text-[var(--cyber-neon-blue)]" />
+                    Test Data (JSON)
+                  </h3>
+                  <button
+                    onClick={() => setIsModalOpen(true)}
+                    className="text-[10px] font-cyber font-bold text-[var(--cyber-neon-blue)] hover:text-[var(--cyber-neon-blue)]/80 transition-colors uppercase flex items-center gap-1 group"
+                  >
+                    <Settings2 className="w-3 h-3 group-hover:rotate-45 transition-transform" />
+                    Edit Schema
+                  </button>
+                </div>
+              </div>
 
-        <div className="space-y-8 mb-16 pt-16 border-t border-[var(--border-light)]/30">
-          <div className="space-y-6">
-            <h3 className="text-xl font-cyber font-bold text-[var(--text-color)] uppercase">Validation Playground</h3>
-            <div className="flex flex-wrap gap-4 items-center justify-between">
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2 mb-2">
                 {(Object.keys(VALIDATION_EXAMPLES) as Array<keyof typeof VALIDATION_EXAMPLES>).map((key) => (
                   <button
                     key={key}
                     onClick={() => handleExampleChange(key)}
-                    className={`px-3 py-1 text-xs font-cyber font-bold border transition-all rounded-md ${activeExample === key
-                      ? 'bg-[var(--cyber-neon-blue)] border-[var(--cyber-neon-blue)] text-black shadow-[0_0_10px_rgba(0,243,255,0.3)]'
+                    className={`px-3 py-1 text-[10px] font-mono border transition-all rounded ${activeExample === key
+                      ? 'bg-[var(--cyber-neon-blue)]/20 border-[var(--cyber-neon-blue)] text-[var(--cyber-neon-blue)]'
                       : 'bg-[var(--overlay-bg)] border-[var(--border-light)] text-[var(--text-dim)] hover:border-white/30 hover:text-[var(--text-color)]'
                       }`}
                   >
                     {key}
                   </button>
                 ))}
+                <button
+                  onClick={async () => {
+                    if (!messageSchema || !fds) return;
+                    try {
+                      const fakeJson = await generateFake(messageSchema.typeName, fds);
+                      setJsonInput(fakeJson);
+                      setActiveExample(null);
+                    } catch (e) {
+                      console.error("Failed to generate faux data:", e);
+                    }
+                  }}
+                  disabled={!messageSchema || !fds}
+                  className="px-2 py-1 text-[9px] font-cyber font-bold border border-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/10 text-[var(--cyber-neon-pink)] hover:bg-[var(--cyber-neon-pink)]/20 transition-all flex items-center gap-1.5 disabled:opacity-30 disabled:cursor-not-allowed rounded uppercase tracking-wider"
+                >
+                  <Zap className="w-2.5 h-2.5" />
+                  Randomize
+                </button>
               </div>
-              <button
-                onClick={async () => {
-                  if (!messageSchema || !fds) return;
-                  try {
-                    const fakeJson = await generateFake(messageSchema.typeName, fds);
-                    setJsonInput(fakeJson);
-                    setActiveExample(null);
-                  } catch (e) {
-                    console.error("Failed to generate faux data:", e);
-                  }
-                }}
-                disabled={!messageSchema || !fds}
-                className="px-3 py-1.5 text-xs font-cyber font-bold border border-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)] text-black hover:bg-[var(--cyber-neon-pink)]/90 transition-all flex items-center gap-1 disabled:opacity-30 rounded-md shadow-[0_0_15px_rgba(255,0,255,0.4)]"
-              >
-                <Zap className="w-3.5 h-3.5" />
-                GENERATE_DATA
-              </button>
-            </div>
-          </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div className="space-y-4">
-              <CyberPanel title="TEST_DATA (JSON)">
-                <div className="relative h-64">
+              <CyberPanel title="JSON_INPUT" className="flex-1 min-h-[400px] flex flex-col">
+                <div className="flex-1 relative">
                   {validationResults.error && validationResults.error !== "NO_SCHEMA" && (
-                    <div className="absolute top-0 left-0 right-0 p-2 bg-[var(--text-error)]/10 border-b border-[var(--text-error)]/30 text-[var(--text-error)] text-xs font-mono z-30 break-words line-clamp-2" title={validationResults.error}>
+                    <div className="absolute top-0 left-0 right-0 p-2 bg-[var(--text-error)]/10 border-b border-[var(--text-error)]/30 text-[var(--text-error)] text-[10px] font-mono z-30 break-words line-clamp-2" title={validationResults.error}>
                       {validationResults.error}
                     </div>
                   )}
@@ -535,30 +663,45 @@ export const ValidationLab = ({ messageSchema, fds, protoSource, setProtoSource 
               </CyberPanel>
             </div>
 
-            <div className="space-y-4">
-              <CyberPanel title="RULES_ENFORCEMENT">
-                <div className="h-full min-h-[256px] max-h-[256px] overflow-y-auto space-y-4 pr-2 p-2 flex flex-col">
+            {/* Right Column: Validation Results */}
+            <div className="space-y-4 flex flex-col">
+              <div className="flex items-center justify-between h-8">
+                <h3 className="text-sm font-cyber font-bold text-[var(--text-color)] uppercase flex items-center gap-2 tracking-widest">
+                  <ShieldCheck className="w-4 h-4 text-[var(--cyber-neon-green)]" />
+                  Rules Enforcement
+                </h3>
+              </div>
+
+              <CyberPanel title="VALIDATION_STATUS" className="flex-1 min-h-[400px] flex flex-col">
+                <div className="flex-1 py-4 px-2 overflow-y-auto space-y-4 custom-scrollbar">
                   {validationResults.error ? (
-                    <div className="p-4 bg-[var(--text-error)]/10 border border-[var(--text-error)]/30 text-[var(--text-error)] text-xs font-mono">SCHEMA_MISMATCH: {validationResults.error}</div>
-                  ) : (validationResults.results?.violations?.length ?? 0) === 0 ? (
-                    <div className="flex-1 flex flex-col items-center justify-center gap-4 text-[var(--cyber-neon-green)] py-8">
-                      <CheckCircle2 className="w-10 h-10" />
+                    <div className="p-4 bg-[var(--text-error)]/10 border border-[var(--text-error)]/30 text-[var(--text-error)] text-xs font-mono">
+                      SCHEMA_MISMATCH: {validationResults.error}
+                    </div>
+                  ) : validationResults.results?.kind === "valid" ? (
+                    <div className="h-full flex flex-col items-center justify-center gap-4 text-[var(--cyber-neon-green)] py-20">
+                      <CheckCircle2 className="w-16 h-16 shadow-[0_0_20px_rgba(0,255,159,0.2)]" />
                       <div className="flex flex-col items-center">
-                        <span className="font-mono text-sm uppercase tracking-widest">Validation Passed</span>
-                        <span className="text-xs text-[var(--text-dim)] mt-1 uppercase text-center">All contract terms satisfied</span>
+                        <span className="font-cyber text-sm uppercase tracking-[0.2em]">Validation Passed</span>
+                        <span className="text-[10px] text-[var(--text-dim)] mt-2 uppercase text-center tracking-widest">All contract terms satisfied</span>
                       </div>
                     </div>
-                  ) : (
+                  ) : validationResults.results?.kind === "invalid" ? (
                     <div className="grid grid-cols-1 gap-3 p-1">
-                      {validationResults.results?.violations?.map((v: Violation, i: number) => (
+                      {validationResults.results.violations.map((v: Violation, i: number) => (
                         <div key={i} className="p-3 bg-[var(--warning-bg)] border border-[var(--warning-border)] rounded flex gap-3 animate-in fade-in slide-in-from-top-2">
                           <AlertTriangle className="w-4 h-4 text-[var(--cyber-neon-yellow)] shrink-0" />
                           <div className="flex flex-col gap-1">
-                            <span className="text-xs font-mono text-[var(--cyber-neon-yellow)] uppercase">{v.field.toString()}</span>
+                            <span className="text-[10px] font-mono text-[var(--cyber-neon-yellow)] uppercase tracking-wider">{v.field.toString()}</span>
                             <p className="text-sm text-[var(--text-color)]">{v.message}</p>
                           </div>
                         </div>
                       ))}
+                    </div>
+                  ) : (
+                    <div className="h-full flex flex-col items-center justify-center text-[var(--text-dim)] gap-4 opacity-40 py-20">
+                      <ShieldCheck className="w-10 h-10" />
+                      <p className="font-cyber text-[10px] uppercase tracking-widest text-center">Waiting for<br />valid input</p>
                     </div>
                   )}
                 </div>
@@ -567,10 +710,47 @@ export const ValidationLab = ({ messageSchema, fds, protoSource, setProtoSource 
           </div>
         </div>
 
+        <Modal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          title="Validation Schema (.proto)"
+        >
+          <div className="space-y-6 h-full flex flex-col">
+            <div className="text-sm text-[var(--text-dim)] leading-relaxed">
+              Use <strong>protovalidate</strong> rules to enforce data integrity. Changes here update the validation logic in real-time.
+            </div>
+            <div className="flex-1 min-h-[500px]">
+              <InteractiveSchemaEditor
+                initialValue={protoSource}
+                defaultValue={INITIAL_PROTO}
+                onSave={async (s, result) => {
+                  setProtoSource(s);
+                  if (result) {
+                    const schema = result.registry.getMessage("demo.v1.User") || result.registry.getFile("input.proto")?.messages[0];
+                    if (schema) {
+                      try {
+                        const fakeJson = await generateFake(schema.typeName, result.fds);
+                        setJsonInput(fakeJson);
+                        setActiveExample(null);
+                      } catch (e) {
+                        console.error("Failed to generate faux data after save:", e);
+                      }
+                    }
+                  }
+                  setIsModalOpen(false);
+                }}
+                onCancel={() => setIsModalOpen(false)}
+              />
+            </div>
+          </div>
+        </Modal>
+
         {/* Row 4: Pro Tip & External Playground */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="md:col-span-2 p-4 bg-[var(--cyber-neon-yellow)]/5 border border-[var(--cyber-neon-yellow)]/10 rounded text-sm text-[var(--text-dim)]">
-            <p><strong>Pro Tip:</strong> By putting validation in the schema, you ensure that every service enforcing the contract (Go, Java, TS) applies the same rules consistently. This is easier to implement in languages with robust CEL support.</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 border-t border-[var(--border-light)]/30 pt-8">
+          <div className="md:col-span-2">
+            <TechnicalNuance title="VALIDATION_STRATEGY">
+              By putting validation in the schema, you ensure that every service enforcing the contract (Go, Java, TS) applies the same rules consistently. This eliminates "validation drift" across your microservices architecture.
+            </TechnicalNuance>
           </div>
           <div className="p-4 bg-[var(--cyber-neon-cyan)]/5 border border-[var(--cyber-neon-cyan)]/20 rounded-lg text-sm flex flex-col justify-center hover:bg-[var(--cyber-neon-cyan)]/10 transition-colors group/dive">
             <span className="text-xs font-cyber font-bold text-[var(--cyber-neon-cyan)] uppercase mb-2 tracking-widest">Dive Deeper</span>
@@ -582,9 +762,10 @@ export const ValidationLab = ({ messageSchema, fds, protoSource, setProtoSource 
   );
 };
 
-const Advanced = ({ messageSchema, fds, protoSource, setProtoSource }: {
+const Advanced = ({ messageSchema, fds, registry, protoSource, setProtoSource }: {
   messageSchema: DescMessage | null,
   fds: Uint8Array | null,
+  registry: Registry | null,
   protoSource: string,
   setProtoSource: (s: string) => void
 }) => (
@@ -592,7 +773,7 @@ const Advanced = ({ messageSchema, fds, protoSource, setProtoSource }: {
     <AdvancedProtobuf />
     <DescriptorsAndReflection />
     <SchemaEngineering />
-    <ValidationLab messageSchema={messageSchema} fds={fds} protoSource={protoSource} setProtoSource={setProtoSource} />
+    <ValidationLab messageSchema={messageSchema} fds={fds} registry={registry} protoSource={protoSource} setProtoSource={setProtoSource} />
   </>
 );
 

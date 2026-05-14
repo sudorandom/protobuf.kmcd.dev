@@ -140,13 +140,15 @@ export const SectionTitle = ({ children, icon: Icon, subtitle }: { children: Rea
   );
 };
 
-export const CyberPanel = ({ children, title, className = "", headerExtra }: { children: React.ReactNode, title?: string, className?: string, headerExtra?: React.ReactNode }) => (
+export const CyberPanel = ({ children, title, className = "", headerExtra }: { children: React.ReactNode, title?: React.ReactNode, className?: string, headerExtra?: React.ReactNode }) => (
   <div className={`cyber-box cyber-panel ${className}`}>
     {title && (
       <div className="flex flex-wrap items-center justify-between mb-4 border-b border-[var(--cyber-neon-blue)]/20 pb-2 gap-2">
         <div className="flex items-center gap-2">
           <Terminal className="w-4 h-4 text-[var(--cyber-neon-blue)] shrink-0" />
-          <span className="text-xs sm:text-xs font-mono text-[var(--cyber-neon-blue)] uppercase tracking-tighter truncate max-w-[150px] sm:max-w-none">{title}</span>
+          <span className="text-xs sm:text-xs font-mono text-[var(--cyber-neon-blue)] uppercase tracking-tighter">
+            {title}
+          </span>
         </div>
         {headerExtra}
       </div>

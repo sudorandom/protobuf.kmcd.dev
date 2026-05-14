@@ -24,6 +24,13 @@ export const SchemaDrivenAPIs = () => (
   <Section id="schema" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]">
     <div className="max-w-7xl mx-auto">
       <SectionTitle icon={FileCode} subtitle="02a_ARCHITECTURE">Schema-Driven APIs</SectionTitle>
+      
+      <div className="mb-16 space-y-4 max-w-3xl">
+        <p className="text-[var(--text-dim)] leading-relaxed">
+          In this section, we'll dive into the Interface Definition Language (IDL) and the powerful type system that forms the foundation of every Protobuf-powered application.
+        </p>
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
         <div className="space-y-6 text-[var(--text-color)]">
           <h3 className="text-xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">The Source of Truth</h3>
@@ -300,7 +307,7 @@ export const ProtobufBasics = () => {
 interface TypeGroupDef {
   name: string;
   icon: React.ElementType;
-  types: { name: string, desc: React.ReactNode }[];
+  types: { name: string, desc: React.ReactNode, url?: string }[];
   footer?: React.ReactNode;
 }
 
@@ -331,16 +338,36 @@ export const TypeSystem = () => {
       name: "Well-Known Types",
       icon: Box,
       types: [
-        { name: "google.protobuf.Empty", desc: "Used to indicate an API takes no parameters or returns nothing." },
-        { name: "google.protobuf.Timestamp", desc: "A point in time, independent of timezone." },
-        { name: "google.protobuf.Duration", desc: "A span of time (e.g., 5 seconds, 10 milliseconds)." },
-        { name: "google.protobuf.Value", desc: "Represents a dynamically typed value, equivalent to any JSON type." },
-        { name: "google.protobuf.Method", desc: "Represents a method of an API interface." },
+        { 
+          name: "google.protobuf.Empty", 
+          desc: "Used to indicate an API takes no parameters or returns nothing.",
+          url: "https://protobuf.dev/reference/protobuf/google.protobuf/#empty"
+        },
+        { 
+          name: "google.protobuf.Timestamp", 
+          desc: "A point in time, independent of timezone.",
+          url: "https://protobuf.dev/reference/protobuf/google.protobuf/#timestamp"
+        },
+        { 
+          name: "google.protobuf.Duration", 
+          desc: "A span of time (e.g., 5 seconds, 10 milliseconds).",
+          url: "https://protobuf.dev/reference/protobuf/google.protobuf/#duration"
+        },
+        { 
+          name: "google.protobuf.Value", 
+          desc: "Represents a dynamically typed value, equivalent to any JSON type.",
+          url: "https://protobuf.dev/reference/protobuf/google.protobuf/#value"
+        },
+        { 
+          name: "google.protobuf.Method", 
+          desc: "Represents a method of an API interface.",
+          url: "https://protobuf.dev/reference/protobuf/google.protobuf/#method"
+        },
       ]
     }
   ];
 
-  const TypeGroup = ({ groupName, groupIcon: Icon, types }: { groupName: string, groupIcon: React.ElementType, types: { name: string, desc: React.ReactNode }[] }) => (
+  const TypeGroup = ({ groupName, groupIcon: Icon, types }: { groupName: string, groupIcon: React.ElementType, types: { name: string, desc: React.ReactNode, url?: string }[] }) => (
     <div className="space-y-4">
       <div className="flex items-center gap-2 text-[var(--cyber-neon-blue)]">
         <Icon className="w-4 h-4" />
@@ -350,7 +377,18 @@ export const TypeSystem = () => {
         {types.map(t => (
           <div key={t.name as string} className="p-3 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg group hover:border-[var(--cyber-neon-blue)]/30 transition-colors">
             <div className="flex justify-between items-start mb-1">
-              <span className="font-mono text-xs font-bold text-[var(--text-color)] group-hover:text-[var(--cyber-neon-blue)]">{t.name}</span>
+              {t.url ? (
+                <a 
+                  href={t.url} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="font-mono text-xs font-bold text-[var(--cyber-neon-blue)] hover:underline decoration-dotted"
+                >
+                  {t.name}
+                </a>
+              ) : (
+                <span className="font-mono text-xs font-bold text-[var(--text-color)] group-hover:text-[var(--cyber-neon-blue)]">{t.name}</span>
+              )}
             </div>
             <div className="text-xs text-[var(--text-dim)] leading-relaxed">{t.desc}</div>
           </div>
@@ -372,41 +410,74 @@ export const TypeSystem = () => {
         </div>
 
         <div className="pt-16 border-t border-[var(--border-light)]">
-          <div className="grid grid-cols-1 gap-12 text-[var(--text-color)]">
-            <div className="space-y-6">
-              <h3 className="text-xl font-cyber font-bold text-[var(--text-color)] uppercase">Guidelines for Integers</h3>
-              <p>Choosing the right integer type is important for efficiency and compatibility. While Protobuf supports many integer types, keeping things simple is usually best.</p>
-              <ul className="list-disc pl-5 space-y-2 text-[var(--text-dim)]">
-                <li>Use <code>int32</code> for typical integers where negative numbers might occur.</li>
-                <li>Use <code>uint32</code> when you know the value will never be negative.</li>
-                <li>Use <code>int64</code> or <code>uint64</code> when values can exceed 2 billion (e.g. timestamps, large IDs). Note that JavaScript will require the use of <code>BigInt</code> objects to represent these precisely.</li>
-                <li>Avoid <code>sint32</code> / <code>sint64</code> unless you expect a large number of negative values, as they use ZigZag encoding which is less efficient for mostly positive data.</li>
-                <li>Avoid <code>fixed32</code> / <code>fixed64</code> unless you expect mostly large values (&gt; 2^28 for 32-bit), as they don't benefit from varint compression.</li>
-              </ul>
+          <div className="space-y-8">
+            <div className="flex flex-col gap-2">
+              <h3 className="text-xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">Guidelines for Integers</h3>
+              <p className="text-[var(--text-dim)] text-sm max-w-3xl">Choosing the right integer type is critical for both wire efficiency and language compatibility. Follow these industry best practices.</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <CyberPanel title="DEFAULT_CHOICE">
+                <div className="p-4 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-xs font-bold text-[var(--cyber-neon-blue)]">int32 / int64</span>
+                    <span className="text-[10px] bg-[var(--cyber-neon-blue)]/10 text-[var(--cyber-neon-blue)] px-1.5 py-0.5 rounded uppercase font-bold">Recommended</span>
+                  </div>
+                  <p className="text-xs text-[var(--text-dim)] leading-relaxed">
+                    Use for typical signed integers. <code>int32</code> covers most use cases; use <code>int64</code> for large IDs or timestamps.
+                  </p>
+                  <div className="pt-2 flex items-center gap-2">
+                    <div className="w-1 h-1 rounded-full bg-[var(--cyber-neon-blue)]" />
+                    <span className="text-[10px] font-mono text-[var(--text-dim)] uppercase">Best for: General Data</span>
+                  </div>
+                </div>
+              </CyberPanel>
+
+              <CyberPanel title="NON_NEGATIVE">
+                <div className="p-4 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-xs font-bold text-[var(--cyber-neon-green)]">uint32 / uint64</span>
+                    <span className="text-[10px] bg-[var(--cyber-neon-green)]/10 text-[var(--cyber-neon-green)] px-1.5 py-0.5 rounded uppercase font-bold">Efficient</span>
+                  </div>
+                  <p className="text-xs text-[var(--text-dim)] leading-relaxed">
+                    Ideal when you know values will never be negative. Slightly more efficient than <code>int</code> for large positive values.
+                  </p>
+                  <div className="pt-2 flex items-center gap-2">
+                    <div className="w-1 h-1 rounded-full bg-[var(--cyber-neon-green)]" />
+                    <span className="text-[10px] font-mono text-[var(--text-dim)] uppercase">Best for: Counts & Sizes</span>
+                  </div>
+                </div>
+              </CyberPanel>
+
+              <CyberPanel title="FIXED_PRECISION">
+                <div className="p-4 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-xs font-bold text-[var(--cyber-neon-yellow)]">fixed32 / fixed64</span>
+                    <span className="text-[10px] bg-[var(--cyber-neon-yellow)]/10 text-[var(--cyber-neon-yellow)] px-1.5 py-0.5 rounded uppercase font-bold">Specialized</span>
+                  </div>
+                  <p className="text-xs text-[var(--text-dim)] leading-relaxed">
+                    Always uses 4 or 8 bytes. More efficient than varints ONLY if values are consistently greater than 2<sup>28</sup>.
+                  </p>
+                  <div className="pt-2 flex items-center gap-2">
+                    <div className="w-1 h-1 rounded-full bg-[var(--cyber-neon-yellow)]" />
+                    <span className="text-[10px] font-mono text-[var(--text-dim)] uppercase">Best for: Large Constants</span>
+                  </div>
+                </div>
+              </CyberPanel>
             </div>
           </div>
         </div>
 
         <div className="pt-16 border-t border-[var(--border-light)]">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 gap-12">
             <div className="space-y-6 text-[var(--text-color)]">
               <h3 className="text-xl font-cyber font-bold text-[var(--text-color)] uppercase">ProtoJSON Mapping</h3>
               <p>
                 While Protobuf is primarily binary, it defines a canonical <ExternalLinkText href="https://protobuf.dev/programming-guides/json/">ProtoJSON</ExternalLinkText> mapping. This ensures that every binary payload has a deterministic representation in JSON.
               </p>
-
-              <div className="p-4 bg-[var(--cyber-neon-yellow)]/5 border border-[var(--cyber-neon-yellow)]/20 rounded-lg space-y-4">
-                <h4 className="text-[var(--cyber-neon-yellow)] font-cyber font-bold text-sm uppercase tracking-wider">The 64-bit Precision</h4>
-                <p className="text-sm leading-relaxed text-[var(--text-color)]/90">
-                  JavaScript numbers are 64-bit floats, which lose precision for integers above 2^53 - 1.
-                </p>
-                <p className="text-sm leading-relaxed font-bold text-[var(--text-color)]">
-                  To prevent data loss, <code>int64</code> and <code>uint64</code> types MUST be encoded as strings in JSON.
-                </p>
-              </div>
             </div>
 
-            <div className="space-y-4 lg:col-span-2">
+            <div className="space-y-8">
               <CyberPanel title="JSON_MAPPING_RULES">
                 <div className="p-4 space-y-4 text-sm overflow-x-auto">
                   <table className="w-full text-left border-collapse">
@@ -442,6 +513,16 @@ export const TypeSystem = () => {
                   </table>
                 </div>
               </CyberPanel>
+
+              <div className="p-4 bg-[var(--cyber-neon-yellow)]/5 border border-[var(--cyber-neon-yellow)]/20 rounded-lg space-y-4 max-w-4xl">
+                <h4 className="text-[var(--cyber-neon-yellow)] font-cyber font-bold text-sm uppercase tracking-wider">The 64-bit Precision</h4>
+                <p className="text-sm leading-relaxed text-[var(--text-color)]/90">
+                  JavaScript numbers are 64-bit floats, which lose precision for integers above 2<sup>53</sup> - 1.
+                </p>
+                <p className="text-sm leading-relaxed font-bold text-[var(--text-color)]">
+                  To prevent data loss, <code>int64</code> and <code>uint64</code> types MUST be encoded as strings in JSON.
+                </p>
+              </div>
             </div>
           </div>
         </div>

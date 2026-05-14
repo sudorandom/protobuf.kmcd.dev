@@ -14,7 +14,7 @@ import {
   Database
 } from 'lucide-react';
 
-import { type Registry } from '@bufbuild/protobuf';
+import { type FileRegistry } from '@bufbuild/protobuf';
 import { ScrollToTop } from './components/shared/Common';
 import { createDynamicRegistry } from './utils/dynamic-registry';
 import { INITIAL_PROTO } from './utils/constants';
@@ -85,7 +85,7 @@ const NavItem = ({ item, index, onNavigate }: { item: NavItemDef, index: number,
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [protoSource, setProtoSource] = useState(INITIAL_PROTO);
-  const [registry, setRegistry] = useState<Registry | null>(null);
+  const [registry, setRegistry] = useState<FileRegistry | null>(null);
   const [fds, setFds] = useState<Uint8Array | null>(null);
   const [error, setError] = useState<string | null>(null);
   const location = useLocation();
@@ -157,7 +157,11 @@ function App() {
     };
   }, [protoSource]);
 
-  const messageSchema = useMemo(() => registry?.getMessage("demo.v1.User") || null, [registry]);
+  const messageSchema = useMemo(() => {
+    if (!registry) return null;
+    // Prefer the default User message, but fallback to the first message found in the user's proto
+    return registry.getMessage("demo.v1.User") || registry.getFile("input.proto")?.messages[0] || null;
+  }, [registry]);
 
   return (
     <div className="min-h-screen bg-[var(--bg-color)] text-[var(--text-color)]">
@@ -286,9 +290,9 @@ function App() {
           <Route path="/" element={<Hero isAtTop={isAtTop} />} />
           <Route path="/intro" element={<Introduction messageSchema={messageSchema} fds={fds} />} />
           <Route path="/basics" element={<Basics />} />
-          <Route path="/advanced" element={<Advanced messageSchema={messageSchema} fds={fds} protoSource={protoSource} setProtoSource={setProtoSource} />} />
-          <Route path="/efficiency" element={<Efficiency messageSchema={messageSchema} fileDescriptorSet={fds} />} />
-          <Route path="/binary" element={<Binary messageSchema={messageSchema} fds={fds} />} />
+          <Route path="/advanced" element={<Advanced messageSchema={messageSchema} fds={fds} registry={registry} protoSource={protoSource} setProtoSource={setProtoSource} />} />
+          <Route path="/efficiency" element={<Efficiency messageSchema={messageSchema} fileDescriptorSet={fds} protoSource={protoSource} setProtoSource={setProtoSource} />} />
+          <Route path="/binary" element={<Binary messageSchema={messageSchema} fds={fds} protoSource={protoSource} setProtoSource={setProtoSource} />} />
           <Route path="/ecosystem" element={<Ecosystem />} />
           <Route path="/conclusion" element={<Conclusion />} />
           <Route path="*" element={<Navigate to="/" replace />} />

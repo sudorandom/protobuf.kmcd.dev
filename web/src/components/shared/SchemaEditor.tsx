@@ -7,7 +7,7 @@ export const SchemaEditor = ({ value, onChange, errors }: { value: string, onCha
   const [scroll, setScroll] = useState({ top: 0, left: 0 });
 
   return (
-    <div className="relative w-full h-[500px] bg-[var(--overlay-bg)] rounded overflow-hidden">
+    <div className="relative w-full h-full bg-[var(--overlay-bg)] rounded overflow-hidden">
       {/* Background Highlight Layer */}
       <div
         className="absolute top-0 left-0 p-4 font-mono text-sm leading-6 whitespace-pre pointer-events-none select-none"
@@ -20,7 +20,7 @@ export const SchemaEditor = ({ value, onChange, errors }: { value: string, onCha
         <SyntaxHighlighter language="proto" code={value} />
         {/* Error markers overlay */}
         <div className="absolute inset-0 pointer-events-none p-4">
-          {value.split('\n').map((line, i) => {
+          {(value || '').split('\n').map((line, i) => {
             const error = errors.find(e => e.line === i + 1);
             if (!error) return <div key={i} className="h-6">{''}</div>;
 

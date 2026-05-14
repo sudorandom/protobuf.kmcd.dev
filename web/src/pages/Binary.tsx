@@ -14,8 +14,7 @@ import { fromJson, toBinary, type DescMessage } from '@bufbuild/protobuf';
 import {
   Section,
   SectionTitle,
-  CyberPanel,
-  TechnicalNuance
+  CyberPanel
 } from '../components/shared/Common';
 import { JsonEditor } from '../components/shared/JsonEditor';
 import VarintExplainer from '../components/VarintExplainer';
@@ -23,6 +22,7 @@ import MultiFieldEncoding from '../components/MultiFieldEncoding';
 import { decodeBinary, type DecodedSegment } from '../utils/decoder';
 import { SIZE_EXAMPLES } from '../utils/constants';
 import { generateFake, convertToProtoscope } from '../utils/wasm-parser';
+import { ProtoscopeLab } from '../components/ProtoscopeLab';
 
 // --- Static Envelope Diagrams ---
 
@@ -256,7 +256,10 @@ const WireFormatBreakdown = () => {
   );
 };
 
-export const BinaryMatrix = ({ messageSchema, fds }: { messageSchema: DescMessage | null, fds: Uint8Array | null }) => {
+export const BinaryMatrix = ({ messageSchema, fds }: { 
+  messageSchema: DescMessage | null, 
+  fds: Uint8Array | null
+}) => {
   const [activeExample, setActiveExample] = useState<keyof typeof SIZE_EXAMPLES | null>('BASIC');
   const [jsonInput, setJsonInput] = useState(JSON.stringify(SIZE_EXAMPLES.BASIC, null, 2));
   const [selectedSegmentIdx, setSelectedSegmentIdx] = useState<number | null>(0);
@@ -543,7 +546,12 @@ export const BinaryMatrix = ({ messageSchema, fds }: { messageSchema: DescMessag
   );
 };
 
-const BinaryPage = ({ messageSchema, fds }: { messageSchema: DescMessage | null, fds: Uint8Array | null }) => (
+const BinaryPage = ({ messageSchema, fds, protoSource, setProtoSource }: { 
+  messageSchema: DescMessage | null, 
+  fds: Uint8Array | null,
+  protoSource: string,
+  setProtoSource: (s: string) => void
+}) => (
   <>
     {/* 1. Introduction & Varints First */}
     <Section id="binary-intro" className="py-24 px-4 sm:px-8 bg-[var(--bg-color)]">
@@ -600,64 +608,7 @@ const BinaryPage = ({ messageSchema, fds }: { messageSchema: DescMessage | null,
     <Section id="protoscope" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]">
       <div className="max-w-7xl mx-auto">
         <SectionTitle icon={SearchCheck} subtitle="05c_DEBUGGING">Protoscope</SectionTitle>
-        
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-          <div className="space-y-8">
-            <div className="space-y-4">
-              <h3 className="text-2xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-widest">The Schema-Ignorant Debugger</h3>
-              <p className="text-[var(--text-dim)] leading-relaxed">
-                Protoscope is a diagnostic language for inspecting Protobuf messages. Unlike standard decoders, it doesn't require a <code>.proto</code> file. Instead, it uses heuristics to guess the structure of the binary stream.
-              </p>
-            </div>
-
-            <div className="space-y-4">
-              <TechnicalNuance title="THE_SEMANTIC_GAP">
-                Because Protoscope is schema-ignorant, it can reveal the <strong>physical structure</strong> (field numbers and wire types) but cannot know the <strong>semantic meaning</strong> (field names or exact numeric types like signed vs unsigned).
-              </TechnicalNuance>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg space-y-3">
-                <h4 className="font-cyber font-bold text-xs text-[var(--cyber-neon-blue)] uppercase tracking-widest">Structural Analysis</h4>
-                <p className="text-xs text-[var(--text-dim)] leading-relaxed">
-                  Reveals the physical layout and nesting level of the message without needing any external definitions.
-                </p>
-              </div>
-              <div className="p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg space-y-3">
-                <h4 className="font-cyber font-bold text-xs text-[var(--cyber-neon-pink)] uppercase tracking-widest">Binary Integrity</h4>
-                <p className="text-xs text-[var(--text-dim)] leading-relaxed">
-                  Perfect for debugging malformed streams or truncated data that would cause standard decoders to fail.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="space-y-6">
-            <CyberPanel title="PROTOSCOPE_VS_HEX">
-              <div className="p-4 space-y-6">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <span className="text-[10px] font-mono text-[var(--text-dim)] uppercase tracking-widest">Hex Stream</span>
-                    <pre className="text-xs font-mono text-[var(--cyber-neon-blue)] bg-[var(--section-bg-dark)] p-3 rounded border border-[var(--border-light)]">
-                      08 96 01{"\n"}
-                      12 05 41 6c 69 63 65
-                    </pre>
-                  </div>
-                  <div className="space-y-2">
-                    <span className="text-[10px] font-mono text-[var(--text-dim)] uppercase tracking-widest">Protoscope</span>
-                    <pre className="text-xs font-mono text-[var(--cyber-neon-pink)] bg-[var(--section-bg-dark)] p-3 rounded border border-[var(--border-light)]">
-                      1: 150{"\n"}
-                      2: "Alice"
-                    </pre>
-                  </div>
-                </div>
-                <div className="p-6 bg-[var(--cyber-neon-pink)]/5 border border-[var(--cyber-neon-pink)]/20 rounded-xl italic text-sm text-[var(--text-color)] leading-relaxed">
-                  "Protoscope removes the mechanical overhead of bit-packing to show you the structural skeleton, but it lacks the semantic soul of the schema."
-                </div>
-              </div>
-            </CyberPanel>
-          </div>
-        </div>
+        <ProtoscopeLab messageSchema={messageSchema} fds={fds} protoSource={protoSource} setProtoSource={setProtoSource} />
       </div>
     </Section>
   </>
