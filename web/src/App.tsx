@@ -1138,6 +1138,16 @@ const Introduction = ({ messageSchema, fds }: {
         </div>
       </div>
 
+      <div className="mb-16 space-y-6">
+        <h3 className="text-2xl font-cyber font-bold text-[var(--text-color)] uppercase">How it works</h3>
+        <p className="text-[var(--text-dim)] max-w-3xl leading-relaxed">
+          Protobuf works by combining a pre-defined <strong>schema</strong> with your <strong>data</strong> to produce a compact binary payload.
+          Unlike JSON, which carries redundant field names in every message, Protobuf uses the schema to identify fields by their number,
+          drastically reducing size and increasing parsing speed.
+        </p>
+        <DecodingVisualization />
+      </div>
+
       <div className="grid grid-cols-1 gap-8 mt-12">
         <CyberPanel title="THE_MANY_FACES_OF_PROTO">
           <div className="p-6 space-y-8">
@@ -2074,7 +2084,6 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
         <div className="flex flex-col gap-12 mb-24">
           <div className="space-y-6 leading-relaxed text-[var(--text-color)]">
             <h3 className="text-2xl font-cyber font-bold text-[var(--text-color)] uppercase">Decoding the Stream</h3>
-            <DecodingVisualization />
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
               <div className="space-y-4">
                 <p>

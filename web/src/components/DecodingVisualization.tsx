@@ -31,15 +31,15 @@ export const DecodingVisualization = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          <rect x="50" y="50" width="280" height="120" rx="8" fill="var(--panel-bg)" stroke="var(--cyber-neon-blue)" strokeWidth="1" opacity="0.9" />
-          <text x="65" y="80" fill="var(--cyber-neon-pink)" fontSize="14" className="font-bold">message</text>
-          <text x="130" y="80" fill="currentColor" fontSize="14">{"User {"}</text>
-          <text x="80" y="110" fill="var(--cyber-neon-blue)" fontSize="14">string</text>
-          <text x="135" y="110" fill="currentColor" fontSize="14">name =</text>
-          <text x="195" y="110" fill="var(--cyber-neon-yellow)" fontSize="14">1</text>
-          <text x="205" y="110" fill="currentColor" fontSize="14">;</text>
-          <text x="65" y="140" fill="currentColor" fontSize="14">{"}"}</text>
-          <text x="65" y="40" fill="var(--text-dim)" fontSize="12" letterSpacing="2" className="uppercase font-bold">Schema</text>
+          <rect x="90" y="50" width="280" height="120" rx="8" fill="var(--panel-bg)" stroke="var(--cyber-neon-blue)" strokeWidth="1" opacity="0.9" />
+          <text x="105" y="80" fill="var(--cyber-neon-pink)" fontSize="14" className="font-bold">message</text>
+          <text x="170" y="80" fill="currentColor" fontSize="14">{"User {"}</text>
+          <text x="120" y="110" fill="var(--cyber-neon-blue)" fontSize="14">string</text>
+          <text x="175" y="110" fill="currentColor" fontSize="14">name =</text>
+          <text x="235" y="110" fill="var(--cyber-neon-yellow)" fontSize="14">1</text>
+          <text x="245" y="110" fill="currentColor" fontSize="14">;</text>
+          <text x="105" y="140" fill="currentColor" fontSize="14">{"}"}</text>
+          <text x="105" y="40" fill="var(--text-dim)" fontSize="12" letterSpacing="2" className="uppercase font-bold">Schema</text>
         </motion.g>
 
         {/* Data Box */}
@@ -48,11 +48,11 @@ export const DecodingVisualization = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          <rect x="470" y="50" width="280" height="120" rx="8" fill="var(--panel-bg)" stroke="var(--cyber-neon-green)" strokeWidth="1" opacity="0.9" />
-          <text x="485" y="95" fill="var(--cyber-neon-blue)" fontSize="14">name</text>
-          <text x="525" y="95" fill="currentColor" fontSize="14">:</text>
-          <text x="540" y="95" fill="var(--cyber-neon-green)" fontSize="14">"Alice"</text>
-          <text x="485" y="40" fill="var(--text-dim)" fontSize="12" letterSpacing="2" className="uppercase font-bold">Data</text>
+          <rect x="430" y="50" width="280" height="120" rx="8" fill="var(--panel-bg)" stroke="var(--cyber-neon-green)" strokeWidth="1" opacity="0.9" />
+          <text x="445" y="95" fill="var(--cyber-neon-blue)" fontSize="14">name</text>
+          <text x="485" y="95" fill="currentColor" fontSize="14">:</text>
+          <text x="500" y="95" fill="var(--cyber-neon-green)" fontSize="14">"Alice"</text>
+          <text x="445" y="40" fill="var(--text-dim)" fontSize="12" letterSpacing="2" className="uppercase font-bold">Data</text>
         </motion.g>
 
         {/* Connecting Lines */}
@@ -62,9 +62,9 @@ export const DecodingVisualization = () => {
           transition={{ duration: 1, delay: 1 }}
         >
           {/* From Schema */}
-          <path d="M 190 170 L 190 210 L 360 210 L 360 240" fill="none" stroke="var(--cyber-neon-blue)" strokeWidth="2" strokeDasharray="5,5" markerEnd="url(#arrowhead)" className="opacity-60" />
+          <path d="M 230 170 L 230 210 L 360 210 L 360 240" fill="none" stroke="var(--cyber-neon-blue)" strokeWidth="2" strokeDasharray="5,5" markerEnd="url(#arrowhead)" className="opacity-60" />
           {/* From JSON */}
-          <path d="M 610 170 L 610 210 L 440 210 L 440 240" fill="none" stroke="var(--cyber-neon-green)" strokeWidth="2" strokeDasharray="5,5" markerEnd="url(#arrowhead)" className="opacity-60" />
+          <path d="M 570 170 L 570 210 L 440 210 L 440 240" fill="none" stroke="var(--cyber-neon-green)" strokeWidth="2" strokeDasharray="5,5" markerEnd="url(#arrowhead)" className="opacity-60" />
           
           {/* Central combining node */}
           <circle cx="400" cy="210" r="16" fill="var(--panel-bg)" stroke="var(--cyber-neon-pink)" strokeWidth="2" filter="url(#glow)" />
