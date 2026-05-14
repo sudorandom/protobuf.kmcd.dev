@@ -14,7 +14,7 @@
   --cyber-neon-yellow: #facc15;
   --cyber-neon-cyan: #00f3ff;
   --border-color: rgba(0, 243, 255, 0.2);
-  --header-height: 80px;
+  --header-height: 64px;
   --section-bg-alt: rgba(15, 23, 42, 0.15);
   --section-bg-dark: rgba(0, 0, 0, 0.4);
   --overlay-bg: rgba(255, 255, 255, 0.05);
@@ -68,6 +68,12 @@ body {
 
 button {
   cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+button:active {
+  transform: scale(0.98);
 }
 
 .font-cyber {
@@ -159,7 +165,7 @@ button {
 
 .scanline {
   width: 100%;
-  height: 80px;
+  height: 64px;
   background: linear-gradient(to bottom, transparent, rgba(0, 243, 255, 0.04), transparent);
   position: fixed;
   top: 0;

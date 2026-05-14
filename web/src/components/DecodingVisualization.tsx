@@ -93,15 +93,15 @@ export const DecodingVisualization = () => {
             {/* Hex Layer */}
             <rect x="0" y="-20" width="100" height="30" rx="4" fill="var(--cyber-neon-blue)" fillOpacity="0.2" />
             <text x="50" y="0" fill="var(--cyber-neon-blue)" fontSize="18" textAnchor="middle" className="font-bold">0a</text>
-            <text x="50" y="25" fill="var(--text-dim)" fontSize="10" textAnchor="middle">Tag</text>
+            <text x="50" y="25" fill="var(--text-dim)" fontSize="12" textAnchor="middle">Tag</text>
             
             <rect x="110" y="-20" width="100" height="30" rx="4" fill="var(--cyber-neon-yellow)" fillOpacity="0.2" />
             <text x="160" y="0" fill="var(--cyber-neon-yellow)" fontSize="18" textAnchor="middle" className="font-bold">05</text>
-            <text x="160" y="25" fill="var(--text-dim)" fontSize="10" textAnchor="middle">Len</text>
+            <text x="160" y="25" fill="var(--text-dim)" fontSize="12" textAnchor="middle">Len</text>
 
             <rect x="220" y="-20" width="200" height="30" rx="4" fill="var(--cyber-neon-green)" fillOpacity="0.2" />
             <text x="320" y="0" fill="var(--cyber-neon-green)" fontSize="18" textAnchor="middle" className="font-bold tracking-widest">41 6c 69 63 65</text>
-            <text x="320" y="25" fill="var(--text-dim)" fontSize="10" textAnchor="middle">"Alice"</text>
+            <text x="320" y="25" fill="var(--text-dim)" fontSize="12" textAnchor="middle">"Alice"</text>
           </g>
 
           <g transform="translate(190, 355)">
@@ -115,10 +115,10 @@ export const DecodingVisualization = () => {
              <text x="320" y="-8" fill="var(--cyber-neon-green)" fontSize="12" textAnchor="middle" className="font-mono tracking-widest">01000001 01101100</text>
              <text x="320" y="8" fill="var(--cyber-neon-green)" fontSize="12" textAnchor="middle" className="font-mono tracking-widest">01101001 01100011 01100101</text>
              
-             <text x="25" y="24" fill="var(--text-dim)" fontSize="10" textAnchor="middle" className="font-mono">Field</text>
-             <text x="75" y="24" fill="var(--text-dim)" fontSize="10" textAnchor="middle" className="font-mono">Type</text>
-             <text x="160" y="24" fill="var(--text-dim)" fontSize="10" textAnchor="middle" className="font-mono">Len</text>
-             <text x="320" y="24" fill="var(--text-dim)" fontSize="10" textAnchor="middle" className="font-mono">"Alice"</text>
+             <text x="25" y="24" fill="var(--text-dim)" fontSize="12" textAnchor="middle" className="font-mono">Field</text>
+             <text x="75" y="24" fill="var(--text-dim)" fontSize="12" textAnchor="middle" className="font-mono">Type</text>
+             <text x="160" y="24" fill="var(--text-dim)" fontSize="12" textAnchor="middle" className="font-mono">Len</text>
+             <text x="320" y="24" fill="var(--text-dim)" fontSize="12" textAnchor="middle" className="font-mono">"Alice"</text>
           </g>
         </motion.g>
       </svg>
