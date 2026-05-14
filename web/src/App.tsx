@@ -43,7 +43,7 @@ import {
 const TechnicalNuance = ({ children, title = "TECHNICAL_NUANCE" }: { children: React.ReactNode, title?: string }) => (
   <div className="bg-[#00f3ff]/10 border border-[#00f3ff]/30 rounded-lg p-4 flex gap-4 items-start animate-in fade-in slide-in-from-top-1">
     <div className="p-2 bg-[#00f3ff]/20 rounded-md">
-       <Info className="w-5 h-5 text-[var(--cyber-neon-blue)]" />
+      <Info className="w-5 h-5 text-[var(--cyber-neon-blue)]" />
     </div>
     <div className="space-y-1">
       <span className="text-[10px] font-mono text-[var(--cyber-neon-blue)] uppercase tracking-[0.2em] font-bold">{title}</span>
@@ -1110,7 +1110,7 @@ const Introduction = ({ messageSchema, fds }: {
       label: 'Protoscope',
       icon: SearchCheck,
       title: 'Protoscope format',
-      desc: <>A diagnostic language for <ExternalLinkText href="https://github.com/protocolbuffers/protoscope">inspecting</ExternalLinkText> Protobuf messages when you don't have the original schema. It is schema-ignorant, allowing you to see the structural skeleton of the binary data with some heuristic guesses.</>,
+      desc: <>A diagnostic language for <ExternalLinkText href="https://github.com/protocolbuffers/protoscope">inspecting</ExternalLinkText> Protobuf messages. While it can use a schema, it is often used for its ability to operate without one, revealing a structural skeleton of the binary data through heuristic guesses.</>,
       code: protoscopeExample || '1: "550e8400-e29b-41d4-a716-446655440000"\n2: "Hiro Protagonist"\n3: 24',
       language: null
     }
@@ -1739,11 +1739,11 @@ const TypeSystem = () => {
               <p>
                 While Protobuf is primarily binary, it defines a canonical <ExternalLinkText href="https://protobuf.dev/programming-guides/json/">ProtoJSON</ExternalLinkText> mapping. This ensures that every binary payload has a deterministic representation in JSON.
               </p>
-              
+
               <div className="p-4 bg-[var(--cyber-neon-yellow)]/5 border border-[var(--cyber-neon-yellow)]/20 rounded-lg space-y-4">
                 <h4 className="text-[var(--cyber-neon-yellow)] font-cyber font-bold text-sm uppercase tracking-wider">The 64-bit Precision Trap</h4>
                 <p className="text-sm leading-relaxed text-[var(--text-color)]/90">
-                  JavaScript numbers are 64-bit floats, which lose precision for integers above 2^53 - 1. 
+                  JavaScript numbers are 64-bit floats, which lose precision for integers above 2^53 - 1.
                 </p>
                 <p className="text-sm leading-relaxed font-bold text-[var(--text-color)]">
                   To prevent data loss, <code>int64</code> and <code>uint64</code> types MUST be encoded as strings in JSON.
@@ -1895,10 +1895,10 @@ const WireFormatBreakdown = () => {
                     <>
                       <span className="text-[10px] font-mono text-[var(--text-color)] uppercase tracking-widest font-bold">Mapped Schema Types</span>
                       <div className="flex flex-wrap gap-2">                        {wt.types.map((t) => (
-                          <span key={t} className="px-2 py-1 bg-[var(--cyber-neon-blue)]/10 border border-[var(--cyber-neon-blue)]/20 rounded text-[11px] font-mono text-[var(--cyber-neon-blue)]">
-                            {t}
-                          </span>
-                        ))}
+                        <span key={t} className="px-2 py-1 bg-[var(--cyber-neon-blue)]/10 border border-[var(--cyber-neon-blue)]/20 rounded text-[11px] font-mono text-[var(--cyber-neon-blue)]">
+                          {t}
+                        </span>
+                      ))}
                       </div>
                     </>
                   ) : (
@@ -2449,7 +2449,7 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
                         </div>
                       )}
                     </motion.div>
-                  ) : (
+                  ) : viewMode === 'hex' ? (
                     <motion.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
@@ -2473,6 +2473,18 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
                         </p>
                       </div>
                     </motion.div>
+                  ) : (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="flex flex-col items-center justify-center h-48 border border-[var(--border-light)] bg-[var(--overlay-bg)] rounded-xl gap-4 text-center"
+                    >
+                      <SearchCheck className="w-8 h-8 text-[var(--cyber-neon-pink)] opacity-30" />
+                      <div className="space-y-1">
+                        <p className="text-[var(--text-dim)] font-cyber uppercase text-xs tracking-[0.2em]">Protoscope Mode Active</p>
+                        <p className="text-[10px] text-[var(--text-dim)]/60 font-mono">Switch back to HEX_VIEW to analyze individual bytes.</p>
+                      </div>
+                    </motion.div>
                   )}
                 </AnimatePresence>
               </div>
@@ -2482,42 +2494,43 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
 
         <div className="mt-24 pt-16 border-t border-[var(--border-light)]">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            <div className="space-y-6">
-              <h3 className="text-2xl font-cyber font-bold text-[var(--text-color)] uppercase flex items-center gap-3">
-                <SearchCheck className="w-6 h-6 text-[var(--cyber-neon-pink)]" />
-                The Protoscope Lens
-              </h3>
-              <p className="text-[var(--text-dim)] leading-relaxed">
-                <ExternalLinkText href="https://github.com/protocolbuffers/protoscope">Protoscope</ExternalLinkText> is a diagnostic tool for inspecting Protobuf messages when you don't have the original schema. It allows you to peek into a binary stream and see its structural skeleton, though it comes with significant caveats.
-              </p>
+            <div className="space-y-8">
               <div className="space-y-4">
-                <div className="p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg">
-                  <h4 className="font-cyber font-bold text-xs text-[var(--cyber-neon-blue)] uppercase mb-2">What you see:</h4>
-                  <ul className="text-xs text-[var(--text-dim)] space-y-2">
-                    <li className="flex gap-2"><div className="w-1 h-1 bg-[var(--cyber-neon-blue)] mt-1.5 shrink-0" /> <strong>Raw Structure:</strong> Field numbers and wire types are explicit (e.g., <code>1: 150</code>).</li>
-                    <li className="flex gap-2"><div className="w-1 h-1 bg-[var(--cyber-neon-blue)] mt-1.5 shrink-0" /> <strong>Heuristic Decoding:</strong> It guesses when a field might be a sub-message (using <code>{"{ }"}</code>) or a string.</li>
-                    <li className="flex gap-2"><div className="w-1 h-1 bg-[var(--cyber-neon-blue)] mt-1.5 shrink-0" /> <strong>Binary Integrity:</strong> It represents every byte on the wire, making it perfect for debugging malformed payloads.</li>
-                  </ul>
+                <h3 className="text-2xl font-cyber font-bold text-[var(--text-color)] uppercase flex items-center gap-3">
+                  <SearchCheck className="w-6 h-6 text-[var(--cyber-neon-pink)]" />
+                  The Protoscope Lens
+                </h3>
+                <p className="text-[var(--text-dim)] leading-relaxed">
+                  <ExternalLinkText href="https://github.com/protocolbuffers/protoscope">Protoscope</ExternalLinkText> is a diagnostic tool for inspecting binary streams when the original schema is unavailable. It disassembles raw bytes into a structural skeleton, allowing you to see the "shape" of a message through its field tags and wire types.
+                </p>
+              </div>
+
+              <div className="space-y-6">
+                <div className="p-4 bg-red-500/5 border border-red-500/20 rounded-lg">
+                  <div className="flex gap-3">
+                    <AlertTriangle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+                    <div className="space-y-2">
+                      <span className="text-red-400 font-bold uppercase text-[10px] tracking-widest block">The Semantic Gap</span>
+                      <p className="text-xs text-[var(--text-dim)] leading-relaxed">
+                        Protoscope is <strong>schema-ignorant</strong>. Because the wire format is ambiguous, it must use heuristics to guess how to display data. It cannot distinguish between signed/unsigned integers or enums, and it may misidentify a sub-message as a string. This can result in values that are <strong>semantically wrong</strong>.
+                      </p>
+                    </div>
+                  </div>
                 </div>
-                <div className="p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg">
-                  <h4 className="font-cyber font-bold text-xs text-[var(--cyber-neon-pink)] uppercase mb-2">What you DON'T see:</h4>
-                  <ul className="text-xs text-[var(--text-dim)] space-y-4 text-left">
-                    <li className="flex gap-3 p-3 bg-red-500/5 border border-red-500/20 rounded">
-                      <AlertTriangle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
-                      <div className="space-y-1">
-                        <span className="text-red-400 font-bold uppercase text-[10px] tracking-widest block">Warning</span>
-                        <p><strong>Semantic Ambiguity:</strong> This is the most important caveat. Without a schema, Protoscope must <strong>guess</strong> how to represent bytes. It cannot distinguish between <code>uint32</code>, <code>int32</code>, or an <code>enum</code>, and it might misinterpret fixed-width numbers as varints. This can result in values that are <strong>completely wrong</strong> (e.g., misreading a negative number as a massive positive integer).</p>
-                      </div>
-                    </li>
-                    <li className="flex gap-2 px-3">
-                      <div className="w-1.5 h-1.5 bg-[var(--cyber-neon-pink)] mt-1.5 shrink-0" /> 
-                      <span><strong>Field Names:</strong> It only knows field numbers (1, 2, 3), not names like <code>user_id</code>.</span>
-                    </li>
-                    <li className="flex gap-2 px-3">
-                      <div className="w-1.5 h-1.5 bg-[var(--cyber-neon-pink)] mt-1.5 shrink-0" /> 
-                      <span><strong>Default Values:</strong> It only shows what's physically on the wire; missing fields are invisible.</span>
-                    </li>
-                  </ul>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg space-y-3">
+                    <h4 className="font-cyber font-bold text-[10px] text-[var(--cyber-neon-blue)] uppercase tracking-widest">Structural Analysis</h4>
+                    <p className="text-[11px] text-[var(--text-dim)] leading-relaxed">
+                      Reveals the physical layout of the message, including field numbers and wire-level nesting, without requiring a <code>.proto</code> file.
+                    </p>
+                  </div>
+                  <div className="p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg space-y-3">
+                    <h4 className="font-cyber font-bold text-[10px] text-[var(--cyber-neon-blue)] uppercase tracking-widest">Binary Integrity</h4>
+                    <p className="text-[11px] text-[var(--text-dim)] leading-relaxed">
+                      Every byte is accounted for. This makes it an ideal tool for debugging truncated streams or malformed payloads that break standard decoders.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -2541,14 +2554,13 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
                     </div>
                   </div>
                   <div className="p-4 bg-[#ff00ff]/5 border border-[#ff00ff]/10 rounded-lg italic text-[11px] text-[var(--text-dim)] leading-relaxed">
-                    "Protoscope is like viewing the source code of a binary file. It removes the 'how' (bit-packing) and shows you the 'what' (structure)."
+                    "Protoscope removes the mechanical overhead of bit-packing to show you the structural skeleton—but it lacks the semantic soul of the schema."
                   </div>
                 </div>
               </CyberPanel>
             </div>
           </div>
-        </div>
-      </div>
+        </div>      </div>
     </Section>
   );
 };
