@@ -2032,8 +2032,9 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
       const binary = toBinary(messageSchema, user);
       const segments = decodeBinary(binary);
       return { segments, error: null };
-    } catch (e: any) {
-      return { segments: [], error: e.message || 'Error processing JSON' };
+    } catch (e: unknown) {
+      const errorMsg = e instanceof Error ? e.message : String(e);
+      return { segments: [], error: errorMsg || 'Error processing JSON' };
     }
   }, [jsonInput, messageSchema]);
 
