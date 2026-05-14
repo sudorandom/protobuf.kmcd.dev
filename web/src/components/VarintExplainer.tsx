@@ -63,7 +63,7 @@ const VarintExplainer = () => {
         <div className="p-4 bg-[var(--cyber-neon-blue)]/5 border border-[var(--cyber-neon-blue)]/20 rounded-lg flex flex-col gap-3">
           <div className="flex items-center justify-between">
             <span className="text-xs font-mono text-[var(--cyber-neon-blue)] uppercase tracking-widest">Binary Representation</span>
-            <span className="text-[10px] font-mono text-[var(--cyber-neon-blue)]/90 bg-[var(--cyber-neon-blue)]/10 px-2 py-0.5 rounded">{binaryString.length} BITS</span>
+            <span className="text-xs font-mono text-[var(--cyber-neon-blue)]/90 bg-[var(--cyber-neon-blue)]/10 px-2 py-0.5 rounded">{binaryString.length} BITS</span>
           </div>
           <div className="flex flex-wrap gap-x-3 gap-y-2 font-mono text-[var(--cyber-neon-blue)] text-lg md:text-xl">
             {(binaryString.match(/.{1,7}/g) || []).map((chunk, i) => (
@@ -77,7 +77,7 @@ const VarintExplainer = () => {
         <div className="p-4 bg-[var(--cyber-neon-pink)]/5 border border-[var(--cyber-neon-pink)]/20 rounded-lg flex flex-col gap-3">
           <div className="flex items-center justify-between">
             <span className="text-xs font-mono text-[var(--cyber-neon-pink)] uppercase tracking-widest">Varint Representation</span>
-            <span className="text-[10px] font-mono text-[var(--cyber-neon-pink)]/90 bg-[var(--cyber-neon-pink)]/10 px-2 py-0.5 rounded">{varintBytes.length * 8} BITS</span>
+            <span className="text-xs font-mono text-[var(--cyber-neon-pink)]/90 bg-[var(--cyber-neon-pink)]/10 px-2 py-0.5 rounded">{varintBytes.length * 8} BITS</span>
           </div>
           <div className="flex flex-wrap gap-x-3 gap-y-2 font-mono text-lg md:text-xl">
             {varintBytes.map((byte, i) => {
@@ -104,12 +104,12 @@ const VarintExplainer = () => {
           {/* Header Row */}
           <div className="hidden sm:grid grid-cols-[1fr_auto_1fr] items-center gap-4 mb-4 pb-2 border-b border-[var(--border-light)]">
             <div className="flex flex-col items-end gap-1">
-              <span className="text-[10px] font-mono text-[var(--text-dim)] uppercase">Original 7-Bit Chunk</span>
+              <span className="text-xs font-mono text-[var(--text-dim)] uppercase">Original 7-Bit Chunk</span>
             </div>
             <div className="w-16"></div>
             <div className="flex items-center gap-3">
-              <span className="text-[10px] font-mono text-[var(--cyber-neon-pink)] uppercase ml-1">MSB</span>
-              <span className="text-[10px] font-mono text-[var(--cyber-neon-blue)] uppercase ml-2">7-Bit Payload</span>
+              <span className="text-xs font-mono text-[var(--cyber-neon-pink)] uppercase ml-1">MSB</span>
+              <span className="text-xs font-mono text-[var(--cyber-neon-blue)] uppercase ml-2">7-Bit Payload</span>
             </div>
           </div>
 
@@ -168,14 +168,14 @@ const VarintExplainer = () => {
             <div className="flex items-center gap-3">
               <div className="w-4 h-4 bg-[var(--cyber-neon-pink)]/20 border border-[var(--cyber-neon-pink)]/50 rounded-sm"></div>
               <div className="flex flex-col">
-                <span className="text-[10px] text-[var(--text-dim)] font-mono uppercase leading-none">MSB (Prefix)</span>
+                <span className="text-xs text-[var(--text-dim)] font-mono uppercase leading-none">MSB (Prefix)</span>
                 <span className="text-[9px] text-[var(--text-dim)] font-mono">1 = More bytes, 0 = Last byte</span>
               </div>
             </div>
             <div className="flex items-center gap-3">
               <div className="w-4 h-4 bg-[var(--cyber-neon-blue)]/20 border border-[var(--cyber-neon-blue)]/50 rounded-sm"></div>
               <div className="flex flex-col">
-                <span className="text-[10px] text-[var(--text-dim)] font-mono uppercase leading-none">Data Payload</span>
+                <span className="text-xs text-[var(--text-dim)] font-mono uppercase leading-none">Data Payload</span>
                 <span className="text-[9px] text-[var(--text-dim)] font-mono">Mapped 7-bit chunks</span>
               </div>
             </div>

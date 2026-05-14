@@ -226,21 +226,8 @@ func parseProto(this js.Value, args []js.Value) any {
 	}
 
 	fdpSet := &descriptorpb.FileDescriptorSet{}
-	seen := make(map[string]bool)
-	var addFile func(fd protoreflect.FileDescriptor)
-	addFile = func(fd protoreflect.FileDescriptor) {
-		if seen[fd.Path()] {
-			return
-		}
-		seen[fd.Path()] = true
-		for i := 0; i < fd.Imports().Len(); i++ {
-			addFile(fd.Imports().Get(i).FileDescriptor)
-		}
-		fdpSet.File = append(fdpSet.File, protodesc.ToFileDescriptorProto(fd))
-	}
-
 	for _, fd := range fds {
-		addFile(fd)
+		fdpSet.File = append(fdpSet.File, protodesc.ToFileDescriptorProto(fd))
 	}
 
 	bytes, err := proto.Marshal(fdpSet)

@@ -1,3 +1,5 @@
+import { type DescMessage, ScalarType } from "@bufbuild/protobuf";
+
 export enum WireType {
   Varint = 0,
   Fixed64 = 1,
@@ -7,18 +9,22 @@ export enum WireType {
   Fixed32 = 5,
 }
 
-export interface ByteSegment {
-  val: string;
-  raw: number;
-  type: 'tag' | 'len' | 'data';
-  desc: string;
-  fieldId: number;
+export interface DecodedSegment {
+  tag: number;
+  fieldName?: string;
+  fieldType?: string;
+  wireType: number;
+  data: Uint8Array;
+  value: bigint | number | string;
+  rawHex: string[];
+  tagBytes: Uint8Array;
+  lengthBytes?: Uint8Array;
+  payloadBytes: Uint8Array;
 }
 
-export function decodeBinary(binary: Uint8Array): ByteSegment[] {
-  const segments: ByteSegment[] = [];
+export function decodeBinary(binary: Uint8Array, schema?: DescMessage): DecodedSegment[] {
+  const segments: DecodedSegment[] = [];
   let offset = 0;
-  let currentFieldId = 0;
 
   function readVarint(): { value: bigint; bytes: number[] } {
     let value = 0n;
@@ -34,72 +40,118 @@ export function decodeBinary(binary: Uint8Array): ByteSegment[] {
     return { value, bytes };
   }
 
+  function decodeZigZag(n: bigint): bigint {
+    return (n >> 1n) ^ -(n & 1n);
+  }
+
   while (offset < binary.length) {
-    const fieldId = currentFieldId++;
-    const { value: tagValue, bytes: tagBytes } = readVarint();
+    const startOffset = offset;
+    let res: { value: bigint; bytes: number[] };
+    
+    try {
+      res = readVarint();
+    } catch {
+      break;
+    }
+
+    const tagValue = res.value;
+    const tagBytesArray = res.bytes;
     const fieldNo = Number(tagValue >> 3n);
     const wireType = Number(tagValue & 0x07n);
+    const field = schema?.fields.find(f => f.number === fieldNo);
 
-    segments.push(...tagBytes.map(b => ({
-      val: b.toString(16).padStart(2, '0'),
-      raw: b,
-      type: 'tag' as const,
-      desc: `Field ${fieldNo}, WireType ${wireType} (${WireType[wireType] || 'Unknown'})`,
-      fieldId
-    })));
+    let data: Uint8Array;
+    let value: bigint | number | string;
+    let lengthBytes: Uint8Array | undefined;
+    let fieldTypeLabel = "";
 
     if (wireType === WireType.Varint) {
-      const { value, bytes } = readVarint();
-      segments.push(...bytes.map(b => ({
-        val: b.toString(16).padStart(2, '0'),
-        raw: b,
-        type: 'data' as const,
-        desc: `Varint Value: ${value}`,
-        fieldId
-      })));
-    } else if (wireType === WireType.LengthDelimited) {
-      const { value: length, bytes: lenBytes } = readVarint();
-      segments.push(...lenBytes.map(b => ({
-        val: b.toString(16).padStart(2, '0'),
-        raw: b,
-        type: 'len' as const,
-        desc: `Length: ${length} bytes`,
-        fieldId
-      })));
-
-      const dataBytes = binary.slice(offset, offset + Number(length));
-      offset += Number(length);
+      const { value: v, bytes: vBytes } = readVarint();
+      value = v;
+      data = new Uint8Array(vBytes);
       
-      segments.push(...Array.from(dataBytes).map(b => ({
-        val: b.toString(16).padStart(2, '0'),
-        raw: b,
-        type: 'data' as const,
-        desc: `Data (Field ${fieldNo})`,
-        fieldId
-      })));
+      if (field?.fieldKind === "scalar") {
+        if (field.scalar === ScalarType.SINT32 || field.scalar === ScalarType.SINT64) {
+          value = decodeZigZag(v);
+          fieldTypeLabel = field.scalar === ScalarType.SINT32 ? "sint32" : "sint64";
+        } else if (field.scalar === ScalarType.INT32) {
+          value = Number(BigInt.asIntN(32, v));
+          fieldTypeLabel = "int32";
+        } else if (field.scalar === ScalarType.BOOL) {
+          value = v !== 0n ? "true" : "false";
+          fieldTypeLabel = "bool";
+        } else {
+          fieldTypeLabel = ScalarType[field.scalar].toLowerCase();
+        }
+      } else if (field?.fieldKind === "enum") {
+        fieldTypeLabel = "enum";
+        const enumValue = field.enum.values.find(ev => BigInt(ev.number) === v);
+        if (enumValue) value = `${enumValue.name} (${v})`;
+      }
+    } else if (wireType === WireType.LengthDelimited) {
+      const { value: length, bytes: lBytes } = readVarint();
+      lengthBytes = new Uint8Array(lBytes);
+      const lengthNum = Number(length);
+      data = binary.slice(offset, offset + lengthNum);
+      offset += lengthNum;
+      
+      if (field?.fieldKind === "scalar" && field.scalar === ScalarType.STRING) {
+        value = new TextDecoder().decode(data);
+        fieldTypeLabel = "string";
+      } else if (field?.fieldKind === "message") {
+        value = `Message: ${field.message.name}`;
+        fieldTypeLabel = "message";
+      } else {
+        value = length;
+        fieldTypeLabel = field?.fieldKind === "scalar" ? ScalarType[field.scalar].toLowerCase() : "bytes";
+      }
     } else if (wireType === WireType.Fixed64) {
-      const dataBytes = binary.slice(offset, offset + 8);
+      data = binary.slice(offset, offset + 8);
       offset += 8;
-      segments.push(...Array.from(dataBytes).map(b => ({
-        val: b.toString(16).padStart(2, '0'),
-        raw: b,
-        type: 'data' as const,
-        desc: `Fixed64 Data (Field ${fieldNo})`,
-        fieldId
-      })));
+      const view = new DataView(data.buffer, data.byteOffset, data.byteLength);
+      if (field?.fieldKind === "scalar" && field.scalar === ScalarType.DOUBLE) {
+        value = view.getFloat64(0, true);
+        fieldTypeLabel = "double";
+      } else if (field?.fieldKind === "scalar" && field.scalar === ScalarType.SFIXED64) {
+        value = view.getBigInt64(0, true);
+        fieldTypeLabel = "sfixed64";
+      } else {
+        value = view.getBigUint64(0, true);
+        fieldTypeLabel = field?.fieldKind === "scalar" ? ScalarType[field.scalar].toLowerCase() : "fixed64";
+      }
     } else if (wireType === WireType.Fixed32) {
-      const dataBytes = binary.slice(offset, offset + 4);
+      data = binary.slice(offset, offset + 4);
       offset += 4;
-      segments.push(...Array.from(dataBytes).map(b => ({
-        val: b.toString(16).padStart(2, '0'),
-        raw: b,
-        type: 'data' as const,
-        desc: `Fixed32 Data (Field ${fieldNo})`,
-        fieldId
-      })));
+      const view = new DataView(data.buffer, data.byteOffset, data.byteLength);
+      if (field?.fieldKind === "scalar" && field.scalar === ScalarType.FLOAT) {
+        value = view.getFloat32(0, true);
+        fieldTypeLabel = "float";
+      } else if (field?.fieldKind === "scalar" && field.scalar === ScalarType.SFIXED32) {
+        value = view.getInt32(0, true);
+        fieldTypeLabel = "sfixed32";
+      } else {
+        value = view.getUint32(0, true);
+        fieldTypeLabel = field?.fieldKind === "scalar" ? ScalarType[field.scalar].toLowerCase() : "fixed32";
+      }
     } else {
       break;
     }
+
+    const segmentBytes = binary.slice(startOffset, offset);
+    const rawHex = Array.from(segmentBytes).map(b => b.toString(16).padStart(2, '0').toUpperCase());
+
+    segments.push({
+      tag: fieldNo,
+      fieldName: field?.name,
+      fieldType: fieldTypeLabel,
+      wireType,
+      data,
+      value,
+      rawHex,
+      tagBytes: new Uint8Array(tagBytesArray),
+      lengthBytes,
+      payloadBytes: data
+    });
   }
 
   return segments;
