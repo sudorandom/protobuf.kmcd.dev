@@ -433,7 +433,7 @@ const ProtobufBasics = () => {
       id: 'presence',
       label: 'Presence',
       icon: HelpCircle,
-      title: 'The Zero Value Trap',
+      title: 'Zero Values',
       desc: (
         <div className="space-y-4">
           <p>
@@ -447,7 +447,7 @@ const ProtobufBasics = () => {
           </p>
         </div>
       ),
-      example: 'edition = "2023";\n\nmessage Profile {\n  // Implicit presence (Zero Value Trap)\n  int32 views = 1;\n  \n  // Explicit presence via feature\n  string name = 2 [features.field_presence = EXPLICIT];\n}'
+      example: 'edition = "2023";\n\nmessage Profile {\n  // Implicit presence (Zero Values)\n  int32 views = 1;\n  \n  // Explicit presence via feature\n  string name = 2 [features.field_presence = EXPLICIT];\n}'
     }
   ];
 
@@ -938,7 +938,7 @@ const VersionTimeline = () => {
       title: 'The Simplified Standard',
       features: [
         'Removed required fields to improve backward compatibility.',
-        'Introduced Implicit Presence (The Zero Value Trap).',
+        'Introduced Implicit Presence.',
         'Added canonical JSON mapping support.',
         'Preserved unknown enum values (Open Enums).'
       ],
@@ -1088,7 +1088,7 @@ const Introduction = ({ messageSchema, fds }: {
           <p>
             A standardized <ExternalLinkText href="https://protobuf.dev/programming-guides/proto3/#json">JSON mapping</ExternalLinkText>. Every binary payload has a deterministic JSON representation.
           </p>
-          <TechnicalNuance title="JSON_PRECISION_TRAP">
+          <TechnicalNuance title="JSON_PRECISION">
             To prevent precision loss in JavaScript (which uses 64-bit floats for all numbers), the ProtoJSON standard requires that <strong>int64</strong> and <strong>uint64</strong> fields be encoded as <strong>strings</strong>.
           </TechnicalNuance>
         </div>
@@ -1467,122 +1467,117 @@ const SizeComparison = ({ messageSchema, fileDescriptorSet }: { messageSchema: D
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 space-y-6">
-            <div className="flex flex-wrap gap-2">
-              {(Object.keys(SIZE_EXAMPLES) as Array<keyof typeof SIZE_EXAMPLES>).map((key) => (
-                <button
-                  key={key}
-                  onClick={() => handleExampleChange(key)}
-                  className={`px-4 py-1 text-xs font-mono border transition-all ${activeExample === key
-                    ? 'bg-[var(--cyber-neon-blue)]/10 border-[var(--cyber-neon-blue)] text-[var(--cyber-neon-blue)]'
-                    : 'border-[var(--border-light)] text-[var(--text-dim)] hover:border-white/30'
-                    }`}
-                >
-                  {key}
-                </button>
-              ))}
-              <button
-                onClick={generateFauxData}
-                disabled={!messageSchema || !fileDescriptorSet || isGenerating}
-                className={`px-4 py-1 text-xs font-mono border transition-all flex items-center gap-2 ${activeExample === 'FAUX'
-                  ? 'bg-[var(--cyber-neon-pink)]/10 border-[var(--cyber-neon-pink)] text-[var(--cyber-neon-pink)]'
-                  : 'border-[var(--cyber-neon-pink)]/30 text-[var(--cyber-neon-pink)]/70 hover:border-[var(--cyber-neon-pink)] hover:text-[var(--cyber-neon-pink)] disabled:opacity-30 disabled:cursor-not-allowed'
-                  }`}
-              >
-                <Zap className={`w-3 h-3 ${isGenerating ? 'animate-spin' : ''}`} />
-                {isGenerating ? 'GENERATING...' : 'GENERATE_FAUX_DATA'}
-              </button>
-            </div>
-            <CyberPanel title="DATA_INPUT (JSON)" headerExtra={stats.error && stats.error !== "NO_SCHEMA" && <span className="text-xs text-[var(--text-error)] font-mono">PARSE_ERROR</span>}>
-              <div className="flex flex-col h-80">
-                <div className="flex-1 min-h-0">
-                  <JsonEditor value={jsonInput} onChange={setJsonInput} className="h-full rounded-none border-none bg-transparent" />
-                </div>
-                {stats.error && stats.error !== "NO_SCHEMA" && (
-                  <div className="p-2 bg-[var(--text-error)]/10 border-t border-[var(--text-error)]/30 text-[var(--text-error)] text-xs font-mono break-words line-clamp-2" title={stats.error}>
-                    {stats.error}
-                  </div>
-                )}
+        <div className="flex flex-wrap gap-2 mb-8">
+          {(Object.keys(SIZE_EXAMPLES) as Array<keyof typeof SIZE_EXAMPLES>).map((key) => (
+            <button
+              key={key}
+              onClick={() => handleExampleChange(key)}
+              className={`px-4 py-1 text-xs font-mono border transition-all ${activeExample === key
+                ? 'bg-[var(--cyber-neon-blue)]/10 border-[var(--cyber-neon-blue)] text-[var(--cyber-neon-blue)]'
+                : 'border-[var(--border-light)] text-[var(--text-dim)] hover:border-white/30'
+                }`}
+            >
+              {key}
+            </button>
+          ))}
+          <button
+            onClick={generateFauxData}
+            disabled={!messageSchema || !fileDescriptorSet || isGenerating}
+            className={`px-4 py-1 text-xs font-mono border transition-all flex items-center gap-2 ${activeExample === 'FAUX'
+              ? 'bg-[var(--cyber-neon-pink)]/10 border-[var(--cyber-neon-pink)] text-[var(--cyber-neon-pink)]'
+              : 'border-[var(--cyber-neon-pink)]/30 text-[var(--cyber-neon-pink)]/70 hover:border-[var(--cyber-neon-pink)] hover:text-[var(--cyber-neon-pink)] disabled:opacity-30 disabled:cursor-not-allowed'
+              }`}
+          >
+            <Zap className={`w-3 h-3 ${isGenerating ? 'animate-spin' : ''}`} />
+            {isGenerating ? 'GENERATING...' : 'GENERATE_FAUX_DATA'}
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <CyberPanel title="DATA_INPUT (JSON)" headerExtra={stats.error && stats.error !== "NO_SCHEMA" && <span className="text-xs text-[var(--text-error)] font-mono">PARSE_ERROR</span>}>
+            <div className="flex flex-col h-80">
+              <div className="flex-1 min-h-0">
+                <JsonEditor value={jsonInput} onChange={setJsonInput} className="h-full rounded-none border-none bg-transparent" />
               </div>
-            </CyberPanel>
-          </div>
-          <div className="space-y-6">
-            <CyberPanel title="REAL_TIME_ANALYSIS">
-              <div className="space-y-6 py-4">
-                <p className="text-sm text-[var(--text-dim)] leading-relaxed mb-4">
-                  Watch as the binary encoder strips away the redundant field names and formatting that bloats JSON payloads.
-                </p>
+              {stats.error && stats.error !== "NO_SCHEMA" && (
+                <div className="p-2 bg-[var(--text-error)]/10 border-t border-[var(--text-error)]/30 text-[var(--text-error)] text-xs font-mono break-words line-clamp-2" title={stats.error}>
+                  {stats.error}
+                </div>
+              )}
+            </div>
+          </CyberPanel>
 
-                {/* Size Bars */}
-                <div className="space-y-4">
-                  <div>
-                    <div className="flex justify-between text-xs font-mono mb-2">
-                      <span>JSON_RAW</span>
-                      <span className="text-[var(--text-color)]">{stats.jsonSize} B</span>
-                    </div>
-                    <div className="h-1.5 bg-[var(--border-light)] rounded-full overflow-hidden">
-                      <div className="h-full bg-[var(--text-dim)]" style={{ width: '100%' }}></div>
-                    </div>
-                    {gzipStats.json > 0 && (
-                      <div className="flex justify-between text-[10px] font-mono mt-1 text-[var(--text-dim)]">
-                        <span>WITH_GZIP</span>
-                        <span>{gzipStats.json} B</span>
-                      </div>
-                    )}
-                  </div>
+          <CyberPanel title="REAL_TIME_ANALYSIS">
+            <div className="space-y-6 py-4">
+              <p className="text-sm text-[var(--text-dim)] leading-relaxed mb-4">
+                Watch as the binary encoder strips away the redundant field names and formatting that bloats JSON payloads.
+              </p>
 
-                  <div>
-                    <div className="flex justify-between text-xs font-mono mb-2 text-[var(--cyber-neon-green)]">
-                      <span>PROTOBUF_BINARY</span>
-                      <span className="text-[var(--cyber-neon-green)] font-bold">{stats.pbSize} B</span>
-                    </div>
-                    <div className="h-1.5 bg-[var(--border-light)] rounded-full overflow-hidden">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        animate={{ width: `${stats.jsonSize > 0 ? (stats.pbSize / stats.jsonSize) * 100 : 0}%` }}
-                        className="h-full bg-[var(--cyber-neon-green)]"
-                      />
-                    </div>
-                    {gzipStats.pb > 0 && (
-                      <div className="flex justify-between text-[10px] font-mono mt-1 text-[var(--cyber-neon-green)]/80">
-                        <span>WITH_GZIP</span>
-                        <span>{gzipStats.pb} B</span>
-                      </div>
-                    )}
+              {/* Size Bars */}
+              <div className="space-y-4">
+                <div>
+                  <div className="flex justify-between text-xs font-mono mb-2">
+                    <span>JSON_RAW</span>
+                    <span className="text-[var(--text-color)]">{stats.jsonSize} B</span>
                   </div>
+                  <div className="h-1.5 bg-[var(--border-light)] rounded-full overflow-hidden">
+                    <div className="h-full bg-[var(--text-dim)]" style={{ width: '100%' }}></div>
+                  </div>
+                  {gzipStats.json > 0 && (
+                    <div className="flex justify-between text-[10px] font-mono mt-1 text-[var(--text-dim)]">
+                      <span>WITH_GZIP</span>
+                      <span>{gzipStats.json} B</span>
+                    </div>
+                  )}
                 </div>
 
-                <div className="pt-4 border-t border-[var(--border-light)] flex items-end justify-between">
-                  <div>
-                    <p className="text-4xl font-cyber font-bold text-[var(--cyber-neon-green)]">-{stats.ratio}%</p>
-                    <p className="text-[10px] font-mono text-[var(--text-dim)] mt-1 uppercase">RAW_PAYLOAD_REDUCTION</p>
+                <div>
+                  <div className="flex justify-between text-xs font-mono mb-2 text-[var(--cyber-neon-green)]">
+                    <span>PROTOBUF_BINARY</span>
+                    <span className="text-[var(--cyber-neon-green)] font-bold">{stats.pbSize} B</span>
                   </div>
-                  {gzipStats.json > 0 && gzipStats.pb > 0 && (
-                    <div className="text-right">
-                      <p className={`text-xl font-cyber font-bold ${gzipStats.pb < gzipStats.json ? 'text-[var(--cyber-neon-blue)]' : 'text-[var(--cyber-neon-yellow)]'}`}>
-                        {gzipStats.pb < gzipStats.json ? '-' : '+'}{Math.abs(Number(((1 - gzipStats.pb / gzipStats.json) * 100).toFixed(1)))}%
-                      </p>
-                      <p className="text-[9px] font-mono text-[var(--text-dim)] uppercase">GZIPPED_PB vs GZIPPED_JSON</p>
+                  <div className="h-1.5 bg-[var(--border-light)] rounded-full overflow-hidden">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: `${stats.jsonSize > 0 ? (stats.pbSize / stats.jsonSize) * 100 : 0}%` }}
+                      className="h-full bg-[var(--cyber-neon-green)]"
+                    />
+                  </div>
+                  {gzipStats.pb > 0 && (
+                    <div className="flex justify-between text-[10px] font-mono mt-1 text-[var(--cyber-neon-green)]/80">
+                      <span>WITH_GZIP</span>
+                      <span>{gzipStats.pb} B</span>
                     </div>
                   )}
                 </div>
               </div>
-            </CyberPanel>
-            <div className="p-4 bg-[var(--cyber-neon-blue)]/5 border border-[var(--cyber-neon-blue)]/10 rounded text-sm text-[var(--text-dim)] space-y-3">
-              <p><strong>How it works:</strong></p>
-              <ul className="space-y-2">
-                <li className="flex gap-2"><div className="w-1 h-1 bg-[var(--cyber-neon-blue)] mt-1.5 shrink-0"></div> No field names in payload (replaced by small numeric tags).</li>
-                <li className="flex gap-2"><div className="w-1 h-1 bg-[var(--cyber-neon-blue)] mt-1.5 shrink-0"></div> Varint encoding shrinks small integers to 1-2 bytes.</li>
-                <li className="flex gap-2"><div className="w-1 h-1 bg-[var(--cyber-neon-blue)] mt-1.5 shrink-0"></div> Optional fields take zero space if not set.</li>
-              </ul>
-              <div className="pt-2 border-t border-[var(--border-light)]">
-                <p className="text-xs">
-                  <strong>Pro Tip:</strong> For specialized high-performance Go applications, <ExternalLinkText href="https://github.com/bufbuild/hyperpb-go"><strong>hyperpb</strong></ExternalLinkText> provides an even faster implementation that avoids reflection and allocation.
-                </p>
+
+              <div className="pt-4 border-t border-[var(--border-light)] flex items-end justify-between">
+                <div>
+                  <p className="text-4xl font-cyber font-bold text-[var(--cyber-neon-green)]">-{stats.ratio}%</p>
+                  <p className="text-[10px] font-mono text-[var(--text-dim)] mt-1 uppercase">RAW_PAYLOAD_REDUCTION</p>
+                </div>
+                {gzipStats.json > 0 && gzipStats.pb > 0 && (
+                  <div className="text-right">
+                    <p className={`text-xl font-cyber font-bold ${gzipStats.pb < gzipStats.json ? 'text-[var(--cyber-neon-blue)]' : 'text-[var(--cyber-neon-yellow)]'}`}>
+                      {gzipStats.pb < gzipStats.json ? '-' : '+'}{Math.abs(Number(((1 - gzipStats.pb / gzipStats.json) * 100).toFixed(1)))}%
+                    </p>
+                    <p className="text-[9px] font-mono text-[var(--text-dim)] uppercase">GZIPPED_PB vs GZIPPED_JSON</p>
+                  </div>
+                )}
               </div>
             </div>
-          </div>
+          </CyberPanel>
+        </div>
+
+        <div className="mt-8 p-4 bg-[var(--cyber-neon-blue)]/5 border border-[var(--cyber-neon-blue)]/10 rounded text-sm text-[var(--text-dim)] space-y-3">
+          <p><strong>How it works:</strong></p>
+          <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
+            <li className="flex gap-2"><div className="w-1 h-1 bg-[var(--cyber-neon-blue)] mt-1.5 shrink-0"></div> No field names in payload (replaced by small numeric tags).</li>
+            <li className="flex gap-2"><div className="w-1 h-1 bg-[var(--cyber-neon-blue)] mt-1.5 shrink-0"></div> No structural overhead: curly braces, brackets, and commas (which each take 1 byte in JSON) are eliminated.</li>
+            <li className="flex gap-2"><div className="w-1 h-1 bg-[var(--cyber-neon-blue)] mt-1.5 shrink-0"></div> Varint encoding shrinks small integers to 1-2 bytes.</li>
+            <li className="flex gap-2"><div className="w-1 h-1 bg-[var(--cyber-neon-blue)] mt-1.5 shrink-0"></div> Optional fields take zero space if not set.</li>
+          </ul>
         </div>
       </div>
     </Section>
@@ -1741,7 +1736,7 @@ const TypeSystem = () => {
               </p>
 
               <div className="p-4 bg-[var(--cyber-neon-yellow)]/5 border border-[var(--cyber-neon-yellow)]/20 rounded-lg space-y-4">
-                <h4 className="text-[var(--cyber-neon-yellow)] font-cyber font-bold text-sm uppercase tracking-wider">The 64-bit Precision Trap</h4>
+                <h4 className="text-[var(--cyber-neon-yellow)] font-cyber font-bold text-sm uppercase tracking-wider">The 64-bit Precision</h4>
                 <p className="text-sm leading-relaxed text-[var(--text-color)]/90">
                   JavaScript numbers are 64-bit floats, which lose precision for integers above 2^53 - 1.
                 </p>
