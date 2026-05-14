@@ -4,7 +4,6 @@ import {
   Combine,
   AlertTriangle,
   ShieldCheck,
-  Layers,
   FileCode,
   Database,
   Package,

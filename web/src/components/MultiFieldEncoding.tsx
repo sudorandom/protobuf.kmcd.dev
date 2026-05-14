@@ -74,7 +74,6 @@ export const MultiFieldEncoding = () => {
             {/* Hex Blocks */}
             <g transform="translate(530, 10)">
               {field.hex.map((h, j) => {
-                const xOffset = j * 80 + (j > 2 ? 20 : 0);
                 // Adjust widths for longer hex strings
                 const width = h.length > 2 ? (h.length * 10 + 20) : 60;
                 let currentX = 0;
