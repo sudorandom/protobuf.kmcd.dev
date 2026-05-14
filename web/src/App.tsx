@@ -41,8 +41,8 @@ import {
 } from 'lucide-react';
 
 const TechnicalNuance = ({ children, title = "TECHNICAL_NUANCE" }: { children: React.ReactNode, title?: string }) => (
-  <div className="bg-[#00f3ff]/10 border border-[#00f3ff]/30 rounded-lg p-4 flex gap-4 items-start animate-in fade-in slide-in-from-top-1">
-    <div className="p-2 bg-[#00f3ff]/20 rounded-md">
+  <div className="bg-[var(--cyber-neon-blue)]/10 border border-[var(--cyber-neon-blue)]/30 rounded-lg p-4 flex gap-4 items-start animate-in fade-in slide-in-from-top-1">
+    <div className="p-2 bg-[var(--cyber-neon-blue)]/20 rounded-md">
       <Info className="w-5 h-5 text-[var(--cyber-neon-blue)]" />
     </div>
     <div className="space-y-1">
@@ -82,14 +82,14 @@ const HexViewer = ({ bytes }: { bytes: { val: string, raw: number }[] }) => {
 
   return (
     <div className="font-mono text-xs text-[var(--text-dim)] bg-[var(--section-bg-dark)] p-4 rounded border border-[var(--border-light)] space-y-1 max-h-64 overflow-y-auto custom-scrollbar">
-      <div className="grid grid-cols-[60px_max-content_1fr] gap-8 pb-2 border-b border-[var(--border-light)] opacity-50 mb-2">
+      <div className="grid grid-cols-[60px_max-content_1fr] gap-8 pb-2 border-b border-[var(--border-light)] opacity-80 mb-2">
         <span>OFFSET</span>
         <span>HEX</span>
         <span>ASCII</span>
       </div>
       {chunks.map((chunk, i) => (
         <div key={i} className="grid grid-cols-[60px_max-content_1fr] gap-8 group hover:bg-[var(--overlay-bg)]">
-          <span className="opacity-50">{(i * 8).toString(16).padStart(4, '0')}</span>
+          <span className="opacity-80">{(i * 8).toString(16).padStart(4, '0')}</span>
           <span className="text-[var(--cyber-neon-green)]/80">
             {chunk.map(b => b.val).join(' ').padEnd(23, ' ')}
           </span>
@@ -159,13 +159,13 @@ const SectionTitle = ({ children, icon: Icon, subtitle }: { children: React.Reac
   return (
     <div className="flex flex-col mb-12">
       <div className="flex items-center gap-3 md:gap-4 mb-2">
-        <div className="p-2 bg-cyan-500/10 rounded-lg border border-cyan-500/20 shrink-0">
+        <div className="p-2 bg-[var(--cyber-neon-blue)]/10 rounded-lg border border-[var(--cyber-neon-blue)]/20 shrink-0">
           <Icon className="w-5 h-5 md:w-6 md:h-6 text-[var(--cyber-neon-blue)]" />
         </div>
         <h2 className="text-xl sm:text-2xl md:text-3xl font-cyber font-bold tracking-tight text-[var(--text-color)] uppercase break-words min-w-0 relative group/title">
           <a href={sectionId ? `#${sectionId}` : '#'} className="hover:text-[var(--cyber-neon-blue)] transition-colors">
             {children}
-            <LinkIcon className="w-4 h-4 inline-block ml-2 opacity-0 group-hover/title:opacity-50 transition-opacity" />
+            <LinkIcon className="w-4 h-4 inline-block ml-2 opacity-0 group-hover/title:opacity-80 transition-opacity" />
           </a>
         </h2>
       </div>
@@ -177,7 +177,7 @@ const SectionTitle = ({ children, icon: Icon, subtitle }: { children: React.Reac
 const CyberPanel = ({ children, title, className = "", headerExtra }: { children: React.ReactNode, title?: string, className?: string, headerExtra?: React.ReactNode }) => (
   <div className={`cyber-box cyber-panel ${className}`}>
     {title && (
-      <div className="flex flex-wrap items-center justify-between mb-4 border-b border-cyan-500/20 pb-2 gap-2">
+      <div className="flex flex-wrap items-center justify-between mb-4 border-b border-[var(--cyber-neon-blue)]/20 pb-2 gap-2">
         <div className="flex items-center gap-2">
           <Terminal className="w-4 h-4 text-[var(--cyber-neon-blue)] shrink-0" />
           <span className="text-[10px] sm:text-xs font-mono text-[var(--cyber-neon-blue)] uppercase tracking-tighter truncate max-w-[150px] sm:max-w-none">{title}</span>
@@ -241,13 +241,13 @@ const SchemaEditor = ({ value, onChange, errors }: { value: string, onChange: (s
             const col = Math.max(0, error.col - 1);
             return (
               <div key={i} className="h-6 relative">
-                <div className="absolute -left-4 right-0 h-6 bg-red-500/10 border-l-2 border-red-500" style={{ width: 'calc(100% + 1000px)' }} />
+                <div className="absolute -left-4 right-0 h-6 bg-[var(--text-error)]/10 border-l-2 border-[var(--text-error)]" style={{ width: 'calc(100% + 1000px)' }} />
                 <span className="invisible">{line.slice(0, col)}</span>
                 <motion.span
                   initial={{ opacity: 0.5 }}
                   animate={{ opacity: [0.5, 1, 0.5] }}
                   transition={{ repeat: Infinity, duration: 1 }}
-                  className="inline-block h-5 w-[1ch] bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)] rounded-sm relative z-10"
+                  className="inline-block h-5 w-[1ch] bg-[var(--text-error)] shadow-[0_0_8px_rgba(239,68,68,0.8)] rounded-sm relative z-10"
                 />
               </div>
             );
@@ -257,7 +257,7 @@ const SchemaEditor = ({ value, onChange, errors }: { value: string, onChange: (s
 
       {/* Foreground Interactive Layer */}
       <textarea
-        className="absolute inset-0 w-full h-full bg-transparent p-4 font-mono text-sm leading-6 text-transparent caret-white focus:outline-none focus:border-cyan-500/50 resize-none whitespace-pre overflow-auto custom-scrollbar border-none shadow-none"
+        className="absolute inset-0 w-full h-full bg-transparent p-4 font-mono text-sm leading-6 text-transparent caret-white focus:outline-none focus:border-[var(--cyber-neon-blue)]/80 resize-none whitespace-pre overflow-auto custom-scrollbar border-none shadow-none"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onScroll={(e) => setScroll({ top: e.currentTarget.scrollTop, left: e.currentTarget.scrollLeft })}
@@ -324,7 +324,7 @@ const ProtobufBasics = () => {
           <p>
             This <strong>"Tag"</strong> is what makes Protobuf so compact. Because these numbers identify fields, they <strong>must never be changed</strong> once a message type is in use. Reusing a number for a different field will cause catastrophic data corruption.
           </p>
-          <div className="p-3 bg-cyan-500/10 border border-cyan-500/20 rounded text-xs space-y-2">
+          <div className="p-3 bg-[var(--cyber-neon-blue)]/10 border border-[var(--cyber-neon-blue)]/20 rounded text-xs space-y-2">
             <p><strong>Optimization Tip:</strong> Numbers 1 through 15 take <strong>1 byte</strong> to encode (including the field number and wire type). Numbers 16 through 2047 take 2 bytes. Use 1-15 for your most frequently sent fields!</p>
           </div>
         </div>
@@ -439,7 +439,7 @@ const ProtobufBasics = () => {
           <p>
             In <code>proto3</code>, default scalar values (like <code>0</code>, <code>false</code>, or <code>""</code>) are <strong>not serialized</strong> to save space.
           </p>
-          <p className="text-[var(--cyber-neon-pink)] bg-[#ff00ff]/5 p-3 border border-[#ff00ff]/20 rounded text-xs italic">
+          <p className="text-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/5 p-3 border border-[var(--cyber-neon-pink)]/20 rounded text-xs italic">
             <strong>The Pitfall:</strong> The receiver cannot distinguish between a field explicitly "set to zero" (e.g., 0 degrees) and one that was never sent.
           </p>
           <p>
@@ -466,7 +466,7 @@ const ProtobufBasics = () => {
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-4 p-4 rounded-lg border transition-all text-left group ${activeTab === tab.id
-                  ? 'bg-[#00f3ff]/10 border-[#00f3ff] text-[var(--cyber-neon-blue)]'
+                  ? 'bg-[var(--cyber-neon-blue)]/10 border-[var(--cyber-neon-blue)] text-[var(--cyber-neon-blue)]'
                   : 'bg-[var(--overlay-bg)] border-[var(--border-light)] text-[var(--text-dim)] hover:border-white/20 hover:text-[var(--text-color)]'
                   }`}
               >
@@ -535,7 +535,7 @@ const DeepDiveSection = () => {
           <p>
             These options provide instructions to compiler plugins (like generating validation code) or are read dynamically at runtime via reflection.
           </p>
-          <div className="p-3 bg-blue-500/10 border border-blue-500/20 rounded text-xs space-y-2">
+          <div className="p-3 bg-[var(--cyber-neon-blue)]/10 border border-[var(--cyber-neon-blue)]/20 rounded text-xs space-y-2">
             <p><strong><span className="text-[var(--cyber-neon-blue)]">Historical Note:</span></strong> Custom options were originally a <code>proto2</code> feature that uses the <code>extend</code> keyword. While <code>proto3</code> removed general-purpose extensions, it kept them for descriptor objects specifically so options would continue to work.</p>
             <p><strong><span className="text-[var(--cyber-neon-green)]">The Future:</span></strong> In <strong>Protobuf Editions</strong> (2023+), this distinction is removed. Editions allow native definition of options and introduce <code>features</code>, a specialized type of option used by the compiler itself to control behavior.</p>
           </div>
@@ -596,7 +596,7 @@ const DeepDiveSection = () => {
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-4 p-4 rounded-lg border transition-all text-left group ${activeTab === tab.id
-                  ? 'bg-[#00ff9f]/10 border-[#00ff9f] text-[var(--cyber-neon-green)]'
+                  ? 'bg-[var(--cyber-neon-green)]/10 border-[var(--cyber-neon-green)] text-[var(--cyber-neon-green)]'
                   : 'bg-[var(--overlay-bg)] border-[var(--border-light)] text-[var(--text-dim)] hover:border-white/20 hover:text-[var(--text-color)]'
                   }`}
               >
@@ -640,7 +640,7 @@ const AdvancedProtobuf = () => {
           <p>
             You can use definitions from other .proto files using the <code>import</code> statement. However, this is where many developers encounter the "Include Path Nightmare."
           </p>
-          <div className="p-4 bg-red-500/5 border border-red-500/10 rounded text-sm space-y-3">
+          <div className="p-4 bg-[var(--text-error)]/5 border border-[var(--text-error)]/10 rounded text-sm space-y-3">
             <p className="leading-relaxed">
               The standard <code>protoc</code> compiler requires you to manually specify every include directory via <code>-I</code> (or <code>--proto_path</code>) flags. The compiler resolves files based on the current working directory combined with these flags.
             </p>
@@ -710,7 +710,7 @@ const AdvancedProtobuf = () => {
           <p>
             This is extremely useful for <strong>partial updates (PATCH)</strong>. Instead of sending an entire massive object, a client can send just the new value and a FieldMask containing <code>"email"</code>.
           </p>
-          <div className="p-3 bg-yellow-500/10 border border-yellow-500/20 rounded text-yellow-200/80 text-sm">
+          <div className="p-3 bg-[var(--warning-bg)] border border-[var(--warning-border)] rounded text-[var(--warning-text)] text-sm">
             <strong>Important:</strong> FieldMasks are <em>not automatic</em>. They are just a list of strings in the payload. The server developer must explicitly write the code to read the mask and only apply the requested fields to their database.
           </div>
         </div>
@@ -728,8 +728,8 @@ const AdvancedProtobuf = () => {
             Protobuf is strictly designed for forward and backward compatibility. However, there are strict rules about what you <strong>CANNOT</strong> change.
           </p>
           <div className="grid grid-cols-1 gap-4">
-            <div className="p-4 bg-red-500/5 border border-red-500/20 rounded text-xs space-y-3">
-              <p className="font-bold text-red-400">Wire-Breaking (NEVER DO THIS):</p>
+            <div className="p-4 bg-[var(--text-error)]/5 border border-[var(--text-error)]/20 rounded text-xs space-y-3">
+              <p className="font-bold text-[var(--text-error)]">Wire-Breaking (NEVER DO THIS):</p>
               <ul className="list-disc pl-4 space-y-1 text-[var(--text-color)]">
                 <li>Changing a <strong>Field Number</strong> (e.g., moving <code>id</code> from 1 to 2).</li>
                 <li>Reusing a <strong>Field Number</strong> for a new field without reserving it first, leading to data corruption for old clients.</li>
@@ -737,7 +737,7 @@ const AdvancedProtobuf = () => {
                 <li>Changing the type of a field in a way that changes its binary representation (e.g., <code>int32</code> to <code>fixed32</code>).</li>
               </ul>
             </div>
-            <div className="p-4 bg-[#00ff9f]/5 border border-[#00ff9f]/20 rounded text-xs space-y-3">
+            <div className="p-4 bg-[var(--cyber-neon-green)]/5 border border-[var(--cyber-neon-green)]/20 rounded text-xs space-y-3">
               <p className="font-bold text-[var(--cyber-neon-green)]">Safe Operations:</p>
               <ul className="list-disc pl-4 space-y-1 text-[var(--text-color)]">
                 <li>Adding new fields with <strong>new numbers</strong>.</li>
@@ -750,8 +750,8 @@ const AdvancedProtobuf = () => {
           <p>
             As long as you follow these rules, old clients can read new messages (ignoring unknown fields), and new clients can read old messages (using default values for missing fields).
           </p>
-          <div className="p-3 bg-blue-500/10 border border-blue-500/20 rounded text-xs space-y-2">
-            <p className="font-bold text-blue-400">Automated Enforcement</p>
+          <div className="p-3 bg-[var(--cyber-neon-blue)]/10 border border-[var(--cyber-neon-blue)]/20 rounded text-xs space-y-2">
+            <p className="font-bold text-[var(--cyber-neon-blue)]">Automated Enforcement</p>
             <p className="text-[var(--text-color)]">
               Tools like <ExternalLinkText href="https://buf.build/docs/breaking/"><code>buf breaking</code></ExternalLinkText> automate these checks by comparing your local changes against a previous version (e.g., your main branch) and failing if any wire-breaking changes are detected.
             </p>
@@ -832,7 +832,7 @@ const AdvancedProtobuf = () => {
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-4 p-4 rounded-lg border transition-all text-left group ${activeTab === tab.id
-                  ? 'bg-[#ff00ff]/10 border-[#ff00ff] text-[var(--cyber-neon-pink)]'
+                  ? 'bg-[var(--cyber-neon-pink)]/10 border-[var(--cyber-neon-pink)] text-[var(--cyber-neon-pink)]'
                   : 'bg-[var(--overlay-bg)] border-[var(--border-light)] text-[var(--text-dim)] hover:border-white/20 hover:text-[var(--text-color)]'
                   }`}
               >
@@ -861,11 +861,11 @@ const DescriptorsAndReflection = () => (
             <p className="text-sm leading-relaxed">
               Fascinatingly, this `FileDescriptorSet` is itself a Protobuf message! Google defines a schema (<ExternalLinkText href="https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/descriptor.proto"><code>descriptor.proto</code></ExternalLinkText>) that describes how to represent `.proto` files. This means you can use Protobuf tools to read and analyze Protobuf schemas dynamically at runtime.
             </p>
-            <div className="p-4 bg-cyan-500/5 border border-cyan-500/10 rounded text-sm text-[var(--text-dim)] space-y-3">
+            <div className="p-4 bg-[var(--cyber-neon-blue)]/5 border border-[var(--cyber-neon-blue)]/10 rounded text-sm text-[var(--text-dim)] space-y-3">
               <p><strong>Why is this useful?</strong></p>
               <ul className="space-y-2">
-                <li className="flex gap-2"><div className="w-1 h-1 bg-[#00f3ff] mt-1.5 shrink-0"></div> <strong>Dynamic Decoding:</strong> Tools like this web explorer use descriptors to decode arbitrary binary data without generating static code.</li>
-                <li className="flex gap-2"><div className="w-1 h-1 bg-[#00f3ff] mt-1.5 shrink-0"></div> <strong>Validation:</strong> Complex rule engines (like protovalidate) use descriptors to apply constraints dynamically.</li>
+                <li className="flex gap-2"><div className="w-1 h-1 bg-[var(--cyber-neon-blue)] mt-1.5 shrink-0"></div> <strong>Dynamic Decoding:</strong> Tools like this web explorer use descriptors to decode arbitrary binary data without generating static code.</li>
+                <li className="flex gap-2"><div className="w-1 h-1 bg-[var(--cyber-neon-blue)] mt-1.5 shrink-0"></div> <strong>Validation:</strong> Complex rule engines (like protovalidate) use descriptors to apply constraints dynamically.</li>
               </ul>
             </div>
           </div>
@@ -904,7 +904,7 @@ const DescriptorsAndReflection = () => (
               <li><strong>GUI Clients:</strong> Postman, Insomnia, and Buf Studio can dynamically generate UI forms for testing your APIs by reading the reflected descriptors.</li>
             </ul>
           </div>
-          <div className="p-3 bg-red-500/10 border border-red-500/20 rounded text-[var(--text-error)] text-sm">
+          <div className="p-3 bg-[var(--text-error)]/10 border border-[var(--text-error)]/20 rounded text-[var(--text-error)] text-sm">
             <strong>Security Warning:</strong> Enabling Server Reflection on a public-facing API exposes your entire internal data model and service structure to the internet. It is highly recommended to <em>only enable reflection in development environments or internal private networks.</em>
           </div>
         </div>
@@ -1177,7 +1177,7 @@ const Introduction = ({ messageSchema, fds }: {
                     key={face.id}
                     onClick={() => setActiveFace(face.id)}
                     className={`flex items-center gap-4 p-4 rounded-lg border transition-all text-left group ${activeFace === face.id
-                      ? 'bg-[#00f3ff]/10 border-[#00f3ff] text-[var(--cyber-neon-blue)]'
+                      ? 'bg-[var(--cyber-neon-blue)]/10 border-[var(--cyber-neon-blue)] text-[var(--cyber-neon-blue)]'
                       : 'bg-[var(--overlay-bg)] border-[var(--border-light)] text-[var(--text-dim)] hover:border-white/20 hover:text-[var(--text-color)]'
                       }`}
                   >
@@ -1208,7 +1208,7 @@ const Introduction = ({ messageSchema, fds }: {
                 </CyberPanel>
 
                 {activeFace === 'bin' && (
-                  <div className="flex gap-3 p-4 bg-[#ff00ff]/5 border border-[#ff00ff]/10 rounded-lg animate-in fade-in slide-in-from-top-2">
+                  <div className="flex gap-3 p-4 bg-[var(--cyber-neon-pink)]/5 border border-[var(--cyber-neon-pink)]/10 rounded-lg animate-in fade-in slide-in-from-top-2">
                     <Terminal className="w-5 h-5 text-[var(--cyber-neon-pink)] shrink-0" />
                     <p className="text-xs text-[var(--text-dim)] leading-relaxed italic">
                       If you're currently trying to "read" the hex block above and failing: congratulations, you're human. We'll be investigating how machines actually make sense of this chaos in the <a href="#matrix" className="text-[var(--cyber-neon-pink)] hover:underline"><strong>Digging into the binary</strong></a> section further down.
@@ -1237,7 +1237,7 @@ const Introduction = ({ messageSchema, fds }: {
               <ArrowRight className="w-8 h-8 text-[var(--cyber-neon-blue)] rotate-90 md:rotate-0" />
               <span className="text-xs font-mono text-[var(--text-dim)] uppercase"><ExternalLinkText href="https://github.com/protocolbuffers/protobuf/releases">protoc</ExternalLinkText> / <ExternalLinkText href="https://buf.build/">Buf</ExternalLinkText></span>
             </div>
-            <CyberPanel title="COMPILER" className="w-full md:w-64 text-center border-[#00f3ff] shadow-[0_0_15px_rgba(0,243,255,0.2)]">
+            <CyberPanel title="COMPILER" className="w-full md:w-64 text-center border-[var(--cyber-neon-blue)] shadow-[0_0_15px_rgba(0,243,255,0.2)]">
               <Cpu className="w-12 h-12 text-[var(--cyber-neon-blue)] mx-auto mb-4 animate-pulse" />
               <span className="font-cyber text-sm text-[var(--cyber-neon-blue)]">CODE_GENERATION</span>
             </CyberPanel>
@@ -1254,7 +1254,7 @@ const Introduction = ({ messageSchema, fds }: {
                 <CyberPanel className="text-center p-3 text-xs">C#</CyberPanel>
                 <CyberPanel className="text-center p-3 text-xs">Python</CyberPanel>
               </div>
-              <div className="p-3 bg-[#00ff9f]/5 border border-[#00ff9f]/20 rounded text-center">
+              <div className="p-3 bg-[var(--cyber-neon-green)]/5 border border-[var(--cyber-neon-green)]/20 rounded text-center">
                 <span className="text-[10px] font-mono text-[var(--cyber-neon-green)] uppercase block mb-1">Plus Community Tools</span>
                 <div className="flex flex-col gap-1">
                   <ExternalLinkText href="https://github.com/sudorandom/protoc-gen-connect-openapi"><span className="text-xs">OpenAPI</span></ExternalLinkText>
@@ -1363,7 +1363,7 @@ const JsonEditor = ({ value, onChange, className = "h-80" }: { value: string, on
 
       {/* Foreground Interactive Layer */}
       <textarea
-        className="absolute inset-0 w-full h-full bg-transparent p-4 font-mono text-sm leading-6 text-transparent caret-white focus:outline-none focus:border-cyan-500/50 resize-none whitespace-pre overflow-auto custom-scrollbar border-none shadow-none"
+        className="absolute inset-0 w-full h-full bg-transparent p-4 font-mono text-sm leading-6 text-transparent caret-white focus:outline-none focus:border-[var(--cyber-neon-blue)]/80 resize-none whitespace-pre overflow-auto custom-scrollbar border-none shadow-none"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onScroll={(e) => setScroll({ top: e.currentTarget.scrollTop, left: e.currentTarget.scrollLeft })}
@@ -1475,7 +1475,7 @@ const SizeComparison = ({ messageSchema, fileDescriptorSet }: { messageSchema: D
                   key={key}
                   onClick={() => handleExampleChange(key)}
                   className={`px-4 py-1 text-xs font-mono border transition-all ${activeExample === key
-                    ? 'bg-[#00f3ff]/10 border-[#00f3ff] text-[var(--cyber-neon-blue)]'
+                    ? 'bg-[var(--cyber-neon-blue)]/10 border-[var(--cyber-neon-blue)] text-[var(--cyber-neon-blue)]'
                     : 'border-[var(--border-light)] text-[var(--text-dim)] hover:border-white/30'
                     }`}
                 >
@@ -1486,21 +1486,21 @@ const SizeComparison = ({ messageSchema, fileDescriptorSet }: { messageSchema: D
                 onClick={generateFauxData}
                 disabled={!messageSchema || !fileDescriptorSet || isGenerating}
                 className={`px-4 py-1 text-xs font-mono border transition-all flex items-center gap-2 ${activeExample === 'FAUX'
-                  ? 'bg-[#ff00ff]/10 border-[#ff00ff] text-[var(--cyber-neon-pink)]'
-                  : 'border-[#ff00ff]/30 text-[var(--cyber-neon-pink)]/70 hover:border-[#ff00ff] hover:text-[var(--cyber-neon-pink)] disabled:opacity-30 disabled:cursor-not-allowed'
+                  ? 'bg-[var(--cyber-neon-pink)]/10 border-[var(--cyber-neon-pink)] text-[var(--cyber-neon-pink)]'
+                  : 'border-[var(--cyber-neon-pink)]/30 text-[var(--cyber-neon-pink)]/70 hover:border-[var(--cyber-neon-pink)] hover:text-[var(--cyber-neon-pink)] disabled:opacity-30 disabled:cursor-not-allowed'
                   }`}
               >
                 <Zap className={`w-3 h-3 ${isGenerating ? 'animate-spin' : ''}`} />
                 {isGenerating ? 'GENERATING...' : 'GENERATE_FAUX_DATA'}
               </button>
             </div>
-            <CyberPanel title="DATA_INPUT (JSON)" headerExtra={stats.error && stats.error !== "NO_SCHEMA" && <span className="text-xs text-red-500 font-mono">PARSE_ERROR</span>}>
+            <CyberPanel title="DATA_INPUT (JSON)" headerExtra={stats.error && stats.error !== "NO_SCHEMA" && <span className="text-xs text-[var(--text-error)] font-mono">PARSE_ERROR</span>}>
               <div className="flex flex-col h-80">
                 <div className="flex-1 min-h-0">
                   <JsonEditor value={jsonInput} onChange={setJsonInput} className="h-full rounded-none border-none bg-transparent" />
                 </div>
                 {stats.error && stats.error !== "NO_SCHEMA" && (
-                  <div className="p-2 bg-red-500/10 border-t border-red-500/30 text-red-400 text-xs font-mono break-words line-clamp-2" title={stats.error}>
+                  <div className="p-2 bg-[var(--text-error)]/10 border-t border-[var(--text-error)]/30 text-[var(--text-error)] text-xs font-mono break-words line-clamp-2" title={stats.error}>
                     {stats.error}
                   </div>
                 )}
@@ -1522,7 +1522,7 @@ const SizeComparison = ({ messageSchema, fileDescriptorSet }: { messageSchema: D
                       <span className="text-[var(--text-color)]">{stats.jsonSize} B</span>
                     </div>
                     <div className="h-1.5 bg-[var(--border-light)] rounded-full overflow-hidden">
-                      <div className="h-full bg-slate-400" style={{ width: '100%' }}></div>
+                      <div className="h-full bg-[var(--text-dim)]" style={{ width: '100%' }}></div>
                     </div>
                     {gzipStats.json > 0 && (
                       <div className="flex justify-between text-[10px] font-mono mt-1 text-[var(--text-dim)]">
@@ -1541,11 +1541,11 @@ const SizeComparison = ({ messageSchema, fileDescriptorSet }: { messageSchema: D
                       <motion.div
                         initial={{ width: 0 }}
                         animate={{ width: `${stats.jsonSize > 0 ? (stats.pbSize / stats.jsonSize) * 100 : 0}%` }}
-                        className="h-full bg-[#00ff9f]"
+                        className="h-full bg-[var(--cyber-neon-green)]"
                       />
                     </div>
                     {gzipStats.pb > 0 && (
-                      <div className="flex justify-between text-[10px] font-mono mt-1 text-[var(--cyber-neon-green)]/60">
+                      <div className="flex justify-between text-[10px] font-mono mt-1 text-[var(--cyber-neon-green)]/80">
                         <span>WITH_GZIP</span>
                         <span>{gzipStats.pb} B</span>
                       </div>
@@ -1560,7 +1560,7 @@ const SizeComparison = ({ messageSchema, fileDescriptorSet }: { messageSchema: D
                   </div>
                   {gzipStats.json > 0 && gzipStats.pb > 0 && (
                     <div className="text-right">
-                      <p className={`text-xl font-cyber font-bold ${gzipStats.pb < gzipStats.json ? 'text-[var(--cyber-neon-blue)]' : 'text-yellow-500'}`}>
+                      <p className={`text-xl font-cyber font-bold ${gzipStats.pb < gzipStats.json ? 'text-[var(--cyber-neon-blue)]' : 'text-[var(--cyber-neon-yellow)]'}`}>
                         {gzipStats.pb < gzipStats.json ? '-' : '+'}{Math.abs(Number(((1 - gzipStats.pb / gzipStats.json) * 100).toFixed(1)))}%
                       </p>
                       <p className="text-[9px] font-mono text-[var(--text-dim)] uppercase">GZIPPED_PB vs GZIPPED_JSON</p>
@@ -1569,12 +1569,12 @@ const SizeComparison = ({ messageSchema, fileDescriptorSet }: { messageSchema: D
                 </div>
               </div>
             </CyberPanel>
-            <div className="p-4 bg-cyan-500/5 border border-cyan-500/10 rounded text-sm text-[var(--text-dim)] space-y-3">
+            <div className="p-4 bg-[var(--cyber-neon-blue)]/5 border border-[var(--cyber-neon-blue)]/10 rounded text-sm text-[var(--text-dim)] space-y-3">
               <p><strong>How it works:</strong></p>
               <ul className="space-y-2">
-                <li className="flex gap-2"><div className="w-1 h-1 bg-[#00f3ff] mt-1.5 shrink-0"></div> No field names in payload (replaced by small numeric tags).</li>
-                <li className="flex gap-2"><div className="w-1 h-1 bg-[#00f3ff] mt-1.5 shrink-0"></div> Varint encoding shrinks small integers to 1-2 bytes.</li>
-                <li className="flex gap-2"><div className="w-1 h-1 bg-[#00f3ff] mt-1.5 shrink-0"></div> Optional fields take zero space if not set.</li>
+                <li className="flex gap-2"><div className="w-1 h-1 bg-[var(--cyber-neon-blue)] mt-1.5 shrink-0"></div> No field names in payload (replaced by small numeric tags).</li>
+                <li className="flex gap-2"><div className="w-1 h-1 bg-[var(--cyber-neon-blue)] mt-1.5 shrink-0"></div> Varint encoding shrinks small integers to 1-2 bytes.</li>
+                <li className="flex gap-2"><div className="w-1 h-1 bg-[var(--cyber-neon-blue)] mt-1.5 shrink-0"></div> Optional fields take zero space if not set.</li>
               </ul>
               <div className="pt-2 border-t border-[var(--border-light)]">
                 <p className="text-xs">
@@ -1627,7 +1627,7 @@ const PayloadSizeInsights = () => (
             <p className="text-sm text-[var(--text-dim)] leading-relaxed">
               If your payload is 90% long strings (like blog posts), Protobuf will only save you a few percentage points of space. However, if your data is <strong>numeric-heavy</strong> (IDs, timestamps, coordinates, or metrics), Protobuf DECIMATES JSON in both size and speed.
             </p>
-            <p className="text-sm text-[var(--text-dim)] leading-relaxed italic border-l-2 border-[#00ff9f]/30 pl-4">
+            <p className="text-sm text-[var(--text-dim)] leading-relaxed italic border-l-2 border-[var(--cyber-neon-green)]/30 pl-4">
               "The win isn't just bytes on the wire—it's the CPU cycles saved by not parsing millions of brackets and quotes."
             </p>
           </div>
@@ -1639,7 +1639,7 @@ const PayloadSizeInsights = () => (
               href="https://auth0.com/blog/beating-json-performance-with-protobuf/"
               target="_blank"
               rel="noopener noreferrer"
-              className="group p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg hover:border-[#00f3ff]/40 transition-all"
+              className="group p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg hover:border-[var(--cyber-neon-blue)]/40 transition-all"
             >
               <h5 className="font-cyber text-xs text-[var(--cyber-neon-blue)] mb-2 group-hover:underline">Auth0 Engineering</h5>
               <p className="text-[11px] text-[var(--text-dim)] leading-relaxed">Classic deep dive comparing binary vs text overhead in real-world API requests.</p>
@@ -1648,7 +1648,7 @@ const PayloadSizeInsights = () => (
               href="https://grpc.io/docs/guides/benchmarking/"
               target="_blank"
               rel="noopener noreferrer"
-              className="group p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg hover:border-[#ff00ff]/40 transition-all"
+              className="group p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg hover:border-[var(--cyber-neon-pink)]/40 transition-all"
             >
               <h5 className="font-cyber text-xs text-[var(--cyber-neon-pink)] mb-2 group-hover:underline">Official gRPC Benchmarks</h5>
               <p className="text-[11px] text-[var(--text-dim)] leading-relaxed">Throughput and latency metrics for Protobuf-over-HTTP/2 across various languages.</p>
@@ -1657,7 +1657,7 @@ const PayloadSizeInsights = () => (
               href="https://www.atlassian.com/blog/atlassian-engineering/using-protobuf-to-make-jira-cloud-faster"
               target="_blank"
               rel="noopener noreferrer"
-              className="group p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg hover:border-[#00ff9f]/40 transition-all"
+              className="group p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg hover:border-[var(--cyber-neon-green)]/40 transition-all"
             >
               <h5 className="font-cyber text-xs text-[var(--cyber-neon-green)] mb-2 group-hover:underline">Atlassian Engineering</h5>
               <p className="text-[11px] text-[var(--text-dim)] leading-relaxed">A detailed case study on how Jira improved p99 latency by 20% and reduced CPU usage by 75% using Protobuf.</p>
@@ -1709,7 +1709,7 @@ const TypeSystem = () => {
       </div>
       <div className="grid gap-3">
         {types.map(t => (
-          <div key={t.name as string} className="p-3 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg group hover:border-[#00f3ff]/30 transition-colors">
+          <div key={t.name as string} className="p-3 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg group hover:border-[var(--cyber-neon-blue)]/30 transition-colors">
             <div className="flex justify-between items-start mb-1">
               <span className="font-mono text-xs font-bold text-[var(--text-color)] group-hover:text-[var(--cyber-neon-blue)]">{t.name}</span>
             </div>
@@ -1840,7 +1840,7 @@ const WireFormatBreakdown = () => {
           The "Wire Type" is the low-level physical format of the data on the disk or wire. While your schema has dozens of types, they all collapse into these four physical representations.
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 bg-blue-500/5 border border-blue-500/10 rounded-xl p-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 bg-[var(--cyber-neon-blue)]/5 border border-[var(--cyber-neon-blue)]/10 rounded-xl p-8 mb-12">
           <div className="space-y-4">
             <h4 className="text-[var(--text-color)] font-cyber font-bold uppercase text-sm flex items-center gap-2">
               <ShieldCheck className="w-4 h-4 text-[var(--cyber-neon-blue)]" />
@@ -1865,7 +1865,7 @@ const WireFormatBreakdown = () => {
       <div className="space-y-6">
         {wireTypes.map((wt) => (
           <div key={wt.id} className={`relative group ${wt.deprecated ? 'opacity-70 hover:opacity-100 transition-opacity' : ''}`}>
-            <div className={`absolute -inset-0.5 bg-gradient-to-r ${wt.deprecated ? 'from-slate-500/20 to-slate-500/20' : 'from-[#ff00ff]/20 to-[#00f3ff]/20'} rounded-xl blur opacity-0 group-hover:opacity-100 transition duration-500`} />
+            <div className={`absolute -inset-0.5 bg-gradient-to-r ${wt.deprecated ? 'from-[var(--text-dim)]/20 to-[var(--text-dim)]/20' : 'from-[var(--cyber-neon-pink)]/20 to-[var(--cyber-neon-blue)]/20'} rounded-xl blur opacity-0 group-hover:opacity-100 transition duration-500`} />
             <div className={`relative flex flex-col md:flex-row bg-[var(--panel-bg)] border ${wt.deprecated ? 'border-[var(--border-light)]' : 'border-[var(--border-light)]'} rounded-xl overflow-hidden`}>
               <div className="w-full md:w-32 bg-[var(--overlay-bg)] flex items-center justify-center border-b md:border-b-0 md:border-r border-[var(--border-light)] py-6 md:py-0">
                 <div className="flex flex-col items-center gap-1">
@@ -1947,11 +1947,11 @@ const SchemaDrivenAPIs = () => (
         <div className="p-8 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-xl flex flex-col justify-center">
           <h4 className="text-[var(--cyber-neon-blue)] font-cyber font-bold text-sm tracking-widest uppercase mb-4 text-center">THE_WORKFLOW</h4>
           <div className="space-y-4 font-mono text-xs">
-            <div className="p-3 bg-[var(--section-bg-dark)] border border-[#00f3ff]/30 rounded text-[var(--cyber-neon-blue)]/80">1. DEFINE SCHEMA (.proto)</div>
+            <div className="p-3 bg-[var(--section-bg-dark)] border border-[var(--cyber-neon-blue)]/30 rounded text-[var(--cyber-neon-blue)]/80">1. DEFINE SCHEMA (.proto)</div>
             <div className="flex justify-center"><ArrowRight className="w-4 h-4 rotate-90 text-[var(--text-dim)]" /></div>
-            <div className="p-3 bg-[var(--section-bg-dark)] border border-[#ff00ff]/30 rounded text-[var(--cyber-neon-pink)]/80">2. COMPILE TARGETS (Go, TS, etc.)</div>
+            <div className="p-3 bg-[var(--section-bg-dark)] border border-[var(--cyber-neon-pink)]/30 rounded text-[var(--cyber-neon-pink)]/80">2. COMPILE TARGETS (Go, TS, etc.)</div>
             <div className="flex justify-center"><ArrowRight className="w-4 h-4 rotate-90 text-[var(--text-dim)]" /></div>
-            <div className="p-3 bg-[var(--section-bg-dark)] border border-[#00ff9f]/30 rounded text-[var(--cyber-neon-green)]/80">3. BUILD & DEPLOY SERVICES</div>          </div>
+            <div className="p-3 bg-[var(--section-bg-dark)] border border-[var(--cyber-neon-green)]/30 rounded text-[var(--cyber-neon-green)]/80">3. BUILD & DEPLOY SERVICES</div>          </div>
         </div>
       </div>
     </div>
@@ -2013,7 +2013,7 @@ const AlternativesLandscape = () => (
         </div>
       </div>
 
-      <div className="bg-[#ff00ff]/5 border border-[#ff00ff]/10 rounded-xl p-8">
+      <div className="bg-[var(--cyber-neon-pink)]/5 border border-[var(--cyber-neon-pink)]/10 rounded-xl p-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="md:col-span-1">
             <h4 className="text-[var(--cyber-neon-pink)] font-cyber font-bold text-sm tracking-widest uppercase">The Protobuf Balance</h4>
@@ -2040,21 +2040,21 @@ const AlternativesLandscape = () => (
 const PacketDiagram = () => (
   <div className="w-full max-w-2xl mx-auto my-12">
     <div className="flex items-stretch gap-1 h-20">
-      <div className="flex-1 bg-[#00f3ff]/10 border border-[#00f3ff]/30 rounded flex flex-col items-center justify-center text-[var(--cyber-neon-blue)] font-mono text-xs relative group px-2 text-center">
+      <div className="flex-1 bg-[var(--cyber-neon-blue)]/10 border border-[var(--cyber-neon-blue)]/30 rounded flex flex-col items-center justify-center text-[var(--cyber-neon-blue)] font-mono text-xs relative group px-2 text-center">
         <div className="absolute -top-6 left-0 text-[10px] uppercase text-[var(--text-dim)] font-bold tracking-widest flex items-center gap-1">
           <Hash className="w-3 h-3" /> Tag
         </div>
         <span className="font-bold">VARINT</span>
         <span className="text-[10px] opacity-60">(Field # | Type)</span>
       </div>
-      <div className="flex-[0.7] bg-[#ff00ff]/10 border border-[#ff00ff]/30 rounded flex flex-col items-center justify-center text-[var(--cyber-neon-pink)] font-mono text-xs relative group px-2 text-center">
+      <div className="flex-[0.7] bg-[var(--cyber-neon-pink)]/10 border border-[var(--cyber-neon-pink)]/30 rounded flex flex-col items-center justify-center text-[var(--cyber-neon-pink)] font-mono text-xs relative group px-2 text-center">
         <div className="absolute -top-6 left-0 text-[10px] uppercase text-[var(--text-dim)] font-bold tracking-widest flex items-center gap-1">
           <Zap className="w-3 h-3" /> Length
         </div>
         <span className="font-bold">VARINT</span>
         <span className="text-[10px] opacity-60">N Bytes</span>
       </div>
-      <div className="flex-[2] bg-[#00ff9f]/10 border border-[#00ff9f]/30 rounded flex flex-col items-center justify-center text-[var(--cyber-neon-green)] font-mono text-xs relative group px-2 text-center">
+      <div className="flex-[2] bg-[var(--cyber-neon-green)]/10 border border-[var(--cyber-neon-green)]/30 rounded flex flex-col items-center justify-center text-[var(--cyber-neon-green)] font-mono text-xs relative group px-2 text-center">
         <div className="absolute -top-6 left-0 text-[10px] uppercase text-[var(--text-dim)] font-bold tracking-widest flex items-center gap-1">
           <Database className="w-3 h-3" /> Payload
         </div>
@@ -2152,7 +2152,7 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
           <div className="lg:col-span-7 space-y-8 text-[var(--text-color)]">
             <h3 className="text-2xl font-cyber font-bold text-[var(--cyber-neon-pink)] uppercase">Varint Encoding</h3>
             <p>Varints are the secret sauce of Protobuf efficiency. They allow us to store integers using between 1 and 10 bytes, where smaller numbers take fewer bytes.</p>
-            <div className="p-6 bg-[var(--section-bg-alt)]/50 border-l-2 border-[#ff00ff] space-y-6">
+            <div className="p-6 bg-[var(--section-bg-alt)]/80 border-l-2 border-[var(--cyber-neon-pink)] space-y-6">
               <div>
                 <h4 className="text-[var(--cyber-neon-pink)] font-cyber uppercase text-sm mb-4 text-[var(--cyber-neon-pink)]">How it works (Step-by-Step)</h4>
                 <ol className="list-decimal list-inside space-y-3 text-sm">
@@ -2279,25 +2279,25 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
                   <div className="flex bg-[var(--overlay-bg)] p-1 rounded border border-[var(--border-light)]">
                     <button
                       onClick={() => setViewMode('hex')}
-                      className={`px-3 py-1 text-[10px] font-mono rounded transition-all ${viewMode === 'hex' ? 'bg-[#00f3ff]/20 text-[var(--cyber-neon-blue)]' : 'text-[var(--text-dim)] hover:text-[var(--text-color)]'}`}
+                      className={`px-3 py-1 text-[10px] font-mono rounded transition-all ${viewMode === 'hex' ? 'bg-[var(--cyber-neon-blue)]/20 text-[var(--cyber-neon-blue)]' : 'text-[var(--text-dim)] hover:text-[var(--text-color)]'}`}
                     >
                       HEX_VIEW
                     </button>
                     <button
                       onClick={() => setViewMode('scope')}
-                      className={`px-3 py-1 text-[10px] font-mono rounded transition-all ${viewMode === 'scope' ? 'bg-[#ff00ff]/20 text-[var(--cyber-neon-pink)]' : 'text-[var(--text-dim)] hover:text-[var(--text-color)]'}`}
+                      className={`px-3 py-1 text-[10px] font-mono rounded transition-all ${viewMode === 'scope' ? 'bg-[var(--cyber-neon-pink)]/20 text-[var(--cyber-neon-pink)]' : 'text-[var(--text-dim)] hover:text-[var(--text-color)]'}`}
                     >
                       PROTOSCOPE
                     </button>
                   </div>
                   <div className="h-4 w-px bg-[var(--border-light)] mx-2 hidden sm:block" />
-                  {stats.error && <span className="text-xs text-red-500 font-mono mr-2">PARSE_ERROR</span>}
+                  {stats.error && <span className="text-xs text-[var(--text-error)] font-mono mr-2">PARSE_ERROR</span>}
                   {(Object.keys(SIZE_EXAMPLES) as Array<keyof typeof SIZE_EXAMPLES>).map((key) => (
                     <button
                       key={key}
                       onClick={() => handleExampleChange(key)}
                       className={`px-3 py-1 text-[10px] font-mono border transition-all ${activeExample === key
-                        ? 'bg-[#00f3ff]/10 border-[#00f3ff] text-[var(--cyber-neon-blue)]'
+                        ? 'bg-[var(--cyber-neon-blue)]/10 border-[var(--cyber-neon-blue)] text-[var(--cyber-neon-blue)]'
                         : 'border-[var(--border-light)] text-[var(--text-dim)] hover:border-white/30'
                         }`}
                     >
@@ -2338,15 +2338,15 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
                         </div>
                         <div className="flex gap-2">
                           <div className="flex items-center gap-1">
-                            <div className="w-1.5 h-1.5 rounded-full bg-[#00f3ff]" />
+                            <div className="w-1.5 h-1.5 rounded-full bg-[var(--cyber-neon-blue)]" />
                             <span className="text-[9px] font-mono text-[var(--text-dim)] uppercase">Tag</span>
                           </div>
                           <div className="flex items-center gap-1">
-                            <div className="w-1.5 h-1.5 rounded-full bg-[#ff00ff]" />
+                            <div className="w-1.5 h-1.5 rounded-full bg-[var(--cyber-neon-pink)]" />
                             <span className="text-[9px] font-mono text-[var(--text-dim)] uppercase">Len</span>
                           </div>
                           <div className="flex items-center gap-1">
-                            <div className="w-1.5 h-1.5 rounded-full bg-[#00ff9f]" />
+                            <div className="w-1.5 h-1.5 rounded-full bg-[var(--cyber-neon-green)]" />
                             <span className="text-[9px] font-mono text-[var(--text-dim)] uppercase">Data</span>
                           </div>
                         </div>
@@ -2363,13 +2363,13 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
                               onClick={() => setSelectedByte(selectedByte === i ? null : i)}
                               className={`
                                 px-1 cursor-crosshair border transition-colors duration-75
-                                ${b.type === 'tag' ? 'border-[#00f3ff]/30 text-[var(--cyber-neon-blue)] hover:bg-[#00f3ff]/20 rounded' : ''}
-                                ${b.type === 'len' ? 'border-[#ff00ff]/30 text-[var(--cyber-neon-pink)] hover:bg-[#ff00ff]/20 rounded' : ''}
-                                ${isData ? `border-[#00ff9f]/30 text-[var(--cyber-neon-green)] hover:bg-[#00ff9f]/20 
+                                ${b.type === 'tag' ? 'border-[var(--cyber-neon-blue)]/30 text-[var(--cyber-neon-blue)] hover:bg-[var(--cyber-neon-blue)]/20 rounded' : ''}
+                                ${b.type === 'len' ? 'border-[var(--cyber-neon-pink)]/30 text-[var(--cyber-neon-pink)] hover:bg-[var(--cyber-neon-pink)]/20 rounded' : ''}
+                                ${isData ? `border-[var(--cyber-neon-green)]/30 text-[var(--cyber-neon-green)] hover:bg-[var(--cyber-neon-green)]/20 
                                   ${isPrevData ? 'border-l-0 rounded-l-none' : 'rounded-l'} 
                                   ${isNextData ? 'border-r-0 rounded-r-none' : 'rounded-r'}
                                 ` : ''}
-                                ${selectedByte === i ? 'bg-[#00f3ff]/20 border-[#00f3ff] shadow-[0_0_15px_rgba(0,243,255,0.4)] z-10 scale-110' : 'hover:scale-105 hover:z-20'}
+                                ${selectedByte === i ? 'bg-[var(--cyber-neon-blue)]/20 border-[var(--cyber-neon-blue)] shadow-[0_0_15px_rgba(0,243,255,0.4)] z-10 scale-110' : 'hover:scale-105 hover:z-20'}
                               `}
                             >
                               {b.val}
@@ -2382,7 +2382,7 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
                     <div className="flex flex-col h-full">
                       <div className="flex items-center justify-between mb-4">
                         <span className="text-[10px] font-mono text-[var(--text-dim)] uppercase tracking-widest">Protoscope Disassembly</span>
-                        <SearchCheck className="w-4 h-4 text-[var(--cyber-neon-pink)] opacity-50" />
+                        <SearchCheck className="w-4 h-4 text-[var(--cyber-neon-pink)] opacity-80" />
                       </div>
                       <pre className="flex-1 font-mono text-sm leading-relaxed text-[var(--text-color)] overflow-auto custom-scrollbar p-2 bg-[var(--section-bg-dark)]/30 rounded border border-[var(--border-light)]">
                         {protoscopeOutput || 'Processing...'}
@@ -2393,7 +2393,7 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
                 <div className="md:col-span-2 bg-[var(--overlay-bg)] flex flex-col border-t md:border-t-0 border-[var(--border-light)]">
                   <div className="p-4 border-b border-[var(--border-light)] flex items-center justify-between">
                     <span className="text-[10px] font-mono text-[var(--text-dim)] uppercase tracking-widest">Message (JSON)</span>
-                    <span className="text-[9px] font-mono text-[var(--cyber-neon-pink)]/60 uppercase italic">Editable Input</span>
+                    <span className="text-[9px] font-mono text-[var(--cyber-neon-pink)]/80 uppercase italic">Editable Input</span>
                   </div>
                   <div className="flex-1 min-h-[300px] flex flex-col">
                     <div className="flex-1 min-h-0">
@@ -2404,7 +2404,7 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
                       />
                     </div>
                     {stats.error && (
-                      <div className="p-2 bg-red-500/10 border-t border-red-500/30 text-red-400 text-xs font-mono break-words line-clamp-2" title={stats.error}>
+                      <div className="p-2 bg-[var(--text-error)]/10 border-t border-[var(--text-error)]/30 text-[var(--text-error)] text-xs font-mono break-words line-clamp-2" title={stats.error}>
                         {stats.error}
                       </div>
                     )}
@@ -2431,12 +2431,12 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
                           <div className="flex gap-1">
                             {getBits(currentSegment.raw).map((bit, i) => (
                               <div key={i} className="flex flex-col items-center">
-                                <div className={`w-8 h-10 flex items-center justify-center font-mono text-lg border ${bit.isMSB ? 'border-[#ff00ff]/50 text-[var(--cyber-neon-pink)] bg-[#ff00ff]/5' : bit.isType && currentSegment.type === 'tag' ? 'border-[#00f3ff]/50 text-[var(--cyber-neon-blue)] bg-[#00f3ff]/5' : 'border-[var(--border-light)] text-[var(--text-color)]'}`}>{bit.bit}</div>
+                                <div className={`w-8 h-10 flex items-center justify-center font-mono text-lg border ${bit.isMSB ? 'border-[var(--cyber-neon-pink)]/80 text-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/5' : bit.isType && currentSegment.type === 'tag' ? 'border-[var(--cyber-neon-blue)]/80 text-[var(--cyber-neon-blue)] bg-[var(--cyber-neon-blue)]/5' : 'border-[var(--border-light)] text-[var(--text-color)]'}`}>{bit.bit}</div>
                                 <span className="text-[10px] font-mono mt-1 text-[var(--text-dim)]">{i === 0 ? 'MSB' : i >= 5 && currentSegment.type === 'tag' ? 'TYPE' : `B${7 - i}`}</span>
                               </div>
                             ))}
                           </div>
-                          <p className="text-sm text-[var(--text-color)] italic border-l-2 border-[#00f3ff]/30 pl-3 py-1 bg-[#00f3ff]/5 rounded-r">
+                          <p className="text-sm text-[var(--text-color)] italic border-l-2 border-[var(--cyber-neon-blue)]/30 pl-3 py-1 bg-[var(--cyber-neon-blue)]/5 rounded-r">
                             {currentSegment.type === 'tag' ? "Bits 0-2 (last 3) indicate the Wire Type. Bits 3-7 are the Field Number (if < 16)." : "The Most Significant Bit (MSB) at index 0 indicates if more bytes follow."}
                           </p>
                         </div>
@@ -2453,12 +2453,12 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
                     <motion.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      className="flex flex-col items-center justify-center h-48 border-2 border-dashed border-[#00f3ff]/20 rounded-xl gap-4 bg-[#00f3ff]/5 text-center group"
+                      className="flex flex-col items-center justify-center h-48 border-2 border-dashed border-[var(--cyber-neon-blue)]/20 rounded-xl gap-4 bg-[var(--cyber-neon-blue)]/5 text-center group"
                     >
                       <motion.div
                         animate={{ y: [0, -8, 0] }}
                         transition={{ repeat: Infinity, duration: 2 }}
-                        className="p-3 bg-[#00f3ff]/10 rounded-full border border-[#00f3ff]/30"
+                        className="p-3 bg-[var(--cyber-neon-blue)]/10 rounded-full border border-[var(--cyber-neon-blue)]/30"
                       >
                         <ArrowUp className="w-6 h-6 text-[var(--cyber-neon-blue)]" />
                       </motion.div>
@@ -2482,7 +2482,7 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
                       <SearchCheck className="w-8 h-8 text-[var(--cyber-neon-pink)] opacity-30" />
                       <div className="space-y-1">
                         <p className="text-[var(--text-dim)] font-cyber uppercase text-xs tracking-[0.2em]">Protoscope Mode Active</p>
-                        <p className="text-[10px] text-[var(--text-dim)]/60 font-mono">Switch back to HEX_VIEW to analyze individual bytes.</p>
+                        <p className="text-[10px] text-[var(--text-dim)]/80 font-mono">Switch back to HEX_VIEW to analyze individual bytes.</p>
                       </div>
                     </motion.div>
                   )}
@@ -2506,11 +2506,11 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
               </div>
 
               <div className="space-y-6">
-                <div className="p-4 bg-red-500/5 border border-red-500/20 rounded-lg">
+                <div className="p-4 bg-[var(--text-error)]/5 border border-[var(--text-error)]/20 rounded-lg">
                   <div className="flex gap-3">
-                    <AlertTriangle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+                    <AlertTriangle className="w-5 h-5 text-[var(--text-error)] shrink-0 mt-0.5" />
                     <div className="space-y-2">
-                      <span className="text-red-400 font-bold uppercase text-[10px] tracking-widest block">The Semantic Gap</span>
+                      <span className="text-[var(--text-error)] font-bold uppercase text-[10px] tracking-widest block">The Semantic Gap</span>
                       <p className="text-xs text-[var(--text-dim)] leading-relaxed">
                         Protoscope is <strong>schema-ignorant</strong>. Because the wire format is ambiguous, it must use heuristics to guess how to display data. It cannot distinguish between signed/unsigned integers or enums, and it may misidentify a sub-message as a string. This can result in values that are <strong>semantically wrong</strong>.
                       </p>
@@ -2553,7 +2553,7 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
                       </pre>
                     </div>
                   </div>
-                  <div className="p-4 bg-[#ff00ff]/5 border border-[#ff00ff]/10 rounded-lg italic text-[11px] text-[var(--text-dim)] leading-relaxed">
+                  <div className="p-4 bg-[var(--cyber-neon-pink)]/5 border border-[var(--cyber-neon-pink)]/10 rounded-lg italic text-[11px] text-[var(--text-dim)] leading-relaxed">
                     "Protoscope removes the mechanical overhead of bit-packing to show you the structural skeleton—but it lacks the semantic soul of the schema."
                   </div>
                 </div>
@@ -2654,7 +2654,7 @@ const SchemaEditorModal = ({ isOpen, onClose, value, onApply }: {
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-        className="relative w-full max-w-5xl bg-[var(--panel-bg)] border border-cyan-500/30 rounded-xl overflow-hidden shadow-[0_0_50px_rgba(0,243,255,0.1)] flex flex-col max-h-[90vh]"
+        className="relative w-full max-w-5xl bg-[var(--panel-bg)] border border-[var(--cyber-neon-blue)]/30 rounded-xl overflow-hidden shadow-[0_0_50px_rgba(0,243,255,0.1)] flex flex-col max-h-[90vh]"
       >
         <div className="p-4 border-b border-[var(--border-light)] flex items-center justify-between bg-[var(--overlay-bg)]">
           <div className="flex items-center gap-3">
@@ -2662,8 +2662,8 @@ const SchemaEditorModal = ({ isOpen, onClose, value, onApply }: {
             <h2 className="font-cyber font-bold text-[var(--text-color)] uppercase tracking-wider">Edit_Protobuf_Schema</h2>
             {isValidating && (
               <div className="flex items-center gap-2 ml-4">
-                <div className="w-2 h-2 bg-[#00f3ff] rounded-full animate-pulse" />
-                <span className="text-[10px] font-mono text-[var(--cyber-neon-blue)]/60 uppercase tracking-widest">Validating...</span>
+                <div className="w-2 h-2 bg-[var(--cyber-neon-blue)] rounded-full animate-pulse" />
+                <span className="text-[10px] font-mono text-[var(--cyber-neon-blue)]/80 uppercase tracking-widest">Validating...</span>
               </div>
             )}
           </div>
@@ -2677,7 +2677,7 @@ const SchemaEditorModal = ({ isOpen, onClose, value, onApply }: {
           {localErrors.length > 0 && (
             <div className="mt-4 space-y-2 overflow-y-auto max-h-32">
               {localErrors.map((err, i) => (
-                <div key={i} className="p-3 bg-red-500/10 border border-red-500/30 rounded text-red-400 text-xs font-mono">
+                <div key={i} className="p-3 bg-[var(--text-error)]/10 border border-[var(--text-error)]/30 rounded text-[var(--text-error)] text-xs font-mono">
                   [LINE {err.line}] {err.message}
                 </div>
               ))}
@@ -2704,7 +2704,7 @@ const SchemaEditorModal = ({ isOpen, onClose, value, onApply }: {
                 }
               }}
               disabled={localErrors.length > 0 || isValidating}
-              className="w-full md:w-auto px-4 sm:px-8 py-2 bg-[#00f3ff]/10 border border-[#00f3ff] text-[var(--cyber-neon-blue)] font-cyber font-bold hover:bg-[#00f3ff]/20 transition-all text-xs shadow-[0_0_15px_rgba(0,243,255,0.2)] disabled:opacity-30 disabled:cursor-not-allowed"
+              className="w-full md:w-auto px-4 sm:px-8 py-2 bg-[var(--cyber-neon-blue)]/10 border border-[var(--cyber-neon-blue)] text-[var(--cyber-neon-blue)] font-cyber font-bold hover:bg-[var(--cyber-neon-blue)]/20 transition-all text-xs shadow-[0_0_15px_rgba(0,243,255,0.2)] disabled:opacity-30 disabled:cursor-not-allowed"
             >
               APPLY_CHANGES
             </button>
@@ -2774,9 +2774,9 @@ const ValidationLab = ({ messageSchema, fds, protoSource, setProtoSource }: {
             >
               <div className="h-64 overflow-hidden relative group cursor-pointer" onClick={() => setIsModalOpen(true)}>
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100 z-10 backdrop-blur-none group-hover:backdrop-blur-[2px]">
-                  <span className="px-4 py-2 bg-[#00f3ff]/10 border border-[#00f3ff] text-[var(--cyber-neon-blue)] font-cyber text-xs shadow-[0_0_20px_rgba(0,243,255,0.2)]">EDIT_SCHEMA</span>
+                  <span className="px-4 py-2 bg-[var(--cyber-neon-blue)]/10 border border-[var(--cyber-neon-blue)] text-[var(--cyber-neon-blue)] font-cyber text-xs shadow-[0_0_20px_rgba(0,243,255,0.2)]">EDIT_SCHEMA</span>
                 </div>
-                <div className="p-4 opacity-50 grayscale group-hover:opacity-20 transition-all duration-300">
+                <div className="p-4 opacity-80 grayscale group-hover:opacity-20 transition-all duration-300">
                   <SyntaxHighlighter language="proto" code={protoSource} wrap />
                 </div>
               </div>
@@ -2798,7 +2798,7 @@ const ValidationLab = ({ messageSchema, fds, protoSource, setProtoSource }: {
               <div className="flex flex-wrap gap-2 items-center justify-between">
                 <div className="flex flex-wrap gap-2">
                   {(Object.keys(VALIDATION_EXAMPLES) as Array<keyof typeof VALIDATION_EXAMPLES>).map((key) => (
-                    <button key={key} onClick={() => handleExampleChange(key)} className={`px-3 py-1 text-xs font-mono border transition-all ${activeExample === key ? 'bg-[#00f3ff]/10 border-[#00f3ff] text-[var(--cyber-neon-blue)]' : 'border-[var(--border-light)] text-[var(--text-dim)] hover:border-white/30'}`}>{key}</button>
+                    <button key={key} onClick={() => handleExampleChange(key)} className={`px-3 py-1 text-xs font-mono border transition-all ${activeExample === key ? 'bg-[var(--cyber-neon-blue)]/10 border-[var(--cyber-neon-blue)] text-[var(--cyber-neon-blue)]' : 'border-[var(--border-light)] text-[var(--text-dim)] hover:border-white/30'}`}>{key}</button>
                   ))}
                 </div>
                 <button
@@ -2813,7 +2813,7 @@ const ValidationLab = ({ messageSchema, fds, protoSource, setProtoSource }: {
                     }
                   }}
                   disabled={!messageSchema || !fds}
-                  className="px-3 py-1 text-xs font-mono border border-[#ff00ff]/30 text-[var(--cyber-neon-pink)]/70 hover:border-[#ff00ff] hover:text-[var(--cyber-neon-pink)] transition-all flex items-center gap-1 disabled:opacity-30"
+                  className="px-3 py-1 text-xs font-mono border border-[var(--cyber-neon-pink)]/30 text-[var(--cyber-neon-pink)]/70 hover:border-[var(--cyber-neon-pink)] hover:text-[var(--cyber-neon-pink)] transition-all flex items-center gap-1 disabled:opacity-30"
                 >
                   <Zap className="w-3 h-3" />
                   GENERATE_DATA
@@ -2822,7 +2822,7 @@ const ValidationLab = ({ messageSchema, fds, protoSource, setProtoSource }: {
               <CyberPanel title="TEST_DATA (JSON)">
                 <div className="relative h-64">
                   {validationResults.error && validationResults.error !== "NO_SCHEMA" && (
-                    <div className="absolute top-0 left-0 right-0 p-2 bg-red-500/10 border-b border-red-500/30 text-red-400 text-xs font-mono z-30 break-words line-clamp-2" title={validationResults.error}>
+                    <div className="absolute top-0 left-0 right-0 p-2 bg-[var(--text-error)]/10 border-b border-[var(--text-error)]/30 text-[var(--text-error)] text-xs font-mono z-30 break-words line-clamp-2" title={validationResults.error}>
                       {validationResults.error}
                     </div>
                   )}
@@ -2834,7 +2834,7 @@ const ValidationLab = ({ messageSchema, fds, protoSource, setProtoSource }: {
             <CyberPanel title="VALIDATION_OUTPUT">
               <div className="h-48 overflow-y-auto space-y-4 pr-2 p-2">
                 {validationResults.error ? (
-                  <div className="p-4 bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-mono">SCHEMA_MISMATCH: {validationResults.error}</div>
+                  <div className="p-4 bg-[var(--text-error)]/10 border border-[var(--text-error)]/30 text-[var(--text-error)] text-xs font-mono">SCHEMA_MISMATCH: {validationResults.error}</div>
                 ) : (validationResults.results?.violations?.length ?? 0) === 0 ? (
                   <div className="flex flex-col items-center justify-center h-full gap-4 text-[var(--cyber-neon-green)]">
                     <CheckCircle2 className="w-12 h-12" />
@@ -2846,10 +2846,10 @@ const ValidationLab = ({ messageSchema, fds, protoSource, setProtoSource }: {
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {validationResults.results?.violations?.map((v: Violation, i: number) => (
-                      <div key={i} className="p-3 bg-yellow-500/5 border border-yellow-500/20 rounded flex gap-3">
-                        <AlertTriangle className="w-4 h-4 text-yellow-500 shrink-0" />
+                      <div key={i} className="p-3 bg-[var(--warning-bg)] border border-[var(--warning-border)] rounded flex gap-3">
+                        <AlertTriangle className="w-4 h-4 text-[var(--cyber-neon-yellow)] shrink-0" />
                         <div className="flex flex-col gap-1">
-                          <span className="text-xs font-mono text-yellow-500 uppercase">{v.field.toString()}</span>
+                          <span className="text-xs font-mono text-[var(--cyber-neon-yellow)] uppercase">{v.field.toString()}</span>
                           <p className="text-sm text-[var(--text-color)]">{v.message}</p>
                         </div>
                       </div>
@@ -2890,7 +2890,7 @@ const EcosystemNextSteps = () => (
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
 
         {/* Schema Management */}
-        <CyberPanel title="SCHEMA_MANAGEMENT" className="border-[#ff00ff]/30 shadow-[0_0_15px_rgba(255,0,255,0.05)] hover:border-[#ff00ff]/60 transition-colors">
+        <CyberPanel title="SCHEMA_MANAGEMENT" className="border-[var(--cyber-neon-pink)]/30 shadow-[0_0_15px_rgba(255,0,255,0.05)] hover:border-[var(--cyber-neon-pink)]/80 transition-colors">
           <div className="p-4 space-y-4">
             <h4 className="font-cyber font-bold text-[var(--text-color)]">Buf & BSR</h4>
             <p className="text-sm text-[var(--text-dim)]">
@@ -2903,7 +2903,7 @@ const EcosystemNextSteps = () => (
         </CyberPanel>
 
         {/* RPC Frameworks */}
-        <CyberPanel title="RPC_FRAMEWORKS" className="border-[#00f3ff]/30 shadow-[0_0_15px_rgba(0,243,255,0.05)] hover:border-[#00f3ff]/60 transition-colors">
+        <CyberPanel title="RPC_FRAMEWORKS" className="border-[var(--cyber-neon-blue)]/30 shadow-[0_0_15px_rgba(0,243,255,0.05)] hover:border-[var(--cyber-neon-blue)]/80 transition-colors">
           <div className="p-4 space-y-4">
             <h4 className="font-cyber font-bold text-[var(--text-color)]">gRPC & ConnectRPC</h4>
             <p className="text-sm text-[var(--text-dim)]">
@@ -2916,7 +2916,7 @@ const EcosystemNextSteps = () => (
         </CyberPanel>
 
         {/* Testing Tools */}
-        <CyberPanel title="TESTING_&_MOCKING" className="border-[#00ff9f]/30 shadow-[0_0_15px_rgba(0,255,159,0.05)] hover:border-[#00ff9f]/60 transition-colors">
+        <CyberPanel title="TESTING_&_MOCKING" className="border-[var(--cyber-neon-green)]/30 shadow-[0_0_15px_rgba(0,255,159,0.05)] hover:border-[var(--cyber-neon-green)]/80 transition-colors">
           <div className="p-4 space-y-4">
             <h4 className="font-cyber font-bold text-[var(--text-color)]">FauxRPC & Validation</h4>
             <p className="text-sm text-[var(--text-dim)]">
@@ -3103,16 +3103,16 @@ function App() {
                 protobuf<span className="text-[var(--cyber-neon-blue)]">.kmcd.dev</span>
               </h1>
             </a>
-            <a href={`#${activeSection}`} className="text-xs font-mono text-[var(--cyber-neon-blue)] tracking-widest -mt-1 uppercase opacity-70 hover:opacity-100 transition-opacity block max-w-[150px] truncate lg:max-w-none">
+            <a href={`#${activeSection}`} className="text-xs font-mono text-[var(--cyber-neon-blue)] tracking-widest -mt-1 uppercase opacity-90 hover:opacity-100 transition-opacity block max-w-[150px] truncate lg:max-w-none">
               <span className="lg:hidden">{SECTION_LABELS[activeSection] || 'Welcome'}</span>
               <span className="hidden lg:inline">Interactive Explainer</span>
             </a>
           </div>
         </div>
-        {error && <div className="ml-8 px-3 py-1 bg-red-500/10 border border-red-500/30 rounded text-red-400 text-xs font-mono animate-pulse uppercase">SCHEMA_ERROR: {error}</div>}
+        {error && <div className="ml-8 px-3 py-1 bg-[var(--text-error)]/10 border border-[var(--text-error)]/30 rounded text-[var(--text-error)] text-xs font-mono animate-pulse uppercase">SCHEMA_ERROR: {error}</div>}
 
         <div className="absolute left-1/2 -translate-x-1/2 hidden lg:flex flex-col items-center pointer-events-none">
-          <div className="text-[10px] font-mono text-[var(--cyber-neon-blue)]/50 uppercase tracking-[0.2em] mb-0.5">Section</div>
+          <div className="text-[10px] font-mono text-[var(--cyber-neon-blue)]/80 uppercase tracking-[0.2em] mb-0.5">Section</div>
           <a href={`#${activeSection}`} className="text-xs font-mono font-bold text-[var(--text-color)] uppercase tracking-widest bg-[var(--overlay-bg)] px-3 py-1 rounded border border-[var(--border-light)] backdrop-blur-sm pointer-events-auto hover:bg-[var(--border-light)] transition-colors">
             {SECTION_LABELS[activeSection] || 'Welcome'}
           </a>
@@ -3121,7 +3121,7 @@ function App() {
         <div className="ml-auto flex items-center gap-4">
           <button
             onClick={toggleTheme}
-            className="p-2 text-[var(--cyber-neon-blue)] hover:bg-[#00f3ff]/10 rounded border border-[#00f3ff]/20 transition-all group"
+            className="p-2 text-[var(--cyber-neon-blue)] hover:bg-[var(--cyber-neon-blue)]/10 rounded border border-[var(--cyber-neon-blue)]/20 transition-all group"
             aria-label="Toggle Theme"
           >
             {theme === 'dark' ? (
@@ -3133,7 +3133,7 @@ function App() {
 
           <button
             onClick={() => setIsMenuOpen(true)}
-            className="p-2 text-[var(--cyber-neon-blue)] hover:bg-[#00f3ff]/10 rounded border border-[#00f3ff]/20 transition-all group"
+            className="p-2 text-[var(--cyber-neon-blue)] hover:bg-[var(--cyber-neon-blue)]/10 rounded border border-[var(--cyber-neon-blue)]/20 transition-all group"
             aria-label="Open Menu"
           >
             <AlignLeft className="w-6 h-6 group-hover:scale-110 transition-transform" />
@@ -3149,7 +3149,7 @@ function App() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsMenuOpen(false)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[110]"
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[110]"
             />
 
             <motion.div
@@ -3161,7 +3161,7 @@ function App() {
             >
               <div className="h-[80px] flex items-center justify-between px-4 sm:px-8 border-b border-[var(--border-light)]">
                 <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 bg-[#00f3ff]/10 rounded border border-[#00f3ff]/30 flex items-center justify-center"><Cpu className="w-3.5 h-3.5 text-[var(--cyber-neon-blue)]" /></div>
+                  <div className="w-6 h-6 bg-[var(--cyber-neon-blue)]/10 rounded border border-[var(--cyber-neon-blue)]/30 flex items-center justify-center"><Cpu className="w-3.5 h-3.5 text-[var(--cyber-neon-blue)]" /></div>
                   <span className="font-cyber font-bold text-[var(--cyber-neon-blue)] text-[10px] tracking-[0.2em] uppercase">Navigation</span>
                 </div>
                 <button
@@ -3179,10 +3179,10 @@ function App() {
                       key={item.id}
                       href={`#${item.id}`}
                       onClick={() => setIsMenuOpen(false)}
-                      className="group flex items-center justify-between py-4 border-b border-[var(--border-light)] hover:border-[#00f3ff]/30 transition-colors"
+                      className="group flex items-center justify-between py-4 border-b border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)]/30 transition-colors"
                     >
                       <div className="flex flex-col">
-                        <span className="text-[10px] font-mono text-[var(--cyber-neon-blue)]/50 mb-1">0{i + 1}</span>
+                        <span className="text-[10px] font-mono text-[var(--cyber-neon-blue)]/80 mb-1">0{i + 1}</span>
                         <span className="font-cyber font-bold text-base tracking-wider text-[var(--text-color)] group-hover:text-[var(--cyber-neon-blue)] transition-colors">{item.label}</span>
                       </div>
                       <ChevronRight className="w-5 h-5 text-[var(--text-color)]/0 group-hover:text-[var(--cyber-neon-blue)] transition-all -translate-x-2 group-hover:translate-x-0" />

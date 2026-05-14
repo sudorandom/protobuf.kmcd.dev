@@ -22,27 +22,33 @@
   --text-error: #f87171;
   --grid-color: rgba(0, 243, 255, 0.03);
   --glow-color: rgba(0, 243, 255, 0.05);
+  --warning-bg: rgba(234, 179, 8, 0.1);
+  --warning-border: rgba(234, 179, 8, 0.2);
+  --warning-text: rgba(254, 240, 138, 0.8);
 }
 
 .light {
   --bg-color: #f8fafc;
   --panel-bg: rgba(255, 255, 255, 0.9);
   --card-bg: rgba(241, 245, 249, 0.8);
-  --text-color: #0f172a;
-  --text-dim: #334155;
-  --text-error: #b91c1c;
-  --cyber-neon-blue: #1d4ed8;
-  --cyber-neon-pink: #a21caf;
-  --cyber-neon-green: #047857;
-  --cyber-neon-yellow: #a16207;
-  --cyber-neon-cyan: #0e7490;
-  --border-color: rgba(29, 78, 216, 0.2);
-  --section-bg-alt: rgba(203, 213, 225, 0.15);
-  --section-bg-dark: rgba(255, 255, 255, 0.4);
+  --text-color: #020617;
+  --text-dim: #1e293b;
+  --text-error: #991b1b;
+  --cyber-neon-blue: #1e40af;
+  --cyber-neon-pink: #86198f;
+  --cyber-neon-green: #065f46;
+  --cyber-neon-yellow: #854d0e;
+  --cyber-neon-cyan: #155e75;
+  --border-color: rgba(30, 64, 175, 0.3);
+  --section-bg-alt: rgba(203, 213, 225, 0.2);
+  --section-bg-dark: rgba(255, 255, 255, 0.5);
   --overlay-bg: rgba(0, 0, 0, 0.05);
-  --border-light: rgba(0, 0, 0, 0.1);
-  --grid-color: rgba(29, 78, 216, 0.05);
-  --glow-color: rgba(29, 78, 216, 0.03);
+  --border-light: rgba(0, 0, 0, 0.15);
+  --grid-color: rgba(30, 64, 175, 0.07);
+  --glow-color: rgba(30, 64, 175, 0.04);
+  --warning-bg: rgba(254, 249, 195, 0.6);
+  --warning-border: rgba(133, 77, 14, 0.3);
+  --warning-text: #713f12;
 }
 
 body {
