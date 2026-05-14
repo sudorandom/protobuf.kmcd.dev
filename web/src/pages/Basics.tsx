@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Box,
   Type,
@@ -9,7 +9,6 @@ import {
   Braces,
   GitBranch,
   HelpCircle,
-  BookOpen,
   FileCode,
   ArrowRight
 } from 'lucide-react';
@@ -21,15 +20,82 @@ import {
   SyntaxHighlighter
 } from '../components/shared/Common';
 
-export const ProtobufBasics = () => {
-  const [activeTab, setActiveTab] = useState('messages');
+export const SchemaDrivenAPIs = () => (
+  <Section id="schema" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]">
+    <div className="max-w-7xl mx-auto">
+      <SectionTitle icon={FileCode} subtitle="02a_ARCHITECTURE">Schema-Driven APIs</SectionTitle>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+        <div className="space-y-6 text-[var(--text-color)]">
+          <h3 className="text-xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">The Source of Truth</h3>
+          <p>
+            In the Protobuf world, the <strong>.proto</strong> file is the contract. This encourages <strong>Contract-First</strong> development, where the data model and API surface are defined before any code is written.
+          </p>
+          <ul className="space-y-4">
+            <li className="flex gap-4">
+              <div className="w-1.5 h-1.5 bg-[var(--cyber-neon-blue)] mt-2 shrink-0"></div>
+              <p><strong>Universal Tooling:</strong> Generate clients and servers for various languages from the same file using <ExternalLinkText href="https://buf.build/docs/bsr/introduction">BSR</ExternalLinkText> or local compilers.</p>
+            </li>
+            <li className="flex gap-4">
+              <div className="w-1.5 h-1.5 bg-[var(--cyber-neon-pink)] mt-2 shrink-0"></div>
+              <p><strong>Compatibility:</strong> Robust rules for adding/removing fields without breaking old clients, essential for distributed systems.</p>
+            </li>
+            <li className="flex gap-4">
+              <div className="w-1.5 h-1.5 bg-[var(--cyber-neon-green)] mt-2 shrink-0"></div>
+              <p>
+                <strong>Native RPC:</strong> Unlike most serialization formats, Protobuf includes native <code>service</code> and <code>rpc</code> definitions. This allows you to define your entire API surface in one place, powering frameworks like <ExternalLinkText href="https://grpc.io/">gRPC</ExternalLinkText>, <ExternalLinkText href="https://connectrpc.com/">ConnectRPC</ExternalLinkText>, and <ExternalLinkText href="https://twitchtv.github.io/twirp/">Twirp</ExternalLinkText>.
+              </p>
+            </li>
+          </ul>
+        </div>
+        <div className="p-8 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-xl flex flex-col justify-center">
+          <h4 className="text-[var(--cyber-neon-blue)] font-cyber font-bold text-sm tracking-widest uppercase mb-4 text-center">THE_WORKFLOW</h4>
+          <div className="space-y-4 font-mono text-xs">
+            <div className="p-3 bg-[var(--section-bg-dark)] border border-[var(--cyber-neon-blue)]/30 rounded text-[var(--cyber-neon-blue)]/80">1. DEFINE SCHEMA (.proto)</div>
+            <div className="flex justify-center"><ArrowRight className="w-4 h-4 rotate-90 text-[var(--text-dim)]" /></div>
+            <div className="p-3 bg-[var(--section-bg-dark)] border border-[var(--cyber-neon-pink)]/30 rounded text-[var(--cyber-neon-pink)]/80">2. COMPILE TARGETS (Go, TS, etc.)</div>
+            <div className="flex justify-center"><ArrowRight className="w-4 h-4 rotate-90 text-[var(--text-dim)]" /></div>
+            <div className="p-3 bg-[var(--section-bg-dark)] border border-[var(--cyber-neon-green)]/30 rounded text-[var(--cyber-neon-green)]/80">3. BUILD & DEPLOY SERVICES</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </Section>
+);
 
-  const tabs = [
+const TopicSection = ({ id, icon, title, subtitle, panelTitle, desc, example }: {
+  id: string,
+  icon: React.ElementType,
+  title: string,
+  subtitle: string,
+  panelTitle: string,
+  desc: React.ReactNode,
+  example: string
+}) => (
+  <Section id={id} className={`py-24 px-4 sm:px-8 border-t border-[var(--border-light)]`}>
+    <div className="max-w-7xl mx-auto">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start scroll-mt-24">
+        <div className="space-y-6">
+          <SectionTitle icon={icon} subtitle={subtitle}>{title}</SectionTitle>
+          <div className="text-[var(--text-dim)] leading-relaxed text-sm">{desc}</div>
+        </div>
+        <CyberPanel title={panelTitle} className="h-full">
+          <div className="p-2">
+            <SyntaxHighlighter language="proto" code={example} wrap={true} />
+          </div>
+        </CyberPanel>
+      </div>
+    </div>
+  </Section>
+);
+
+export const ProtobufBasics = () => {
+  const topics = [
     {
       id: 'messages',
-      label: 'Messages',
       icon: Box,
-      title: 'The Basic Unit',
+      title: 'Messages',
+      subtitle: '02b_STRUCTURE',
+      panelTitle: 'SCHEMA_DEFINITION',
       desc: (
         <div className="space-y-4">
           <p>
@@ -47,9 +113,10 @@ export const ProtobufBasics = () => {
     },
     {
       id: 'fields',
-      label: 'Fields',
       icon: Type,
-      title: 'Typed Data',
+      title: 'Fields',
+      subtitle: '02c_TYPING',
+      panelTitle: 'FIELD_DEFINITIONS',
       desc: (
         <div className="space-y-4">
           <p>
@@ -67,9 +134,10 @@ export const ProtobufBasics = () => {
     },
     {
       id: 'numbers',
-      label: 'Field Numbers',
       icon: Hash,
-      title: 'The Wire Identity',
+      title: 'Field Numbers',
+      subtitle: '02d_WIRE_ID',
+      panelTitle: 'WIRE_IDENTITY',
       desc: (
         <div className="space-y-4">
           <p>
@@ -87,9 +155,10 @@ export const ProtobufBasics = () => {
     },
     {
       id: 'enums',
-      label: 'Enums',
       icon: List,
-      title: 'The Choices',
+      title: 'Enums',
+      subtitle: '02e_CHOICES',
+      panelTitle: 'ENUM_DEFINITIONS',
       desc: (
         <div className="space-y-4">
           <p>
@@ -107,9 +176,10 @@ export const ProtobufBasics = () => {
     },
     {
       id: 'nested',
-      label: 'Embedded',
       icon: Combine,
       title: 'Composition',
+      subtitle: '02f_NESTING',
+      panelTitle: 'COMPOSITIONAL_SCHEMA',
       desc: (
         <div className="space-y-4">
           <p>
@@ -127,9 +197,10 @@ export const ProtobufBasics = () => {
     },
     {
       id: 'repeated',
-      label: 'Repeated',
       icon: Layers,
       title: 'Collections',
+      subtitle: '02g_REPEATED',
+      panelTitle: 'COLLECTION_SYNTAX',
       desc: (
         <div className="space-y-4">
           <p>
@@ -144,9 +215,10 @@ export const ProtobufBasics = () => {
     },
     {
       id: 'maps',
-      label: 'Maps',
       icon: Braces,
-      title: 'Key-Value Pairs',
+      title: 'Maps',
+      subtitle: '02h_KEY_VALUE',
+      panelTitle: 'MAP_STRUCTURE',
       desc: (
         <div className="space-y-4">
           <p>
@@ -165,9 +237,10 @@ export const ProtobufBasics = () => {
     },
     {
       id: 'oneof',
-      label: 'Oneof',
       icon: GitBranch,
-      title: 'Mutual Exclusion',
+      title: 'Oneof',
+      subtitle: '02i_POLYMORPHISM',
+      panelTitle: 'MUTUAL_EXCLUSION',
       desc: (
         <div className="space-y-4">
           <p>
@@ -185,9 +258,10 @@ export const ProtobufBasics = () => {
     },
     {
       id: 'presence',
-      label: 'Presence',
       icon: HelpCircle,
-      title: 'Zero Values',
+      title: 'Presence',
+      subtitle: '02j_OPTIONALITY',
+      panelTitle: 'PRESENCE_TRACKING',
       desc: (
         <div className="space-y-4">
           <p>
@@ -205,48 +279,21 @@ export const ProtobufBasics = () => {
     }
   ];
 
-  const current = tabs.find(t => t.id === activeTab)!;
-
   return (
-    <Section id="basics" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-dark)] border-t border-[var(--border-light)]">
-      <div className="max-w-7xl mx-auto">
-        <SectionTitle icon={BookOpen} subtitle="02_BASICS">Protobuf Basics</SectionTitle>
-
-        <div className="flex flex-col lg:flex-row gap-12 min-h-[400px]">
-          {/* Left Nav */}
-          <div className="w-full lg:w-64 flex flex-col gap-2">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-4 p-4 rounded-lg border transition-all text-left group ${activeTab === tab.id
-                  ? 'bg-[var(--cyber-neon-blue)] border-[var(--cyber-neon-blue)] text-black shadow-[0_0_15px_rgba(0,243,255,0.3)]'
-                  : 'bg-[var(--overlay-bg)] border-[var(--border-light)] text-[var(--text-dim)] hover:border-white/20 hover:text-[var(--text-color)]'
-                  }`}
-              >
-                <tab.icon className={`w-5 h-5 ${activeTab === tab.id ? 'text-black' : 'text-[var(--text-dim)] group-hover:text-[var(--text-dim)]'}`} />
-                <span className="font-cyber font-bold text-sm tracking-widest uppercase">{tab.label}</span>
-              </button>
-            ))}
-          </div>
-
-          {/* Content Area */}
-          <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
-            <div className="space-y-6">
-              <div className="space-y-2">
-                <h3 className="text-2xl font-cyber font-bold text-[var(--text-color)] uppercase">{current.title}</h3>
-                <div className="text-[var(--text-dim)] leading-relaxed text-sm">{current.desc}</div>
-              </div>
-            </div>
-            <CyberPanel title="EXAMPLE_DEFINITION" className="h-full">
-              <div className="p-2">
-                <SyntaxHighlighter language="proto" code={current.example} wrap={true} />
-              </div>
-            </CyberPanel>
-          </div>
-        </div>
-      </div>
-    </Section>
+    <>
+      {topics.map((topic) => (
+        <TopicSection
+          key={topic.id}
+          id={topic.id}
+          icon={topic.icon}
+          title={topic.title}
+          subtitle={topic.subtitle}
+          panelTitle={topic.panelTitle}
+          desc={topic.desc}
+          example={topic.example}
+        />
+      ))}
+    </>
   );
 };
 
@@ -313,10 +360,10 @@ export const TypeSystem = () => {
   );
 
   return (
-    <Section id="types" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)]/20 border-t border-[var(--border-light)]">
+    <Section id="types" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-dark)] border-t border-[var(--border-light)]">
       <div className="max-w-7xl mx-auto space-y-16">
         <div>
-          <SectionTitle icon={Combine} subtitle="02b_TYPE_REFERENCE">The Type System</SectionTitle>
+          <SectionTitle icon={Combine} subtitle="02k_TYPE_REFERENCE">The Type System</SectionTitle>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             {groups.map(g => (
               <TypeGroup key={g.name} groupName={g.name} groupIcon={g.icon} types={g.types} />
@@ -403,52 +450,11 @@ export const TypeSystem = () => {
   );
 };
 
-export const SchemaDrivenAPIs = () => (
-  <Section id="schema" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]">
-    <div className="max-w-7xl mx-auto">
-      <SectionTitle icon={FileCode} subtitle="02a_ARCHITECTURE">Schema-Driven APIs</SectionTitle>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-        <div className="space-y-6 text-[var(--text-color)]">
-          <h3 className="text-xl font-cyber font-bold text-[var(--text-color)] uppercase">The Source of Truth</h3>
-          <p>
-            In the Protobuf world, the <strong>.proto</strong> file is the contract. This encourages <strong>Contract-First</strong> development, where the data model and API surface are defined before any code is written.
-          </p>
-          <ul className="space-y-4">
-            <li className="flex gap-4">
-              <div className="w-1.5 h-1.5 bg-[var(--cyber-neon-blue)] mt-2 shrink-0"></div>
-              <p><strong>Universal Tooling:</strong> Generate clients and servers for various languages from the same file using <ExternalLinkText href="https://buf.build/docs/bsr/introduction">BSR</ExternalLinkText> or local compilers.</p>
-            </li>
-            <li className="flex gap-4">
-              <div className="w-1.5 h-1.5 bg-[var(--cyber-neon-pink)] mt-2 shrink-0"></div>
-              <p><strong>Compatibility:</strong> Robust rules for adding/removing fields without breaking old clients, essential for distributed systems.</p>
-            </li>
-            <li className="flex gap-4">
-              <div className="w-1.5 h-1.5 bg-[var(--cyber-neon-green)] mt-2 shrink-0"></div>
-              <p>
-                <strong>Native RPC:</strong> Unlike most serialization formats, Protobuf includes native <code>service</code> and <code>rpc</code> definitions. This allows you to define your entire API surface in one place, powering frameworks like <ExternalLinkText href="https://grpc.io/">gRPC</ExternalLinkText>, <ExternalLinkText href="https://connectrpc.com/">ConnectRPC</ExternalLinkText>, and <ExternalLinkText href="https://twitchtv.github.io/twirp/">Twirp</ExternalLinkText>.
-              </p>
-            </li>
-          </ul>
-        </div>
-        <div className="p-8 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-xl flex flex-col justify-center">
-          <h4 className="text-[var(--cyber-neon-blue)] font-cyber font-bold text-sm tracking-widest uppercase mb-4 text-center">THE_WORKFLOW</h4>
-          <div className="space-y-4 font-mono text-xs">
-            <div className="p-3 bg-[var(--section-bg-dark)] border border-[var(--cyber-neon-blue)]/30 rounded text-[var(--cyber-neon-blue)]/80">1. DEFINE SCHEMA (.proto)</div>
-            <div className="flex justify-center"><ArrowRight className="w-4 h-4 rotate-90 text-[var(--text-dim)]" /></div>
-            <div className="p-3 bg-[var(--section-bg-dark)] border border-[var(--cyber-neon-pink)]/30 rounded text-[var(--cyber-neon-pink)]/80">2. COMPILE TARGETS (Go, TS, etc.)</div>
-            <div className="flex justify-center"><ArrowRight className="w-4 h-4 rotate-90 text-[var(--text-dim)]" /></div>
-            <div className="p-3 bg-[var(--section-bg-dark)] border border-[var(--cyber-neon-green)]/30 rounded text-[var(--cyber-neon-green)]/80">3. BUILD & DEPLOY SERVICES</div>          </div>
-        </div>
-      </div>
-    </div>
-  </Section>
-);
-
 const Basics = () => (
   <>
+    <SchemaDrivenAPIs />
     <ProtobufBasics />
     <TypeSystem />
-    <SchemaDrivenAPIs />
   </>
 );
 

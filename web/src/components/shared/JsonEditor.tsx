@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { SyntaxHighlighter } from './Common';
 
 export const JsonEditor = ({ value, onChange, className = "h-80" }: { value: string, onChange: (s: string) => void, className?: string }) => {

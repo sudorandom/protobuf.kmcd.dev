@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
   Zap,
@@ -30,7 +30,7 @@ async function getGzipSize(data: string | Uint8Array): Promise<number> {
 }
 
 export const SizeComparison = ({ messageSchema, fileDescriptorSet }: { messageSchema: DescMessage | null, fileDescriptorSet: Uint8Array | null }) => {
-  const [activeExample, setActiveExample] = useState<keyof typeof SIZE_EXAMPLES | 'FAUX'>('BASIC');
+  const [activeExample, setActiveExample] = useState<keyof typeof SIZE_EXAMPLES | null>('BASIC');
   const [jsonInput, setJsonInput] = useState(JSON.stringify(SIZE_EXAMPLES.BASIC, null, 2));
   const [isGenerating, setIsGenerating] = useState(false);
   const [gzipStats, setGzipStats] = useState({ json: 0, pb: 0 });
@@ -46,7 +46,7 @@ export const SizeComparison = ({ messageSchema, fileDescriptorSet }: { messageSc
     try {
       const fakeJson = await generateFake(messageSchema.typeName, fileDescriptorSet);
       setJsonInput(fakeJson);
-      setActiveExample('FAUX');
+      setActiveExample(null);
     } catch (e) {
       console.error("Failed to generate faux data:", e);
     } finally {
@@ -133,10 +133,7 @@ export const SizeComparison = ({ messageSchema, fileDescriptorSet }: { messageSc
           <button
             onClick={generateFauxData}
             disabled={!messageSchema || !fileDescriptorSet || isGenerating}
-            className={`px-4 py-1.5 text-xs font-cyber font-bold border transition-all flex items-center gap-2 rounded-md ${activeExample === 'FAUX'
-              ? 'bg-[var(--cyber-neon-pink)] border-[var(--cyber-neon-pink)] text-black shadow-[0_0_15px_rgba(255,0,255,0.4)]'
-              : 'bg-[var(--cyber-neon-pink)]/10 border-[var(--cyber-neon-pink)]/50 text-[var(--cyber-neon-pink)] hover:bg-[var(--cyber-neon-pink)]/20 hover:border-[var(--cyber-neon-pink)] disabled:opacity-30 disabled:cursor-not-allowed shadow-[0_0_10px_rgba(255,0,255,0.1)]'
-              }`}
+            className="px-4 py-1.5 text-xs font-cyber font-bold border border-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)] text-black hover:bg-[var(--cyber-neon-pink)]/90 transition-all flex items-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed rounded-md shadow-[0_0_15px_rgba(255,0,255,0.4)]"
           >
             <Zap className={`w-3.5 h-3.5 ${isGenerating ? 'animate-spin' : ''}`} />
             {isGenerating ? 'GENERATING...' : 'GENERATE_FAUX_DATA'}

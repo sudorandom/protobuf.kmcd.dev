@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { SyntaxHighlighter } from './Common';
 import { type CompilationError } from '../../utils/wasm-parser';

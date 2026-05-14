@@ -1,6 +1,39 @@
 import { createFileRegistry, fromBinary, type Registry } from "@bufbuild/protobuf";
-import { FileDescriptorSetSchema } from "@bufbuild/protobuf/wkt";
+import { 
+  FileDescriptorSetSchema, 
+  file_google_protobuf_any,
+  file_google_protobuf_api,
+  file_google_protobuf_descriptor,
+  file_google_protobuf_duration,
+  file_google_protobuf_empty,
+  file_google_protobuf_field_mask,
+  file_google_protobuf_source_context,
+  file_google_protobuf_struct,
+  file_google_protobuf_timestamp,
+  file_google_protobuf_type,
+  file_google_protobuf_wrappers,
+} from "@bufbuild/protobuf/wkt";
+import { file_buf_validate_validate } from "../gen/buf/validate/validate_pb";
 import { type CompilationError, parseWithWasm } from "./wasm-parser";
+
+/**
+ * Standard Protobuf files that are always available to satisfy imports.
+ * The order is important: dependencies must appear before the files that import them.
+ */
+const standardFiles = [
+  file_google_protobuf_descriptor.proto,
+  file_google_protobuf_any.proto,
+  file_google_protobuf_duration.proto,
+  file_google_protobuf_empty.proto,
+  file_google_protobuf_field_mask.proto,
+  file_google_protobuf_source_context.proto,
+  file_google_protobuf_struct.proto,
+  file_google_protobuf_timestamp.proto,
+  file_google_protobuf_wrappers.proto,
+  file_google_protobuf_type.proto,
+  file_google_protobuf_api.proto,
+  file_buf_validate_validate.proto,
+];
 
 /**
  * Result of creating a dynamic registry.
@@ -25,7 +58,17 @@ export async function createDynamicRegistry(protoSource: string): Promise<Regist
 
   console.log("createDynamicRegistry: Successfully parsed to FileDescriptorSet");
   const fileDescriptorSet = result.fileDescriptorSet;
-  const registry = createFileRegistry(fromBinary(FileDescriptorSetSchema, fileDescriptorSet));
+  const fds = fromBinary(FileDescriptorSetSchema, fileDescriptorSet);
+  
+  // Create a registry containing all standard files plus the newly parsed files.
+  // We put standard files first to ensure they are available as dependencies.
+  const registry = createFileRegistry({
+    $typeName: "google.protobuf.FileDescriptorSet",
+    file: [
+      ...standardFiles,
+      ...fds.file,
+    ],
+  });
 
   const file = registry.getFile("input.proto");
   if (!file) {

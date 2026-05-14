@@ -1,5 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useMemo } from 'react';
 import {
   Settings,
   Combine,
@@ -12,7 +11,6 @@ import {
   Code2,
   SearchCheck,
   Zap,
-  X,
   CheckCircle2
 } from 'lucide-react';
 import { fromJson, type DescMessage } from '@bufbuild/protobuf';
@@ -24,150 +22,45 @@ import {
   ExternalLinkText,
   SyntaxHighlighter
 } from '../components/shared/Common';
-import { SchemaEditor } from '../components/shared/SchemaEditor';
 import { JsonEditor } from '../components/shared/JsonEditor';
-import { createDynamicRegistry } from '../utils/dynamic-registry';
-import { generateFake, type CompilationError } from '../utils/wasm-parser';
+import { generateFake } from '../utils/wasm-parser';
+import { InteractiveSchemaEditor } from '../components/shared/InteractiveSchemaEditor';
 
-export const DeepDiveSection = () => {
-  const [activeTab, setActiveTab] = useState('options');
-
-  const tabs = [
-    {
-      id: 'options',
-      label: 'Standard Options',
-      icon: Settings,
-      title: 'Built-in Options',
-      desc: (
-        <div className="space-y-4">
-          <p>
-            Protobuf comes with a wide range of built-in "options" that control everything from how code is generated to how data is mapped to JSON.
-          </p>
-          <p>
-            Options are categorized by their scope: <strong>File</strong> (affects the whole file), <strong>Message</strong>, <strong>Field</strong>, or <strong>Service</strong>.
-          </p>
-          <ul className="list-disc pl-4 space-y-1 text-sm">
-            <li><code>option go_package</code>: Defines the import path for generated Go code.</li>
-            <li><code>[deprecated = true]</code>: Marks a field as old/risky to use.</li>
-            <li><code>[json_name = "custom"]</code>: Changes the key used in JSON serialization.</li>
-          </ul>
+const TopicSection = ({ id, icon, title, subtitle, panelTitle, desc, example, bgClass = "bg-[var(--section-bg-dark)]" }: {
+  id: string,
+  icon: React.ElementType,
+  title: string,
+  subtitle: string,
+  panelTitle: string,
+  desc: React.ReactNode,
+  example: string,
+  bgClass?: string
+}) => (
+  <Section id={id} className={`py-24 px-4 sm:px-8 border-t border-[var(--border-light)] ${bgClass}`}>
+    <div className="max-w-7xl mx-auto">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start scroll-mt-24">
+        <div className="space-y-6">
+          <SectionTitle icon={icon} subtitle={subtitle}>{title}</SectionTitle>
+          <div className="text-[var(--text-dim)] leading-relaxed text-sm">{desc}</div>
         </div>
-      ),
-      example: 'edition = "2023";\n\n// File-level option\noption go_package = "github.com/example/v1";\n\nmessage User {\n  // Field-level options\n  string user_id = 1 [json_name = "uid"];\n  string old_field = 2 [deprecated = true];\n}'
-    },
-    {
-      id: 'annotations',
-      label: 'Custom Extensions',
-      icon: Combine,
-      title: 'Custom Options',
-      desc: (
-        <div className="space-y-4">
-          <p>
-            Protobuf schemas are extensible. You can define custom "options" (often called annotations) to attach metadata to messages, fields, or services.
-          </p>
-          <p>
-            These options provide instructions to compiler plugins (like generating validation code) or are read dynamically at runtime via reflection.
-          </p>
-          <div className="p-3 bg-[var(--cyber-neon-blue)]/10 border border-[var(--cyber-neon-blue)]/20 rounded text-xs space-y-2">
-            <p><strong><span className="text-[var(--cyber-neon-blue)]">Historical Note:</span></strong> Custom options were originally a <code>proto2</code> feature that uses the <code>extend</code> keyword. While <code>proto3</code> removed general-purpose extensions, it kept them for descriptor objects specifically so options would continue to work.</p>
-            <p><strong><span className="text-[var(--cyber-neon-green)]">The Future:</span></strong> In <strong>Protobuf Editions</strong> (2023+), this distinction is removed. Editions allow native definition of options and introduce <code>features</code>, a specialized type of option used by the compiler itself to control behavior.</p>
+        <CyberPanel title={panelTitle} className="h-full">
+          <div className="p-2">
+            <SyntaxHighlighter language="proto" code={example} wrap={true} />
           </div>
-        </div>
-      ),
-      example: '// options.proto (Must be proto2 to define)\nsyntax = "proto2";\nimport "google/protobuf/descriptor.proto";\n\nextend google.protobuf.FieldOptions {\n  optional bool is_pii = 50001;\n}\n\n// user.proto (Modern Edition)\nedition = "2023";\nimport "options.proto";\n\nmessage User {\n  string ssn = 1 [(is_pii) = true];\n}'
-    },
-    {
-      id: 'breaking',
-      label: 'Breaking Changes',
-      icon: AlertTriangle,
-      title: 'The Three Levels of Breakage',
-      desc: (
-        <div className="space-y-4">
-          <p>Not all breaking changes are equal. Protobuf has three distinct layers of compatibility:</p>
-          <ul className="list-disc pl-4 space-y-2 text-sm">
-            <li><strong>Wire Breakage:</strong> Changing a field number or using an incompatible type (e.g., <code>string</code> to <code>int32</code>). Causes catastrophic data corruption. <em>Never do this.</em></li>
-            <li><strong>JSON Breakage:</strong> Renaming a field. It's safe on the wire, but clients expecting the old JSON key will fail. You can mitigate this using the <code>[json_name="old_name"]</code> annotation.</li>
-            <li><strong>Code Breakage:</strong> Changing a type in a wire-compatible way (e.g., <code>int32</code> to <code>int64</code>). The data transmits safely, but when developers update their generated code, their builds will fail until they update their types.</li>
-          </ul>
-        </div>
-      ),
-      example: 'message Event {\n  // Safe on wire, breaks JSON clients\n  // unless you use json_name:\n  string user_id = 1 [json_name="uid"];\n\n  // Wire compatible, breaks builds\n  // (from int32 to int64)\n  int64 count = 2;\n}'
-    },
-    {
-      id: 'lifecycle',
-      label: 'Deprecation',
-      icon: ShieldCheck,
-      title: 'Evolving Schemas Safely',
-      desc: (
-        <div className="space-y-4">
-          <p>
-            You can never truly delete a field if it was ever in production. Instead, you manage its lifecycle:
-          </p>
-          <ol className="list-decimal pl-4 space-y-2 text-sm">
-            <li><strong>Deprecate:</strong> Add <code>[deprecated = true]</code>. This warns developers in their IDEs (via generated code annotations like <code>@Deprecated</code>) not to use it for new features.</li>
-            <li><strong>Stop Using:</strong> Wait until metrics show zero traffic using the field.</li>
-            <li><strong>Reserve:</strong> Remove the field entirely and add its number/name to a <code>reserved</code> block. This prevents future developers from accidentally reusing the number and corrupting old data that might still be in a database.</li>
-          </ol>
-        </div>
-      ),
-      example: 'message Product {\n  // Step 3: Block reuse permanently\n  reserved 1, "old_price";\n\n  // Step 1: Warn developers\n  int32 price_cents = 2 [deprecated = true];\n\n  // The new way\n  int64 price_micros = 3;\n}'
-    }
-  ];
-
-  const current = tabs.find(t => t.id === activeTab)!;
-
-  return (
-    <Section id="deepdive" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)]/20 border-t border-[var(--border-light)]">
-      <div className="max-w-7xl mx-auto">
-        <SectionTitle icon={Layers} subtitle="03b_ENGINEERING">Schema Engineering</SectionTitle>
-
-        <div className="flex flex-col lg:flex-row gap-12 min-h-[400px]">
-          {/* Left Nav */}
-          <div className="w-full lg:w-64 flex flex-col gap-2">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-4 p-4 rounded-lg border transition-all text-left group ${activeTab === tab.id
-                  ? 'bg-[var(--cyber-neon-green)] border-[var(--cyber-neon-green)] text-black shadow-[0_0_15px_rgba(0,255,159,0.3)]'
-                  : 'bg-[var(--overlay-bg)] border-[var(--border-light)] text-[var(--text-dim)] hover:border-white/20 hover:text-[var(--text-color)]'
-                  }`}
-              >
-                <tab.icon className={`w-5 h-5 ${activeTab === tab.id ? 'text-black' : 'text-[var(--text-dim)] group-hover:text-[var(--text-dim)]'}`} />
-                <span className="font-cyber font-bold text-sm tracking-widest uppercase">{tab.label}</span>
-              </button>
-            ))}
-          </div>
-
-          {/* Content Area */}
-          <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
-            <div className="space-y-6">
-              <div className="space-y-2">
-                <h3 className="text-2xl font-cyber font-bold text-[var(--text-color)] uppercase">{current.title}</h3>
-                <div className="text-[var(--text-dim)] leading-relaxed text-sm">{current.desc}</div>
-              </div>
-            </div>
-            <CyberPanel title="SCHEMA_EXAMPLE" className="h-full">
-              <div className="p-2">
-                <SyntaxHighlighter language="proto" code={current.example} wrap={true} />
-              </div>
-            </CyberPanel>
-          </div>
-        </div>
+        </CyberPanel>
       </div>
-    </Section>
-  );
-};
+    </div>
+  </Section>
+);
 
 export const AdvancedProtobuf = () => {
-  const [activeTab, setActiveTab] = useState('imports');
-
-  const tabs = [
+  const topics = [
     {
       id: 'imports',
-      label: 'Imports',
       icon: FileCode,
-      title: 'Dependency Management',
+      title: 'Imports',
+      subtitle: '03a_DEPENDENCIES',
+      panelTitle: 'DEPENDENCY_SCHEMA',
       desc: (
         <div className="space-y-4">
           <p>
@@ -190,9 +83,10 @@ export const AdvancedProtobuf = () => {
     },
     {
       id: 'wkt',
-      label: 'Well-Known Types',
       icon: Database,
-      title: 'Standardized Structures',
+      title: 'Well-Known Types',
+      subtitle: '03b_STANDARDS',
+      panelTitle: 'WKT_EXAMPLES',
       desc: (
         <div className="space-y-4">
           <p>
@@ -212,9 +106,10 @@ export const AdvancedProtobuf = () => {
     },
     {
       id: 'any',
-      label: 'The Any Type',
       icon: Package,
-      title: 'Arbitrary Payloads',
+      title: 'The Any Type',
+      subtitle: '03c_DYNAMIC_DATA',
+      panelTitle: 'ANY_PAYLOAD',
       desc: (
         <div className="space-y-4">
           <p>
@@ -232,9 +127,10 @@ export const AdvancedProtobuf = () => {
     },
     {
       id: 'fieldmask',
-      label: 'FieldMask',
       icon: ShieldCheck,
-      title: 'Partial Updates',
+      title: 'FieldMask',
+      subtitle: '03d_PARTIAL_UPDATES',
+      panelTitle: 'UPDATE_MASK_SCHEMA',
       desc: (
         <div className="space-y-4">
           <p>
@@ -252,36 +148,17 @@ export const AdvancedProtobuf = () => {
     },
     {
       id: 'compat',
-      label: 'Compatibility',
       icon: Combine,
-      title: 'Evolvable Contracts',
+      title: 'Breaking Changes',
+      subtitle: '03e_COMPATIBILITY_CLI',
+      panelTitle: 'CLI_BREAKING_CHECK',
       desc: (
         <div className="space-y-4">
           <p>
             Protobuf is strictly designed for forward and backward compatibility. However, there are strict rules about what you <strong>CANNOT</strong> change.
           </p>
-          <div className="grid grid-cols-1 gap-4">
-            <div className="p-4 bg-[var(--text-error)]/5 border border-[var(--text-error)]/20 rounded text-xs space-y-3">
-              <p className="font-bold text-[var(--text-error)]">Wire-Breaking (NEVER DO THIS):</p>
-              <ul className="list-disc pl-4 space-y-1 text-[var(--text-color)]">
-                <li>Changing a <strong>Field Number</strong> (e.g., moving <code>id</code> from 1 to 2).</li>
-                <li>Reusing a <strong>Field Number</strong> for a new field without reserving it first, leading to data corruption for old clients.</li>
-                <li>Changing a field type to an incompatible wire type (e.g., <code>string</code> to <code>int32</code>).</li>
-                <li>Changing the type of a field in a way that changes its binary representation (e.g., <code>int32</code> to <code>fixed32</code>).</li>
-              </ul>
-            </div>
-            <div className="p-4 bg-[var(--cyber-neon-green)]/5 border border-[var(--cyber-neon-green)]/20 rounded text-xs space-y-3">
-              <p className="font-bold text-[var(--cyber-neon-green)]">Safe Operations:</p>
-              <ul className="list-disc pl-4 space-y-1 text-[var(--text-color)]">
-                <li>Adding new fields with <strong>new numbers</strong>.</li>
-                <li>Renaming a field (this may break JSON clients, but is safe on the wire).</li>
-                <li>Deleting a field (as long as you use the <code>reserved</code> keyword to prevent future reuse of its number/name).</li>
-                <li>Changing between compatible types (e.g., <code>int32</code> to <code>int64</code>).</li>
-              </ul>
-            </div>
-          </div>
           <p>
-            As long as you follow these rules, old clients can read new messages (ignoring unknown fields), and new clients can read old messages (using default values for missing fields).
+            As long as you follow the rules, old clients can read new messages (ignoring unknown fields), and new clients can read old messages (using default values for missing fields).
           </p>
           <div className="p-3 bg-[var(--cyber-neon-blue)]/10 border border-[var(--cyber-neon-blue)]/20 rounded text-xs space-y-2">
             <p className="font-bold text-[var(--cyber-neon-blue)]">Automated Enforcement</p>
@@ -295,32 +172,28 @@ export const AdvancedProtobuf = () => {
     },
     {
       id: 'linting',
-      label: 'Linting',
       icon: SearchCheck,
-      title: 'Enforcing Standards',
+      title: 'Linting',
+      subtitle: '03f_STANDARDS_CLI',
+      panelTitle: 'CLI_LINT_CHECK',
       desc: (
         <div className="space-y-4">
           <p>
             Linting ensures your schemas are consistent, readable, and follow industry best practices. This is vital in large organizations where hundreds of developers might be defining messages.
           </p>
           <p>
-            Tools like <ExternalLinkText href="https://buf.build/">Buf</ExternalLinkText> and <ExternalLinkText href="https://github.com/yoheimuta/protolint">protolint</ExternalLinkText> enforce rules such as:
+            Tools like <ExternalLinkText href="https://buf.build/">Buf</ExternalLinkText> and <ExternalLinkText href="https://github.com/yoheimuta/protolint">protolint</ExternalLinkText> enforce rules such as snake_case field names, PascalCase message names, and documentation requirements.
           </p>
-          <ul className="list-disc pl-4 space-y-2 text-sm text-[var(--text-color)]">
-            <li><strong>Naming:</strong> Fields should be <code>snake_case</code>, messages should be <code>PascalCase</code>.</li>
-            <li><strong>Structure:</strong> Enforce the use of <code>package</code> statements and directory matching.</li>
-            <li><strong>Documentation:</strong> Require comments on all public messages and fields.</li>
-            <li><strong>Best Practices:</strong> Avoid using <code>required</code> (in proto2) or deeply nested messages.</li>
-          </ul>
         </div>
       ),
       example: '// Run linter\n$ buf lint\n\n// Output:\n// user.proto:5:1: Field name "userID" should be\n//   lower_snake_case, such as "user_id".\n// user.proto:8:1: Message "user" should be\n//   PascalCase, such as "User".'
     },
     {
       id: 'editions',
-      label: 'Editions',
       icon: Code2,
-      title: 'Protobuf Editions',
+      title: 'Editions',
+      subtitle: '03g_FUTURE',
+      panelTitle: 'EDITION_CONFIG',
       desc: (
         <div className="space-y-4">
           <p>
@@ -335,48 +208,21 @@ export const AdvancedProtobuf = () => {
     }
   ];
 
-  const current = tabs.find(t => t.id === activeTab)!;
-
   return (
-    <Section id="advanced" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-dark)] border-t border-[var(--border-light)]">
-      <div className="max-w-7xl mx-auto">
-        <SectionTitle icon={Layers} subtitle="03_ADVANCED">Advanced Protobuf</SectionTitle>
-
-        <div className="flex flex-col-reverse lg:flex-row gap-12 min-h-[400px]">
-          {/* Content Area */}
-          <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
-            <div className="space-y-6">
-              <div className="space-y-2">
-                <h3 className="text-2xl font-cyber font-bold text-[var(--text-color)] uppercase">{current.title}</h3>
-                <div className="text-[var(--text-dim)] leading-relaxed text-sm">{current.desc}</div>
-              </div>
-            </div>
-            <CyberPanel title={current.id === 'checks' ? 'TERMINAL_OUTPUT' : 'EXAMPLE_DEFINITION'} className="h-full">
-              <div className="p-2">
-                <SyntaxHighlighter language="proto" code={current.example} wrap={true} />
-              </div>
-            </CyberPanel>
-          </div>
-
-          {/* Right Nav */}
-          <div className="w-full lg:w-64 flex flex-col gap-2">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-4 p-4 rounded-lg border transition-all text-left group ${activeTab === tab.id
-                  ? 'bg-[var(--cyber-neon-pink)] border-[var(--cyber-neon-pink)] text-black shadow-[0_0_15px_rgba(255,0,255,0.3)]'
-                  : 'bg-[var(--overlay-bg)] border-[var(--border-light)] text-[var(--text-dim)] hover:border-white/20 hover:text-[var(--text-color)]'
-                  }`}
-              >
-                <tab.icon className={`w-5 h-5 ${activeTab === tab.id ? 'text-black' : 'text-[var(--text-dim)] group-hover:text-[var(--text-dim)]'}`} />
-                <span className="font-cyber font-bold text-sm tracking-widest uppercase">{tab.label}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-    </Section>
+    <>
+      {topics.map((topic) => (
+        <TopicSection
+          key={topic.id}
+          id={topic.id}
+          icon={topic.icon}
+          title={topic.title}
+          subtitle={topic.subtitle}
+          panelTitle={topic.panelTitle}
+          desc={topic.desc}
+          example={topic.example}
+        />
+      ))}
+    </>
   );
 };
 
@@ -384,7 +230,7 @@ export const DescriptorsAndReflection = () => (
   <Section id="reflection" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]">
     <div className="max-w-7xl mx-auto space-y-16">
       <div>
-        <SectionTitle icon={Code2} subtitle="03a_REFLECTION">Descriptors & Reflection</SectionTitle>
+        <SectionTitle icon={Code2} subtitle="03h_REFLECTION">Descriptors & Reflection</SectionTitle>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           <div className="space-y-6 text-[var(--text-color)]">
             <h3 className="text-xl font-cyber font-bold text-[var(--text-color)] uppercase">Schemas Describing Schemas</h3>
@@ -446,6 +292,112 @@ export const DescriptorsAndReflection = () => (
   </Section>
 );
 
+export const SchemaEngineering = () => {
+  const topics = [
+    {
+      id: 'options',
+      icon: Settings,
+      title: 'Standard Options',
+      subtitle: '03i_BUILTINS',
+      panelTitle: 'OPTIONS_SNIPPET',
+      desc: (
+        <div className="space-y-4">
+          <p>
+            Protobuf comes with a wide range of built-in "options" that control everything from how code is generated to how data is mapped to JSON.
+          </p>
+          <p>
+            Options are categorized by their scope: <strong>File</strong> (affects the whole file), <strong>Message</strong>, <strong>Field</strong>, or <strong>Service</strong>.
+          </p>
+          <ul className="list-disc pl-4 space-y-1 text-sm">
+            <li><code>option go_package</code>: Defines the import path for generated Go code.</li>
+            <li><code>[deprecated = true]</code>: Marks a field as old/risky to use.</li>
+            <li><code>[json_name = "custom"]</code>: Changes the key used in JSON serialization.</li>
+          </ul>
+        </div>
+      ),
+      example: 'edition = "2023";\n\n// File-level option\noption go_package = "github.com/example/v1";\n\nmessage User {\n  // Field-level options\n  string user_id = 1 [json_name = "uid"];\n  string old_field = 2 [deprecated = true];\n}'
+    },
+    {
+      id: 'annotations',
+      icon: Combine,
+      title: 'Custom Extensions',
+      subtitle: '03j_ANNOTATIONS',
+      panelTitle: 'CUSTOM_ANNOTATIONS',
+      desc: (
+        <div className="space-y-4">
+          <p>
+            Protobuf schemas are extensible. You can define custom "options" (often called annotations) to attach metadata to messages, fields, or services.
+          </p>
+          <p>
+            These options provide instructions to compiler plugins (like generating validation code) or are read dynamically at runtime via reflection.
+          </p>
+          <div className="p-3 bg-[var(--cyber-neon-blue)]/10 border border-[var(--cyber-neon-blue)]/20 rounded text-xs space-y-2">
+            <p><strong><span className="text-[var(--cyber-neon-blue)]">Historical Note:</span></strong> Custom options were originally a <code>proto2</code> feature that uses the <code>extend</code> keyword. While <code>proto3</code> removed general-purpose extensions, it kept them for descriptor objects specifically so options would continue to work.</p>
+            <p><strong><span className="text-[var(--cyber-neon-green)]">The Future:</span></strong> In <strong>Protobuf Editions</strong> (2023+), this distinction is removed. Editions allow native definition of options and introduce <code>features</code>, a specialized type of option used by the compiler itself to control behavior.</p>
+          </div>
+        </div>
+      ),
+      example: '// options.proto (Must be proto2 to define)\nsyntax = "proto2";\nimport "google/protobuf/descriptor.proto";\n\nextend google.protobuf.FieldOptions {\n  optional bool is_pii = 50001;\n}\n\n// user.proto (Modern Edition)\nedition = "2023";\nimport "options.proto";\n\nmessage User {\n  string ssn = 1 [(is_pii) = true];\n}'
+    },
+    {
+      id: 'breaking-levels',
+      icon: AlertTriangle,
+      title: 'Levels of Breakage',
+      subtitle: '03k_COMPATIBILITY',
+      panelTitle: 'BREAKAGE_ANALYSIS',
+      desc: (
+        <div className="space-y-4">
+          <p>Not all breaking changes are equal. Protobuf has three distinct layers of compatibility:</p>
+          <ul className="list-disc pl-4 space-y-2 text-sm">
+            <li><strong>Wire Breakage:</strong> Changing a field number or using an incompatible type (e.g., <code>string</code> to <code>int32</code>). Causes catastrophic data corruption. <em>Never do this.</em></li>
+            <li><strong>JSON Breakage:</strong> Renaming a field. It's safe on the wire, but clients expecting the old JSON key will fail. You can mitigate this using the <code>[json_name="old_name"]</code> annotation.</li>
+            <li><strong>Code Breakage:</strong> Changing a type in a wire-compatible way (e.g., <code>int32</code> to <code>int64</code>). The data transmits safely, but when developers update their generated code, their builds will fail until they update their types.</li>
+          </ul>
+        </div>
+      ),
+      example: 'message Event {\n  // Safe on wire, breaks JSON clients\n  // unless you use json_name:\n  string user_id = 1 [json_name="uid"];\n\n  // Wire compatible, breaks builds\n  // (from int32 to int64)\n  int64 count = 2;\n}'
+    },
+    {
+      id: 'lifecycle',
+      icon: ShieldCheck,
+      title: 'Deprecation',
+      subtitle: '03l_EVOLUTION',
+      panelTitle: 'LIFECYCLE_SCHEMA',
+      desc: (
+        <div className="space-y-4">
+          <p>
+            You can never truly delete a field if it was ever in production. Instead, you manage its lifecycle:
+          </p>
+          <ol className="list-decimal pl-4 space-y-2 text-sm">
+            <li><strong>Deprecate:</strong> Add <code>[deprecated = true]</code>. This warns developers in their IDEs (via generated code annotations like <code>@Deprecated</code>) not to use it for new features.</li>
+            <li><strong>Stop Using:</strong> Wait until metrics show zero traffic using the field.</li>
+            <li><strong>Reserve:</strong> Remove the field entirely and add its number/name to a <code>reserved</code> block. This prevents future developers from accidentally reusing the number and corrupting old data that might still be in a database.</li>
+          </ol>
+        </div>
+      ),
+      example: 'message Product {\n  // Step 3: Block reuse permanently\n  reserved 1, "old_price";\n\n  // Step 1: Warn developers\n  int32 price_cents = 2 [deprecated = true];\n\n  // The new way\n  int64 price_micros = 3;\n}'
+    }
+  ];
+
+  return (
+    <>
+      {topics.map((topic) => (
+        <TopicSection
+          key={topic.id}
+          id={topic.id}
+          icon={topic.icon}
+          title={topic.title}
+          subtitle={topic.subtitle}
+          panelTitle={topic.panelTitle}
+          desc={topic.desc}
+          example={topic.example}
+          bgClass="bg-[var(--section-bg-alt)]/20"
+        />
+      ))}
+    </>
+  );
+};
+
 const VALIDATION_EXAMPLES = {
   VALID: {
     id: "550e8400-e29b-41d4-a716-446655440000",
@@ -480,130 +432,13 @@ const VALIDATION_EXAMPLES = {
   }
 };
 
-const SchemaEditorModal = ({ isOpen, onClose, value, onApply }: {
-  isOpen: boolean,
-  onClose: () => void,
-  value: string,
-  onApply: (s: string) => void
-}) => {
-  const [localValue, setLocalValue] = useState(value);
-  const [localErrors, setLocalErrors] = useState<CompilationError[]>([]);
-  const [isValidating, setIsValidating] = useState(false);
-
-  useEffect(() => {
-    if (!isOpen) return;
-
-    let isMounted = true;
-    const timer = setTimeout(async () => {
-      setIsValidating(true);
-      try {
-        const result = await createDynamicRegistry(localValue);
-        if (isMounted) {
-          if (result.kind === "success") {
-            setLocalErrors([]);
-          } else {
-            setLocalErrors(result.errors);
-          }
-        }
-      } catch (e) {
-        console.error("Local validation failed:", e);
-      } finally {
-        if (isMounted) {
-          setIsValidating(false);
-        }
-      }
-    }, 500);
-
-    return () => {
-      isMounted = false;
-      clearTimeout(timer);
-    };
-  }, [localValue, isOpen]);
-
-  if (!isOpen) return null;
-
-  return (
-    <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 md:p-8">
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        onClick={onClose}
-        className="absolute inset-0 bg-black/80 backdrop-blur-sm"
-      />
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.95, y: 20 }}
-        className="relative w-full max-w-5xl bg-[var(--panel-bg)] border border-[var(--cyber-neon-blue)]/30 rounded-xl overflow-hidden shadow-[0_0_50px_rgba(0,243,255,0.1)] flex flex-col max-h-[90vh]"
-      >
-        <div className="p-4 border-b border-[var(--border-light)] flex items-center justify-between bg-[var(--overlay-bg)]">
-          <div className="flex items-center gap-3">
-            <Settings className="w-5 h-5 text-[var(--cyber-neon-blue)]" />
-            <h2 className="font-cyber font-bold text-[var(--text-color)] uppercase tracking-wider">Edit_Protobuf_Schema</h2>
-            {isValidating && (
-              <div className="flex items-center gap-2 ml-4">
-                <div className="w-2 h-2 bg-[var(--cyber-neon-blue)] rounded-full animate-pulse" />
-                <span className="text-xs font-mono text-[var(--cyber-neon-blue)]/80 uppercase tracking-widest">Validating...</span>
-              </div>
-            )}
-          </div>
-          <button onClick={onClose} className="p-2 hover:bg-[var(--border-light)] rounded-lg transition-colors group">
-            <X className="w-5 h-5 text-[var(--text-dim)] group-hover:text-[var(--text-color)]" />
-          </button>
-        </div>
-
-        <div className="flex-1 overflow-hidden p-4">
-          <SchemaEditor value={localValue} onChange={setLocalValue} errors={localErrors} />
-          {localErrors.length > 0 && (
-            <div className="mt-4 space-y-2 overflow-y-auto max-h-32">
-              {localErrors.map((err, i) => (
-                <div key={i} className="p-3 bg-[var(--text-error)]/10 border border-[var(--text-error)]/30 rounded text-[var(--text-error)] text-xs font-mono">
-                  [LINE {err.line}] {err.message}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        <div className="p-4 bg-[var(--overlay-bg)] border-t border-[var(--border-light)] flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="text-xs text-[var(--text-dim)]">
-            <ExternalLinkText href="https://protovalidate.com/schemas/standard-rules/">View Standard Rules Documentation</ExternalLinkText>
-          </div>
-          <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
-            <button
-              onClick={onClose}
-              className="w-full md:w-auto px-6 py-2 border border-[var(--border-light)] text-[var(--text-dim)] font-cyber font-bold hover:bg-[var(--overlay-bg)] hover:text-[var(--text-color)] transition-all text-xs rounded-md"
-            >
-              CANCEL
-            </button>
-            <button
-              onClick={() => {
-                if (localErrors.length === 0) {
-                  onApply(localValue);
-                  onClose();
-                }
-              }}
-              disabled={localErrors.length > 0 || isValidating}
-              className="w-full md:w-auto px-6 sm:px-10 py-2 bg-[var(--cyber-neon-blue)] border border-[var(--cyber-neon-blue)] text-black font-cyber font-bold hover:bg-[var(--cyber-neon-blue)]/90 transition-all text-xs shadow-[0_0_20px_rgba(0,243,255,0.4)] disabled:opacity-30 disabled:cursor-not-allowed rounded-md"
-            >
-              APPLY_CHANGES
-            </button>
-          </div>
-        </div>
-      </motion.div>
-    </div>
-  );
-};
-
 export const ValidationLab = ({ messageSchema, fds, protoSource, setProtoSource }: {
   messageSchema: DescMessage | null,
   fds: Uint8Array | null,
   protoSource: string,
   setProtoSource: (s: string) => void
 }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [activeExample, setActiveExample] = useState<keyof typeof VALIDATION_EXAMPLES>('VALID');
+  const [activeExample, setActiveExample] = useState<keyof typeof VALIDATION_EXAMPLES | null>('VALID');
   const [jsonInput, setJsonInput] = useState(JSON.stringify(VALIDATION_EXAMPLES.VALID, null, 2));
 
   const handleExampleChange = (key: keyof typeof VALIDATION_EXAMPLES) => {
@@ -627,87 +462,68 @@ export const ValidationLab = ({ messageSchema, fds, protoSource, setProtoSource 
   }, [jsonInput, validator, messageSchema]);
 
   return (
-    <Section id="validation" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]">
+    <Section id="validation" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-dark)] border-t border-[var(--border-light)]">
       <div className="max-w-7xl mx-auto">
-        <SectionTitle icon={ShieldCheck} subtitle="03c_PROTOVALIDATE">Data Validation</SectionTitle>
+        <SectionTitle icon={ShieldCheck} subtitle="03m_PROTOVALIDATE">Data Validation</SectionTitle>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-          <div className="space-y-6">
-            <h3 className="text-xl font-cyber font-bold text-[var(--text-color)] uppercase">The Source of Truth</h3>
-            <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+        <div className="mb-16 space-y-12">
+          <div className="space-y-6 max-w-4xl">
+            <h3 className="text-2xl font-cyber font-bold text-[var(--text-color)] uppercase">The Source of Truth</h3>
+            <p className="text-[var(--text-dim)] leading-relaxed">
               Protobuf goes beyond simple types. With <ExternalLinkText href="https://protovalidate.com/"><strong>protovalidate</strong></ExternalLinkText>, you can embed complex business rules directly into your schema using <ExternalLinkText href="https://cel.dev/"><strong>CEL</strong></ExternalLinkText>.
             </p>
-            <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+            <p className="text-[var(--text-dim)] leading-relaxed">
               Define constraints like <code>min_len</code>, <code>email</code>, or custom rules to ensure your data adheres to the contract across all services.
             </p>
-
-            <CyberPanel
-              title="SCHEMA_EDITOR (.proto)"
-              headerExtra={
-                <button
-                  onClick={() => setIsModalOpen(true)}
-                  className="flex items-center gap-2 text-xs font-cyber font-bold text-[var(--cyber-neon-blue)] hover:text-[var(--cyber-neon-blue)]/80 transition-colors uppercase"
-                >
-                  <Settings className="w-3 h-3" />
-                  OPEN_EDITOR
-                </button>
-              }
-            >
-              <div className="h-64 overflow-hidden relative group cursor-pointer" onClick={() => setIsModalOpen(true)}>
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100 z-10 backdrop-blur-none group-hover:backdrop-blur-[2px]">
-                  <span className="px-5 py-2.5 bg-[var(--cyber-neon-blue)] border border-[var(--cyber-neon-blue)] text-black font-cyber font-bold text-xs shadow-[0_0_20px_rgba(0,243,255,0.4)] rounded-md">EDIT_SCHEMA</span>
-                </div>
-                <div className="p-4 opacity-80 grayscale group-hover:opacity-20 transition-all duration-300">
-                  <SyntaxHighlighter language="proto" code={protoSource} wrap />
-                </div>
-              </div>
-            </CyberPanel>
-
-            <SchemaEditorModal
-              key={isModalOpen ? `open-${protoSource}` : 'closed'}
-              isOpen={isModalOpen}
-              onClose={() => setIsModalOpen(false)}
-              value={protoSource}
-              onApply={setProtoSource}
-            />
-
           </div>
 
+          <InteractiveSchemaEditor
+            initialValue={protoSource}
+            onApply={setProtoSource}
+            title="SCHEMA_EDITOR (.proto)"
+          />
+        </div>
+
+        <div className="space-y-8 mb-16 pt-16 border-t border-[var(--border-light)]/30">
           <div className="space-y-6">
-            <h3 className="text-xl font-cyber font-bold text-[var(--text-color)] uppercase">Interactive Playground</h3>
+            <h3 className="text-xl font-cyber font-bold text-[var(--text-color)] uppercase">Validation Playground</h3>
+            <div className="flex flex-wrap gap-4 items-center justify-between">
+              <div className="flex flex-wrap gap-2">
+                {(Object.keys(VALIDATION_EXAMPLES) as Array<keyof typeof VALIDATION_EXAMPLES>).map((key) => (
+                  <button
+                    key={key}
+                    onClick={() => handleExampleChange(key)}
+                    className={`px-3 py-1 text-xs font-cyber font-bold border transition-all rounded-md ${activeExample === key
+                      ? 'bg-[var(--cyber-neon-blue)] border-[var(--cyber-neon-blue)] text-black shadow-[0_0_10px_rgba(0,243,255,0.3)]'
+                      : 'bg-[var(--overlay-bg)] border-[var(--border-light)] text-[var(--text-dim)] hover:border-white/30 hover:text-[var(--text-color)]'
+                      }`}
+                  >
+                    {key}
+                  </button>
+                ))}
+              </div>
+              <button
+                onClick={async () => {
+                  if (!messageSchema || !fds) return;
+                  try {
+                    const fakeJson = await generateFake(messageSchema.typeName, fds);
+                    setJsonInput(fakeJson);
+                    setActiveExample(null);
+                  } catch (e) {
+                    console.error("Failed to generate faux data:", e);
+                  }
+                }}
+                disabled={!messageSchema || !fds}
+                className="px-3 py-1.5 text-xs font-cyber font-bold border border-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)] text-black hover:bg-[var(--cyber-neon-pink)]/90 transition-all flex items-center gap-1 disabled:opacity-30 rounded-md shadow-[0_0_15px_rgba(255,0,255,0.4)]"
+              >
+                <Zap className="w-3.5 h-3.5" />
+                GENERATE_DATA
+              </button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div className="space-y-4">
-              <div className="flex flex-wrap gap-2 items-center justify-between">
-                <div className="flex flex-wrap gap-2">
-                  {(Object.keys(VALIDATION_EXAMPLES) as Array<keyof typeof VALIDATION_EXAMPLES>).map((key) => (
-                    <button
-                      key={key}
-                      onClick={() => handleExampleChange(key)}
-                      className={`px-3 py-1 text-xs font-cyber font-bold border transition-all rounded-md ${activeExample === key
-                        ? 'bg-[var(--cyber-neon-blue)] border-[var(--cyber-neon-blue)] text-black shadow-[0_0_10px_rgba(0,243,255,0.3)]'
-                        : 'bg-[var(--overlay-bg)] border-[var(--border-light)] text-[var(--text-dim)] hover:border-white/30 hover:text-[var(--text-color)]'
-                        }`}
-                    >
-                      {key}
-                    </button>
-                  ))}
-                </div>
-                <button
-                  onClick={async () => {
-                    if (!messageSchema || !fds) return;
-                    try {
-                      const fakeJson = await generateFake(messageSchema.typeName, fds);
-                      setJsonInput(fakeJson);
-                      setActiveExample('VALID');
-                    } catch (e) {
-                      console.error("Failed to generate faux data:", e);
-                    }
-                  }}
-                  disabled={!messageSchema || !fds}
-                  className="px-3 py-1.5 text-xs font-cyber font-bold border border-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)] text-black hover:bg-[var(--cyber-neon-pink)]/90 transition-all flex items-center gap-1 disabled:opacity-30 rounded-md shadow-[0_0_15px_rgba(255,0,255,0.4)]"
-                >
-                  <Zap className="w-3.5 h-3.5" />
-                  GENERATE_DATA
-                </button>              </div>
               <CyberPanel title="TEST_DATA (JSON)">
                 <div className="relative h-64">
                   {validationResults.error && validationResults.error !== "NO_SCHEMA" && (
@@ -720,33 +536,35 @@ export const ValidationLab = ({ messageSchema, fds, protoSource, setProtoSource 
               </CyberPanel>
             </div>
 
-            <CyberPanel title="VALIDATION_OUTPUT">
-              <div className="h-48 overflow-y-auto space-y-4 pr-2 p-2">
-                {validationResults.error ? (
-                  <div className="p-4 bg-[var(--text-error)]/10 border border-[var(--text-error)]/30 text-[var(--text-error)] text-xs font-mono">SCHEMA_MISMATCH: {validationResults.error}</div>
-                ) : (validationResults.results?.violations?.length ?? 0) === 0 ? (
-                  <div className="flex flex-col items-center justify-center h-full gap-4 text-[var(--cyber-neon-green)]">
-                    <CheckCircle2 className="w-12 h-12" />
-                    <div className="flex flex-col items-center">
-                      <span className="font-mono text-sm uppercase tracking-widest">Validation Passed</span>
-                      <span className="text-xs text-[var(--text-dim)] mt-1 uppercase">Contract terms satisfied</span>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {validationResults.results?.violations?.map((v: Violation, i: number) => (
-                      <div key={i} className="p-3 bg-[var(--warning-bg)] border border-[var(--warning-border)] rounded flex gap-3">
-                        <AlertTriangle className="w-4 h-4 text-[var(--cyber-neon-yellow)] shrink-0" />
-                        <div className="flex flex-col gap-1">
-                          <span className="text-xs font-mono text-[var(--cyber-neon-yellow)] uppercase">{v.field.toString()}</span>
-                          <p className="text-sm text-[var(--text-color)]">{v.message}</p>
-                        </div>
+            <div className="space-y-4">
+              <CyberPanel title="RULES_ENFORCEMENT">
+                <div className="h-full min-h-[256px] max-h-[256px] overflow-y-auto space-y-4 pr-2 p-2 flex flex-col">
+                  {validationResults.error ? (
+                    <div className="p-4 bg-[var(--text-error)]/10 border border-[var(--text-error)]/30 text-[var(--text-error)] text-xs font-mono">SCHEMA_MISMATCH: {validationResults.error}</div>
+                  ) : (validationResults.results?.violations?.length ?? 0) === 0 ? (
+                    <div className="flex-1 flex flex-col items-center justify-center gap-4 text-[var(--cyber-neon-green)] py-8">
+                      <CheckCircle2 className="w-10 h-10" />
+                      <div className="flex flex-col items-center">
+                        <span className="font-mono text-sm uppercase tracking-widest">Validation Passed</span>
+                        <span className="text-xs text-[var(--text-dim)] mt-1 uppercase text-center">All contract terms satisfied</span>
                       </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </CyberPanel>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 gap-3 p-1">
+                      {validationResults.results?.violations?.map((v: Violation, i: number) => (
+                        <div key={i} className="p-3 bg-[var(--warning-bg)] border border-[var(--warning-border)] rounded flex gap-3 animate-in fade-in slide-in-from-top-2">
+                          <AlertTriangle className="w-4 h-4 text-[var(--cyber-neon-yellow)] shrink-0" />
+                          <div className="flex flex-col gap-1">
+                            <span className="text-xs font-mono text-[var(--cyber-neon-yellow)] uppercase">{v.field.toString()}</span>
+                            <p className="text-sm text-[var(--text-color)]">{v.message}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </CyberPanel>
+            </div>
           </div>
         </div>
 
@@ -774,7 +592,7 @@ const Advanced = ({ messageSchema, fds, protoSource, setProtoSource }: {
   <>
     <AdvancedProtobuf />
     <DescriptorsAndReflection />
-    <DeepDiveSection />
+    <SchemaEngineering />
     <ValidationLab messageSchema={messageSchema} fds={fds} protoSource={protoSource} setProtoSource={setProtoSource} />
   </>
 );

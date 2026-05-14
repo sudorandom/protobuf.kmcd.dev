@@ -7,6 +7,8 @@ import {
   Link as LinkIcon
 } from 'lucide-react';
 
+import { SectionIdContext } from './SectionIdContext';
+
 export const TechnicalNuance = ({ children, title = "TECHNICAL_NUANCE" }: { children: React.ReactNode, title?: string }) => (
   <div className="bg-[var(--cyber-neon-blue)]/10 border border-[var(--cyber-neon-blue)]/30 rounded-lg p-4 flex gap-4 items-start animate-in fade-in slide-in-from-top-1">
     <div className="p-2 bg-[var(--cyber-neon-blue)]/20 rounded-md">
@@ -20,8 +22,6 @@ export const TechnicalNuance = ({ children, title = "TECHNICAL_NUANCE" }: { chil
     </div>
   </div>
 );
-
-export const SectionIdContext = React.createContext<string | null>(null);
 
 export const Section = ({ id, children, className, style }: { id: string, children: React.ReactNode, className?: string, style?: React.CSSProperties }) => (
   <SectionIdContext.Provider value={id}>

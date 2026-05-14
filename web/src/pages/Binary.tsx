@@ -7,9 +7,7 @@ import {
   Zap,
   Database,
   Hash,
-  MousePointer2,
-  AlertTriangle,
-  Wand2
+  MousePointer2
 } from 'lucide-react';
 import { fromJson, toBinary, type DescMessage } from '@bufbuild/protobuf';
 import {
@@ -257,6 +255,7 @@ const WireFormatBreakdown = () => {
 };
 
 export const BinaryMatrix = ({ messageSchema, fds }: { messageSchema: DescMessage | null, fds: Uint8Array | null }) => {
+  const [activeExample, setActiveExample] = useState<keyof typeof SIZE_EXAMPLES | null>('BASIC');
   const [jsonInput, setJsonInput] = useState(JSON.stringify(SIZE_EXAMPLES.BASIC, null, 2));
   const [selectedSegmentIdx, setSelectedSegmentIdx] = useState<number | null>(0);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -283,8 +282,9 @@ export const BinaryMatrix = ({ messageSchema, fds }: { messageSchema: DescMessag
     }
   }, [stats.binary]);
 
-  const handleExampleChange = (key: string) => {
-    const example = SIZE_EXAMPLES[key as keyof typeof SIZE_EXAMPLES];
+  const handleExampleChange = (key: keyof typeof SIZE_EXAMPLES) => {
+    setActiveExample(key);
+    const example = SIZE_EXAMPLES[key];
     setJsonInput(JSON.stringify(example, null, 2));
     setSelectedSegmentIdx(0);
   };
@@ -295,6 +295,7 @@ export const BinaryMatrix = ({ messageSchema, fds }: { messageSchema: DescMessag
     try {
       const fakeData = await generateFake(messageSchema.typeName, fds);
       setJsonInput(fakeData);
+      setActiveExample(null);
       setSelectedSegmentIdx(0);
     } catch (e) {
       console.error(e);
@@ -320,35 +321,35 @@ export const BinaryMatrix = ({ messageSchema, fds }: { messageSchema: DescMessag
       <div className="max-w-7xl mx-auto">
         <SectionTitle icon={Binary} subtitle="05b_EXPLORER">Digging into the binary</SectionTitle>
 
+        <div className="flex flex-wrap gap-4 items-center justify-between mb-8">
+          <div className="flex flex-wrap gap-2">
+            {(Object.keys(SIZE_EXAMPLES) as Array<keyof typeof SIZE_EXAMPLES>).map((key) => (
+              <button
+                key={key}
+                onClick={() => handleExampleChange(key)}
+                className={`px-3 py-1 text-xs font-cyber font-bold border transition-all rounded-md ${activeExample === key
+                  ? 'bg-[var(--cyber-neon-blue)] border-[var(--cyber-neon-blue)] text-black shadow-[0_0_10px_rgba(0,243,255,0.3)]'
+                  : 'bg-[var(--overlay-bg)] border-[var(--border-light)] text-[var(--text-dim)] hover:border-white/30 hover:text-[var(--text-color)]'
+                  }`}
+              >
+                {key}
+              </button>
+            ))}
+          </div>
+          <button
+            onClick={handleGenerateFake}
+            disabled={isGenerating || !fds}
+            className="px-4 py-1.5 text-xs font-cyber font-bold border border-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)] text-black hover:bg-[var(--cyber-neon-pink)]/90 transition-all flex items-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed rounded-md shadow-[0_0_15px_rgba(255,0,255,0.4)]"
+          >
+            <Zap className={`w-3.5 h-3.5 ${isGenerating ? 'animate-spin' : ''}`} />
+            {isGenerating ? 'GENERATING...' : 'GENERATE_FAUX_DATA'}
+          </button>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Left: Input & Hex View */}
           <div className="space-y-8">
-            <CyberPanel 
-              title="JSON_INPUT" 
-              headerExtra={
-                <div className="flex items-center gap-2">
-                  <div className="flex bg-[var(--overlay-bg)] p-1 rounded border border-[var(--border-light)]">
-                    {Object.keys(SIZE_EXAMPLES).map((key) => (
-                      <button
-                        key={key}
-                        onClick={() => handleExampleChange(key)}
-                        className="px-2 py-0.5 text-[9px] font-mono rounded hover:bg-[var(--border-light)] transition-colors uppercase text-[var(--text-dim)] hover:text-[var(--text-color)]"
-                      >
-                        {key.split(' ')[0]}
-                      </button>
-                    ))}
-                  </div>
-                  <button
-                    onClick={handleGenerateFake}
-                    disabled={isGenerating || !fds}
-                    className="p-1 text-[var(--cyber-neon-blue)] hover:bg-[var(--cyber-neon-blue)]/10 rounded transition-all disabled:opacity-50"
-                    title="Generate Fake Data"
-                  >
-                    <Wand2 className={`w-4 h-4 ${isGenerating ? 'animate-spin' : ''}`} />
-                  </button>
-                </div>
-              }
-            >
+            <CyberPanel title="JSON_INPUT">
               <div className="h-64">
                 <JsonEditor value={jsonInput} onChange={setJsonInput} className="h-full rounded-none border-none bg-transparent" />
               </div>
