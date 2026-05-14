@@ -6,6 +6,7 @@ import {
   Database,
   Zap,
   ChevronRight,
+  ChevronDown,
   ChevronLeft,
   Code2,
   Binary,
@@ -456,7 +457,7 @@ const ProtobufBasics = () => {
   return (
     <Section id="basics" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-dark)] border-t border-[var(--border-light)]">
       <div className="max-w-7xl mx-auto">
-        <SectionTitle icon={BookOpen} subtitle="02_BUILDING_BLOCKS">Protobuf Basics</SectionTitle>
+        <SectionTitle icon={BookOpen} subtitle="02_BASICS">Protobuf Basics</SectionTitle>
 
         <div className="flex flex-col lg:flex-row gap-12 min-h-[400px]">
           {/* Left Nav */}
@@ -584,9 +585,9 @@ const DeepDiveSection = () => {
   const current = tabs.find(t => t.id === activeTab)!;
 
   return (
-    <Section id="deepdive" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]">
+    <Section id="deepdive" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)]/20 border-t border-[var(--border-light)]">
       <div className="max-w-7xl mx-auto">
-        <SectionTitle icon={Layers} subtitle="07_DEEP_DIVE">Schema Engineering</SectionTitle>
+        <SectionTitle icon={Layers} subtitle="03b_ENGINEERING">Schema Engineering</SectionTitle>
 
         <div className="flex flex-col lg:flex-row gap-12 min-h-[400px]">
           {/* Left Nav */}
@@ -805,9 +806,9 @@ const AdvancedProtobuf = () => {
   const current = tabs.find(t => t.id === activeTab)!;
 
   return (
-    <Section id="advanced" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]">
+    <Section id="advanced" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-dark)] border-t border-[var(--border-light)]">
       <div className="max-w-7xl mx-auto">
-        <SectionTitle icon={Layers} subtitle="05_ADVANCED_TOPICS">Advanced Protobuf</SectionTitle>
+        <SectionTitle icon={Layers} subtitle="03_ADVANCED">Advanced Protobuf</SectionTitle>
 
         <div className="flex flex-col-reverse lg:flex-row gap-12 min-h-[400px]">
           {/* Content Area */}
@@ -851,7 +852,7 @@ const DescriptorsAndReflection = () => (
   <Section id="reflection" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]">
     <div className="max-w-7xl mx-auto space-y-16">
       <div>
-        <SectionTitle icon={Code2} subtitle="06_META_SCHEMA">Descriptors & Reflection</SectionTitle>
+        <SectionTitle icon={Code2} subtitle="03a_REFLECTION">Descriptors & Reflection</SectionTitle>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           <div className="space-y-6 text-[var(--text-color)]">
             <h3 className="text-xl font-cyber font-bold text-[var(--text-color)] uppercase">Schemas Describing Schemas</h3>
@@ -1211,7 +1212,7 @@ const Introduction = ({ messageSchema, fds }: {
                   <div className="flex gap-3 p-4 bg-[var(--cyber-neon-pink)]/5 border border-[var(--cyber-neon-pink)]/10 rounded-lg animate-in fade-in slide-in-from-top-2">
                     <Terminal className="w-5 h-5 text-[var(--cyber-neon-pink)] shrink-0" />
                     <p className="text-xs text-[var(--text-dim)] leading-relaxed italic">
-                      If you're currently trying to "read" the hex block above and failing: congratulations, you're human. We'll be investigating how machines actually make sense of this chaos in the <a href="#matrix" className="text-[var(--cyber-neon-pink)] hover:underline"><strong>Digging into the binary</strong></a> section further down.
+                      If you're currently trying to "read" the hex block above and failing: congratulations, you're human. We'll be investigating how machines actually make sense of this chaos in the <a href="#matrix" className="text-[var(--cyber-neon-pink)] hover:underline"><strong>Binary</strong></a> section further down.
                     </p>
                   </div>
                 )}
@@ -1445,7 +1446,7 @@ const SizeComparison = ({ messageSchema, fileDescriptorSet }: { messageSchema: D
   return (
     <Section id="efficiency" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]">
       <div className="max-w-7xl mx-auto">
-        <SectionTitle icon={Zap} subtitle="09_PERFORMANCE_METRICS">Efficiency</SectionTitle>
+        <SectionTitle icon={Zap} subtitle="04_PERFORMANCE">Efficiency</SectionTitle>
 
         <div className="mb-12 grid grid-cols-1 md:grid-cols-2 gap-12 text-[var(--text-color)] leading-relaxed">
           <div className="space-y-4">
@@ -1579,90 +1580,86 @@ const SizeComparison = ({ messageSchema, fileDescriptorSet }: { messageSchema: D
             <li className="flex gap-2"><div className="w-1 h-1 bg-[var(--cyber-neon-blue)] mt-1.5 shrink-0"></div> Optional fields take zero space if not set.</li>
           </ul>
         </div>
+
+        <div className="mt-24 space-y-16">
+          <div className="max-w-3xl space-y-6">
+            <h3 className="text-xl sm:text-2xl md:text-3xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">Size vs. Compression</h3>
+            <p className="text-[var(--text-dim)] leading-relaxed">
+              While Protobuf provides a massive reduction in <span className="text-[var(--cyber-neon-green)] font-bold">raw payload size (typically 30-50%)</span> compared to JSON, the gap often narrows when GZIP or Brotli compression is applied. For GZIP compressed payloads, the difference is usually in the <span className="text-[var(--cyber-neon-blue)] font-bold">15-30% range</span>.
+            </p>
+            <p className="text-[var(--text-dim)] leading-relaxed">
+              However, there is a critical tradeoff: compression adds significant CPU overhead to every request. For smaller payloads, the time spent compressing and decompressing can be greater than the time saved by the smaller transfer size. In these cases, sending uncompressed Protobuf is often the most optimal path for overall latency.
+            </p>
+            <p className="text-[var(--text-dim)] leading-relaxed text-sm">
+              Protobuf shines when your data has many numbers, enums, or sparse fields. String-heavy payloads benefit less from binary encoding but still benefit from Protobuf's schema-driven performance and type safety.
+            </p>
+          </div>
+
+          <div className="space-y-8">
+            <div className="flex items-center gap-3 text-[var(--cyber-neon-blue)]">
+              <BarChart3 className="w-6 h-6" />
+              <h3 className="text-xl sm:text-2xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">The Benchmark Landscape</h3>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+              <div className="space-y-4">
+                <h4 className="text-sm font-cyber font-bold text-[var(--cyber-neon-pink)] uppercase tracking-widest">Language Matters</h4>
+                <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+                  Protobuf performance is highly dependent on the language and library implementation. In languages with native binary support like <strong>C++, Go, and Java</strong>, Protobuf can be decodes <strong>5x-10x faster</strong> than JSON.
+                </p>
+                <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+                  In interpreted languages like <strong>JavaScript (Node.js) or Python</strong>, the gap can be smaller due to the overhead of moving data between the runtime and the binary parser, though it still generally outperforms standard JSON libraries in high-throughput scenarios.
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                <h4 className="text-sm font-cyber font-bold text-[var(--cyber-neon-green)] uppercase tracking-widest">Data Type Sensitivity</h4>
+                <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+                  If your payload is 90% long strings (like blog posts), Protobuf will only save you a few percentage points of space. However, if your data is <strong>numeric-heavy</strong> (IDs, timestamps, coordinates, or metrics), Protobuf DECIMATES JSON in both size and speed.
+                </p>
+                <p className="text-sm text-[var(--text-dim)] leading-relaxed italic border-l-2 border-[var(--cyber-neon-green)]/80 pl-4">
+                  "The win isn't just bytes on the wire—it's the CPU cycles saved by not parsing millions of brackets and quotes."
+                </p>
+              </div>
+            </div>
+
+            <CyberPanel title="REPUTABLE_ENGINEERING_REPORTS">
+              <div className="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <a
+                  href="https://auth0.com/blog/beating-json-performance-with-protobuf/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg hover:border-[var(--cyber-neon-blue)]/40 transition-all"
+                >
+                  <h5 className="font-cyber text-xs text-[var(--cyber-neon-blue)] mb-2 group-hover:underline">Auth0 Engineering</h5>
+                  <p className="text-[11px] text-[var(--text-dim)] leading-relaxed">Classic deep dive comparing binary vs text overhead in real-world API requests.</p>
+                </a>
+                <a
+                  href="https://grpc.io/docs/guides/benchmarking/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg hover:border-[var(--cyber-neon-pink)]/40 transition-all"
+                >
+                  <h5 className="font-cyber text-xs text-[var(--cyber-neon-pink)] mb-2 group-hover:underline">Official gRPC Benchmarks</h5>
+                  <p className="text-[11px] text-[var(--text-dim)] leading-relaxed">Throughput and latency metrics for Protobuf-over-HTTP/2 across various languages.</p>
+                </a>
+                <a
+                  href="https://www.atlassian.com/blog/atlassian-engineering/using-protobuf-to-make-jira-cloud-faster"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg hover:border-[var(--cyber-neon-green)]/40 transition-all"
+                >
+                  <h5 className="font-cyber text-xs text-[var(--cyber-neon-green)] mb-2 group-hover:underline">Atlassian Engineering</h5>
+                  <p className="text-[11px] text-[var(--text-dim)] leading-relaxed">A detailed case study on how Jira improved p99 latency by 20% and reduced CPU usage by 75% using Protobuf.</p>
+                </a>
+              </div>
+            </CyberPanel>
+          </div>
+        </div>
       </div>
     </Section>
   );
 };
-
-const PayloadSizeInsights = () => (
-  <Section id="insights" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-dark)] border-t border-[var(--border-light)]">
-    <div className="max-w-4xl mx-auto space-y-16">
-      <div className="max-w-3xl space-y-6">
-        <h3 className="text-xl sm:text-2xl md:text-3xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">Size vs. Compression</h3>
-        <p className="text-[var(--text-dim)] leading-relaxed">
-          While Protobuf provides a massive reduction in <span className="text-[var(--cyber-neon-green)] font-bold">raw payload size (typically 30-50%)</span> compared to JSON, the gap often narrows when GZIP or Brotli compression is applied. For GZIP compressed payloads, the difference is usually in the <span className="text-[var(--cyber-neon-blue)] font-bold">15-30% range</span>.
-        </p>
-        <p className="text-[var(--text-dim)] leading-relaxed">
-          However, there is a critical tradeoff: compression adds significant CPU overhead to every request. For smaller payloads, the time spent compressing and decompressing can be greater than the time saved by the smaller transfer size. In these cases, sending uncompressed Protobuf is often the most optimal path for overall latency.
-        </p>
-        <p className="text-[var(--text-dim)] leading-relaxed text-sm">
-          Protobuf shines when your data has many numbers, enums, or sparse fields. String-heavy payloads benefit less from binary encoding but still benefit from Protobuf's schema-driven performance and type safety.
-        </p>
-      </div>
-
-      <div className="space-y-8">
-        <div className="flex items-center gap-3 text-[var(--cyber-neon-blue)]">
-          <BarChart3 className="w-6 h-6" />
-          <h3 className="text-xl sm:text-2xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">The Benchmark Landscape</h3>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          <div className="space-y-4">
-            <h4 className="text-sm font-cyber font-bold text-[var(--cyber-neon-pink)] uppercase tracking-widest">Language Matters</h4>
-            <p className="text-sm text-[var(--text-dim)] leading-relaxed">
-              Protobuf performance is highly dependent on the language and library implementation. In languages with native binary support like <strong>C++, Go, and Java</strong>, Protobuf can be decodes <strong>5x-10x faster</strong> than JSON.
-            </p>
-            <p className="text-sm text-[var(--text-dim)] leading-relaxed">
-              In interpreted languages like <strong>JavaScript (Node.js) or Python</strong>, the gap can be smaller due to the overhead of moving data between the runtime and the binary parser, though it still generally outperforms standard JSON libraries in high-throughput scenarios.
-            </p>
-          </div>
-
-          <div className="space-y-4">
-            <h4 className="text-sm font-cyber font-bold text-[var(--cyber-neon-green)] uppercase tracking-widest">Data Type Sensitivity</h4>
-            <p className="text-sm text-[var(--text-dim)] leading-relaxed">
-              If your payload is 90% long strings (like blog posts), Protobuf will only save you a few percentage points of space. However, if your data is <strong>numeric-heavy</strong> (IDs, timestamps, coordinates, or metrics), Protobuf DECIMATES JSON in both size and speed.
-            </p>
-            <p className="text-sm text-[var(--text-dim)] leading-relaxed italic border-l-2 border-[var(--cyber-neon-green)]/30 pl-4">
-              "The win isn't just bytes on the wire—it's the CPU cycles saved by not parsing millions of brackets and quotes."
-            </p>
-          </div>
-        </div>
-
-        <CyberPanel title="REPUTABLE_ENGINEERING_REPORTS">
-          <div className="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <a
-              href="https://auth0.com/blog/beating-json-performance-with-protobuf/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg hover:border-[var(--cyber-neon-blue)]/40 transition-all"
-            >
-              <h5 className="font-cyber text-xs text-[var(--cyber-neon-blue)] mb-2 group-hover:underline">Auth0 Engineering</h5>
-              <p className="text-[11px] text-[var(--text-dim)] leading-relaxed">Classic deep dive comparing binary vs text overhead in real-world API requests.</p>
-            </a>
-            <a
-              href="https://grpc.io/docs/guides/benchmarking/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg hover:border-[var(--cyber-neon-pink)]/40 transition-all"
-            >
-              <h5 className="font-cyber text-xs text-[var(--cyber-neon-pink)] mb-2 group-hover:underline">Official gRPC Benchmarks</h5>
-              <p className="text-[11px] text-[var(--text-dim)] leading-relaxed">Throughput and latency metrics for Protobuf-over-HTTP/2 across various languages.</p>
-            </a>
-            <a
-              href="https://www.atlassian.com/blog/atlassian-engineering/using-protobuf-to-make-jira-cloud-faster"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg hover:border-[var(--cyber-neon-green)]/40 transition-all"
-            >
-              <h5 className="font-cyber text-xs text-[var(--cyber-neon-green)] mb-2 group-hover:underline">Atlassian Engineering</h5>
-              <p className="text-[11px] text-[var(--text-dim)] leading-relaxed">A detailed case study on how Jira improved p99 latency by 20% and reduced CPU usage by 75% using Protobuf.</p>
-            </a>
-          </div>
-        </CyberPanel>
-      </div>
-    </div>
-  </Section>
-);
 
 interface TypeGroupDef {
   name: string;
@@ -1719,7 +1716,7 @@ const TypeSystem = () => {
     <Section id="types" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)]/20 border-t border-[var(--border-light)]">
       <div className="max-w-7xl mx-auto space-y-16">
         <div>
-          <SectionTitle icon={Combine} subtitle="04_TYPE_REFERENCE">The Type System</SectionTitle>
+          <SectionTitle icon={Combine} subtitle="02b_TYPE_REFERENCE">The Type System</SectionTitle>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             {groups.map(g => (
               <TypeGroup key={g.name} groupName={g.name} groupIcon={g.icon} types={g.types} />
@@ -1915,7 +1912,7 @@ const WireFormatBreakdown = () => {
 const SchemaDrivenAPIs = () => (
   <Section id="schema" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]">
     <div className="max-w-7xl mx-auto">
-      <SectionTitle icon={FileCode} subtitle="03_ARCHITECTURE">Schema-Driven APIs</SectionTitle>
+      <SectionTitle icon={FileCode} subtitle="02a_ARCHITECTURE">Schema-Driven APIs</SectionTitle>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
         <div className="space-y-6 text-[var(--text-color)]">
           <h3 className="text-xl font-cyber font-bold text-[var(--text-color)] uppercase">The Source of Truth</h3>
@@ -1956,7 +1953,7 @@ const SchemaDrivenAPIs = () => (
 const AlternativesLandscape = () => (
   <Section id="alternatives" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]">
     <div className="max-w-7xl mx-auto">
-      <SectionTitle icon={Layers} subtitle="12_COMPARISON">The Landscape of Alternatives</SectionTitle>
+      <SectionTitle icon={Layers} subtitle="07_COMPARISON">The Landscape of Alternatives</SectionTitle>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
         <div className="space-y-6">
@@ -2139,7 +2136,7 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
   return (
     <Section id="binary" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)]/20 border-t border-[var(--border-light)]">
       <div className="max-w-7xl mx-auto">
-        <SectionTitle icon={Binary} subtitle="11_WIRE_FORMAT">Digging into the binary</SectionTitle>
+        <SectionTitle icon={Binary} subtitle="05_WIRE_FORMAT">Binary</SectionTitle>
 
         <WireFormatBreakdown />
 
@@ -2743,7 +2740,7 @@ const ValidationLab = ({ messageSchema, fds, protoSource, setProtoSource }: {
   return (
     <Section id="validation" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]">
       <div className="max-w-7xl mx-auto">
-        <SectionTitle icon={ShieldCheck} subtitle="08_PROTOVALIDATE">Data Validation</SectionTitle>
+        <SectionTitle icon={ShieldCheck} subtitle="03c_PROTOVALIDATE">Data Validation</SectionTitle>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
           <div className="space-y-6">
@@ -2874,7 +2871,7 @@ const ValidationLab = ({ messageSchema, fds, protoSource, setProtoSource }: {
 const EcosystemNextSteps = () => (
   <Section id="ecosystem" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]">
     <div className="max-w-7xl mx-auto">
-      <SectionTitle icon={Combine} subtitle="13_NEXT_STEPS">Ecosystem & Next Steps</SectionTitle>
+      <SectionTitle icon={Combine} subtitle="08_NEXT_STEPS">Ecosystem & Next Steps</SectionTitle>
 
       <div className="mb-12 text-[var(--text-dim)] max-w-3xl leading-relaxed">
         <p>
@@ -2931,7 +2928,7 @@ const EcosystemNextSteps = () => (
 const References = () => (
   <Section id="references" className="py-24 px-4 sm:px-8 bg-[var(--bg-color)] border-t border-[var(--border-light)]">
     <div className="max-w-7xl mx-auto text-[var(--text-color)]">
-      <SectionTitle icon={BookOpen} subtitle="14_BIBLIOGRAPHY">References & Specs</SectionTitle>
+      <SectionTitle icon={BookOpen} subtitle="09_BIBLIOGRAPHY">References & Specs</SectionTitle>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <div className="space-y-4">
           <h4 className="text-[var(--cyber-neon-blue)] font-cyber text-sm tracking-widest uppercase">Core Specifications</h4>
@@ -2964,16 +2961,32 @@ const References = () => (
 
 const INITIAL_PROTO = `edition = "2023";\n\npackage demo.v1;\n\nimport "buf/validate/validate.proto";\n\nmessage User {\n  string id = 1 [(buf.validate.field).string.uuid = true];\n  string name = 2 [(buf.validate.field).string.min_len = 1];\n  string email = 3 [(buf.validate.field).string.email = true];\n  \n  // Numeric data for efficiency demo\n  uint32 age = 4 [(buf.validate.field).uint32.lt = 150];\n  float height_cm = 5 [(buf.validate.field).float = {gte: 0, lte: 500}];\n  double weight_kg = 6 [(buf.validate.field).double = {gte: 0, lte: 2000}];\n  \n  Role role = 7;\n  Date birth_date = 8;\n  User manager = 9;\n\n  enum Role {\n    ROLE_UNSPECIFIED = 0;\n    ROLE_USER = 1;\n    ROLE_ADMIN = 2;\n  }\n}\n\nmessage Date {\n  int32 year = 1 [(buf.validate.field).int32 = {gte: 1900, lte: 2100}];\n  int32 month = 2 [(buf.validate.field).int32 = {gte: 1, lte: 12}];\n  int32 day = 3 [(buf.validate.field).int32 = {gte: 1, lte: 31}];\n}`;
 
-const NAV_ITEMS = [
+interface NavItemDef {
+  id: string;
+  label: string;
+  children?: NavItemDef[];
+}
+
+const NAV_ITEMS: NavItemDef[] = [
   { id: 'hero', label: 'HOME' },
   { id: 'intro', label: 'INTRO' },
-  { id: 'basics', label: 'BASICS' },
-  { id: 'schema', label: 'SCHEMA' },
-  { id: 'types', label: 'TYPES' },
-  { id: 'advanced', label: 'ADVANCED' },
-  { id: 'reflection', label: 'REFLECTION' },
-  { id: 'deepdive', label: 'DEEP DIVE' },
-  { id: 'validation', label: 'VALIDATION' },
+  {
+    id: 'basics',
+    label: 'BASICS',
+    children: [
+      { id: 'schema', label: 'SCHEMA_DRIVEN' },
+      { id: 'types', label: 'TYPE_SYSTEM' }
+    ]
+  },
+  {
+    id: 'advanced',
+    label: 'ADVANCED',
+    children: [
+      { id: 'reflection', label: 'REFLECTION' },
+      { id: 'deepdive', label: 'ENGINEERING' },
+      { id: 'validation', label: 'VALIDATION' }
+    ]
+  },
   { id: 'efficiency', label: 'EFFICIENCY' },
   { id: 'binary', label: 'BINARY' },
   { id: 'history', label: 'HISTORY' },
@@ -2992,13 +3005,80 @@ const SECTION_LABELS: Record<string, string> = {
   reflection: 'Descriptors & Reflection',
   deepdive: 'Schema Engineering',
   validation: 'Data Validation',
-  efficiency: 'Performance & Efficiency',
-  insights: 'Size vs. Compression',
-  binary: 'Digging into Binary',
+  efficiency: 'Efficiency',
+  binary: 'Binary',
   history: 'The Evolution',
   alternatives: 'Landscape & Alternatives',
   ecosystem: 'The Ecosystem',
   references: 'References'
+};
+
+const NavItem = ({ item, index, onNavigate }: { item: NavItemDef, index: number, onNavigate: () => void }) => {
+  const [isOpen, setIsOpen] = useState(true);
+  const hasChildren = item.children && item.children.length > 0;
+
+  return (
+    <div className="flex flex-col">
+      <div className="group flex items-center justify-between py-3 border-b border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)]/30 transition-colors">
+        <a
+          href={`#${item.id}`}
+          onClick={onNavigate}
+          className="flex flex-col flex-1"
+        >
+          <span className="text-[10px] font-mono text-[var(--cyber-neon-blue)]/80 mb-0.5">0{index + 1}</span>
+          <span className="font-cyber font-bold text-sm tracking-wider text-[var(--text-color)] group-hover:text-[var(--cyber-neon-blue)] transition-colors uppercase">
+            {item.label}
+          </span>
+        </a>
+        <div className="flex items-center gap-2">
+          {hasChildren && (
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setIsOpen(!isOpen);
+              }}
+              className="p-2 hover:bg-[var(--cyber-neon-blue)]/10 rounded transition-colors"
+            >
+              <ChevronDown className={`w-4 h-4 text-[var(--cyber-neon-blue)] transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+            </button>
+          )}
+          <ChevronRight className="w-4 h-4 text-[var(--text-color)]/0 group-hover:text-[var(--cyber-neon-blue)] transition-all -translate-x-2 group-hover:translate-x-0" />
+        </div>
+      </div>
+
+      <AnimatePresence>
+        {hasChildren && isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            className="overflow-hidden flex flex-col pl-6 border-l border-[var(--border-light)] ml-1"
+          >
+            {item.children!.map((child, childIdx) => (
+              <a
+                key={child.id}
+                href={`#${child.id}`}
+                onClick={onNavigate}
+                className="group flex items-center justify-between py-3 border-b border-[var(--border-light)]/50 hover:border-[var(--cyber-neon-blue)]/30 transition-colors"
+              >
+                <div className="flex flex-col">
+                  <span className="text-[9px] font-mono text-[var(--cyber-neon-blue)]/60 mb-0.5 tracking-tighter">
+                    0{index + 1}.{childIdx + 1}
+                  </span>
+                  <span className="font-cyber font-bold text-xs tracking-widest text-[var(--text-dim)] group-hover:text-[var(--cyber-neon-blue)] transition-colors uppercase">
+                    {child.label}
+                  </span>
+                </div>
+                <ChevronRight className="w-3.5 h-3.5 text-[var(--text-color)]/0 group-hover:text-[var(--cyber-neon-blue)] transition-all -translate-x-1 group-hover:translate-x-0" />
+              </a>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
 };
 
 function App() {
@@ -3170,18 +3250,12 @@ function App() {
               <nav className="flex-1 overflow-y-auto py-6 px-4 sm:px-8 custom-scrollbar">
                 <div className="flex flex-col gap-1">
                   {NAV_ITEMS.map((item, i) => (
-                    <a
+                    <NavItem
                       key={item.id}
-                      href={`#${item.id}`}
-                      onClick={() => setIsMenuOpen(false)}
-                      className="group flex items-center justify-between py-4 border-b border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)]/30 transition-colors"
-                    >
-                      <div className="flex flex-col">
-                        <span className="text-[10px] font-mono text-[var(--cyber-neon-blue)]/80 mb-1">0{i + 1}</span>
-                        <span className="font-cyber font-bold text-base tracking-wider text-[var(--text-color)] group-hover:text-[var(--cyber-neon-blue)] transition-colors">{item.label}</span>
-                      </div>
-                      <ChevronRight className="w-5 h-5 text-[var(--text-color)]/0 group-hover:text-[var(--cyber-neon-blue)] transition-all -translate-x-2 group-hover:translate-x-0" />
-                    </a>
+                      item={item}
+                      index={i}
+                      onNavigate={() => setIsMenuOpen(false)}
+                    />
                   ))}
                 </div>
               </nav>
@@ -3221,13 +3295,12 @@ function App() {
           messageSchema={messageSchema}
           fileDescriptorSet={fds}
         />
-        <PayloadSizeInsights />
         <BinaryMatrix
           messageSchema={messageSchema}
         />
         <Section id="history" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]">
           <div className="max-w-7xl mx-auto">
-            <SectionTitle icon={GitBranch} subtitle="12_EVOLUTION">The History of Protobuf</SectionTitle>
+            <SectionTitle icon={GitBranch} subtitle="06_EVOLUTION">The History of Protobuf</SectionTitle>
             <VersionTimeline />
           </div>
         </Section>
