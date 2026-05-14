@@ -2023,6 +2023,51 @@ const AlternativesLandscape = () => (
   </Section>
 );
 
+const PacketDiagram = () => (
+  <div className="w-full max-w-2xl mx-auto my-12">
+    <div className="flex items-stretch gap-1 h-20">
+      <div className="flex-1 bg-[#00f3ff]/10 border border-[#00f3ff]/30 rounded flex flex-col items-center justify-center text-[var(--cyber-neon-blue)] font-mono text-xs relative group px-2 text-center">
+        <div className="absolute -top-6 left-0 text-[10px] uppercase text-[var(--text-dim)] font-bold tracking-widest flex items-center gap-1">
+          <Hash className="w-3 h-3" /> Tag
+        </div>
+        <span className="font-bold">VARINT</span>
+        <span className="text-[10px] opacity-60">(Field # | Type)</span>
+      </div>
+      <div className="flex-[0.7] bg-[#ff00ff]/10 border border-[#ff00ff]/30 rounded flex flex-col items-center justify-center text-[var(--cyber-neon-pink)] font-mono text-xs relative group px-2 text-center">
+        <div className="absolute -top-6 left-0 text-[10px] uppercase text-[var(--text-dim)] font-bold tracking-widest flex items-center gap-1">
+          <Zap className="w-3 h-3" /> Length
+        </div>
+        <span className="font-bold">VARINT</span>
+        <span className="text-[10px] opacity-60">N Bytes</span>
+      </div>
+      <div className="flex-[2] bg-[#00ff9f]/10 border border-[#00ff9f]/30 rounded flex flex-col items-center justify-center text-[var(--cyber-neon-green)] font-mono text-xs relative group px-2 text-center">
+        <div className="absolute -top-6 left-0 text-[10px] uppercase text-[var(--text-dim)] font-bold tracking-widest flex items-center gap-1">
+          <Database className="w-3 h-3" /> Payload
+        </div>
+        <span className="font-bold">DATA</span>
+        <span className="text-[10px] opacity-60">Binary Bytes</span>
+      </div>
+    </div>
+    <div className="flex justify-between mt-8 px-2">
+      <div className="flex flex-col items-center gap-1">
+        <div className="w-px h-4 bg-[var(--border-light)]" />
+        <span className="text-[9px] font-mono text-[var(--text-dim)] uppercase">1-5 Bytes</span>
+      </div>
+      <div className="flex flex-col items-center gap-1">
+        <div className="w-px h-4 bg-[var(--border-light)]" />
+        <span className="text-[9px] font-mono text-[var(--text-dim)] uppercase">1-5 Bytes</span>
+      </div>
+      <div className="flex flex-col items-center gap-1">
+        <div className="w-px h-4 bg-[var(--border-light)]" />
+        <span className="text-[9px] font-mono text-[var(--text-dim)] uppercase">N Bytes</span>
+      </div>
+    </div>
+    <div className="text-[10px] font-mono text-[var(--text-dim)] uppercase text-center mt-4 italic border-t border-[var(--border-light)] pt-4">
+      Anatomy of a Length-Delimited Field (Wire Type 2)
+    </div>
+  </div>
+);
+
 const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) => {
   const [activeExample, setActiveExample] = useState<keyof typeof SIZE_EXAMPLES>('BASIC');
   const [jsonInput, setJsonInput] = useState(JSON.stringify(SIZE_EXAMPLES.BASIC, null, 2));
@@ -2081,23 +2126,126 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
 
         <WireFormatBreakdown />
 
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-24 py-12 border-y border-[var(--border-light)]">
+          <div className="lg:col-span-7 space-y-8 text-[var(--text-color)]">
+            <h3 className="text-2xl font-cyber font-bold text-[var(--cyber-neon-pink)] uppercase">Varint Encoding</h3>
+            <p>Varints are the secret sauce of Protobuf efficiency. They allow us to store integers using between 1 and 10 bytes, where smaller numbers take fewer bytes.</p>
+            <div className="p-6 bg-[var(--section-bg-alt)]/50 border-l-2 border-[#ff00ff] space-y-6">
+              <div>
+                <h4 className="text-[var(--cyber-neon-pink)] font-cyber uppercase text-sm mb-4 text-[var(--cyber-neon-pink)]">How it works (Step-by-Step)</h4>
+                <ol className="list-decimal list-inside space-y-3 text-sm">
+                  <li>Take the binary representation of your number.</li>
+                  <li>Split it into groups of 7 bits, starting from the right (LSB).</li>
+                  <li>For each group except the last one, add a 1 as the 8th bit (the MSB). This is the "continuation bit".</li>
+                  <li>For the very last group, add a 0 as the 8th bit. This tells the decoder "we are done".</li>
+                  <li>The resulting bytes are stored in the stream, smallest group first.</li>
+                </ol>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-[var(--border-light)]">
+                <div className="space-y-2">
+                  <h5 className="text-xs font-mono text-[var(--cyber-neon-blue)] uppercase text-[var(--cyber-neon-blue)]">Why use Varints?</h5>
+                  <p className="text-xs text-[var(--text-dim)]">In most applications, small integers are far more common than large ones. If you have an `int32` but its value is usually `5`, why waste 4 bytes? Varints allow `5` to take only 1 byte.</p>
+                </div>
+                <div className="space-y-2">
+                  <h5 className="text-xs font-mono text-[var(--cyber-neon-pink)] uppercase text-[var(--cyber-neon-pink)]">The Trade-off</h5>
+                  <p className="text-xs text-[var(--text-dim)] text-[var(--text-dim)]">Large numbers (greater than 2^28) actually take 5 bytes instead of 4. However, the savings on small numbers usually far outweigh this penalty in real-world data.</p>
+                </div>
+              </div>
+            </div>
+
+            <CyberPanel title="VARINT_IMPLEMENTATION (GO)">
+              <div className="p-4 space-y-6">
+                <div className="space-y-2">
+                  <span className="text-[10px] font-mono text-[var(--text-dim)] uppercase tracking-widest font-bold">Encoding Logic</span>
+                  <pre className="text-[11px] font-mono leading-relaxed overflow-x-auto p-3 bg-[var(--section-bg-dark)] rounded border border-[var(--border-light)]">
+                    <span className="text-[var(--cyber-neon-pink)]">func</span> PutUvarint(buf []byte, x uint64) int {"{"}{"\n"}
+                    {"  "}i := <span className="text-[var(--cyber-neon-pink)]">0</span>{"\n"}
+                    {"  "}<span className="text-[var(--cyber-neon-pink)]">for</span> x &gt;= <span className="text-[var(--cyber-neon-pink)]">0x80</span> {"{"}{"\n"}
+                    {"    "}buf[i] = <span className="text-[var(--cyber-neon-blue)]">byte</span>(x) | <span className="text-[var(--cyber-neon-pink)]">0x80</span>{"\n"}
+                    {"    "}x &gt;&gt;= <span className="text-[var(--cyber-neon-pink)]">7</span>{"\n"}
+                    {"    "}i++{"\n"}
+                    {"  "}{"}"}{"\n"}
+                    {"  "}buf[i] = <span className="text-[var(--cyber-neon-blue)]">byte</span>(x){"\n"}
+                    {"  "}<span className="text-[var(--cyber-neon-pink)]">return</span> i + <span className="text-[var(--cyber-neon-pink)]">1</span>{"\n"}
+                    {"}"}
+                  </pre>
+                </div>
+                <div className="space-y-2">
+                  <span className="text-[10px] font-mono text-[var(--text-dim)] uppercase tracking-widest font-bold">Decoding Logic</span>
+                  <pre className="text-[11px] font-mono leading-relaxed overflow-x-auto p-3 bg-[var(--section-bg-dark)] rounded border border-[var(--border-light)]">
+                    <span className="text-[var(--cyber-neon-pink)]">func</span> Uvarint(buf []byte) (uint64, int) {"{"}{"\n"}
+                    {"  "}<span className="text-[var(--cyber-neon-pink)]">var</span> x uint64{"\n"}
+                    {"  "}<span className="text-[var(--cyber-neon-pink)]">var</span> s uint{"\n"}
+                    {"  "}<span className="text-[var(--cyber-neon-pink)]">for</span> i, b := <span className="text-[var(--cyber-neon-pink)]">range</span> buf {"{"}{"\n"}
+                    {"    "}<span className="text-[var(--cyber-neon-pink)]">if</span> b &lt; <span className="text-[var(--cyber-neon-pink)]">0x80</span> {"{"}{"\n"}
+                    {"      "}<span className="text-[var(--cyber-neon-pink)]">return</span> x | <span className="text-[var(--cyber-neon-blue)]">uint64</span>(b)&lt;&lt;s, i + <span className="text-[var(--cyber-neon-pink)]">1</span>{"\n"}
+                    {"    "}{"}"}{"\n"}
+                    {"    "}x |= <span className="text-[var(--cyber-neon-blue)]">uint64</span>(b&<span className="text-[var(--cyber-neon-pink)]">0x7f</span>) &lt;&lt; s{"\n"}
+                    {"    "}s += <span className="text-[var(--cyber-neon-pink)]">7</span>{"\n"}
+                    {"  "}{"}"}{"\n"}
+                    {"  "}<span className="text-[var(--cyber-neon-pink)]">return</span> <span className="text-[var(--cyber-neon-pink)]">0</span>, <span className="text-[var(--cyber-neon-pink)]">0</span>{"\n"}
+                    {"}"}
+                  </pre>
+                </div>
+                <div className="pt-2 flex flex-col gap-2">
+                  <span className="text-[10px] font-mono text-[var(--text-dim)] uppercase tracking-widest">Resources</span>
+                  <div className="flex flex-wrap gap-4">
+                    <ExternalLinkText href="https://go.dev/src/encoding/binary/varint.go">Standard Library Source (Go)</ExternalLinkText>
+                    <ExternalLinkText href="https://github.com/protocolbuffers/protobuf-go/blob/master/encoding/protowire/wire.go">Go Protobuf Implementation</ExternalLinkText>
+                  </div>
+                </div>
+              </div>
+            </CyberPanel>
+          </div>
+          <div className="lg:col-span-5">
+            <CyberPanel title="VARINT_EXPLORER">
+              <VarintExplainer />
+            </CyberPanel>
+          </div>
+        </div>
+
         <div className="flex flex-col gap-12 mb-24">
           <div className="space-y-6 leading-relaxed text-[var(--text-color)]">
             <h3 className="text-2xl font-cyber font-bold text-[var(--text-color)] uppercase">Decoding the Stream</h3>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+            <div className="max-w-4xl space-y-4">
+              <p>
+                Every piece of data in the Protobuf stream is wrapped in an <strong>"envelope"</strong>. This envelope always begins with a <strong>Tag</strong>, which identifies the field number and its wire type.
+              </p>
+              <p>
+                Crucially, both the <strong>Tag</strong> and the <strong>Length</strong> prefix are encoded as <strong>Varints</strong>. This means the envelope itself is dynamic, shrinking for small field numbers and small payloads to ensure the overhead remains as tiny as possible.
+              </p>
+            </div>
+
+            <PacketDiagram />
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start pt-8 border-t border-[var(--border-light)]">
               <div className="space-y-4">
-                <p>
-                  Protobuf is a binary format. Unlike JSON which is a stream of characters, Protobuf is a stream of bytes where every bit has a job.
+                <h4 className="text-[var(--cyber-neon-blue)] font-cyber uppercase text-sm font-bold tracking-widest">Unpacking the Tag</h4>
+                <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+                  The <strong>Tag</strong> isn't just a simple identifier; it's a bit-packed value encoded as a <strong>Varint</strong>. This single number contains both the <strong>Field Number</strong> and the <strong>Wire Type</strong>.
+                </p>
+                <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+                  By allocating the last 3 bits for the wire type, Protobuf can support 8 distinct physical representations while leaving the remaining bits for the field number. This is why field numbers 1-15 are so efficient—they can be packed with the wire type into a single 1-byte Varint.
                 </p>
               </div>
-              <div className="space-y-4 text-sm bg-[var(--overlay-bg)] p-4 rounded border border-[var(--border-light)]">
-                <p>
-                  Each field starts with a <strong>Tag</strong> byte (or bytes) which contains the <strong>Field Number</strong> and the <strong>Wire Type</strong>.
-                </p>
-                <p>
-                  This allows the decoder to skip fields it doesn't recognize, providing perfect backward and forward compatibility.
-                </p>
-              </div>
+              <CyberPanel title="TAG_DECODING_LOGIC (GO)">
+                <div className="p-4 space-y-4">
+                  <pre className="text-[11px] font-mono leading-relaxed overflow-x-auto">
+                    <span className="text-[var(--text-dim)]">// 1. Decode the Varint from the stream</span>{"\n"}
+                    tag, n := binary.Uvarint(stream){"\n\n"}
+                    <span className="text-[var(--text-dim)]">// 2. Extract Wire Type (last 3 bits)</span>{"\n"}
+                    wireType := tag & <span className="text-[var(--cyber-neon-pink)]">0x07</span>{"\n\n"}
+                    <span className="text-[var(--text-dim)]">// 3. Extract Field Number (the rest)</span>{"\n"}
+                    fieldNum := tag &gt;&gt; <span className="text-[var(--cyber-neon-pink)]">3</span>
+                  </pre>
+                  <div className="pt-4 border-t border-[var(--border-light)] flex items-center gap-3">
+                    <MousePointer2 className="w-4 h-4 text-[var(--cyber-neon-blue)] animate-bounce" />
+                    <p className="text-[10px] font-mono text-[var(--cyber-neon-blue)] uppercase tracking-tighter">
+                      Click the blue bytes in the stream below to see this in action
+                    </p>
+                  </div>
+                </div>
+              </CyberPanel>
             </div>
           </div>
 
@@ -2277,40 +2425,6 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
                   )}
                 </AnimatePresence>
               </div>
-            </CyberPanel>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 pt-12 border-t border-[var(--border-light)]">
-          <div className="lg:col-span-7 space-y-8 text-[var(--text-color)]">
-            <h3 className="text-2xl font-cyber font-bold text-[var(--cyber-neon-pink)] uppercase">Varint Encoding</h3>
-            <p>Varints are the secret sauce of Protobuf efficiency. They allow us to store integers using between 1 and 10 bytes, where smaller numbers take fewer bytes.</p>
-            <div className="p-6 bg-[var(--section-bg-alt)]/50 border-l-2 border-[#ff00ff] space-y-6">
-              <div>
-                <h4 className="text-[var(--cyber-neon-pink)] font-cyber uppercase text-sm mb-4 text-[var(--cyber-neon-pink)]">How it works (Step-by-Step)</h4>
-                <ol className="list-decimal list-inside space-y-3 text-sm">
-                  <li>Take the binary representation of your number.</li>
-                  <li>Split it into groups of 7 bits, starting from the right (LSB).</li>
-                  <li>For each group except the last one, add a 1 as the 8th bit (the MSB). This is the "continuation bit".</li>
-                  <li>For the very last group, add a 0 as the 8th bit. This tells the decoder "we are done".</li>
-                  <li>The resulting bytes are stored in the stream, smallest group first.</li>
-                </ol>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-[var(--border-light)]">
-                <div className="space-y-2">
-                  <h5 className="text-xs font-mono text-[var(--cyber-neon-blue)] uppercase text-[var(--cyber-neon-blue)]">Why use Varints?</h5>
-                  <p className="text-xs text-[var(--text-dim)]">In most applications, small integers are far more common than large ones. If you have an `int32` but its value is usually `5`, why waste 4 bytes? Varints allow `5` to take only 1 byte.</p>
-                </div>
-                <div className="space-y-2">
-                  <h5 className="text-xs font-mono text-[var(--cyber-neon-pink)] uppercase text-[var(--cyber-neon-pink)]">The Trade-off</h5>
-                  <p className="text-xs text-[var(--text-dim)] text-[var(--text-dim)]">Large numbers (greater than 2^28) actually take 5 bytes instead of 4. However, the savings on small numbers usually far outweigh this penalty in real-world data.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="lg:col-span-5">
-            <CyberPanel title="VARINT_EXPLORER">
-              <VarintExplainer />
             </CyberPanel>
           </div>
         </div>
