@@ -283,7 +283,7 @@ export const Introduction = ({ messageSchema, fds }: {
                   <ExternalLinkText href="https://protobuf.dev/getting-started/gotutorial/">Go</ExternalLinkText>
                 </CyberPanel>
                 <CyberPanel className="text-center p-3 text-xs">
-                  <ExternalLinkText href="https://protobuf.dev/getting-started/rubytutorial/">Ruby</ExternalLinkText>
+                  <ExternalLinkText href="https://protobuf.dev/reference/ruby/ruby-generated/">Ruby</ExternalLinkText>
                 </CyberPanel>
                 <CyberPanel className="text-center p-3 text-xs">
                   <ExternalLinkText href="https://protobuf.dev/getting-started/csharptutorial/">C#</ExternalLinkText>

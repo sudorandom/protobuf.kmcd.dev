@@ -1,4 +1,4 @@
-import { createFileRegistry, fromBinary, type Registry } from "@bufbuild/protobuf";
+import { createFileRegistry, fromBinary, create, toBinary, type Registry } from "@bufbuild/protobuf";
 import { 
   FileDescriptorSetSchema, 
   file_google_protobuf_any,
@@ -57,18 +57,27 @@ export async function createDynamicRegistry(protoSource: string): Promise<Regist
   }
 
   console.log("createDynamicRegistry: Successfully parsed to FileDescriptorSet");
-  const fileDescriptorSet = result.fileDescriptorSet;
-  const fds = fromBinary(FileDescriptorSetSchema, fileDescriptorSet);
+  const parsedFileDescriptorSet = result.fileDescriptorSet;
+  const fds = fromBinary(FileDescriptorSetSchema, parsedFileDescriptorSet);
   
   // Create a registry containing all standard files plus the newly parsed files.
   // We put standard files first to ensure they are available as dependencies.
+  const allFiles = [
+    ...standardFiles,
+    ...fds.file,
+  ];
+
   const registry = createFileRegistry({
     $typeName: "google.protobuf.FileDescriptorSet",
-    file: [
-      ...standardFiles,
-      ...fds.file,
-    ],
+    file: allFiles,
   });
+
+  // Create a full binary FileDescriptorSet including standard files.
+  // This is needed for WASM functions like generateFakeData which need to resolve imports.
+  const fullFds = create(FileDescriptorSetSchema, {
+    file: allFiles,
+  });
+  const fileDescriptorSet = toBinary(FileDescriptorSetSchema, fullFds);
 
   const file = registry.getFile("input.proto");
   if (!file) {

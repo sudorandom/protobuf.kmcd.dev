@@ -7,7 +7,8 @@ import {
   Zap,
   Database,
   Hash,
-  MousePointer2
+  MousePointer2,
+  ChevronRight
 } from 'lucide-react';
 import { fromJson, toBinary, type DescMessage } from '@bufbuild/protobuf';
 import {
@@ -18,6 +19,7 @@ import {
 } from '../components/shared/Common';
 import { JsonEditor } from '../components/shared/JsonEditor';
 import VarintExplainer from '../components/VarintExplainer';
+import MultiFieldEncoding from '../components/MultiFieldEncoding';
 import { decodeBinary, type DecodedSegment } from '../utils/decoder';
 import { SIZE_EXAMPLES } from '../utils/constants';
 import { generateFake, convertToProtoscope } from '../utils/wasm-parser';
@@ -321,6 +323,13 @@ export const BinaryMatrix = ({ messageSchema, fds }: { messageSchema: DescMessag
       <div className="max-w-7xl mx-auto">
         <SectionTitle icon={Binary} subtitle="05b_EXPLORER">Digging into the binary</SectionTitle>
 
+        <div className="mb-16 space-y-6">
+          <p className="text-[var(--text-dim)] leading-relaxed max-w-4xl">
+            When multiple fields are sent together, they are simply concatenated one after another in the binary stream. The decoder reads the <strong>Tag</strong> of the first field, uses it to determine how many bytes to read, and then repeats the process for the next field until the end of the stream is reached.
+          </p>
+          <MultiFieldEncoding />
+        </div>
+
         <div className="flex flex-wrap gap-4 items-center justify-between mb-8">
           <div className="flex flex-wrap gap-2">
             {(Object.keys(SIZE_EXAMPLES) as Array<keyof typeof SIZE_EXAMPLES>).map((key) => (
@@ -377,7 +386,7 @@ export const BinaryMatrix = ({ messageSchema, fds }: { messageSchema: DescMessag
               <div className="p-4 space-y-4">
                 {viewMode === 'hex' ? (
                   <>
-                    <div className="flex flex-wrap gap-y-3 gap-x-2 font-mono text-sm leading-relaxed">
+                    <div className="flex flex-col gap-2 font-mono text-sm leading-relaxed max-h-128 overflow-y-auto pr-2 custom-scrollbar">
                       {stats.segments.map((seg, i) => {
                         const color = getSegmentColor(seg);
                         const isActive = selectedSegmentIdx === i;
@@ -385,12 +394,18 @@ export const BinaryMatrix = ({ messageSchema, fds }: { messageSchema: DescMessag
                         return (
                           <motion.button
                             key={i}
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
                             onClick={() => setSelectedSegmentIdx(i)}
-                            className={`group relative flex flex-wrap items-center transition-all ${isActive ? 'opacity-100' : 'opacity-60 hover:opacity-100'}`}
+                            className={`group relative grid grid-cols-[1rem_1fr_auto] items-center gap-4 p-2 rounded-lg border transition-all text-left ${isActive ? 'bg-[var(--overlay-bg)] border-[var(--border-light)]' : 'border-transparent hover:bg-[var(--overlay-bg)]/50'}`}
                           >
-                            <div className="flex flex-wrap gap-1">
+                            <div className="flex justify-center">
+                              {isActive && (
+                                <motion.div layoutId="selection-arrow">
+                                  <ChevronRight className="w-4 h-4 text-[var(--cyber-neon-blue)]" />
+                                </motion.div>
+                              )}
+                            </div>
+                            
+                            <div className="flex flex-wrap gap-1 min-w-0">
                               {seg.rawHex.map((byte, byteIdx) => {
                                 let byteColor = color;
                                 if (byteIdx === 0) byteColor = 'var(--cyber-neon-blue)';
@@ -399,10 +414,10 @@ export const BinaryMatrix = ({ messageSchema, fds }: { messageSchema: DescMessag
                                 return (
                                   <span 
                                     key={byteIdx} 
-                                    className={`px-1.5 py-0.5 rounded border ${isActive ? 'bg-opacity-20' : 'bg-opacity-5'}`}
+                                    className="px-1.5 py-0.5 rounded border font-mono text-xs transition-colors"
                                     style={{ 
                                       borderColor: isActive ? byteColor : 'var(--border-light)',
-                                      backgroundColor: byteColor + (isActive ? '33' : '11'),
+                                      backgroundColor: isActive ? `color-mix(in srgb, ${byteColor}, transparent 80%)` : 'transparent',
                                       color: isActive ? byteColor : 'var(--text-color)'
                                     }}
                                   >
@@ -411,12 +426,11 @@ export const BinaryMatrix = ({ messageSchema, fds }: { messageSchema: DescMessag
                                 );
                               })}
                             </div>
-                            {isActive && (
-                              <motion.div 
-                                layoutId="active-indicator"
-                                className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full"
-                                style={{ backgroundColor: color }}
-                              />
+
+                            {seg.fieldName && (
+                              <span className={`text-[10px] uppercase font-cyber tracking-widest opacity-60 flex-shrink-0 ${isActive ? 'text-[var(--text-color)]' : 'text-[var(--text-dim)]'}`}>
+                                {seg.fieldName}
+                              </span>
                             )}
                           </motion.button>
                         );
@@ -438,7 +452,7 @@ export const BinaryMatrix = ({ messageSchema, fds }: { messageSchema: DescMessag
                     </div>
                   </>
                 ) : (
-                  <pre className="font-mono text-sm text-[var(--cyber-neon-pink)] leading-relaxed h-64 overflow-auto custom-scrollbar p-2 bg-[var(--section-bg-dark)]/30 rounded border border-[var(--border-light)]">
+                  <pre className="font-mono text-sm text-[var(--cyber-neon-pink)] leading-relaxed max-h-128 overflow-auto custom-scrollbar p-2 bg-[var(--section-bg-dark)]/30 rounded border border-[var(--border-light)]">
                     {protoscopeOutput}
                   </pre>
                 )}
