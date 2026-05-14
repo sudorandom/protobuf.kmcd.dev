@@ -11,6 +11,7 @@ import (
 
 	"github.com/bufbuild/protocompile"
 	"github.com/bufbuild/protocompile/reporter"
+	"github.com/protocolbuffers/protoscope"
 	"github.com/sudorandom/fauxrpc"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/encoding/prototext"
@@ -30,7 +31,19 @@ func main() {
 	js.Global().Set("parseProto", js.FuncOf(parseProto))
 	js.Global().Set("generateFakeData", js.FuncOf(generateFakeData))
 	js.Global().Set("formatPrototext", js.FuncOf(formatPrototext))
+	js.Global().Set("formatProtoscope", js.FuncOf(formatProtoscope))
 	select {}
+}
+
+func formatProtoscope(this js.Value, args []js.Value) any {
+	if len(args) < 1 {
+		return js.ValueOf(map[string]any{"error": "missing arguments: binaryData"})
+	}
+
+	binaryData := make([]byte, args[0].Get("length").Int())
+	js.CopyBytesToGo(binaryData, args[0])
+
+	return js.ValueOf(protoscope.Write(binaryData, protoscope.WriterOptions{}))
 }
 
 func formatPrototext(this js.Value, args []js.Value) any {

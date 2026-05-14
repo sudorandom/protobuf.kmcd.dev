@@ -7,6 +7,7 @@ declare global {
     parseProto: (input: string) => { error?: string; compilationErrors?: string; fileDescriptorSet?: Uint8Array };
     generateFakeData: (messageName: string, fileDescriptorSet: Uint8Array) => string | { error: string };
     formatPrototext: (messageName: string, fileDescriptorSet: Uint8Array, jsonString: string) => string | { error: string };
+    formatProtoscope: (binaryData: Uint8Array) => string | { error: string };
   }
 }
 
@@ -71,6 +72,8 @@ export async function initWasm() {
       global.generateFakeData = context.generateFakeData;
       // @ts-expect-error these are defined in the VM context
       global.formatPrototext = context.formatPrototext;
+      // @ts-expect-error these are defined in the VM context
+      global.formatProtoscope = context.formatProtoscope;
       return;
     }
 
@@ -170,6 +173,16 @@ export async function convertToPrototext(messageName: string, fileDescriptorSet:
   await initWasm();
   const g = typeof window !== 'undefined' ? (window as unknown as Window) : (globalThis as unknown as Window);
   const result = g.formatPrototext(messageName, fileDescriptorSet, jsonString);
+  if (typeof result === 'object' && result.error) {
+    throw new Error(result.error);
+  }
+  return result as string;
+}
+
+export async function convertToProtoscope(binaryData: Uint8Array): Promise<string> {
+  await initWasm();
+  const g = typeof window !== 'undefined' ? (window as unknown as Window) : (globalThis as unknown as Window);
+  const result = g.formatProtoscope(binaryData);
   if (typeof result === 'object' && result.error) {
     throw new Error(result.error);
   }

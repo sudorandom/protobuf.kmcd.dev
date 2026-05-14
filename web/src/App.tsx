@@ -60,7 +60,7 @@ import VarintExplainer from './components/VarintExplainer';
 import DecodingVisualization from './components/DecodingVisualization';
 import { decodeBinary } from './utils/decoder';
 import { createDynamicRegistry } from './utils/dynamic-registry';
-import { generateFake, convertToPrototext, type CompilationError } from './utils/wasm-parser';
+import { generateFake, convertToPrototext, convertToProtoscope, type CompilationError } from './utils/wasm-parser';
 
 const SectionIdContext = React.createContext<string | null>(null);
 
@@ -1016,6 +1016,7 @@ const Introduction = ({ messageSchema, fds }: {
 }) => {
   const [activeFace, setActiveFace] = useState('idl');
   const [protoTextExample, setProtoTextExample] = useState<string | null>(null);
+  const [protoscopeExample, setProtoscopeExample] = useState<string | null>(null);
 
   const dynamicExamples = useMemo(() => {
     if (!messageSchema) return null;
@@ -1031,7 +1032,7 @@ const Introduction = ({ messageSchema, fds }: {
         .map(b => b.toString(16).padStart(2, '0'))
         .join(' ');
 
-      return { hex, json };
+      return { hex, json, binary };
     } catch {
       return null;
     }
@@ -1039,18 +1040,22 @@ const Introduction = ({ messageSchema, fds }: {
 
   useEffect(() => {
     let active = true;
-    const fetchProtoText = async () => {
+    const fetchExamples = async () => {
       if (!messageSchema || !fds || !dynamicExamples) return;
       try {
-        const text = await convertToPrototext(messageSchema.typeName, fds, dynamicExamples.json);
+        const [text, scope] = await Promise.all([
+          convertToPrototext(messageSchema.typeName, fds, dynamicExamples.json),
+          convertToProtoscope(dynamicExamples.binary)
+        ]);
         if (active) {
           setProtoTextExample(text.trim());
+          setProtoscopeExample(scope.trim());
         }
       } catch (e) {
-        console.error("Failed to convert to ProtoText:", e);
+        console.error("Failed to convert examples:", e);
       }
     };
-    fetchProtoText();
+    fetchExamples();
     return () => { active = false; };
   }, [messageSchema, fds, dynamicExamples]);
 
@@ -1098,6 +1103,15 @@ const Introduction = ({ messageSchema, fds }: {
       title: 'ProtoText format',
       desc: <>A human-friendly <ExternalLinkText href="https://protobuf.dev/reference/protobuf/textformat-spec/">text format</ExternalLinkText> often used in CLI tools and server logs. This format is not used as often since protojson provides a more standardized and widely supported representation that humans can easily read and write.</>,
       code: protoTextExample || 'id: "550e8400-e29b-41d4-a716..."\nname: "Hiro Protagonist"\nage: 24',
+      language: null
+    },
+    {
+      id: 'scope',
+      label: 'Protoscope',
+      icon: SearchCheck,
+      title: 'Protoscope format',
+      desc: <>A diagnostic language for <ExternalLinkText href="https://github.com/protocolbuffers/protoscope">inspecting</ExternalLinkText> Protobuf messages when you don't have the original schema. It is schema-ignorant, allowing you to see the structural skeleton of the binary data with some heuristic guesses.</>,
+      code: protoscopeExample || '1: "550e8400-e29b-41d4-a716-446655440000"\n2: "Hiro Protagonist"\n3: 24',
       language: null
     }
   ];
@@ -2072,6 +2086,8 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
   const [activeExample, setActiveExample] = useState<keyof typeof SIZE_EXAMPLES>('BASIC');
   const [jsonInput, setJsonInput] = useState(JSON.stringify(SIZE_EXAMPLES.BASIC, null, 2));
   const [selectedByte, setSelectedByte] = useState<number | null>(null);
+  const [viewMode, setViewMode] = useState<'hex' | 'scope'>('hex');
+  const [protoscopeOutput, setProtoscopeOutput] = useState<string>('');
 
   const handleExampleChange = (key: keyof typeof SIZE_EXAMPLES) => {
     setActiveExample(key);
@@ -2080,18 +2096,24 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
   };
 
   const stats = useMemo(() => {
-    if (!messageSchema) return { segments: [], error: null as string | null };
+    if (!messageSchema) return { segments: [], binary: new Uint8Array(), error: null as string | null };
     try {
       const obj = JSON.parse(jsonInput);
       const user = fromJson(messageSchema, obj, { ignoreUnknownFields: true });
       const binary = toBinary(messageSchema, user);
       const segments = decodeBinary(binary);
-      return { segments, error: null };
+      return { segments, binary, error: null };
     } catch (e: unknown) {
       const errorMsg = e instanceof Error ? e.message : String(e);
-      return { segments: [], error: errorMsg || 'Error processing JSON' };
+      return { segments: [], binary: new Uint8Array(), error: errorMsg || 'Error processing JSON' };
     }
   }, [jsonInput, messageSchema]);
+
+  useEffect(() => {
+    if (viewMode === 'scope' && stats.binary.length > 0) {
+      convertToProtoscope(stats.binary).then(setProtoscopeOutput).catch(console.error);
+    }
+  }, [viewMode, stats.binary]);
 
   const getBits = (byte: number) => {
     return byte.toString(2).padStart(8, '0').split('').map((bit, i) => ({
@@ -2253,7 +2275,22 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
             <CyberPanel
               title="DYNAMIC_BINARY_HEX_STREAM"
               headerExtra={
-                <div className="flex flex-wrap gap-2 items-center">
+                <div className="flex flex-wrap gap-4 items-center">
+                  <div className="flex bg-[var(--overlay-bg)] p-1 rounded border border-[var(--border-light)]">
+                    <button
+                      onClick={() => setViewMode('hex')}
+                      className={`px-3 py-1 text-[10px] font-mono rounded transition-all ${viewMode === 'hex' ? 'bg-[#00f3ff]/20 text-[var(--cyber-neon-blue)]' : 'text-[var(--text-dim)] hover:text-[var(--text-color)]'}`}
+                    >
+                      HEX_VIEW
+                    </button>
+                    <button
+                      onClick={() => setViewMode('scope')}
+                      className={`px-3 py-1 text-[10px] font-mono rounded transition-all ${viewMode === 'scope' ? 'bg-[#ff00ff]/20 text-[var(--cyber-neon-pink)]' : 'text-[var(--text-dim)] hover:text-[var(--text-color)]'}`}
+                    >
+                      PROTOSCOPE
+                    </button>
+                  </div>
+                  <div className="h-4 w-px bg-[var(--border-light)] mx-2 hidden sm:block" />
                   {stats.error && <span className="text-xs text-red-500 font-mono mr-2">PARSE_ERROR</span>}
                   {(Object.keys(SIZE_EXAMPLES) as Array<keyof typeof SIZE_EXAMPLES>).map((key) => (
                     <button
@@ -2272,72 +2309,86 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
             >
               <div className="grid grid-cols-1 md:grid-cols-5 min-h-[400px]">
                 <div className="md:col-span-3 p-4 border-b md:border-b-0 md:border-r border-[var(--border-light)]">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-3">
-                      <span className="text-[10px] font-mono text-[var(--text-dim)] uppercase tracking-widest">Wire Stream</span>
-                      <div className="flex items-center gap-1 bg-[var(--overlay-bg)] rounded px-1.5 py-0.5 border border-[var(--border-light)]">
-                        <button
-                          onClick={goToPrev}
-                          disabled={selectedByte === 0 || (selectedByte === null && stats.segments.length === 0)}
-                          className="p-1 hover:bg-[var(--border-light)] rounded disabled:opacity-20 transition-colors"
-                          aria-label="Previous byte"
-                        >
-                          <ChevronLeft className="w-3 h-3 text-[var(--cyber-neon-blue)]" />
-                        </button>
-                        <span className="text-[10px] font-mono text-[var(--cyber-neon-blue)] min-w-[55px] text-center">
-                          {selectedByte !== null ? `BYTE ${selectedByte + 1}` : 'SELECT BYTE'}
-                        </span>
-                        <button
-                          onClick={goToNext}
-                          disabled={selectedByte === stats.segments.length - 1 || (selectedByte === null && stats.segments.length === 0)}
-                          className="p-1 hover:bg-[var(--border-light)] rounded disabled:opacity-20 transition-colors"
-                          aria-label="Next byte"
-                        >
-                          <ChevronRight className="w-3 h-3 text-[var(--cyber-neon-blue)]" />
-                        </button>
+                  {viewMode === 'hex' ? (
+                    <>
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center gap-3">
+                          <span className="text-[10px] font-mono text-[var(--text-dim)] uppercase tracking-widest">Wire Stream</span>
+                          <div className="flex items-center gap-1 bg-[var(--overlay-bg)] rounded px-1.5 py-0.5 border border-[var(--border-light)]">
+                            <button
+                              onClick={goToPrev}
+                              disabled={selectedByte === 0 || (selectedByte === null && stats.segments.length === 0)}
+                              className="p-1 hover:bg-[var(--border-light)] rounded disabled:opacity-20 transition-colors"
+                              aria-label="Previous byte"
+                            >
+                              <ChevronLeft className="w-3 h-3 text-[var(--cyber-neon-blue)]" />
+                            </button>
+                            <span className="text-[10px] font-mono text-[var(--cyber-neon-blue)] min-w-[55px] text-center">
+                              {selectedByte !== null ? `BYTE ${selectedByte + 1}` : 'SELECT BYTE'}
+                            </span>
+                            <button
+                              onClick={goToNext}
+                              disabled={selectedByte === stats.segments.length - 1 || (selectedByte === null && stats.segments.length === 0)}
+                              className="p-1 hover:bg-[var(--border-light)] rounded disabled:opacity-20 transition-colors"
+                              aria-label="Next byte"
+                            >
+                              <ChevronRight className="w-3 h-3 text-[var(--cyber-neon-blue)]" />
+                            </button>
+                          </div>
+                        </div>
+                        <div className="flex gap-2">
+                          <div className="flex items-center gap-1">
+                            <div className="w-1.5 h-1.5 rounded-full bg-[#00f3ff]" />
+                            <span className="text-[9px] font-mono text-[var(--text-dim)] uppercase">Tag</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <div className="w-1.5 h-1.5 rounded-full bg-[#ff00ff]" />
+                            <span className="text-[9px] font-mono text-[var(--text-dim)] uppercase">Len</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <div className="w-1.5 h-1.5 rounded-full bg-[#00ff9f]" />
+                            <span className="text-[9px] font-mono text-[var(--text-dim)] uppercase">Data</span>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex gap-2">
-                      <div className="flex items-center gap-1">
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#00f3ff]" />
-                        <span className="text-[9px] font-mono text-[var(--text-dim)] uppercase">Tag</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#ff00ff]" />
-                        <span className="text-[9px] font-mono text-[var(--text-dim)] uppercase">Len</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#00ff9f]" />
-                        <span className="text-[9px] font-mono text-[var(--text-dim)] uppercase">Data</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex flex-wrap gap-y-3 gap-x-0 font-mono text-xl md:text-2xl">
-                    {stats.segments.map((b, i) => {
-                      const isPrevData = i > 0 && stats.segments[i - 1].type === 'data' && stats.segments[i - 1].fieldId === b.fieldId;
-                      const isNextData = i < stats.segments.length - 1 && stats.segments[i + 1].type === 'data' && stats.segments[i + 1].fieldId === b.fieldId;
-                      const isData = b.type === 'data';
+                      <div className="flex flex-wrap gap-y-3 gap-x-0 font-mono text-xl md:text-2xl">
+                        {stats.segments.map((b, i) => {
+                          const isPrevData = i > 0 && stats.segments[i - 1].type === 'data' && stats.segments[i - 1].fieldId === b.fieldId;
+                          const isNextData = i < stats.segments.length - 1 && stats.segments[i + 1].type === 'data' && stats.segments[i + 1].fieldId === b.fieldId;
+                          const isData = b.type === 'data';
 
-                      return (
-                        <motion.div
-                          key={i}
-                          onClick={() => setSelectedByte(selectedByte === i ? null : i)}
-                          className={`
-                            px-1 cursor-crosshair transition-all border
-                            ${b.type === 'tag' ? 'border-[#00f3ff]/30 text-[var(--cyber-neon-blue)] hover:bg-[#00f3ff]/20 rounded' : ''}
-                            ${b.type === 'len' ? 'border-[#ff00ff]/30 text-[var(--cyber-neon-pink)] hover:bg-[#ff00ff]/20 rounded' : ''}
-                            ${isData ? `border-[#00ff9f]/30 text-[var(--cyber-neon-green)] hover:bg-[#00ff9f]/20 
-                              ${isPrevData ? 'border-l-0 rounded-l-none' : 'rounded-l'} 
-                              ${isNextData ? 'border-r-0 rounded-r-none' : 'rounded-r'}
-                            ` : ''}
-                            ${selectedByte === i ? 'bg-[#00f3ff]/20 border-[#00f3ff] shadow-[0_0_15px_rgba(0,243,255,0.4)] z-10 scale-110' : 'hover:scale-105'}
-                          `}
-                        >
-                          {b.val}
-                        </motion.div>
-                      );
-                    })}
-                  </div>
+                          return (
+                            <div
+                              key={i}
+                              onClick={() => setSelectedByte(selectedByte === i ? null : i)}
+                              className={`
+                                px-1 cursor-crosshair border transition-colors duration-75
+                                ${b.type === 'tag' ? 'border-[#00f3ff]/30 text-[var(--cyber-neon-blue)] hover:bg-[#00f3ff]/20 rounded' : ''}
+                                ${b.type === 'len' ? 'border-[#ff00ff]/30 text-[var(--cyber-neon-pink)] hover:bg-[#ff00ff]/20 rounded' : ''}
+                                ${isData ? `border-[#00ff9f]/30 text-[var(--cyber-neon-green)] hover:bg-[#00ff9f]/20 
+                                  ${isPrevData ? 'border-l-0 rounded-l-none' : 'rounded-l'} 
+                                  ${isNextData ? 'border-r-0 rounded-r-none' : 'rounded-r'}
+                                ` : ''}
+                                ${selectedByte === i ? 'bg-[#00f3ff]/20 border-[#00f3ff] shadow-[0_0_15px_rgba(0,243,255,0.4)] z-10 scale-110' : 'hover:scale-105 hover:z-20'}
+                              `}
+                            >
+                              {b.val}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </>
+                  ) : (
+                    <div className="flex flex-col h-full">
+                      <div className="flex items-center justify-between mb-4">
+                        <span className="text-[10px] font-mono text-[var(--text-dim)] uppercase tracking-widest">Protoscope Disassembly</span>
+                        <SearchCheck className="w-4 h-4 text-[var(--cyber-neon-pink)] opacity-50" />
+                      </div>
+                      <pre className="flex-1 font-mono text-sm leading-relaxed text-[var(--text-color)] overflow-auto custom-scrollbar p-2 bg-[var(--section-bg-dark)]/30 rounded border border-[var(--border-light)]">
+                        {protoscopeOutput || 'Processing...'}
+                      </pre>
+                    </div>
+                  )}
                 </div>
                 <div className="md:col-span-2 bg-[var(--overlay-bg)] flex flex-col border-t md:border-t-0 border-[var(--border-light)]">
                   <div className="p-4 border-b border-[var(--border-light)] flex items-center justify-between">
@@ -2426,6 +2477,75 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
                 </AnimatePresence>
               </div>
             </CyberPanel>
+          </div>
+        </div>
+
+        <div className="mt-24 pt-16 border-t border-[var(--border-light)]">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <div className="space-y-6">
+              <h3 className="text-2xl font-cyber font-bold text-[var(--text-color)] uppercase flex items-center gap-3">
+                <SearchCheck className="w-6 h-6 text-[var(--cyber-neon-pink)]" />
+                The Protoscope Lens
+              </h3>
+              <p className="text-[var(--text-dim)] leading-relaxed">
+                <ExternalLinkText href="https://github.com/protocolbuffers/protoscope">Protoscope</ExternalLinkText> is a diagnostic tool for inspecting Protobuf messages when you don't have the original schema. It allows you to peek into a binary stream and see its structural skeleton, though it comes with significant caveats.
+              </p>
+              <div className="space-y-4">
+                <div className="p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg">
+                  <h4 className="font-cyber font-bold text-xs text-[var(--cyber-neon-blue)] uppercase mb-2">What you see:</h4>
+                  <ul className="text-xs text-[var(--text-dim)] space-y-2">
+                    <li className="flex gap-2"><div className="w-1 h-1 bg-[var(--cyber-neon-blue)] mt-1.5 shrink-0" /> <strong>Raw Structure:</strong> Field numbers and wire types are explicit (e.g., <code>1: 150</code>).</li>
+                    <li className="flex gap-2"><div className="w-1 h-1 bg-[var(--cyber-neon-blue)] mt-1.5 shrink-0" /> <strong>Heuristic Decoding:</strong> It guesses when a field might be a sub-message (using <code>{"{ }"}</code>) or a string.</li>
+                    <li className="flex gap-2"><div className="w-1 h-1 bg-[var(--cyber-neon-blue)] mt-1.5 shrink-0" /> <strong>Binary Integrity:</strong> It represents every byte on the wire, making it perfect for debugging malformed payloads.</li>
+                  </ul>
+                </div>
+                <div className="p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg">
+                  <h4 className="font-cyber font-bold text-xs text-[var(--cyber-neon-pink)] uppercase mb-2">What you DON'T see:</h4>
+                  <ul className="text-xs text-[var(--text-dim)] space-y-4 text-left">
+                    <li className="flex gap-3 p-3 bg-red-500/5 border border-red-500/20 rounded">
+                      <AlertTriangle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+                      <div className="space-y-1">
+                        <span className="text-red-400 font-bold uppercase text-[10px] tracking-widest block">Warning</span>
+                        <p><strong>Semantic Ambiguity:</strong> This is the most important caveat. Without a schema, Protoscope must <strong>guess</strong> how to represent bytes. It cannot distinguish between <code>uint32</code>, <code>int32</code>, or an <code>enum</code>, and it might misinterpret fixed-width numbers as varints. This can result in values that are <strong>completely wrong</strong> (e.g., misreading a negative number as a massive positive integer).</p>
+                      </div>
+                    </li>
+                    <li className="flex gap-2 px-3">
+                      <div className="w-1.5 h-1.5 bg-[var(--cyber-neon-pink)] mt-1.5 shrink-0" /> 
+                      <span><strong>Field Names:</strong> It only knows field numbers (1, 2, 3), not names like <code>user_id</code>.</span>
+                    </li>
+                    <li className="flex gap-2 px-3">
+                      <div className="w-1.5 h-1.5 bg-[var(--cyber-neon-pink)] mt-1.5 shrink-0" /> 
+                      <span><strong>Default Values:</strong> It only shows what's physically on the wire; missing fields are invisible.</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div className="space-y-4">
+              <CyberPanel title="PROTOSCOPE_VS_WIRE">
+                <div className="p-4 space-y-6">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <span className="text-[10px] font-mono text-[var(--text-dim)] uppercase tracking-widest">Hex Stream</span>
+                      <pre className="text-xs font-mono text-[var(--cyber-neon-blue)] bg-[var(--section-bg-dark)] p-3 rounded border border-[var(--border-light)]">
+                        08 96 01{"\n"}
+                        12 05 41 6c 69 63 65
+                      </pre>
+                    </div>
+                    <div className="space-y-2">
+                      <span className="text-[10px] font-mono text-[var(--text-dim)] uppercase tracking-widest">Protoscope</span>
+                      <pre className="text-xs font-mono text-[var(--cyber-neon-pink)] bg-[var(--section-bg-dark)] p-3 rounded border border-[var(--border-light)]">
+                        1: 150{"\n"}
+                        2: "Alice"
+                      </pre>
+                    </div>
+                  </div>
+                  <div className="p-4 bg-[#ff00ff]/5 border border-[#ff00ff]/10 rounded-lg italic text-[11px] text-[var(--text-dim)] leading-relaxed">
+                    "Protoscope is like viewing the source code of a binary file. It removes the 'how' (bit-packing) and shows you the 'what' (structure)."
+                  </div>
+                </div>
+              </CyberPanel>
+            </div>
           </div>
         </div>
       </div>
