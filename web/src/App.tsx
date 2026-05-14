@@ -1,12 +1,12 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Routes, Route, Link, useLocation, Navigate } from 'react-router-dom';
 import {
   Terminal,
   Cpu,
   Database,
   Zap,
   ChevronRight,
-  ChevronDown,
   ChevronLeft,
   Code2,
   Binary,
@@ -65,9 +65,9 @@ import { generateFake, convertToPrototext, convertToProtoscope, type Compilation
 
 const SectionIdContext = React.createContext<string | null>(null);
 
-const Section = ({ id, children, className }: { id: string, children: React.ReactNode, className?: string }) => (
+const Section = ({ id, children, className, style }: { id: string, children: React.ReactNode, className?: string, style?: React.CSSProperties }) => (
   <SectionIdContext.Provider value={id}>
-    <section id={id} className={className}>
+    <section id={id} className={className} style={style}>
       {children}
     </section>
   </SectionIdContext.Provider>
@@ -105,6 +105,7 @@ const HexViewer = ({ bytes }: { bytes: { val: string, raw: number }[] }) => {
 
 const SyntaxHighlighter = ({ code, language, wrap = false }: { code: string, language: 'proto' | 'json', wrap?: boolean }) => {
   const highlight = (text: string) => {
+    if (!text) return '';
     let output = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     const placeholders: string[] = [];
 
@@ -193,13 +194,13 @@ const CyberPanel = ({ children, title, className = "", headerExtra }: { children
 // --- Sections ---
 
 const Hero = ({ isAtTop }: { isAtTop: boolean }) => (
-  <Section id="hero" className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-8 relative overflow-hidden pt-24">
+  <Section id="hero" className="h-[calc(100vh-80px)] flex flex-col items-center justify-center p-4 sm:p-8 relative overflow-hidden mt-[80px]">
     <div className={`scanline ${isAtTop ? 'active' : ''}`} />
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8 }}
-      className="max-w-4xl z-10 text-center w-full"
+      className="max-w-4xl z-10 text-center w-full flex flex-col items-center flex-1 justify-center"
     >
       <h1 className="text-4xl sm:text-6xl md:text-8xl font-cyber font-black mb-6 tracking-tighter leading-none">
         PROTOBUF<br />
@@ -212,8 +213,11 @@ const Hero = ({ isAtTop }: { isAtTop: boolean }) => (
       </p>
     </motion.div>
 
-    <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce opacity-30">
-      <ChevronRight className="w-6 h-6 rotate-90" />
+    <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20">
+      <Link to="/intro" className="flex flex-col items-center gap-2 group hover:text-[var(--cyber-neon-blue)] transition-colors">
+        <span className="font-cyber font-bold tracking-widest text-sm uppercase">Get Started</span>
+        <ChevronRight className="w-6 h-6 rotate-90 group-hover:translate-y-2 transition-transform" />
+      </Link>
     </div>
   </Section>
 );
@@ -1690,6 +1694,17 @@ const TypeSystem = () => {
         { name: "bool", desc: "Encoded as a varint 0 or 1." },
         { name: "enum", desc: "Predefined set of named integers. Defaults to 0." },
       ]
+    },
+    {
+      name: "Well-Known Types",
+      icon: Box,
+      types: [
+        { name: "google.protobuf.Empty", desc: "Used to indicate an API takes no parameters or returns nothing." },
+        { name: "google.protobuf.Timestamp", desc: "A point in time, independent of timezone." },
+        { name: "google.protobuf.Duration", desc: "A span of time (e.g., 5 seconds, 10 milliseconds)." },
+        { name: "google.protobuf.Value", desc: "Represents a dynamically typed value, equivalent to any JSON type." },
+        { name: "google.protobuf.Method", desc: "Represents a method of an API interface." },
+      ]
     }
   ];
 
@@ -1725,6 +1740,22 @@ const TypeSystem = () => {
         </div>
 
         <div className="pt-16 border-t border-[var(--border-light)]">
+          <div className="grid grid-cols-1 gap-12 text-[var(--text-color)]">
+            <div className="space-y-6">
+              <h3 className="text-xl font-cyber font-bold text-[var(--text-color)] uppercase">Guidelines for Integers</h3>
+              <p>Choosing the right integer type is important for efficiency and compatibility. While Protobuf supports many integer types, keeping things simple is usually best.</p>
+              <ul className="list-disc pl-5 space-y-2 text-[var(--text-dim)]">
+                <li>Use <code>int32</code> for typical integers where negative numbers might occur.</li>
+                <li>Use <code>uint32</code> when you know the value will never be negative.</li>
+                <li>Use <code>int64</code> or <code>uint64</code> when values can exceed 2 billion (e.g. timestamps, large IDs). Note that JavaScript will require the use of <code>BigInt</code> objects to represent these precisely.</li>
+                <li>Avoid <code>sint32</code> / <code>sint64</code> unless you expect a large number of negative values, as they use ZigZag encoding which is less efficient for mostly positive data.</li>
+                <li>Avoid <code>fixed32</code> / <code>fixed64</code> unless you expect mostly large values (&gt; 2^28 for 32-bit), as they don't benefit from varint compression.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div className="pt-16 border-t border-[var(--border-light)]">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             <div className="space-y-6 text-[var(--text-color)]">
               <h3 className="text-xl font-cyber font-bold text-[var(--text-color)] uppercase">ProtoJSON Mapping</h3>
@@ -1743,26 +1774,40 @@ const TypeSystem = () => {
               </div>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-4 lg:col-span-2">
               <CyberPanel title="JSON_MAPPING_RULES">
-                <div className="p-4 space-y-4 text-sm">
-                  <div className="grid grid-cols-2 gap-4 pb-2 border-b border-[var(--border-light)] font-mono text-[10px] text-[var(--text-dim)] uppercase">
-                    <span>Protobuf Type</span>
-                    <span>JSON Representation</span>
-                  </div>
-                  {[
-                    { pb: "int32, float, double", json: "Number" },
-                    { pb: "bool", json: "Boolean (true/false)" },
-                    { pb: "int64, uint64", json: "\"String\" (Precision safety)" },
-                    { pb: "enum", json: "\"String\"" },
-                    { pb: "bytes", json: "\"Base64 String\"" },
-                    { pb: "google.protobuf.Timestamp", json: "\"2023-10-01T12:00:00Z\"" },
-                  ].map(row => (
-                    <div key={row.pb} className="grid grid-cols-2 gap-4 py-1">
-                      <code className="text-[var(--cyber-neon-blue)]">{row.pb}</code>
-                      <code className="text-[var(--cyber-neon-green)]">{row.json}</code>
-                    </div>
-                  ))}
+                <div className="p-4 space-y-4 text-sm overflow-x-auto">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="border-b border-[var(--border-light)] font-mono text-[10px] text-[var(--text-dim)] uppercase">
+                        <th className="py-2 pr-4 min-w-[200px]">Protobuf Type</th>
+                        <th className="py-2 pr-4 min-w-[150px]">JSON Type(s)</th>
+                        <th className="py-2 pr-4 min-w-[200px]">JSON Value Example</th>
+                        <th className="py-2 min-w-[250px]">Notes</th>
+                      </tr>
+                    </thead>
+                    <tbody className="align-top">
+                      {[
+                        { pb: "int32, float, double", json: "Number", ex: "123.45", note: "Standard JSON numbers." },
+                        { pb: "bool", json: "Boolean", ex: "true", note: "Standard JSON booleans." },
+                        { pb: "int64, uint64", json: "String", ex: '"9007199254740993"', note: "Strings prevent precision loss in JS." },
+                        { pb: "enum", json: "String", ex: '"ROLE_ADMIN"', note: "Uses the string name of the enum value." },
+                        { pb: "bytes", json: "String", ex: '"YWJjMTIz"', note: "Base64 encoded string." },
+                        { pb: "google.protobuf.Timestamp", json: "String", ex: '"2023-10-01T12:00:00Z"', note: "RFC 3339 formatted timestamp string." },
+                        { pb: "google.protobuf.Duration", json: "String", ex: '"1.000340012s"', note: "Seconds with up to 9 fractional digits." },
+                        { pb: "google.protobuf.Empty", json: "Object", ex: "{}", note: "An empty JSON object." },
+                        { pb: "google.protobuf.Value", json: "Any", ex: '{"foo": "bar"}', note: "Can be any valid JSON value." },
+                        { pb: "google.protobuf.Method", json: "String", ex: '"/demo.v1.UserService/GetUser"', note: "String representation of the method." },
+                      ].map(row => (
+                        <tr key={row.pb} className="border-b border-[var(--border-light)]/50 last:border-0">
+                          <td className="py-3 pr-4"><code className="text-[var(--cyber-neon-blue)] bg-[var(--cyber-neon-blue)]/5 px-1 py-0.5 rounded break-words">{row.pb}</code></td>
+                          <td className="py-3 pr-4 font-mono text-xs text-[var(--cyber-neon-pink)]">{row.json}</td>
+                          <td className="py-3 pr-4"><code className="text-[var(--cyber-neon-green)] bg-[var(--cyber-neon-green)]/5 px-1 py-0.5 rounded break-all">{row.ex}</code></td>
+                          <td className="py-3 text-[var(--text-dim)] text-xs">{row.note}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </CyberPanel>
             </div>
@@ -1951,8 +1996,7 @@ const SchemaDrivenAPIs = () => (
 );
 
 const AlternativesLandscape = () => (
-  <Section id="alternatives" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]">
-    <div className="max-w-7xl mx-auto">
+  <div>
       <SectionTitle icon={Layers} subtitle="07_COMPARISON">The Landscape of Alternatives</SectionTitle>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
@@ -2026,7 +2070,6 @@ const AlternativesLandscape = () => (
         </div>
       </div>
     </div>
-  </Section>
 );
 
 const PacketDiagram = () => (
@@ -2859,8 +2902,7 @@ const ValidationLab = ({ messageSchema, fds, protoSource, setProtoSource }: {
 };
 
 const EcosystemNextSteps = () => (
-  <Section id="ecosystem" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]">
-    <div className="max-w-7xl mx-auto">
+  <div>
       <SectionTitle icon={Combine} subtitle="08_NEXT_STEPS">Ecosystem & Next Steps</SectionTitle>
 
       <div className="mb-12 text-[var(--text-dim)] max-w-3xl leading-relaxed">
@@ -2911,14 +2953,26 @@ const EcosystemNextSteps = () => (
         </CyberPanel>
 
       </div>
-    </div>
-  </Section>
+  </div>
 );
 
-const References = () => (
-  <Section id="references" className="py-24 px-4 sm:px-8 border-t border-[var(--border-light)] relative overflow-hidden" style={{ background: 'linear-gradient(to bottom, transparent, var(--bg-color) 400px)' }}>
+const Conclusion = () => (
+  <Section id="conclusion" className="py-24 px-4 sm:px-8 border-t border-[var(--border-light)] relative overflow-hidden" style={{ background: 'linear-gradient(to bottom, transparent, var(--bg-color) 400px)' }}>
     <div className="max-w-7xl mx-auto text-[var(--text-color)] relative z-10">
-      <SectionTitle icon={BookOpen} subtitle="09_BIBLIOGRAPHY">References & Specs</SectionTitle>
+      <SectionTitle icon={BookOpen} subtitle="09_CONCLUSION">Conclusion & References</SectionTitle>
+
+      <div className="mb-12 text-[var(--text-dim)] max-w-3xl leading-relaxed space-y-4">
+        <p>
+          We've covered a lot of ground—from the basic concepts of messages and fields, to the intricacies of the binary wire format, and the powerful tooling that surrounds the Protobuf ecosystem. By adopting a schema-driven approach, you are laying a strong foundation for building scalable, high-performance, and robust APIs.
+        </p>
+        <p>
+          However, this is just the beginning. The world of Protobuf is vast. There is much more to learn about advanced schema evolution, customizing code generation plugins, fine-tuning gRPC performance, and leveraging Protobuf in diverse environments from embedded systems to massive cloud architectures.
+        </p>
+        <p>
+          Below are some essential resources to help you continue your journey and dive deeper into the specifications and tools that power the Protobuf ecosystem.
+        </p>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <div className="space-y-4">
           <h4 className="text-[var(--cyber-neon-blue)] font-cyber text-sm tracking-widest uppercase">Core Specifications</h4>
@@ -2954,35 +3008,23 @@ const INITIAL_PROTO = `edition = "2023";\n\npackage demo.v1;\n\nimport "buf/vali
 interface NavItemDef {
   id: string;
   label: string;
-  children?: NavItemDef[];
+  path: string;
 }
 
 const NAV_ITEMS: NavItemDef[] = [
-  { id: 'hero', label: 'HOME' },
-  { id: 'intro', label: 'INTRO' },
-  {
-    id: 'basics',
-    label: 'BASICS',
-    children: [
-      { id: 'schema', label: 'SCHEMA_DRIVEN' },
-      { id: 'types', label: 'TYPE_SYSTEM' }
-    ]
-  },
-  {
-    id: 'advanced',
-    label: 'ADVANCED',
-    children: [
-      { id: 'reflection', label: 'REFLECTION' },
-      { id: 'deepdive', label: 'ENGINEERING' },
-      { id: 'validation', label: 'VALIDATION' }
-    ]
-  },
-  { id: 'efficiency', label: 'EFFICIENCY' },
-  { id: 'binary', label: 'BINARY' },
-  { id: 'history', label: 'HISTORY' },
-  { id: 'alternatives', label: 'ALTERNATIVES' },
-  { id: 'ecosystem', label: 'ECOSYSTEM' },
-  { id: 'references', label: 'REFERENCES' }
+  { id: 'hero', label: 'HOME', path: '/' },
+  { id: 'intro', label: 'INTRO', path: '/intro' },
+  { id: 'basics', label: 'BASICS', path: '/basics' },
+  { id: 'schema', label: 'SCHEMA_DRIVEN', path: '/schema' },
+  { id: 'types', label: 'TYPE_SYSTEM', path: '/types' },
+  { id: 'advanced', label: 'ADVANCED', path: '/advanced' },
+  { id: 'reflection', label: 'REFLECTION', path: '/reflection' },
+  { id: 'deepdive', label: 'ENGINEERING', path: '/engineering' },
+  { id: 'validation', label: 'VALIDATION', path: '/validation' },
+  { id: 'efficiency', label: 'EFFICIENCY', path: '/efficiency' },
+  { id: 'binary', label: 'BINARY', path: '/binary' },
+  { id: 'ecosystem', label: 'ECOSYSTEM', path: '/ecosystem' },
+  { id: 'conclusion', label: 'CONCLUSION', path: '/conclusion' }
 ];
 
 const SECTION_LABELS: Record<string, string> = {
@@ -2997,76 +3039,31 @@ const SECTION_LABELS: Record<string, string> = {
   validation: 'Data Validation',
   efficiency: 'Efficiency',
   binary: 'Binary',
-  history: 'The Evolution',
-  alternatives: 'Landscape & Alternatives',
   ecosystem: 'The Ecosystem',
-  references: 'References'
+  conclusion: 'Conclusion'
 };
 
 const NavItem = ({ item, index, onNavigate }: { item: NavItemDef, index: number, onNavigate: () => void }) => {
-  const [isOpen, setIsOpen] = useState(true);
-  const hasChildren = item.children && item.children.length > 0;
+  const location = useLocation();
+  const isActive = location.pathname === item.path || (location.pathname === '/' && item.path === '/');
 
   return (
     <div className="flex flex-col">
-      <div className="group flex items-center justify-between py-3 border-b border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)]/30 transition-colors">
-        <a
-          href={`#${item.id}`}
+      <div className={`group flex items-center justify-between py-3 border-b hover:border-[var(--cyber-neon-blue)]/30 transition-colors ${isActive ? 'border-[var(--cyber-neon-blue)] bg-[var(--cyber-neon-blue)]/5' : 'border-[var(--border-light)]'}`}>
+        <Link
+          to={item.path}
           onClick={onNavigate}
-          className="flex flex-col flex-1"
+          className="flex flex-col flex-1 px-2"
         >
-          <span className="text-[10px] font-mono text-[var(--cyber-neon-blue)]/80 mb-0.5">0{index + 1}</span>
-          <span className="font-cyber font-bold text-sm tracking-wider text-[var(--text-color)] group-hover:text-[var(--cyber-neon-blue)] transition-colors uppercase">
+          <span className={`text-[10px] font-mono mb-0.5 ${isActive ? 'text-[var(--cyber-neon-blue)]' : 'text-[var(--cyber-neon-blue)]/80'}`}>0{index + 1}</span>
+          <span className={`font-cyber font-bold text-sm tracking-wider group-hover:text-[var(--cyber-neon-blue)] transition-colors uppercase ${isActive ? 'text-[var(--cyber-neon-blue)]' : 'text-[var(--text-color)]'}`}>
             {item.label}
           </span>
-        </a>
-        <div className="flex items-center gap-2">
-          {hasChildren && (
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                setIsOpen(!isOpen);
-              }}
-              className="p-2 hover:bg-[var(--cyber-neon-blue)]/10 rounded transition-colors"
-            >
-              <ChevronDown className={`w-4 h-4 text-[var(--cyber-neon-blue)] transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
-            </button>
-          )}
-          <ChevronRight className="w-4 h-4 text-[var(--text-color)]/0 group-hover:text-[var(--cyber-neon-blue)] transition-all -translate-x-2 group-hover:translate-x-0" />
+        </Link>
+        <div className="flex items-center gap-2 pr-2">
+          <ChevronRight className={`w-4 h-4 transition-all -translate-x-2 group-hover:translate-x-0 ${isActive ? 'text-[var(--cyber-neon-blue)] translate-x-0' : 'text-[var(--text-color)]/0 group-hover:text-[var(--cyber-neon-blue)]'}`} />
         </div>
       </div>
-
-      <AnimatePresence>
-        {hasChildren && isOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="overflow-hidden flex flex-col pl-6 border-l border-[var(--border-light)] ml-1"
-          >
-            {item.children!.map((child, childIdx) => (
-              <a
-                key={child.id}
-                href={`#${child.id}`}
-                onClick={onNavigate}
-                className="group flex items-center justify-between py-3 border-b border-[var(--border-light)]/50 hover:border-[var(--cyber-neon-blue)]/30 transition-colors"
-              >
-                <div className="flex flex-col">
-                  <span className="text-[9px] font-mono text-[var(--cyber-neon-blue)]/60 mb-0.5 tracking-tighter">
-                    0{index + 1}.{childIdx + 1}
-                  </span>
-                  <span className="font-cyber font-bold text-xs tracking-widest text-[var(--text-dim)] group-hover:text-[var(--cyber-neon-blue)] transition-colors uppercase">
-                    {child.label}
-                  </span>
-                </div>
-                <ChevronRight className="w-3.5 h-3.5 text-[var(--text-color)]/0 group-hover:text-[var(--cyber-neon-blue)] transition-all -translate-x-1 group-hover:translate-x-0" />
-              </a>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 };
@@ -3077,7 +3074,12 @@ function App() {
   const [registry, setRegistry] = useState<Registry | null>(null);
   const [fds, setFds] = useState<Uint8Array | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [activeSection, setActiveSection] = useState('hero');
+  const location = useLocation();
+  const currentNavIndex = NAV_ITEMS.findIndex(item => item.path === location.pathname || (location.pathname === '/' && item.path === '/'));
+  const activeSection = NAV_ITEMS[currentNavIndex]?.id || 'hero';
+  const prevNav = currentNavIndex > 0 ? NAV_ITEMS[currentNavIndex - 1] : null;
+  const nextNav = currentNavIndex >= 0 && currentNavIndex < NAV_ITEMS.length - 1 ? NAV_ITEMS[currentNavIndex + 1] : null;
+
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('theme');
@@ -3107,30 +3109,6 @@ function App() {
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  useEffect(() => {
-    const observerOptions = {
-      root: null,
-      rootMargin: '-80px 0px -80% 0px',
-      threshold: 0
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setActiveSection(entry.target.id);
-          // Update URL without adding to history
-          const hash = entry.target.id === 'hero' ? ' ' : `#${entry.target.id}`;
-          window.history.replaceState(null, '', window.location.pathname + hash);
-        }
-      });
-    }, observerOptions);
-
-    const sections = document.querySelectorAll('section[id]');
-    sections.forEach((section) => observer.observe(section));
-
-    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -3188,9 +3166,25 @@ function App() {
 
         <div className="absolute left-1/2 -translate-x-1/2 hidden lg:flex flex-col items-center pointer-events-none">
           <div className="text-[10px] font-mono text-[var(--cyber-neon-blue)]/80 uppercase tracking-[0.2em] mb-0.5">Section</div>
-          <a href={`#${activeSection}`} className="text-xs font-mono font-bold text-[var(--text-color)] uppercase tracking-widest bg-[var(--overlay-bg)] px-3 py-1 rounded border border-[var(--border-light)] backdrop-blur-sm pointer-events-auto hover:bg-[var(--border-light)] transition-colors">
-            {SECTION_LABELS[activeSection] || 'Welcome'}
-          </a>
+          <div className="flex items-center gap-2 pointer-events-auto">
+            {prevNav ? (
+              <Link to={prevNav.path} className="p-1 text-[var(--text-dim)] hover:text-[var(--cyber-neon-blue)] hover:bg-[var(--cyber-neon-blue)]/10 rounded transition-colors" title={`Previous: ${prevNav.label}`}>
+                <ChevronLeft className="w-4 h-4" />
+              </Link>
+            ) : (
+              <div className="w-6 h-6" /> // Placeholder
+            )}
+            <div className="text-xs font-mono font-bold text-[var(--text-color)] uppercase tracking-widest bg-[var(--overlay-bg)] px-3 py-1 rounded border border-[var(--border-light)] backdrop-blur-sm">
+              {SECTION_LABELS[activeSection] || 'Welcome'}
+            </div>
+            {nextNav ? (
+              <Link to={nextNav.path} className="p-1 text-[var(--text-dim)] hover:text-[var(--cyber-neon-blue)] hover:bg-[var(--cyber-neon-blue)]/10 rounded transition-colors" title={`Next: ${nextNav.label}`}>
+                <ChevronRight className="w-4 h-4" />
+              </Link>
+            ) : (
+              <div className="w-6 h-6" /> // Placeholder
+            )}
+          </div>
         </div>
 
         <div className="ml-auto flex items-center gap-4">
@@ -3274,39 +3268,33 @@ function App() {
       </AnimatePresence>
 
       <main>
-        <Hero isAtTop={isAtTop} />
-        <Introduction
-          messageSchema={messageSchema}
-          fds={fds}
-        />
-        <ProtobufBasics />
-        <SchemaDrivenAPIs />
-        <TypeSystem />
-        <AdvancedProtobuf />
-        <DescriptorsAndReflection />
-        <DeepDiveSection />
-        <ValidationLab
-          messageSchema={messageSchema}
-          fds={fds}
-          protoSource={protoSource}
-          setProtoSource={setProtoSource}
-        />
-        <SizeComparison
-          messageSchema={messageSchema}
-          fileDescriptorSet={fds}
-        />
-        <BinaryMatrix
-          messageSchema={messageSchema}
-        />
-        <Section id="history" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]">
-          <div className="max-w-7xl mx-auto">
-            <SectionTitle icon={GitBranch} subtitle="06_EVOLUTION">The History of Protobuf</SectionTitle>
-            <VersionTimeline />
-          </div>
-        </Section>
-        <AlternativesLandscape />
-        <EcosystemNextSteps />
-        <References />
+        <Routes>
+          <Route path="/" element={<Hero isAtTop={isAtTop} />} />
+          <Route path="/intro" element={<Introduction messageSchema={messageSchema} fds={fds} />} />
+          <Route path="/basics" element={<ProtobufBasics />} />
+          <Route path="/schema" element={<SchemaDrivenAPIs />} />
+          <Route path="/types" element={<TypeSystem />} />
+          <Route path="/advanced" element={<AdvancedProtobuf />} />
+          <Route path="/reflection" element={<DescriptorsAndReflection />} />
+          <Route path="/engineering" element={<DeepDiveSection />} />
+          <Route path="/validation" element={<ValidationLab messageSchema={messageSchema} fds={fds} protoSource={protoSource} setProtoSource={setProtoSource} />} />
+          <Route path="/efficiency" element={<SizeComparison messageSchema={messageSchema} fileDescriptorSet={fds} />} />
+          <Route path="/binary" element={<BinaryMatrix messageSchema={messageSchema} />} />
+          <Route path="/ecosystem" element={
+            <Section id="ecosystem" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]">
+              <div className="max-w-7xl mx-auto space-y-24">
+                <div>
+                  <SectionTitle icon={GitBranch} subtitle="06_EVOLUTION">The History of Protobuf</SectionTitle>
+                  <VersionTimeline />
+                </div>
+                <AlternativesLandscape />
+                <EcosystemNextSteps />
+              </div>
+            </Section>
+          } />
+          <Route path="/conclusion" element={<Conclusion />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
       </main>
 
       <footer className="py-12 border-t border-[var(--border-light)] px-4 sm:px-8 flex flex-col items-center gap-4 bg-[var(--bg-color)]">
