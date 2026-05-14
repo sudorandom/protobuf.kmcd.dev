@@ -192,9 +192,9 @@ const CyberPanel = ({ children, title, className = "", headerExtra }: { children
 
 // --- Sections ---
 
-const Hero = () => (
+const Hero = ({ isAtTop }: { isAtTop: boolean }) => (
   <Section id="hero" className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-8 relative overflow-hidden pt-24">
-    <div className="scanline" />
+    <div className={`scanline ${isAtTop ? 'active' : ''}`} />
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -2916,8 +2916,8 @@ const EcosystemNextSteps = () => (
 );
 
 const References = () => (
-  <Section id="references" className="py-24 px-4 sm:px-8 bg-[var(--bg-color)] border-t border-[var(--border-light)]">
-    <div className="max-w-7xl mx-auto text-[var(--text-color)]">
+  <Section id="references" className="py-24 px-4 sm:px-8 border-t border-[var(--border-light)] relative overflow-hidden" style={{ background: 'linear-gradient(to bottom, transparent, var(--bg-color) 400px)' }}>
+    <div className="max-w-7xl mx-auto text-[var(--text-color)] relative z-10">
       <SectionTitle icon={BookOpen} subtitle="09_BIBLIOGRAPHY">References & Specs</SectionTitle>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <div className="space-y-4">
@@ -2929,7 +2929,7 @@ const References = () => (
           </ul>
         </div>
         <div className="space-y-4">
-          <h4 className="text-[var(--cyber-neon-pink)] font-cyber text-sm tracking-widest uppercase uppercase">Tooling & Ecosystem</h4>
+          <h4 className="text-[var(--cyber-neon-pink)] font-cyber text-sm tracking-widest uppercase">Tooling & Ecosystem</h4>
           <ul className="space-y-2 text-sm">
             <li><ExternalLinkText href="https://buf.build/">Buf Schema Registry (BSR)</ExternalLinkText></li>
             <li><ExternalLinkText href="https://github.com/bufbuild/protovalidate">Protovalidate GitHub</ExternalLinkText></li>
@@ -2937,7 +2937,7 @@ const References = () => (
           </ul>
         </div>
         <div className="space-y-4">
-          <h4 className="text-[var(--cyber-neon-green)] font-cyber text-sm tracking-widest uppercase uppercase tracking-widest">Standards & Protocols</h4>
+          <h4 className="text-[var(--cyber-neon-green)] font-cyber text-sm tracking-widest uppercase">Standards & Protocols</h4>
           <ul className="space-y-2 text-sm">
             <li><ExternalLinkText href="https://grpc.io/">gRPC Remote Procedure Calls</ExternalLinkText></li>
             <li><ExternalLinkText href="https://en.wikipedia.org/wiki/IEEE_754">IEEE 754 Floating Point</ExternalLinkText></li>
@@ -3098,6 +3098,16 @@ function App() {
   }, [theme]);
 
   const toggleTheme = () => setTheme(prev => prev === 'light' ? 'dark' : 'light');
+
+  const [isAtTop, setIsAtTop] = useState(true);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsAtTop(window.scrollY < 100);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     const observerOptions = {
@@ -3264,7 +3274,7 @@ function App() {
       </AnimatePresence>
 
       <main>
-        <Hero />
+        <Hero isAtTop={isAtTop} />
         <Introduction
           messageSchema={messageSchema}
           fds={fds}
@@ -3299,7 +3309,7 @@ function App() {
         <References />
       </main>
 
-      <footer className="py-12 border-t border-[var(--border-light)] px-4 sm:px-8 flex flex-col items-center gap-4">
+      <footer className="py-12 border-t border-[var(--border-light)] px-4 sm:px-8 flex flex-col items-center gap-4 bg-[var(--bg-color)]">
         <div className="flex gap-8">
           <a href="https://kmcd.dev" target="_blank" rel="noopener noreferrer" className="text-[var(--text-dim)] hover:text-[var(--cyber-neon-blue)] transition-colors" aria-label="KMCD.DEV">
             <Fingerprint className="w-5 h-5" />
