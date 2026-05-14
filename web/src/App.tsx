@@ -2354,7 +2354,7 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
                               key={i}
                               onClick={() => setSelectedByte(selectedByte === i ? null : i)}
                               className={`
-                                px-1 cursor-crosshair border transition-colors duration-75
+                                px-1 cursor-crosshair border
                                 ${b.type === 'tag' ? 'border-[var(--cyber-neon-blue)]/30 text-[var(--cyber-neon-blue)] hover:bg-[var(--cyber-neon-blue)]/20 rounded' : ''}
                                 ${b.type === 'len' ? 'border-[var(--cyber-neon-pink)]/30 text-[var(--cyber-neon-pink)] hover:bg-[var(--cyber-neon-pink)]/20 rounded' : ''}
                                 ${isData ? `border-[var(--cyber-neon-green)]/30 text-[var(--cyber-neon-green)] hover:bg-[var(--cyber-neon-green)]/20 
@@ -2405,80 +2405,70 @@ const BinaryMatrix = ({ messageSchema }: { messageSchema: DescMessage | null }) 
               </div>
 
               <div className="p-6 border-t border-[var(--border-light)] min-h-[220px]">
-                <AnimatePresence mode="wait">
-                  {currentSegment ? (
-                    <motion.div key={safeSelectedByte} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="flex flex-col gap-8">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div className="flex flex-col gap-2">
-                          <span className="text-xs text-[var(--text-dim)] font-mono uppercase tracking-widest">Byte Analysis <span className="text-[var(--cyber-neon-blue)] ml-2">[INDEX {safeSelectedByte}]</span></span>
-                          <span className="text-[var(--text-color)] font-mono text-lg">{currentSegment.desc}</span>
-                          <div className="text-sm text-[var(--text-dim)] mt-2 p-2 bg-[var(--overlay-bg)] rounded border border-[var(--border-light)]">
-                            {currentSegment.type === 'tag' && "This byte identifies which field we're looking at and how to decode the following data."}
-                            {currentSegment.type === 'len' && "For strings and sub-messages, this byte tells us exactly how many bytes of data follow."}
-                            {currentSegment.type === 'data' && "The actual payload of the field. Below you can see the raw hex and ASCII representation of this field's data."}
-                          </div>
-                        </div>
-                        <div className="flex flex-col gap-4">
-                          <span className="text-xs text-[var(--text-dim)] font-mono uppercase tracking-widest">Bit Breakdown (0x{currentSegment.val})</span>
-                          <div className="flex gap-1">
-                            {getBits(currentSegment.raw).map((bit, i) => (
-                              <div key={i} className="flex flex-col items-center">
-                                <div className={`w-8 h-10 flex items-center justify-center font-mono text-lg border ${bit.isMSB ? 'border-[var(--cyber-neon-pink)]/80 text-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/5' : bit.isType && currentSegment.type === 'tag' ? 'border-[var(--cyber-neon-blue)]/80 text-[var(--cyber-neon-blue)] bg-[var(--cyber-neon-blue)]/5' : 'border-[var(--border-light)] text-[var(--text-color)]'}`}>{bit.bit}</div>
-                                <span className="text-[10px] font-mono mt-1 text-[var(--text-dim)]">{i === 0 ? 'MSB' : i >= 5 && currentSegment.type === 'tag' ? 'TYPE' : `B${7 - i}`}</span>
-                              </div>
-                            ))}
-                          </div>
-                          <p className="text-sm text-[var(--text-color)] italic border-l-2 border-[var(--cyber-neon-blue)]/30 pl-3 py-1 bg-[var(--cyber-neon-blue)]/5 rounded-r">
-                            {currentSegment.type === 'tag' ? "Bits 0-2 (last 3) indicate the Wire Type. Bits 3-7 are the Field Number (if < 16)." : "The Most Significant Bit (MSB) at index 0 indicates if more bytes follow."}
-                          </p>
+                {currentSegment ? (
+                  <div className="flex flex-col gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      <div className="flex flex-col gap-2">
+                        <span className="text-xs text-[var(--text-dim)] font-mono uppercase tracking-widest">Byte Analysis <span className="text-[var(--cyber-neon-blue)] ml-2">[INDEX {safeSelectedByte}]</span></span>
+                        <span className="text-[var(--text-color)] font-mono text-lg">{currentSegment.desc}</span>
+                        <div className="text-sm text-[var(--text-dim)] mt-2 p-2 bg-[var(--overlay-bg)] rounded border border-[var(--border-light)]">
+                          {currentSegment.type === 'tag' && "This byte identifies which field we're looking at and how to decode the following data."}
+                          {currentSegment.type === 'len' && "For strings and sub-messages, this byte tells us exactly how many bytes of data follow."}
+                          {currentSegment.type === 'data' && "The actual payload of the field. Below you can see the raw hex and ASCII representation of this field's data."}
                         </div>
                       </div>
+                      <div className="flex flex-col gap-4">
+                        <span className="text-xs text-[var(--text-dim)] font-mono uppercase tracking-widest">Bit Breakdown (0x{currentSegment.val})</span>
+                        <div className="flex gap-1">
+                          {getBits(currentSegment.raw).map((bit, i) => (
+                            <div key={i} className="flex flex-col items-center">
+                              <div className={`w-8 h-10 flex items-center justify-center font-mono text-lg border ${bit.isMSB ? 'border-[var(--cyber-neon-pink)]/80 text-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/5' : bit.isType && currentSegment.type === 'tag' ? 'border-[var(--cyber-neon-blue)]/80 text-[var(--cyber-neon-blue)] bg-[var(--cyber-neon-blue)]/5' : 'border-[var(--border-light)] text-[var(--text-color)]'}`}>{bit.bit}</div>
+                              <span className="text-[10px] font-mono mt-1 text-[var(--text-dim)]">{i === 0 ? 'MSB' : i >= 5 && currentSegment.type === 'tag' ? 'TYPE' : `B${7 - i}`}</span>
+                            </div>
+                          ))}
+                        </div>
+                        <p className="text-sm text-[var(--text-color)] italic border-l-2 border-[var(--cyber-neon-blue)]/30 pl-3 py-1 bg-[var(--cyber-neon-blue)]/5 rounded-r">
+                          {currentSegment.type === 'tag' ? "Bits 0-2 (last 3) indicate the Wire Type. Bits 3-7 are the Field Number (if < 16)." : "The Most Significant Bit (MSB) at index 0 indicates if more bytes follow."}
+                        </p>
+                      </div>
+                    </div>
 
-                      {currentSegment.type === 'data' && groupedDataBytes && (
-                        <div className="flex flex-col gap-4 border-t border-[var(--border-light)] pt-6">
-                          <span className="text-xs text-[var(--text-dim)] font-mono uppercase tracking-widest">Field Data Viewer</span>
-                          <HexViewer bytes={groupedDataBytes} />
-                        </div>
-                      )}
-                    </motion.div>
-                  ) : viewMode === 'hex' ? (
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      className="flex flex-col items-center justify-center h-48 border-2 border-dashed border-[var(--cyber-neon-blue)]/20 rounded-xl gap-4 bg-[var(--cyber-neon-blue)]/5 text-center group"
-                    >
-                      <motion.div
-                        animate={{ y: [0, -8, 0] }}
-                        transition={{ repeat: Infinity, duration: 2 }}
-                        className="p-3 bg-[var(--cyber-neon-blue)]/10 rounded-full border border-[var(--cyber-neon-blue)]/30"
-                      >
-                        <ArrowUp className="w-6 h-6 text-[var(--cyber-neon-blue)]" />
-                      </motion.div>
-                      <div className="space-y-1">
-                        <p className="text-[var(--text-color)] font-mono font-bold uppercase tracking-widest flex items-center justify-center gap-2">
-                          <MousePointer2 className="w-4 h-4 text-[var(--cyber-neon-pink)]" />
-                          Click a hex byte above
-                        </p>
-                        <p className="text-xs text-[var(--text-dim)] font-mono">
-                          Analyze the wire format step-by-step.<br />
-                          Use the pagination controls to navigate the stream.
-                        </p>
+                    {currentSegment.type === 'data' && groupedDataBytes && (
+                      <div className="flex flex-col gap-4 border-t border-[var(--border-light)] pt-6">
+                        <span className="text-xs text-[var(--text-dim)] font-mono uppercase tracking-widest">Field Data Viewer</span>
+                        <HexViewer bytes={groupedDataBytes} />
                       </div>
-                    </motion.div>
-                  ) : (
+                    )}
+                  </div>
+                ) : viewMode === 'hex' ? (
+                  <div className="flex flex-col items-center justify-center h-48 border-2 border-dashed border-[var(--cyber-neon-blue)]/20 rounded-xl gap-4 bg-[var(--cyber-neon-blue)]/5 text-center group">
                     <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      className="flex flex-col items-center justify-center h-48 border border-[var(--border-light)] bg-[var(--overlay-bg)] rounded-xl gap-4 text-center"
+                      animate={{ y: [0, -8, 0] }}
+                      transition={{ repeat: Infinity, duration: 2 }}
+                      className="p-3 bg-[var(--cyber-neon-blue)]/10 rounded-full border border-[var(--cyber-neon-blue)]/30"
                     >
-                      <SearchCheck className="w-8 h-8 text-[var(--cyber-neon-pink)] opacity-30" />
-                      <div className="space-y-1">
-                        <p className="text-[var(--text-dim)] font-cyber uppercase text-xs tracking-[0.2em]">Protoscope Mode Active</p>
-                        <p className="text-[10px] text-[var(--text-dim)]/80 font-mono">Switch back to HEX_VIEW to analyze individual bytes.</p>
-                      </div>
+                      <ArrowUp className="w-6 h-6 text-[var(--cyber-neon-blue)]" />
                     </motion.div>
-                  )}
-                </AnimatePresence>
+                    <div className="space-y-1">
+                      <p className="text-[var(--text-color)] font-mono font-bold uppercase tracking-widest flex items-center justify-center gap-2">
+                        <MousePointer2 className="w-4 h-4 text-[var(--cyber-neon-pink)]" />
+                        Click a hex byte above
+                      </p>
+                      <p className="text-xs text-[var(--text-dim)] font-mono">
+                        Analyze the wire format step-by-step.<br />
+                        Use the pagination controls to navigate the stream.
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center h-48 border border-[var(--border-light)] bg-[var(--overlay-bg)] rounded-xl gap-4 text-center">
+                    <SearchCheck className="w-8 h-8 text-[var(--cyber-neon-pink)] opacity-30" />
+                    <div className="space-y-1">
+                      <p className="text-[var(--text-dim)] font-cyber uppercase text-xs tracking-[0.2em]">Protoscope Mode Active</p>
+                      <p className="text-[10px] text-[var(--text-dim)]/80 font-mono">Switch back to HEX_VIEW to analyze individual bytes.</p>
+                    </div>
+                  </div>
+                )}
               </div>
             </CyberPanel>
           </div>
