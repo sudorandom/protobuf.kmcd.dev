@@ -9,6 +9,7 @@ import {
   Maximize,
   Minimize2,
   CircleOff,
+  AlertTriangle,
 } from "lucide-react";
 import {
   fromJson,
@@ -277,13 +278,6 @@ export const SizeComparison = ({
 
           {/* Right Column: Analysis */}
           <div className="space-y-4 flex flex-col">
-            <div className="flex items-center justify-between h-8">
-              <h3 className="text-sm font-cyber font-bold text-[var(--text-color)] uppercase flex items-center gap-2 tracking-widest">
-                <BarChart3 className="w-4 h-4 text-[var(--cyber-neon-green)]" />
-                Real-Time Analysis
-              </h3>
-            </div>
-
             <CyberPanel
               title="EFFICIENCY_STATS"
               className="flex-1 min-h-[400px] flex flex-col"
@@ -297,21 +291,21 @@ export const SizeComparison = ({
                 {/* Size Bars */}
                 <div className="space-y-8">
                   <div>
-                    <div className="flex justify-between text-xs font-mono mb-2 uppercase tracking-widest">
+                    <div className="flex justify-between text-xs font-mono mb-2 text-[var(--cyber-neon-yellow)] uppercase tracking-widest">
                       <span>JSON_RAW</span>
-                      <span className="text-[var(--text-color)]">
+                      <span className="text-[var(--cyber-neon-yellow)]">
                         {stats.jsonSize} B
                       </span>
                     </div>
                     <div className="h-2 bg-[var(--border-light)] rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-[var(--text-dim)] opacity-40"
+                        className="h-full bg-[var(--cyber-neon-yellow)] opacity-40"
                         style={{ width: "100%" }}
                       ></div>
                     </div>
                     {gzipStats.json > 0 && (
                       <div className="mt-4">
-                        <div className="flex justify-between text-xs font-mono mb-2 text-[var(--text-dim)] uppercase tracking-widest">
+                        <div className="flex justify-between text-xs font-mono mb-2 text-[var(--cyber-neon-yellow)]/80 uppercase tracking-widest">
                           <span>WITH_GZIP</span>
                           <span>{gzipStats.json} B</span>
                         </div>
@@ -321,9 +315,23 @@ export const SizeComparison = ({
                             animate={{
                               width: `${stats.jsonSize > 0 ? (gzipStats.json / stats.jsonSize) * 100 : 0}%`,
                             }}
-                            className="h-full bg-[var(--text-dim)] opacity-25"
+                            className="h-full bg-[var(--cyber-neon-yellow)] opacity-25"
                           />
                         </div>
+                        {gzipStats.json >= stats.jsonSize &&
+                          stats.jsonSize > 0 && (
+                            <motion.div
+                              initial={{ opacity: 0, y: 5 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              className="mt-2 flex items-start gap-2 p-2 bg-[var(--cyber-neon-yellow)]/5 border border-[var(--cyber-neon-yellow)]/20 rounded"
+                            >
+                              <AlertTriangle className="w-3 h-3 text-[var(--cyber-neon-yellow)] mt-0.5 shrink-0" />
+                              <p className="text-[10px] text-[var(--cyber-neon-yellow)]/80 leading-tight">
+                                For extremely small payloads, the gzip header
+                                and metadata can be larger than the raw text!
+                              </p>
+                            </motion.div>
+                          )}
                       </div>
                     )}
                   </div>
@@ -359,6 +367,21 @@ export const SizeComparison = ({
                             className="h-full bg-[var(--cyber-neon-green)]/30"
                           />
                         </div>
+                        {gzipStats.pb >= stats.pbSize && stats.pbSize > 0 && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 5 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="mt-2 flex items-start gap-2 p-2 bg-[var(--cyber-neon-blue)]/5 border border-[var(--cyber-neon-blue)]/20 rounded"
+                          >
+                            <AlertTriangle className="w-3 h-3 text-[var(--cyber-neon-blue)] mt-0.5 shrink-0" />
+                            <p className="text-[10px] text-[var(--cyber-neon-blue)]/80 leading-tight">
+                              Surprised? Gzip adds metadata and headers. For
+                              very small, efficient binary payloads, this
+                              overhead can actually exceed the compression
+                              gains!
+                            </p>
+                          </motion.div>
+                        )}
                       </div>
                     )}
                   </div>
