@@ -1,5 +1,6 @@
 import { useState, useMemo, useCallback } from 'react';
 import {
+  HelpCircle,
   Settings,
   Combine,
   AlertTriangle,
@@ -81,40 +82,26 @@ export const AdvancedProtobuf = () => {
             </p>
           </div>
           <p>
-            <ExternalLinkText href="https://buf.build/">Buf</ExternalLinkText> eliminates this by using a <code>buf.yaml</code> to define your deterministic module root. It handles imports gracefully, allows for remote dependencies (like NPM/Cargo), and ensures paths are always consistent across your entire team regardless of where the build command is run.
+            <ExternalLinkText href="https://buf.build/">Buf</ExternalLinkText> eliminates this by using a <code>buf.yaml</code> to define your deterministic module root. It handles imports gracefully, allows for remote dependencies (similar to NPM/Cargo), and ensures paths are always consistent across your entire team regardless of where the build command is run.
           </p>
         </div>
       ),
-      example: 'edition = "2023";\n\n// Import another file\nimport "google/protobuf/timestamp.proto";\nimport "myproject/common.proto";\n\nmessage Event {\n  google.protobuf.Timestamp time = 1;\n  myproject.Status status = 2;\n}'
-    },
-    {
-      id: 'wkt',
-      icon: Database,
-      title: 'Well-Known Types',
-      subtitle: '03b_STANDARDS',
-      panelTitle: 'WKT_EXAMPLES',
-      desc: (
-        <div className="space-y-4">
-          <p>
-            Google provides a set of <ExternalLinkText href="https://protobuf.dev/reference/protobuf/google.protobuf/">"Well-Known Types" (WKTs)</ExternalLinkText> for common patterns. Using these ensures broad compatibility, especially when mapping to JSON.
-          </p>
-          <p>
-            Protobuf implementations treat these types as special in several cases. For example, many of these have special rules when encoding/decoding to JSON:
-          </p>
-          <ul className="list-disc pl-4 space-y-1">
-            <li><code>google.protobuf.Timestamp</code> universally maps to an RFC 3339 string.</li>
-            <li><code>google.protobuf.Duration</code> maps to a string ending in "s" (e.g. "1.5s").</li>
-            <li><code>google.protobuf.Struct</code> maps directly to a free-form JSON object.</li>
-          </ul>
-        </div>
-      ),
-      example: 'import "google/protobuf/duration.proto";\nimport "google/protobuf/empty.proto";\n\nmessage Task {\n  google.protobuf.Duration timeout = 1;\n  google.protobuf.Empty no_data = 2;\n}'
+      example: `edition = "2023";
+
+// Import another file
+import "google/protobuf/timestamp.proto";
+import "myproject/common.proto";
+
+message Event {
+  google.protobuf.Timestamp time = 1;
+  myproject.Status status = 2;
+}`
     },
     {
       id: 'any',
       icon: Package,
       title: 'The Any Type',
-      subtitle: '03c_DYNAMIC_DATA',
+      subtitle: '03b_DYNAMIC_DATA',
       panelTitle: 'ANY_PAYLOAD',
       desc: (
         <div className="space-y-4">
@@ -129,34 +116,63 @@ export const AdvancedProtobuf = () => {
           </p>
         </div>
       ),
-      example: '// In Proto:\nimport "google/protobuf/any.proto";\n\nmessage Event {\n  google.protobuf.Any payload = 1;\n}\n\n// In ProtoJSON:\n// {\n//   "payload": {\n//     "@type": "type.googleapis.com/demo.User",\n//     "name": "Hiro"\n//   }\n// }'
+      example: `// In Proto:
+import "google/protobuf/any.proto";
+
+message Event {
+  google.protobuf.Any payload = 1;
+}
+
+// In ProtoJSON:
+// {
+//   "payload": {
+//     "@type": "type.googleapis.com/demo.User",
+//     "name": "Hiro"
+//   }
+// }`
     },
     {
       id: 'fieldmask',
       icon: ShieldCheck,
       title: 'FieldMask',
-      subtitle: '03d_PARTIAL_UPDATES',
-      panelTitle: 'UPDATE_MASK_SCHEMA',
+      subtitle: '03c_PARTIAL_UPDATES',
+      panelTitle: 'READ_UPDATE_MASKS',
       desc: (
         <div className="space-y-4">
           <p>
             <ExternalLinkText href="https://protobuf.dev/reference/protobuf/google.protobuf/#field-mask"><code>google.protobuf.FieldMask</code></ExternalLinkText> is a well-known type used to identify a subset of fields in a request.
           </p>
           <p>
-            This is extremely useful for <strong>partial updates (PATCH)</strong>. Instead of sending an entire massive object, a client can send just the new value and a FieldMask containing <code>"email"</code>.
+            It is extremely useful for <strong>partial updates (PATCH)</strong>, allowing a client to send only the modified fields instead of the entire object.
+          </p>
+          <p>
+            Beyond updates, FieldMask is a powerful tool for <strong>tuning read responses</strong>. You can design a single <code>List</code> or <code>Get</code> response that supports many optional fields and associations (e.g., <code>user.profile</code>, <code>user.settings</code>). The client passes a <code>read_mask</code> to tell the server exactly which subset of data to return, eliminating "over-fetching" without needing multiple specialized endpoints.
           </p>
           <div className="p-3 bg-[var(--warning-bg)] border border-[var(--warning-border)] rounded text-[var(--warning-text)] text-sm">
-            <strong>Important:</strong> FieldMasks are <em>not automatic</em>. They are just a list of strings in the payload. The server developer must explicitly write the code to read the mask and only apply the requested fields to their database.
+            <strong>Important:</strong> FieldMasks are <em>not automatic</em>. They are just a list of strings. The server must explicitly use the mask to filter database queries or prune the response message before sending.
           </div>
         </div>
       ),
-      example: 'import "google/protobuf/field_mask.proto";\n\nmessage UpdateUserRequest {\n  User user = 1;\n  \n  // Tells the server which fields to actually update\n  // e.g. ["email", "display_name"]\n  google.protobuf.FieldMask update_mask = 2;\n}'
+      example: `import "google/protobuf/field_mask.proto";
+
+message GetUserRequest {
+  string id = 1;
+  // Client requests only specific fields
+  // e.g. ["name", "email", "metadata.last_login"]
+  google.protobuf.FieldMask read_mask = 2;
+}
+
+message UpdateUserRequest {
+  User user = 1;
+  // Client identifies which fields to update
+  google.protobuf.FieldMask update_mask = 2;
+}`
     },
     {
       id: 'compat',
       icon: Combine,
       title: 'Breaking Changes',
-      subtitle: '03e_COMPATIBILITY_CLI',
+      subtitle: '03d_COMPATIBILITY_CLI',
       panelTitle: 'CLI_BREAKING_CHECK',
       desc: (
         <div className="space-y-4">
@@ -174,13 +190,20 @@ export const AdvancedProtobuf = () => {
           </div>
         </div>
       ),
-      example: '// Check for breaking changes against main branch\n$ buf breaking --against .git#branch=main\n\n// Example failure output:\n// user.proto:10:3: Field "1" changed type\n//   from "string" to "int32".\n// user.proto:12:3: Previously present\n//   field "3" deleted.'
+      example: `// Check for breaking changes against main branch
+$ buf breaking --against .git#branch=main
+
+// Example failure output:
+// user.proto:10:3: Field "1" changed type
+//   from "string" to "int32".
+// user.proto:12:3: Previously present
+//   field "3" deleted.`
     },
     {
       id: 'linting',
       icon: SearchCheck,
       title: 'Linting',
-      subtitle: '03f_STANDARDS_CLI',
+      subtitle: '03e_STANDARDS_CLI',
       panelTitle: 'CLI_LINT_CHECK',
       desc: (
         <div className="space-y-4">
@@ -192,13 +215,20 @@ export const AdvancedProtobuf = () => {
           </p>
         </div>
       ),
-      example: '// Run linter\n$ buf lint\n\n// Output:\n// user.proto:5:1: Field name "userID" should be\n//   lower_snake_case, such as "user_id".\n// user.proto:8:1: Message "user" should be\n//   PascalCase, such as "User".'
+      example: `// Run linter
+$ buf lint
+
+// Output:
+// user.proto:5:1: Field name "userID" should be
+//   lower_snake_case, such as "user_id".
+// user.proto:8:1: Message "user" should be
+//   PascalCase, such as "User".`
     },
     {
       id: 'editions',
       icon: Code2,
       title: 'Editions',
-      subtitle: '03g_FUTURE',
+      subtitle: '03f_FUTURE',
       panelTitle: 'EDITION_CONFIG',
       desc: (
         <div className="space-y-4">
@@ -210,7 +240,59 @@ export const AdvancedProtobuf = () => {
           </p>
         </div>
       ),
-      example: 'edition = "2023";\n\n// Globally enforce field presence\noption features.field_presence = EXPLICIT;\n\nmessage User {\n  // Optional fields are back\n  string name = 1;\n}'
+      example: `edition = "2023";
+
+// Globally enforce field presence
+option features.field_presence = EXPLICIT;
+
+message User {
+  // Optional fields are back
+  string name = 1;
+}`
+    },
+    {
+      id: 'presence',
+      icon: HelpCircle,
+      title: 'Field Presence',
+      subtitle: '03g_OPTIONALITY',
+      panelTitle: 'PRESENCE_COMPARISON',
+      desc: (
+        <div className="space-y-4">
+          <p>
+            Field presence defines whether a receiver can distinguish between a field that was <strong>never set</strong> and one that was set to its <strong>default value</strong> (like <code>0</code> or <code>""</code>).
+          </p>
+          <div className="grid grid-cols-1 gap-4">
+            <div className="p-3 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded">
+              <h5 className="text-[var(--cyber-neon-blue)] font-cyber text-xs uppercase mb-1">Proto3 (Implicit)</h5>
+              <p className="text-xs text-[var(--text-dim)]">Scalar fields have implicit presence. If a value is <code>0</code>, it's not sent on the wire, and the receiver sees <code>0</code>. You can't tell if it was missing or explicitly zero.</p>
+            </div>
+            <div className="p-3 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded">
+              <h5 className="text-[var(--cyber-neon-green)] font-cyber text-xs uppercase mb-1">Editions (Explicit)</h5>
+              <p className="text-xs text-[var(--text-dim)]">By setting <code>features.field_presence = EXPLICIT</code>, presence is tracked for all fields. Receiving a zero means it was explicitly sent. If missing, the generated code provides <code>has_field()</code> checks.</p>
+            </div>
+          </div>
+          <p className="text-xs italic text-[var(--text-dim)]">
+            Editions 2023 allows you to mix and match behaviors or globally enforce one, finally resolving the "presence" debate that divided Proto2 and Proto3.
+          </p>
+        </div>
+      ),
+      example: `// Edition with Explicit Presence
+edition = "2023";
+
+message Profile {
+  // Globally set explicit presence
+  option features.field_presence = EXPLICIT;
+
+  int32 views = 1; // has_views() is available
+  string bio = 2;  // has_bio() is available
+}
+
+// Proto3 (Implicit)
+syntax = "proto3";
+
+message LegacyProfile {
+  int32 views = 1; // No "has" check for scalars
+}`
     }
   ];
 
@@ -278,7 +360,7 @@ export const DescriptorsAndReflection = () => {
     <Section id="reflection" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]">
       <div className="max-w-7xl mx-auto space-y-16">
         <div>
-          <SectionTitle icon={Code2} subtitle="03h_REFLECTION">Descriptors & Reflection</SectionTitle>
+          <SectionTitle icon={Code2} subtitle="03i_REFLECTION">Descriptors & Reflection</SectionTitle>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             <div className="space-y-6 text-[var(--text-color)]">
               <h3 className="text-xl font-cyber font-bold text-[var(--text-color)] uppercase">Schemas Describing Schemas</h3>
@@ -298,7 +380,24 @@ export const DescriptorsAndReflection = () => {
             </div>
             <CyberPanel title="DESCRIPTOR.PROTO (SNIPPET)">
               <div className="p-4 h-64 overflow-auto">
-                <SyntaxHighlighter language="proto" code={`// The schema that describes a schema\nmessage FileDescriptorSet {\n  repeated FileDescriptorProto file = 1;\n}\n\nmessage FileDescriptorProto {\n  optional string name = 1;\n  optional string package = 2;\n  repeated DescriptorProto message_type = 4;\n  repeated EnumDescriptorProto enum_type = 5;\n  // ...\n}\n\nmessage DescriptorProto {\n  optional string name = 1;\n  repeated FieldDescriptorProto field = 2;\n  // ...\n}`} />
+                <SyntaxHighlighter language="proto" code={`// The schema that describes a schema
+message FileDescriptorSet {
+  repeated FileDescriptorProto file = 1;
+}
+
+message FileDescriptorProto {
+  optional string name = 1;
+  optional string package = 2;
+  repeated DescriptorProto message_type = 4;
+  repeated EnumDescriptorProto enum_type = 5;
+  // ...
+}
+
+message DescriptorProto {
+  optional string name = 1;
+  repeated FieldDescriptorProto field = 2;
+  // ...
+}`} />
               </div>
             </CyberPanel>
           </div>
@@ -326,13 +425,13 @@ export const DescriptorsAndReflection = () => {
                       <>
                         <button
                           onClick={downloadBinary}
-                          className="px-2 py-0.5 text-[9px] font-mono rounded border border-[var(--cyber-neon-blue)]/50 text-[var(--cyber-neon-blue)] bg-[var(--cyber-neon-blue)]/10 hover:bg-[var(--cyber-neon-blue)]/20 transition-all uppercase flex items-center gap-1"
+                          className="px-2 py-0.5 text-xs font-mono rounded border border-[var(--cyber-neon-blue)]/50 text-[var(--cyber-neon-blue)] bg-[var(--cyber-neon-blue)]/10 hover:bg-[var(--cyber-neon-blue)]/20 transition-all uppercase flex items-center gap-1"
                         >
                           <Download className="w-3 h-3" /> SAVE_PB
                         </button>
                         <button
                           onClick={downloadJson}
-                          className="px-2 py-0.5 text-[9px] font-mono rounded border border-[var(--cyber-neon-pink)]/50 text-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/10 hover:bg-[var(--cyber-neon-pink)]/20 transition-all uppercase flex items-center gap-1"
+                          className="px-2 py-0.5 text-xs font-mono rounded border border-[var(--cyber-neon-pink)]/50 text-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/10 hover:bg-[var(--cyber-neon-pink)]/20 transition-all uppercase flex items-center gap-1"
                         >
                           <Download className="w-3 h-3" /> SAVE_JSON
                         </button>
@@ -361,8 +460,8 @@ export const DescriptorsAndReflection = () => {
                           <Database className="w-4 h-4 text-[var(--cyber-neon-blue)]" />
                         </div>
                         <div className="space-y-1">
-                          <h5 className="text-[10px] font-cyber font-bold text-[var(--text-color)] uppercase tracking-wider">Reflection Ready</h5>
-                          <p className="text-[10px] text-[var(--text-dim)] leading-relaxed uppercase">
+                          <h5 className="text-xs font-cyber font-bold text-[var(--text-color)] uppercase tracking-wider">Reflection Ready</h5>
+                          <p className="text-xs text-[var(--text-dim)] leading-relaxed uppercase">
                             This schema is now representable as a <code>FileDescriptorSet</code> message, enabling dynamic tools and reflection.
                           </p>
                         </div>
@@ -378,7 +477,15 @@ export const DescriptorsAndReflection = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 pt-16 border-t border-[var(--border-light)]">
           <CyberPanel title="SERVER_REFLECTION">
             <div className="p-4 space-y-4 overflow-x-auto">
-              <SyntaxHighlighter language="proto" code={`// gRPC Server Reflection Protocol\npackage grpc.reflection.v1alpha;\n\nservice ServerReflection {\n  // The reflection service is queried by clients to\n  // discover the API surface of the server dynamically.\n  rpc ServerReflectionInfo(stream ServerReflectionRequest)\n      returns (stream ServerReflectionResponse);\n}`} />
+              <SyntaxHighlighter language="proto" code={`// gRPC Server Reflection Protocol
+package grpc.reflection.v1alpha;
+
+service ServerReflection {
+  // The reflection service is queried by clients to
+  // discover the API surface of the server dynamically.
+  rpc ServerReflectionInfo(stream ServerReflectionRequest)
+      returns (stream ServerReflectionResponse);
+}`} />
               <div className="mt-4 text-xs font-mono text-[var(--text-dim)]">
                 Client: "What services do you have?"<br />
                 Server: "I have User Service and Auth Service"<br />
@@ -418,7 +525,7 @@ export const SchemaEngineering = () => {
       id: 'options',
       icon: Settings,
       title: 'Standard Options',
-      subtitle: '03i_BUILTINS',
+      subtitle: '03h_BUILTINS',
       panelTitle: 'OPTIONS_SNIPPET',
       desc: (
         <div className="space-y-4">
@@ -435,13 +542,22 @@ export const SchemaEngineering = () => {
           </ul>
         </div>
       ),
-      example: 'edition = "2023";\n\n// File-level option\noption go_package = "github.com/example/v1";\n\nmessage User {\n  // Field-level options\n  string user_id = 1 [json_name = "uid"];\n  string old_field = 2 [deprecated = true];\n}'
+      example: `edition = "2023";
+
+// File-level option
+option go_package = "github.com/example/v1";
+
+message User {
+  // Field-level options
+  string user_id = 1 [json_name = "uid"];
+  string old_field = 2 [deprecated = true];
+}`
     },
     {
       id: 'annotations',
       icon: Combine,
       title: 'Custom Extensions',
-      subtitle: '03j_ANNOTATIONS',
+      subtitle: '03i_ANNOTATIONS',
       panelTitle: 'CUSTOM_ANNOTATIONS',
       desc: (
         <div className="space-y-4">
@@ -457,13 +573,27 @@ export const SchemaEngineering = () => {
           </div>
         </div>
       ),
-      example: '// options.proto (Must be proto2 to define)\nsyntax = "proto2";\nimport "google/protobuf/descriptor.proto";\n\nextend google.protobuf.FieldOptions {\n  optional bool is_pii = 50001;\n}\n\n// user.proto (Modern Edition)\nedition = "2023";\nimport "options.proto";\n\nmessage User {\n  string ssn = 1 [(is_pii) = true];\n}'
+      example: `// options.proto (Must be proto2 to define)
+syntax = "proto2";
+import "google/protobuf/descriptor.proto";
+
+extend google.protobuf.FieldOptions {
+  optional bool is_pii = 50001;
+}
+
+// user.proto (Modern Edition)
+edition = "2023";
+import "options.proto";
+
+message User {
+  string ssn = 1 [(is_pii) = true];
+}`
     },
     {
       id: 'breaking-levels',
       icon: AlertTriangle,
       title: 'Levels of Breakage',
-      subtitle: '03k_COMPATIBILITY',
+      subtitle: '03j_COMPATIBILITY',
       panelTitle: 'BREAKAGE_ANALYSIS',
       desc: (
         <div className="space-y-4">
@@ -475,13 +605,21 @@ export const SchemaEngineering = () => {
           </ul>
         </div>
       ),
-      example: 'message Event {\n  // Safe on wire, breaks JSON clients\n  // unless you use json_name:\n  string user_id = 1 [json_name="uid"];\n\n  // Wire compatible, breaks builds\n  // (from int32 to int64)\n  int64 count = 2;\n}'
+      example: `message Event {
+  // Safe on wire, breaks JSON clients
+  // unless you use json_name:
+  string user_id = 1 [json_name="uid"];
+
+  // Wire compatible, breaks builds
+  // (from int32 to int64)
+  int64 count = 2;
+}`
     },
     {
       id: 'lifecycle',
       icon: ShieldCheck,
       title: 'Deprecation',
-      subtitle: '03l_EVOLUTION',
+      subtitle: '03k_EVOLUTION',
       panelTitle: 'LIFECYCLE_SCHEMA',
       desc: (
         <div className="space-y-4">
@@ -495,7 +633,16 @@ export const SchemaEngineering = () => {
           </ol>
         </div>
       ),
-      example: 'message Product {\n  // Step 3: Block reuse permanently\n  reserved 1, "old_price";\n\n  // Step 1: Warn developers\n  int32 price_cents = 2 [deprecated = true];\n  \n  // The new way\n  int64 price_micros = 3;\n}'
+      example: `message Product {
+  // Step 3: Block reuse permanently
+  reserved 1, "old_price";
+
+  // Step 1: Warn developers
+  int32 price_cents = 2 [deprecated = true];
+  
+  // The new way
+  int64 price_micros = 3;
+}`
     }
   ];
 
@@ -590,7 +737,7 @@ export const ValidationLab = ({ messageSchema, fds, registry, protoSource, setPr
   return (
     <Section id="validation" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-dark)] border-t border-[var(--border-light)]">
       <div className="max-w-7xl mx-auto">
-        <SectionTitle icon={ShieldCheck} subtitle="03m_PROTOVALIDATE">Data Validation</SectionTitle>
+        <SectionTitle icon={ShieldCheck} subtitle="03l_PROTOVALIDATE">Data Validation</SectionTitle>
 
         <div className="mb-16 space-y-8">
           <div className="space-y-6 max-w-4xl">
@@ -611,7 +758,7 @@ export const ValidationLab = ({ messageSchema, fds, registry, protoSource, setPr
                   </h3>
                   <button
                     onClick={() => setIsModalOpen(true)}
-                    className="text-[10px] font-cyber font-bold text-[var(--cyber-neon-blue)] hover:text-[var(--cyber-neon-blue)]/80 transition-colors uppercase flex items-center gap-1 group"
+                    className="text-xs font-cyber font-bold text-[var(--cyber-neon-blue)] hover:text-[var(--cyber-neon-blue)]/80 transition-colors uppercase flex items-center gap-1 group"
                   >
                     <Settings2 className="w-3 h-3 group-hover:rotate-45 transition-transform" />
                     Edit Schema
@@ -624,7 +771,7 @@ export const ValidationLab = ({ messageSchema, fds, registry, protoSource, setPr
                   <button
                     key={key}
                     onClick={() => handleExampleChange(key)}
-                    className={`px-3 py-1 text-[10px] font-mono border transition-all rounded ${activeExample === key
+                    className={`px-3 py-1 text-xs font-mono border transition-all rounded ${activeExample === key
                       ? 'bg-[var(--cyber-neon-blue)]/20 border-[var(--cyber-neon-blue)] text-[var(--cyber-neon-blue)]'
                       : 'bg-[var(--overlay-bg)] border-[var(--border-light)] text-[var(--text-dim)] hover:border-white/30 hover:text-[var(--text-color)]'
                       }`}
@@ -644,7 +791,7 @@ export const ValidationLab = ({ messageSchema, fds, registry, protoSource, setPr
                     }
                   }}
                   disabled={!messageSchema || !fds}
-                  className="px-2 py-1 text-[9px] font-cyber font-bold border border-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/10 text-[var(--cyber-neon-pink)] hover:bg-[var(--cyber-neon-pink)]/20 transition-all flex items-center gap-1.5 disabled:opacity-30 disabled:cursor-not-allowed rounded uppercase tracking-wider"
+                  className="px-2 py-1 text-xs font-cyber font-bold border border-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/10 text-[var(--cyber-neon-pink)] hover:bg-[var(--cyber-neon-pink)]/20 transition-all flex items-center gap-1.5 disabled:opacity-30 disabled:cursor-not-allowed rounded uppercase tracking-wider"
                 >
                   <Zap className="w-2.5 h-2.5" />
                   Randomize
@@ -654,7 +801,7 @@ export const ValidationLab = ({ messageSchema, fds, registry, protoSource, setPr
               <CyberPanel title="JSON_INPUT" className="flex-1 min-h-[400px] flex flex-col">
                 <div className="flex-1 relative">
                   {validationResults.error && validationResults.error !== "NO_SCHEMA" && (
-                    <div className="absolute top-0 left-0 right-0 p-2 bg-[var(--text-error)]/10 border-b border-[var(--text-error)]/30 text-[var(--text-error)] text-[10px] font-mono z-30 break-words line-clamp-2" title={validationResults.error}>
+                    <div className="absolute top-0 left-0 right-0 p-2 bg-[var(--text-error)]/10 border-b border-[var(--text-error)]/30 text-[var(--text-error)] text-xs font-mono z-30 break-words line-clamp-2" title={validationResults.error}>
                       {validationResults.error}
                     </div>
                   )}
@@ -683,7 +830,7 @@ export const ValidationLab = ({ messageSchema, fds, registry, protoSource, setPr
                       <CheckCircle2 className="w-16 h-16 shadow-[0_0_20px_rgba(0,255,159,0.2)]" />
                       <div className="flex flex-col items-center">
                         <span className="font-cyber text-sm uppercase tracking-[0.2em]">Validation Passed</span>
-                        <span className="text-[10px] text-[var(--text-dim)] mt-2 uppercase text-center tracking-widest">All contract terms satisfied</span>
+                        <span className="text-xs text-[var(--text-dim)] mt-2 uppercase text-center tracking-widest">All contract terms satisfied</span>
                       </div>
                     </div>
                   ) : validationResults.results?.kind === "invalid" ? (
@@ -692,7 +839,7 @@ export const ValidationLab = ({ messageSchema, fds, registry, protoSource, setPr
                         <div key={i} className="p-3 bg-[var(--warning-bg)] border border-[var(--warning-border)] rounded flex gap-3 animate-in fade-in slide-in-from-top-2">
                           <AlertTriangle className="w-4 h-4 text-[var(--cyber-neon-yellow)] shrink-0" />
                           <div className="flex flex-col gap-1">
-                            <span className="text-[10px] font-mono text-[var(--cyber-neon-yellow)] uppercase tracking-wider">{v.field.toString()}</span>
+                            <span className="text-xs font-mono text-[var(--cyber-neon-yellow)] uppercase tracking-wider">{v.field.toString()}</span>
                             <p className="text-sm text-[var(--text-color)]">{v.message}</p>
                           </div>
                         </div>
@@ -701,7 +848,7 @@ export const ValidationLab = ({ messageSchema, fds, registry, protoSource, setPr
                   ) : (
                     <div className="h-full flex flex-col items-center justify-center text-[var(--text-dim)] gap-4 opacity-40 py-20">
                       <ShieldCheck className="w-10 h-10" />
-                      <p className="font-cyber text-[10px] uppercase tracking-widest text-center">Waiting for<br />valid input</p>
+                      <p className="font-cyber text-xs uppercase tracking-widest text-center">Waiting for<br />valid input</p>
                     </div>
                   )}
                 </div>

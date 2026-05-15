@@ -4,7 +4,11 @@ import {
   Zap,
   BarChart3,
   Settings2,
-  Database
+  Database,
+  Tag,
+  Maximize,
+  Minimize2,
+  CircleOff
 } from 'lucide-react';
 import { fromJson, toBinary, toJsonString, type DescMessage } from '@bufbuild/protobuf';
 import {
@@ -129,7 +133,7 @@ export const SizeComparison = ({
                 </h3>
                 <button
                   onClick={() => setIsModalOpen(true)}
-                  className="text-[10px] font-cyber font-bold text-[var(--cyber-neon-blue)] hover:text-[var(--cyber-neon-blue)]/80 transition-colors uppercase flex items-center gap-1 group"
+                  className="text-xs font-cyber font-bold text-[var(--cyber-neon-blue)] hover:text-[var(--cyber-neon-blue)]/80 transition-colors uppercase flex items-center gap-1 group"
                 >
                   <Settings2 className="w-3 h-3 group-hover:rotate-45 transition-transform" />
                   Edit Schema
@@ -142,7 +146,7 @@ export const SizeComparison = ({
                 <button
                   key={key}
                   onClick={() => handleExampleChange(key)}
-                  className={`px-3 py-1 text-[10px] font-mono border transition-all rounded ${activeExample === key
+                  className={`px-3 py-1 text-xs font-mono border transition-all rounded ${activeExample === key
                     ? 'bg-[var(--cyber-neon-blue)]/20 border-[var(--cyber-neon-blue)] text-[var(--cyber-neon-blue)]'
                     : 'bg-[var(--overlay-bg)] border-[var(--border-light)] text-[var(--text-dim)] hover:border-white/30 hover:text-[var(--text-color)]'
                     }`}
@@ -153,7 +157,7 @@ export const SizeComparison = ({
               <button
                 onClick={generateFauxData}
                 disabled={!messageSchema || !fileDescriptorSet || isGenerating}
-                className="px-2 py-1 text-[9px] font-cyber font-bold border border-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/10 text-[var(--cyber-neon-pink)] hover:bg-[var(--cyber-neon-pink)]/20 transition-all flex items-center gap-1.5 disabled:opacity-30 disabled:cursor-not-allowed rounded uppercase tracking-wider"
+                className="px-2 py-1 text-xs font-cyber font-bold border border-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/10 text-[var(--cyber-neon-pink)] hover:bg-[var(--cyber-neon-pink)]/20 transition-all flex items-center gap-1.5 disabled:opacity-30 disabled:cursor-not-allowed rounded uppercase tracking-wider"
               >
                 <Zap className={`w-2.5 h-2.5 ${isGenerating ? 'animate-spin' : ''}`} />
                 Randomize
@@ -163,7 +167,7 @@ export const SizeComparison = ({
             <CyberPanel title="DATA_INPUT (JSON)" className="flex-1 min-h-[400px] flex flex-col">
               <div className="flex-1 relative">
                 {stats.error && stats.error !== "NO_SCHEMA" && (
-                  <div className="absolute top-0 left-0 right-0 p-2 bg-[var(--text-error)]/10 border-b border-[var(--text-error)]/30 text-[var(--text-error)] text-[10px] font-mono z-30 break-words line-clamp-2" title={stats.error}>
+                  <div className="absolute top-0 left-0 right-0 p-2 bg-[var(--text-error)]/10 border-b border-[var(--text-error)]/30 text-[var(--text-error)] text-xs font-mono z-30 break-words line-clamp-2" title={stats.error}>
                     {stats.error}
                   </div>
                 )}
@@ -190,7 +194,7 @@ export const SizeComparison = ({
                 {/* Size Bars */}
                 <div className="space-y-8">
                   <div>
-                    <div className="flex justify-between text-[10px] font-mono mb-2 uppercase tracking-widest">
+                    <div className="flex justify-between text-xs font-mono mb-2 uppercase tracking-widest">
                       <span>JSON_RAW</span>
                       <span className="text-[var(--text-color)]">{stats.jsonSize} B</span>
                     </div>
@@ -198,7 +202,7 @@ export const SizeComparison = ({
                       <div className="h-full bg-[var(--text-dim)] opacity-40" style={{ width: '100%' }}></div>
                     </div>
                     {gzipStats.json > 0 && (
-                      <div className="flex justify-between text-[10px] font-mono mt-2 text-[var(--text-dim)] uppercase tracking-widest">
+                      <div className="flex justify-between text-xs font-mono mt-2 text-[var(--text-dim)] uppercase tracking-widest">
                         <span>WITH_GZIP</span>
                         <span>{gzipStats.json} B</span>
                       </div>
@@ -206,7 +210,7 @@ export const SizeComparison = ({
                   </div>
 
                   <div>
-                    <div className="flex justify-between text-[10px] font-mono mb-2 text-[var(--cyber-neon-green)] uppercase tracking-widest">
+                    <div className="flex justify-between text-xs font-mono mb-2 text-[var(--cyber-neon-green)] uppercase tracking-widest">
                       <span>PROTOBUF_BINARY</span>
                       <span className="text-[var(--cyber-neon-green)] font-bold">{stats.pbSize} B</span>
                     </div>
@@ -218,7 +222,7 @@ export const SizeComparison = ({
                       />
                     </div>
                     {gzipStats.pb > 0 && (
-                      <div className="flex justify-between text-[10px] font-mono mt-2 text-[var(--cyber-neon-green)]/80 uppercase tracking-widest">
+                      <div className="flex justify-between text-xs font-mono mt-2 text-[var(--cyber-neon-green)]/80 uppercase tracking-widest">
                         <span>WITH_GZIP</span>
                         <span>{gzipStats.pb} B</span>
                       </div>
@@ -229,14 +233,14 @@ export const SizeComparison = ({
                 <div className="pt-8 border-t border-[var(--border-light)] flex items-end justify-between">
                   <div>
                     <p className="text-5xl font-cyber font-bold text-[var(--cyber-neon-green)] shadow-glow">-{stats.ratio}%</p>
-                    <p className="text-[10px] font-mono text-[var(--text-dim)] mt-2 uppercase tracking-[0.2em]">RAW_PAYLOAD_REDUCTION</p>
+                    <p className="text-xs font-mono text-[var(--text-dim)] mt-2 uppercase tracking-[0.2em]">RAW_PAYLOAD_REDUCTION</p>
                   </div>
                   {gzipStats.json > 0 && gzipStats.pb > 0 && (
                     <div className="text-right">
                       <p className={`text-2xl font-cyber font-bold ${gzipStats.pb < gzipStats.json ? 'text-[var(--cyber-neon-blue)]' : 'text-[var(--cyber-neon-yellow)]'}`}>
                         {gzipStats.pb < gzipStats.json ? '-' : '+'}{Math.abs(Number(((1 - gzipStats.pb / gzipStats.json) * 100).toFixed(1)))}%
                       </p>
-                      <p className="text-[9px] font-mono text-[var(--text-dim)] uppercase tracking-widest">GZIPPED_PB vs JSON</p>
+                      <p className="text-xs font-mono text-[var(--text-dim)] uppercase tracking-widest">GZIPPED_PB vs JSON</p>
                     </div>
                   )}
                 </div>
@@ -245,16 +249,43 @@ export const SizeComparison = ({
           </div>
         </div>
 
-        <div className="mt-12 p-4 bg-[var(--cyber-neon-blue)]/5 border border-[var(--cyber-neon-blue)]/10 rounded-lg text-xs text-[var(--text-dim)] leading-relaxed flex items-start gap-3">
-          <div className="p-1.5 bg-[var(--cyber-neon-blue)]/10 rounded mt-0.5">
-            <Zap className="w-3 h-3 text-[var(--cyber-neon-blue)]" />
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 flex-1">
-            <div className="flex gap-2"><div className="w-1 h-1 bg-[var(--cyber-neon-blue)] mt-1.5 shrink-0"></div> No field names in payload (numeric tags only).</div>
-            <div className="flex gap-2"><div className="w-1 h-1 bg-[var(--cyber-neon-blue)] mt-1.5 shrink-0"></div> No structural overhead (braces, quotes, commas).</div>
-            <div className="flex gap-2"><div className="w-1 h-1 bg-[var(--cyber-neon-blue)] mt-1.5 shrink-0"></div> Varint encoding shrinks small integers.</div>
-            <div className="flex gap-2"><div className="w-1 h-1 bg-[var(--cyber-neon-blue)] mt-1.5 shrink-0"></div> Optional fields take zero space if not set.</div>
-          </div>
+        <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {[
+            { 
+              icon: Tag, 
+              title: "Numeric Tags", 
+              desc: "Field names are never sent on the wire, only small numeric tags.",
+              color: "var(--cyber-neon-blue)"
+            },
+            { 
+              icon: Maximize, 
+              title: "No Overhead", 
+              desc: "Eliminates braces, quotes, and commas required by JSON structure.",
+              color: "var(--cyber-neon-pink)"
+            },
+            { 
+              icon: Minimize2, 
+              title: "Varints", 
+              desc: "Small integers are compressed to take only 1-2 bytes of space.",
+              color: "var(--cyber-neon-green)"
+            },
+            { 
+              icon: CircleOff, 
+              title: "Zero-Cost Options", 
+              desc: "Unset fields take exactly zero space in the binary payload.",
+              color: "var(--cyber-neon-yellow)"
+            }
+          ].map((item, i) => (
+            <div key={i} className="p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg flex flex-col gap-3 group hover:border-[var(--cyber-neon-blue)]/50 transition-all">
+              <div className="p-2 w-fit rounded-md bg-[var(--bg-color)] border border-[var(--border-light)] group-hover:scale-110 transition-transform" style={{ color: item.color }}>
+                <item.icon className="w-5 h-5" />
+              </div>
+              <div className="space-y-1">
+                <h4 className="text-xs font-cyber font-bold uppercase tracking-widest" style={{ color: item.color }}>{item.title}</h4>
+                <p className="text-xs text-[var(--text-dim)] leading-relaxed">{item.desc}</p>
+              </div>
+            </div>
+          ))}
         </div>
 
         <Modal

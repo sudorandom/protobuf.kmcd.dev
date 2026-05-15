@@ -8,7 +8,6 @@ import {
   Layers,
   Braces,
   GitBranch,
-  HelpCircle,
   FileCode,
   ArrowRight
 } from 'lucide-react';
@@ -40,7 +39,7 @@ export const SchemaDrivenAPIs = () => (
           <ul className="space-y-4">
             <li className="flex gap-4">
               <div className="w-1.5 h-1.5 bg-[var(--cyber-neon-blue)] mt-2 shrink-0"></div>
-              <p><strong>Universal Tooling:</strong> Generate clients and servers for various languages from the same file using <ExternalLinkText href="https://buf.build/docs/bsr/introduction">BSR</ExternalLinkText> or local compilers.</p>
+              <p><strong>Universal Tooling:</strong> Generate code for reading and writing protobuf messages for various languages using the <ExternalLinkText href="https://buf.build/docs/bsr/introduction">BSR</ExternalLinkText> or local compilers.</p>
             </li>
             <li className="flex gap-4">
               <div className="w-1.5 h-1.5 bg-[var(--cyber-neon-pink)] mt-2 shrink-0"></div>
@@ -106,17 +105,22 @@ export const ProtobufBasics = () => {
       desc: (
         <div className="space-y-4">
           <p>
-            Messages are the primary logical structure in Protobuf. They act as containers for your data, analogous to a <code>struct</code> in C/Rust, a <code>class</code> in Java/TypeScript, or a <code>dict</code> in Python.
+            Messages are the primary logical structure in Protobuf. They act as containers for your data, analogous to a <code>struct</code> in C/Rust or a <code>class</code> in Java/TypeScript.
           </p>
           <p>
             Think of a message as a <strong>strictly-enforced contract</strong>. Once defined in a schema, the Protobuf compiler ensures that every system interacting with this data, regardless of the programming language, agrees on its structure.
           </p>
           <p>
-            Crucially, <ExternalLinkText href="https://protobuf.dev/programming-guides/proto3/#updating">Protobuf is designed to be evolvable</ExternalLinkText>. You can add new fields to these messages without breaking existing code, allowing servers and clients to upgrade at their own pace.
+            Crucially, <ExternalLinkText href="https://protobuf.dev/programming-guides/proto3/#updating">Protobuf is designed to be evolvable</ExternalLinkText>. You can add new fields to these messages without breaking existing code, allowing servers and clients to upgrade at their own pace. This sounds like a simple thing, but it is an important feature for binary-based formats to have and many binary formats do not support this level of forward/backward compatibility.
           </p>
         </div>
       ),
-      example: '// A simple message definition\nmessage SearchRequest {\n  string query = 1;\n  int32 page_number = 2;\n  int32 results_per_page = 3;\n}'
+      example: `// A simple message definition
+message SearchRequest {
+  string query = 1;
+  int32 page_number = 2;
+  int32 results_per_page = 3;
+}`
     },
     {
       id: 'fields',
@@ -137,7 +141,11 @@ export const ProtobufBasics = () => {
           </p>
         </div>
       ),
-      example: 'message User {\n  string username = 1;\n  bool is_active = 2;\n  uint32 login_count = 3;\n}'
+      example: `message User {
+  string username = 1;
+  bool is_active = 2;
+  uint32 login_count = 3;
+}`
     },
     {
       id: 'numbers',
@@ -158,7 +166,13 @@ export const ProtobufBasics = () => {
           </div>
         </div>
       ),
-      example: 'message User {\n  // "1" is the ID on the wire\n  string id = 1;\n  \n  // Small numbers (1-15) take 1 byte to encode\n  string name = 2;\n}'
+      example: `message User {
+  // "1" is the ID on the wire
+  string id = 1;
+  
+  // Small numbers (1-15) take 1 byte to encode
+  string name = 2;
+}`
     },
     {
       id: 'enums',
@@ -179,7 +193,16 @@ export const ProtobufBasics = () => {
           </p>
         </div>
       ),
-      example: 'enum Corpus {\n  CORPUS_UNSPECIFIED = 0;\n  CORPUS_UNIVERSAL = 1;\n  CORPUS_WEB = 2;\n  CORPUS_IMAGES = 3;\n}\n\nmessage SearchRequest {\n  Corpus corpus = 4;\n}'
+      example: `enum Corpus {
+  CORPUS_UNSPECIFIED = 0;
+  CORPUS_UNIVERSAL = 1;
+  CORPUS_WEB = 2;
+  CORPUS_IMAGES = 3;
+}
+
+message SearchRequest {
+  Corpus corpus = 4;
+}`
     },
     {
       id: 'nested',
@@ -200,7 +223,15 @@ export const ProtobufBasics = () => {
           </p>
         </div>
       ),
-      example: 'message Result {\n  string url = 1;\n  string title = 2;\n}\n\nmessage SearchResponse {\n  // Result is embedded here\n  Result top_result = 1;\n}'
+      example: `message Result {
+  string url = 1;
+  string title = 2;
+}
+
+message SearchResponse {
+  // Result is embedded here
+  Result top_result = 1;
+}`
     },
     {
       id: 'repeated',
@@ -218,7 +249,13 @@ export const ProtobufBasics = () => {
           </p>
         </div>
       ),
-      example: 'message SearchResponse {\n  // A list of strings\n  repeated string related_queries = 1;\n  \n  // A list of messages\n  repeated Result results = 2;\n}'
+      example: `message SearchResponse {
+  // A list of strings
+  repeated string related_queries = 1;
+  
+  // A list of messages
+  repeated Result results = 2;
+}`
     },
     {
       id: 'maps',
@@ -240,7 +277,12 @@ export const ProtobufBasics = () => {
           </p>
         </div>
       ),
-      example: 'message Project {\n  string name = 1;\n  \n  // A dictionary of string keys to string values\n  map<string, string> labels = 2;\n}'
+      example: `message Project {
+  string name = 1;
+  
+  // A dictionary of string keys to string values
+  map<string, string> labels = 2;
+}`
     },
     {
       id: 'oneof',
@@ -261,28 +303,14 @@ export const ProtobufBasics = () => {
           </p>
         </div>
       ),
-      example: 'message ErrorStatus {\n  string message = 1;\n  \n  oneof details {\n    string stack_trace = 2;\n    int32 error_code = 3;\n  }\n}'
-    },
-    {
-      id: 'presence',
-      icon: HelpCircle,
-      title: 'Presence',
-      subtitle: '02j_OPTIONALITY',
-      panelTitle: 'PRESENCE_TRACKING',
-      desc: (
-        <div className="space-y-4">
-          <p>
-            In <code>proto3</code>, default scalar values (like <code>0</code>, <code>false</code>, or <code>""</code>) are <strong>not serialized</strong> to save space.
-          </p>
-          <p className="text-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/5 p-3 border border-[var(--cyber-neon-pink)]/20 rounded text-xs italic">
-            <strong>The Pitfall:</strong> The receiver cannot distinguish between a field explicitly "set to zero" (e.g., 0 degrees) and one that was never sent.
-          </p>
-          <p>
-            To solve this, use the <code>optional</code> keyword to enable <strong>Explicit Presence</strong> tracking. In the modern <strong>Protobuf Editions</strong> (2023+), you can globally enforce explicit presence, returning to the more predictable behavior of Proto2.
-          </p>
-        </div>
-      ),
-      example: 'edition = "2023";\n\nmessage Profile {\n  // Implicit presence (Zero Values)\n  int32 views = 1;\n  \n  // Explicit presence via feature\n  string name = 2 [features.field_presence = EXPLICIT];\n}'
+      example: `message ErrorStatus {
+  string message = 1;
+  
+  oneof details {
+    string stack_trace = 2;
+    int32 error_code = 3;
+  }
+}`
     }
   ];
 
@@ -345,12 +373,12 @@ export const TypeSystem = () => {
         },
         { 
           name: "google.protobuf.Timestamp", 
-          desc: "A point in time, independent of timezone.",
+          desc: "A point in time, independent of timezone. Maps to RFC 3339 in JSON.",
           url: "https://protobuf.dev/reference/protobuf/google.protobuf/#timestamp"
         },
         { 
           name: "google.protobuf.Duration", 
-          desc: "A span of time (e.g., 5 seconds, 10 milliseconds).",
+          desc: "A span of time. Maps to a string ending in 's' in JSON (e.g. '1.5s').",
           url: "https://protobuf.dev/reference/protobuf/google.protobuf/#duration"
         },
         { 
@@ -359,9 +387,9 @@ export const TypeSystem = () => {
           url: "https://protobuf.dev/reference/protobuf/google.protobuf/#value"
         },
         { 
-          name: "google.protobuf.Method", 
-          desc: "Represents a method of an API interface.",
-          url: "https://protobuf.dev/reference/protobuf/google.protobuf/#method"
+          name: "google.protobuf.Struct", 
+          desc: "Maps directly to a free-form JSON object.",
+          url: "https://protobuf.dev/reference/protobuf/google.protobuf/#struct"
         },
       ]
     }
@@ -402,7 +430,18 @@ export const TypeSystem = () => {
       <div className="max-w-7xl mx-auto space-y-16">
         <div>
           <SectionTitle icon={Combine} subtitle="02k_TYPE_REFERENCE">The Type System</SectionTitle>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <div className="mb-12 space-y-4 text-sm text-[var(--text-dim)] leading-relaxed max-w-4xl">
+            <p>
+              Protobuf's type system is designed for both strictly-enforced contracts and maximum binary efficiency. 
+              <strong> Basic Types</strong> (scalars) map directly to standard primitives in your programming language.
+            </p>
+            <p>
+              <strong>Well-Known Types (WKTs)</strong> are specialized schemas standardized by Google. They are assumed 
+              to be known by all Protobuf compilers and have specialized <strong>JSON mappings</strong> to ensure clean, 
+              idiomatic integration with web APIs.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
             {groups.map(g => (
               <TypeGroup key={g.name} groupName={g.name} groupIcon={g.icon} types={g.types} />
             ))}
@@ -421,14 +460,14 @@ export const TypeSystem = () => {
                 <div className="p-4 space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="font-mono text-xs font-bold text-[var(--cyber-neon-blue)]">int32 / int64</span>
-                    <span className="text-[10px] bg-[var(--cyber-neon-blue)]/10 text-[var(--cyber-neon-blue)] px-1.5 py-0.5 rounded uppercase font-bold">Recommended</span>
+                    <span className="text-xs bg-[var(--cyber-neon-blue)]/10 text-[var(--cyber-neon-blue)] px-1.5 py-0.5 rounded uppercase font-bold">Recommended</span>
                   </div>
                   <p className="text-xs text-[var(--text-dim)] leading-relaxed">
                     Use for typical signed integers. <code>int32</code> covers most use cases; use <code>int64</code> for large IDs or timestamps.
                   </p>
                   <div className="pt-2 flex items-center gap-2">
                     <div className="w-1 h-1 rounded-full bg-[var(--cyber-neon-blue)]" />
-                    <span className="text-[10px] font-mono text-[var(--text-dim)] uppercase">Best for: General Data</span>
+                    <span className="text-xs font-mono text-[var(--text-dim)] uppercase">Best for: General Data</span>
                   </div>
                 </div>
               </CyberPanel>
@@ -437,14 +476,14 @@ export const TypeSystem = () => {
                 <div className="p-4 space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="font-mono text-xs font-bold text-[var(--cyber-neon-green)]">uint32 / uint64</span>
-                    <span className="text-[10px] bg-[var(--cyber-neon-green)]/10 text-[var(--cyber-neon-green)] px-1.5 py-0.5 rounded uppercase font-bold">Efficient</span>
+                    <span className="text-xs bg-[var(--cyber-neon-green)]/10 text-[var(--cyber-neon-green)] px-1.5 py-0.5 rounded uppercase font-bold">Efficient</span>
                   </div>
                   <p className="text-xs text-[var(--text-dim)] leading-relaxed">
                     Ideal when you know values will never be negative. Slightly more efficient than <code>int</code> for large positive values.
                   </p>
                   <div className="pt-2 flex items-center gap-2">
                     <div className="w-1 h-1 rounded-full bg-[var(--cyber-neon-green)]" />
-                    <span className="text-[10px] font-mono text-[var(--text-dim)] uppercase">Best for: Counts & Sizes</span>
+                    <span className="text-xs font-mono text-[var(--text-dim)] uppercase">Best for: Counts & Sizes</span>
                   </div>
                 </div>
               </CyberPanel>
@@ -453,14 +492,14 @@ export const TypeSystem = () => {
                 <div className="p-4 space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="font-mono text-xs font-bold text-[var(--cyber-neon-yellow)]">fixed32 / fixed64</span>
-                    <span className="text-[10px] bg-[var(--cyber-neon-yellow)]/10 text-[var(--cyber-neon-yellow)] px-1.5 py-0.5 rounded uppercase font-bold">Specialized</span>
+                    <span className="text-xs bg-[var(--cyber-neon-yellow)]/10 text-[var(--cyber-neon-yellow)] px-1.5 py-0.5 rounded uppercase font-bold">Specialized</span>
                   </div>
                   <p className="text-xs text-[var(--text-dim)] leading-relaxed">
                     Always uses 4 or 8 bytes. More efficient than varints ONLY if values are consistently greater than 2<sup>28</sup>.
                   </p>
                   <div className="pt-2 flex items-center gap-2">
                     <div className="w-1 h-1 rounded-full bg-[var(--cyber-neon-yellow)]" />
-                    <span className="text-[10px] font-mono text-[var(--text-dim)] uppercase">Best for: Large Constants</span>
+                    <span className="text-xs font-mono text-[var(--text-dim)] uppercase">Best for: Large Constants</span>
                   </div>
                 </div>
               </CyberPanel>

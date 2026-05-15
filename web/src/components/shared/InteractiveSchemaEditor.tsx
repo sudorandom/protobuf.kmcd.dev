@@ -31,13 +31,16 @@ export const InteractiveSchemaEditor: React.FC<InteractiveSchemaEditorProps> = (
   title,
 }) => {
   const [localValue, setLocalValue] = useState(initialValue ?? "");
+  const [prevInitialValue, setPrevInitialValue] = useState(initialValue);
   const [localErrors, setLocalErrors] = useState<CompilationError[]>([]);
   const [isValidating, setIsValidating] = useState(false);
   const [lastValidResult, setLastValidResult] = useState<{ fds: Uint8Array, userFds: Uint8Array, registry: FileRegistry } | null>(null);
 
-  useEffect(() => {
+  // Sync internal state if initialValue changes externally
+  if (initialValue !== prevInitialValue) {
     setLocalValue(initialValue ?? "");
-  }, [initialValue]);
+    setPrevInitialValue(initialValue);
+  }
 
   useEffect(() => {
     let isMounted = true;
@@ -96,13 +99,13 @@ export const InteractiveSchemaEditor: React.FC<InteractiveSchemaEditorProps> = (
           {isValidating && (
             <div className="flex items-center gap-2 bg-[var(--bg-color)]/80 backdrop-blur-sm px-2 py-1 rounded border border-[var(--cyber-neon-blue)]/30">
               <div className="w-1.5 h-1.5 bg-[var(--cyber-neon-blue)] rounded-full animate-pulse" />
-              <span className="text-[9px] font-mono text-[var(--cyber-neon-blue)] uppercase tracking-widest">Compiling</span>
+              <span className="text-xs font-mono text-[var(--cyber-neon-blue)] uppercase tracking-widest">Compiling</span>
             </div>
           )}
           {!isValidating && localErrors.length === 0 && (
             <div className="flex items-center gap-2 bg-[var(--bg-color)]/80 backdrop-blur-sm px-2 py-1 rounded border border-[var(--cyber-neon-green)]/30 text-[var(--cyber-neon-green)]">
               <Check className="w-3 h-3" />
-              <span className="text-[9px] font-mono uppercase tracking-widest">Valid</span>
+              <span className="text-xs font-mono uppercase tracking-widest">Valid</span>
             </div>
           )}
         </div>
@@ -112,7 +115,7 @@ export const InteractiveSchemaEditor: React.FC<InteractiveSchemaEditorProps> = (
       {localErrors.length > 0 && (
         <div className="space-y-1 max-h-24 overflow-y-auto pr-2 custom-scrollbar">
           {localErrors.map((err, i) => (
-            <div key={i} className="p-2 bg-[var(--text-error)]/5 border border-[var(--text-error)]/10 rounded flex gap-2 text-[10px] font-mono text-[var(--text-error)]">
+            <div key={i} className="p-2 bg-[var(--text-error)]/5 border border-[var(--text-error)]/10 rounded flex gap-2 text-xs font-mono text-[var(--text-error)]">
               <XCircle className="w-3.5 h-3.5 shrink-0 mt-0.5" />
               <span>L{err.line}: {err.message}</span>
             </div>

@@ -105,9 +105,6 @@ export const Introduction = ({ messageSchema, fds }: {
           <p>
             A standardized <ExternalLinkText href="https://protobuf.dev/programming-guides/proto3/#json">JSON mapping</ExternalLinkText>. Every binary payload has a deterministic JSON representation.
           </p>
-          <TechnicalNuance title="JSON_PRECISION">
-            To prevent precision loss in JavaScript (which uses 64-bit floats for all numbers), the ProtoJSON standard requires that <strong>int64</strong> and <strong>uint64</strong> fields be encoded as <strong>strings</strong>.
-          </TechnicalNuance>
         </div>
       ),
       code: dynamicExamples?.json || '{\n  "id": "550e8400-e2...",\n  "name": "Hiro Protagonist",\n  "age": 24\n}',
@@ -237,7 +234,7 @@ export const Introduction = ({ messageSchema, fds }: {
                   <div className="flex gap-3 p-4 bg-[var(--cyber-neon-pink)]/5 border border-[var(--cyber-neon-pink)]/10 rounded-lg animate-in fade-in slide-in-from-top-2">
                     <Terminal className="w-5 h-5 text-[var(--cyber-neon-pink)] shrink-0" />
                     <p className="text-xs text-[var(--text-dim)] leading-relaxed italic">
-                      If you're currently trying to "read" the hex block above and failing: congratulations, you're human. We'll be investigating how machines actually make sense of this chaos in the <Link to="/binary" className="text-[var(--cyber-neon-pink)] hover:underline"><strong>Binary</strong></Link> section further down.
+                      If you're currently trying to "read" the hex block above and failing: congratulations, you're human. We'll be investigating how machines actually make sense of this chaos in the <Link to="/binary" className="text-[var(--cyber-neon-pink)] hover:underline"><strong>Binary</strong></Link> section later on.
                     </p>
                   </div>
                 )}

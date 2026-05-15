@@ -127,7 +127,7 @@ export const MultiFieldEncoding = () => {
                       y="75" 
                       textAnchor="middle" 
                       fill="var(--text-dim)" 
-                      fontSize="10" 
+                      fontSize="12" 
                       className="uppercase tracking-tighter"
                     >
                       {field.labels[j]}
@@ -142,13 +142,13 @@ export const MultiFieldEncoding = () => {
         {/* Legend */}
         <g transform="translate(50, 450)">
           <circle cx="0" cy="0" r="4" fill="var(--cyber-neon-blue)" />
-          <text x="12" y="4" fill="var(--text-dim)" fontSize="10" className="uppercase tracking-widest">Field Tag</text>
+          <text x="12" y="4" fill="var(--text-dim)" fontSize="12" className="uppercase tracking-widest">Field Tag</text>
           
           <circle cx="120" cy="0" r="4" fill="var(--cyber-neon-yellow)" />
-          <text x="132" y="4" fill="var(--text-dim)" fontSize="10" className="uppercase tracking-widest">Length Prefix</text>
+          <text x="132" y="4" fill="var(--text-dim)" fontSize="12" className="uppercase tracking-widest">Length Prefix</text>
           
           <circle cx="260" cy="0" r="4" fill="var(--cyber-neon-green)" />
-          <text x="272" y="4" fill="var(--text-dim)" fontSize="10" className="uppercase tracking-widest">Value Payload</text>
+          <text x="272" y="4" fill="var(--text-dim)" fontSize="12" className="uppercase tracking-widest">Value Payload</text>
         </g>
       </svg>
     </div>

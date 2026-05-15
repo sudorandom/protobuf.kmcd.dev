@@ -100,7 +100,7 @@ export const ProtoscopeLab: React.FC<ProtoscopeLabProps> = ({
               </h3>
               <button
                 onClick={() => setIsModalOpen(true)}
-                className="text-[10px] font-cyber font-bold text-[var(--cyber-neon-blue)] hover:text-[var(--cyber-neon-blue)]/80 transition-colors uppercase flex items-center gap-1 group"
+                className="text-xs font-cyber font-bold text-[var(--cyber-neon-blue)] hover:text-[var(--cyber-neon-blue)]/80 transition-colors uppercase flex items-center gap-1 group"
               >
                 <Settings2 className="w-3 h-3 group-hover:rotate-45 transition-transform" />
                 Edit Schema
@@ -112,7 +112,7 @@ export const ProtoscopeLab: React.FC<ProtoscopeLabProps> = ({
             <button
               onClick={handleGenerateFake}
               disabled={isGenerating || !fds}
-              className="px-2 py-1 text-[9px] font-cyber font-bold border border-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/10 text-[var(--cyber-neon-pink)] hover:bg-[var(--cyber-neon-pink)]/20 transition-all flex items-center gap-1.5 disabled:opacity-30 disabled:cursor-not-allowed rounded uppercase tracking-wider"
+              className="px-2 py-1 text-xs font-cyber font-bold border border-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/10 text-[var(--cyber-neon-pink)] hover:bg-[var(--cyber-neon-pink)]/20 transition-all flex items-center gap-1.5 disabled:opacity-30 disabled:cursor-not-allowed rounded uppercase tracking-wider"
             >
               <Zap className={`w-2.5 h-2.5 ${isGenerating ? 'animate-spin' : ''}`} />
               Randomize
@@ -122,7 +122,7 @@ export const ProtoscopeLab: React.FC<ProtoscopeLabProps> = ({
           <CyberPanel title="JSON_INPUT" className="flex-1 min-h-[400px] flex flex-col">
             <div className="flex-1 relative">
               {error && (
-                <div className="absolute top-0 left-0 right-0 p-2 bg-[var(--text-error)]/10 border-b border-[var(--text-error)]/30 text-[var(--text-error)] text-[10px] font-mono z-30 break-words line-clamp-2">
+                <div className="absolute top-0 left-0 right-0 p-2 bg-[var(--text-error)]/10 border-b border-[var(--text-error)]/30 text-[var(--text-error)] text-xs font-mono z-30 break-words line-clamp-2">
                   {error}
                 </div>
               )}
@@ -142,7 +142,7 @@ export const ProtoscopeLab: React.FC<ProtoscopeLabProps> = ({
               href="https://github.com/protocolbuffers/protoscope" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-[10px] font-cyber font-bold text-[var(--text-dim)] hover:text-[var(--text-color)] transition-colors uppercase flex items-center gap-1"
+              className="text-xs font-cyber font-bold text-[var(--text-dim)] hover:text-[var(--text-color)] transition-colors uppercase flex items-center gap-1"
             >
               Spec <ExternalLink className="w-2.5 h-2.5" />
             </a>
@@ -158,7 +158,7 @@ export const ProtoscopeLab: React.FC<ProtoscopeLabProps> = ({
                 ) : (
                   <div className="h-full flex flex-col items-center justify-center text-[var(--text-dim)] gap-4 opacity-40 py-20">
                     <Terminal className="w-10 h-10" />
-                    <p className="font-cyber text-[10px] uppercase tracking-widest text-center">Correct input to<br />view stream</p>
+                    <p className="font-cyber text-xs uppercase tracking-widest text-center">Correct input to<br />view stream</p>
                   </div>
                 )}
               </div>

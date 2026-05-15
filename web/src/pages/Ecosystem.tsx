@@ -116,7 +116,7 @@ export const AlternativesLandscape = () => (
               <h4 className="font-cyber font-bold text-[var(--text-color)] uppercase text-sm">JSON / XML</h4>
             </div>
             <p className="text-xs text-[var(--text-dim)] leading-relaxed">Ubiquitous, human-readable, and easy to debug. However, they lack strict schemas (by default), are significantly slower to parse, and produce much larger payloads.</p>
-            <div className="text-[10px] font-mono text-[var(--cyber-neon-blue)] uppercase">Best For: Public APIs, Web Apps</div>
+            <div className="text-xs font-mono text-[var(--cyber-neon-blue)] uppercase">Best For: Public APIs, Web Apps</div>
           </div>
         </CyberPanel>
 
@@ -127,7 +127,7 @@ export const AlternativesLandscape = () => (
               <h4 className="font-cyber font-bold text-[var(--text-color)] uppercase text-sm">MessagePack / CBOR</h4>
             </div>
             <p className="text-xs text-[var(--text-dim)] leading-relaxed">Binary formats that don't require a schema. Think "Binary JSON". They are smaller and faster than JSON, but lack the type safety and code generation benefits of Protobuf.</p>
-            <div className="text-[10px] font-mono text-[var(--cyber-neon-pink)] uppercase">Best For: Internal Caching, No-Schema Ops</div>
+            <div className="text-xs font-mono text-[var(--cyber-neon-pink)] uppercase">Best For: Internal Caching, No-Schema Ops</div>
           </div>
         </CyberPanel>
 
@@ -138,7 +138,7 @@ export const AlternativesLandscape = () => (
               <h4 className="font-cyber font-bold text-[var(--text-color)] uppercase text-sm">FlatBuffers / Avro</h4>
             </div>
             <p className="text-xs text-[var(--text-dim)] leading-relaxed">FlatBuffers allows "zero-copy" access, meaning you can read data without parsing it at all. Avro is widely used in Big Data (Hadoop/Kafka) for its robust schema evolution.</p>
-            <div className="text-[10px] font-mono text-[var(--cyber-neon-green)] uppercase">Best For: Games, Real-time Stream Processing</div>
+            <div className="text-xs font-mono text-[var(--cyber-neon-green)] uppercase">Best For: Games, Real-time Stream Processing</div>
           </div>
         </CyberPanel>
       </div>

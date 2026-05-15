@@ -90,7 +90,7 @@ export const ProtobufSyntaxVisualization = () => {
             <g transform={`translate(610, ${c.y - 15})`}>
               <rect width="220" height="40" rx="4" fill={c.color} fillOpacity="0.05" stroke={c.color} strokeWidth="1" strokeOpacity="0.3" />
               <text x="10" y="18" fill={c.color} fontSize="12" className="font-bold uppercase tracking-wider" filter="url(#syntax-glow)">{c.label}</text>
-              <text x="10" y="32" fill="var(--text-dim)" fontSize="10">{c.desc}</text>
+              <text x="10" y="32" fill="var(--text-dim)" fontSize="12">{c.desc}</text>
             </g>
           </motion.g>
         ))}

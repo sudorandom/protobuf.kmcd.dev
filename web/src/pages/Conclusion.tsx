@@ -55,7 +55,7 @@ export const Conclusion = () => (
         <div className="space-y-4">
           <h2 className="text-4xl md:text-6xl font-cyber font-black text-[var(--text-color)] uppercase italic tracking-tighter">Transmission Complete.</h2>
           <p className="text-[var(--text-dim)] text-xl leading-relaxed">
-            You've navigated the binary, parsed the descriptors, and witnessed the power of schema-driven architecture.
+            You've navigated the binary, modeled the data, and witnessed the power of schema-driven architecture.
           </p>
         </div>
 
