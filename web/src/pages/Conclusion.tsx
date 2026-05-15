@@ -131,6 +131,7 @@ export const Conclusion = () => (
 
         <p className="text-xs font-mono text-[var(--text-dim)] uppercase tracking-widest pt-8">
           See a mistake?{" "}
+          Missing an important detail?{" "}
           <a
             href="https://github.com/sudorandom/protobuf.kmcd.dev/issues"
             target="_blank"
