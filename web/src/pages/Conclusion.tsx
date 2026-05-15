@@ -106,7 +106,8 @@ export const Conclusion = () => (
             Transmission Complete.
           </h2>
           <p className="text-[var(--text-dim)] text-xl leading-relaxed">
-            You've dissected the raw binary stream, mastered the data contracts, and unlocked the true power of a schema-first architecture.
+            You've dissected the raw binary stream, mastered the data contracts,
+            and unlocked the true power of a schema-first architecture.
           </p>
         </div>
 
