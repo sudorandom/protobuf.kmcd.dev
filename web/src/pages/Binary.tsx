@@ -197,9 +197,9 @@ const TagSectionBreakdown = ({ bytes, fieldNumber, wireType }: { bytes: Uint8Arr
               <div className="flex gap-1">
                 {bits.map((bit, bitIdx) => {
                   const actualBitIdx = 7 - bitIdx;
-                  let bitColor = 'var(--text-dim)';
-                  let label = '';
-                  let isMsb = actualBitIdx === 7;
+                  let bitColor: string;
+                  let label: string;
+                  const isMsb = actualBitIdx === 7;
                   
                   if (isMsb) {
                     bitColor = 'var(--cyber-neon-pink)';
