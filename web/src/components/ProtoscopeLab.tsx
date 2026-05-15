@@ -1,21 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  Zap, 
-  Terminal,
-  Database,
-  Settings2,
-  ExternalLink
-} from 'lucide-react';
-import { fromJson, toBinary, type DescMessage } from '@bufbuild/protobuf';
-import { 
-  CyberPanel,
-  TechnicalNuance
-} from './shared/Common';
-import { JsonEditor } from './shared/JsonEditor';
-import { InteractiveSchemaEditor } from './shared/InteractiveSchemaEditor';
-import { convertToProtoscope, generateFake } from '../utils/wasm-parser';
-import { Modal } from './shared/Modal';
-import { INITIAL_PROTO } from '../utils/constants';
+import React, { useState, useEffect } from "react";
+import { Zap, Terminal, Database, Settings2, ExternalLink } from "lucide-react";
+import { fromJson, toBinary, type DescMessage } from "@bufbuild/protobuf";
+import { CyberPanel, TechnicalNuance } from "./shared/Common";
+import { JsonEditor } from "./shared/JsonEditor";
+import { InteractiveSchemaEditor } from "./shared/InteractiveSchemaEditor";
+import { convertToProtoscope, generateFake } from "../utils/wasm-parser";
+import { Modal } from "./shared/Modal";
+import { INITIAL_PROTO } from "../utils/constants";
 
 interface ProtoscopeLabProps {
   messageSchema: DescMessage | null;
@@ -35,18 +26,20 @@ const DEFAULT_EXAMPLE = {
   birthDate: {
     year: 1992,
     month: 5,
-    day: 22
-  }
+    day: 22,
+  },
 };
 
-export const ProtoscopeLab: React.FC<ProtoscopeLabProps> = ({ 
-  messageSchema, 
-  fds, 
-  protoSource, 
-  setProtoSource 
+export const ProtoscopeLab: React.FC<ProtoscopeLabProps> = ({
+  messageSchema,
+  fds,
+  protoSource,
+  setProtoSource,
 }) => {
-  const [jsonInput, setJsonInput] = useState(JSON.stringify(DEFAULT_EXAMPLE, null, 2));
-  const [protoscopeOutput, setProtoscopeOutput] = useState('');
+  const [jsonInput, setJsonInput] = useState(
+    JSON.stringify(DEFAULT_EXAMPLE, null, 2),
+  );
+  const [protoscopeOutput, setProtoscopeOutput] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -54,12 +47,14 @@ export const ProtoscopeLab: React.FC<ProtoscopeLabProps> = ({
   useEffect(() => {
     const updateProtoscope = async () => {
       if (!messageSchema) {
-        setProtoscopeOutput('');
+        setProtoscopeOutput("");
         return;
       }
       try {
         const obj = JSON.parse(jsonInput);
-        const user = fromJson(messageSchema, obj, { ignoreUnknownFields: true });
+        const user = fromJson(messageSchema, obj, {
+          ignoreUnknownFields: true,
+        });
         const binary = toBinary(messageSchema, user);
         const output = await convertToProtoscope(binary);
         setProtoscopeOutput(output);
@@ -114,19 +109,28 @@ export const ProtoscopeLab: React.FC<ProtoscopeLabProps> = ({
               disabled={isGenerating || !fds}
               className="px-2 py-1 text-xs font-cyber font-bold border border-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/10 text-[var(--cyber-neon-pink)] hover:bg-[var(--cyber-neon-pink)]/20 transition-all flex items-center gap-1.5 disabled:opacity-30 disabled:cursor-not-allowed rounded uppercase tracking-wider"
             >
-              <Zap className={`w-2.5 h-2.5 ${isGenerating ? 'animate-spin' : ''}`} />
+              <Zap
+                className={`w-2.5 h-2.5 ${isGenerating ? "animate-spin" : ""}`}
+              />
               Randomize
             </button>
           </div>
-          
-          <CyberPanel title="JSON_INPUT" className="flex-1 min-h-[400px] flex flex-col">
+
+          <CyberPanel
+            title="JSON_INPUT"
+            className="flex-1 min-h-[400px] flex flex-col"
+          >
             <div className="flex-1 relative">
               {error && (
                 <div className="absolute top-0 left-0 right-0 p-2 bg-[var(--text-error)]/10 border-b border-[var(--text-error)]/30 text-[var(--text-error)] text-xs font-mono z-30 break-words line-clamp-2">
                   {error}
                 </div>
               )}
-              <JsonEditor value={jsonInput} onChange={setJsonInput} className="h-full rounded-none border-none bg-transparent" />
+              <JsonEditor
+                value={jsonInput}
+                onChange={setJsonInput}
+                className="h-full rounded-none border-none bg-transparent"
+              />
             </div>
           </CyberPanel>
         </div>
@@ -138,9 +142,9 @@ export const ProtoscopeLab: React.FC<ProtoscopeLabProps> = ({
               <Terminal className="w-4 h-4 text-[var(--cyber-neon-pink)]" />
               Protoscope Output
             </h3>
-            <a 
-              href="https://github.com/protocolbuffers/protoscope" 
-              target="_blank" 
+            <a
+              href="https://github.com/protocolbuffers/protoscope"
+              target="_blank"
               rel="noopener noreferrer"
               className="text-xs font-cyber font-bold text-[var(--text-dim)] hover:text-[var(--text-color)] transition-colors uppercase flex items-center gap-1"
             >
@@ -148,7 +152,10 @@ export const ProtoscopeLab: React.FC<ProtoscopeLabProps> = ({
             </a>
           </div>
 
-          <CyberPanel title="PROTOSCOPE_STREAM" className="flex-1 min-h-[400px] flex flex-col">
+          <CyberPanel
+            title="PROTOSCOPE_STREAM"
+            className="flex-1 min-h-[400px] flex flex-col"
+          >
             <div className="flex-1 flex flex-col bg-[var(--section-bg-dark)]/30">
               <div className="flex-1 overflow-auto p-6 custom-scrollbar">
                 {protoscopeOutput ? (
@@ -158,7 +165,11 @@ export const ProtoscopeLab: React.FC<ProtoscopeLabProps> = ({
                 ) : (
                   <div className="h-full flex flex-col items-center justify-center text-[var(--text-dim)] gap-4 opacity-40 py-20">
                     <Terminal className="w-10 h-10" />
-                    <p className="font-cyber text-xs uppercase tracking-widest text-center">Correct input to<br />view stream</p>
+                    <p className="font-cyber text-xs uppercase tracking-widest text-center">
+                      Correct input to
+                      <br />
+                      view stream
+                    </p>
                   </div>
                 )}
               </div>
@@ -166,9 +177,12 @@ export const ProtoscopeLab: React.FC<ProtoscopeLabProps> = ({
           </CyberPanel>
         </div>
       </div>
-      
+
       <TechnicalNuance title="DEBUGGING_TIP">
-        Protoscope is especially useful when debugging "Unknown Fields". If a client sends a field that your server's schema doesn't know about, Protoscope will still show you the data, whereas a standard JSON decoder would simply drop it.
+        Protoscope is especially useful when debugging "Unknown Fields". If a
+        client sends a field that your server's schema doesn't know about,
+        Protoscope will still show you the data, whereas a standard JSON decoder
+        would simply drop it.
       </TechnicalNuance>
 
       <Modal
@@ -182,10 +196,15 @@ export const ProtoscopeLab: React.FC<ProtoscopeLabProps> = ({
           onSave={async (s, result) => {
             setProtoSource(s);
             if (result) {
-              const schema = result.registry.getMessage("demo.v1.User") || result.registry.getFile("input.proto")?.messages[0];
+              const schema =
+                result.registry.getMessage("demo.v1.User") ||
+                result.registry.getFile("input.proto")?.messages[0];
               if (schema) {
                 try {
-                  const fakeData = await generateFake(schema.typeName, result.fds);
+                  const fakeData = await generateFake(
+                    schema.typeName,
+                    result.fds,
+                  );
                   setJsonInput(fakeData);
                 } catch (e) {
                   console.error("Failed to generate faux data after save:", e);

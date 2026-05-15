@@ -1,27 +1,37 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from "react";
+import { XCircle, RotateCcw, Check, X } from "lucide-react";
+import { type FileRegistry } from "@bufbuild/protobuf";
+import { SchemaEditor } from "./SchemaEditor";
+import { CyberPanel } from "./Common";
 import {
-  XCircle,
-  RotateCcw,
-  Check,
-  X
-} from 'lucide-react';
-import { type FileRegistry } from '@bufbuild/protobuf';
-import { SchemaEditor } from './SchemaEditor';
-import { CyberPanel } from './Common';
-import { createDynamicRegistry, type RegistryResult } from '../../utils/dynamic-registry';
-import { type CompilationError } from '../../utils/wasm-parser';
+  createDynamicRegistry,
+  type RegistryResult,
+} from "../../utils/dynamic-registry";
+import { type CompilationError } from "../../utils/wasm-parser";
 
 interface InteractiveSchemaEditorProps {
   initialValue: string;
   defaultValue?: string;
-  onSave?: (source: string, result?: { fds: Uint8Array, userFds: Uint8Array, registry: FileRegistry }) => void;
-  onApply?: (source: string, result?: { fds: Uint8Array, userFds: Uint8Array, registry: FileRegistry }) => void;
+  onSave?: (
+    source: string,
+    result?: { fds: Uint8Array; userFds: Uint8Array; registry: FileRegistry },
+  ) => void;
+  onApply?: (
+    source: string,
+    result?: { fds: Uint8Array; userFds: Uint8Array; registry: FileRegistry },
+  ) => void;
   onCancel?: () => void;
-  onCompileSuccess?: (result: { fds: Uint8Array, userFds: Uint8Array, registry: FileRegistry }) => void;
+  onCompileSuccess?: (result: {
+    fds: Uint8Array;
+    userFds: Uint8Array;
+    registry: FileRegistry;
+  }) => void;
   title?: string;
 }
 
-export const InteractiveSchemaEditor: React.FC<InteractiveSchemaEditorProps> = ({
+export const InteractiveSchemaEditor: React.FC<
+  InteractiveSchemaEditorProps
+> = ({
   initialValue,
   defaultValue,
   onSave,
@@ -34,7 +44,11 @@ export const InteractiveSchemaEditor: React.FC<InteractiveSchemaEditorProps> = (
   const [prevInitialValue, setPrevInitialValue] = useState(initialValue);
   const [localErrors, setLocalErrors] = useState<CompilationError[]>([]);
   const [isValidating, setIsValidating] = useState(false);
-  const [lastValidResult, setLastValidResult] = useState<{ fds: Uint8Array, userFds: Uint8Array, registry: FileRegistry } | null>(null);
+  const [lastValidResult, setLastValidResult] = useState<{
+    fds: Uint8Array;
+    userFds: Uint8Array;
+    registry: FileRegistry;
+  } | null>(null);
 
   // Sync internal state if initialValue changes externally
   if (initialValue !== prevInitialValue) {
@@ -51,10 +65,10 @@ export const InteractiveSchemaEditor: React.FC<InteractiveSchemaEditorProps> = (
         if (isMounted) {
           if (result.kind === "success") {
             setLocalErrors([]);
-            const validData = { 
-              fds: result.fileDescriptorSet, 
-              userFds: result.userFileDescriptorSet, 
-              registry: result.registry 
+            const validData = {
+              fds: result.fileDescriptorSet,
+              userFds: result.userFileDescriptorSet,
+              registry: result.registry,
             };
             setLastValidResult(validData);
             onCompileSuccess?.(validData);
@@ -92,20 +106,28 @@ export const InteractiveSchemaEditor: React.FC<InteractiveSchemaEditorProps> = (
     <div className="flex flex-col h-full gap-4">
       {/* Editor Area */}
       <div className="flex-1 relative min-h-[300px] bg-[var(--overlay-bg)] rounded-lg border border-[var(--border-light)] overflow-hidden">
-        <SchemaEditor value={localValue} onChange={setLocalValue} errors={localErrors} />
-        
+        <SchemaEditor
+          value={localValue}
+          onChange={setLocalValue}
+          errors={localErrors}
+        />
+
         {/* Validation Status Overlay */}
         <div className="absolute top-2 right-2 flex items-center gap-2 pointer-events-none">
           {isValidating && (
             <div className="flex items-center gap-2 bg-[var(--bg-color)]/80 backdrop-blur-sm px-2 py-1 rounded border border-[var(--cyber-neon-blue)]/30">
               <div className="w-1.5 h-1.5 bg-[var(--cyber-neon-blue)] rounded-full animate-pulse" />
-              <span className="text-xs font-mono text-[var(--cyber-neon-blue)] uppercase tracking-widest">Compiling</span>
+              <span className="text-xs font-mono text-[var(--cyber-neon-blue)] uppercase tracking-widest">
+                Compiling
+              </span>
             </div>
           )}
           {!isValidating && localErrors.length === 0 && (
             <div className="flex items-center gap-2 bg-[var(--bg-color)]/80 backdrop-blur-sm px-2 py-1 rounded border border-[var(--cyber-neon-green)]/30 text-[var(--cyber-neon-green)]">
               <Check className="w-3 h-3" />
-              <span className="text-xs font-mono uppercase tracking-widest">Valid</span>
+              <span className="text-xs font-mono uppercase tracking-widest">
+                Valid
+              </span>
             </div>
           )}
         </div>
@@ -115,9 +137,14 @@ export const InteractiveSchemaEditor: React.FC<InteractiveSchemaEditorProps> = (
       {localErrors.length > 0 && (
         <div className="space-y-1 max-h-24 overflow-y-auto pr-2 custom-scrollbar">
           {localErrors.map((err, i) => (
-            <div key={i} className="p-2 bg-[var(--text-error)]/5 border border-[var(--text-error)]/10 rounded flex gap-2 text-xs font-mono text-[var(--text-error)]">
+            <div
+              key={i}
+              className="p-2 bg-[var(--text-error)]/5 border border-[var(--text-error)]/10 rounded flex gap-2 text-xs font-mono text-[var(--text-error)]"
+            >
               <XCircle className="w-3.5 h-3.5 shrink-0 mt-0.5" />
-              <span>L{err.line}: {err.message}</span>
+              <span>
+                L{err.line}: {err.message}
+              </span>
             </div>
           ))}
         </div>
@@ -161,13 +188,10 @@ export const InteractiveSchemaEditor: React.FC<InteractiveSchemaEditorProps> = (
   if (title) {
     return (
       <CyberPanel title={title} className="h-full flex flex-col">
-        <div className="flex-1 min-h-0">
-          {editorContent}
-        </div>
+        <div className="flex-1 min-h-0">{editorContent}</div>
       </CyberPanel>
     );
   }
 
   return editorContent;
 };
-

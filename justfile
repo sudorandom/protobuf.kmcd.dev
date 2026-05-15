@@ -1,10 +1,13 @@
 web-install:
 	cd web && mise exec -- pnpm install
 
-web-dev:
+web-format:
+	cd web && mise exec -- pnpm run format
+
+web-dev: web-format
 	cd web && mise exec -- pnpm run dev
 
-web-build: build-wasm
+web-build: web-format build-wasm
 	cd web && mise exec -- pnpm run build
 
 build-wasm:
@@ -21,7 +24,7 @@ build-wasm:
 		mv web/public/parser.wasm.gz web/public/parser.wasm; \
 	fi
 
-web-check: build-wasm
+web-check: web-format build-wasm
 	cd web && mise exec -- pnpm run lint
 	cd web && mise exec -- pnpm run build
 

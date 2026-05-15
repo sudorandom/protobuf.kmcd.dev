@@ -1,9 +1,17 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { SyntaxHighlighter } from './Common';
-import { type CompilationError } from '../../utils/wasm-parser';
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { SyntaxHighlighter } from "./Common";
+import { type CompilationError } from "../../utils/wasm-parser";
 
-export const SchemaEditor = ({ value, onChange, errors }: { value: string, onChange: (s: string) => void, errors: CompilationError[] }) => {
+export const SchemaEditor = ({
+  value,
+  onChange,
+  errors,
+}: {
+  value: string;
+  onChange: (s: string) => void;
+  errors: CompilationError[];
+}) => {
   const [scroll, setScroll] = useState({ top: 0, left: 0 });
 
   return (
@@ -13,21 +21,29 @@ export const SchemaEditor = ({ value, onChange, errors }: { value: string, onCha
         className="absolute top-0 left-0 p-4 font-mono text-sm leading-6 whitespace-pre pointer-events-none select-none"
         style={{
           transform: `translate(-${scroll.left}px, -${scroll.top}px)`,
-          width: 'max-content',
-          minWidth: '100%'
+          width: "max-content",
+          minWidth: "100%",
         }}
       >
         <SyntaxHighlighter language="proto" code={value} />
         {/* Error markers overlay */}
         <div className="absolute inset-0 pointer-events-none p-4">
-          {(value || '').split('\n').map((line, i) => {
-            const error = errors.find(e => e.line === i + 1);
-            if (!error) return <div key={i} className="h-6">{''}</div>;
+          {(value || "").split("\n").map((line, i) => {
+            const error = errors.find((e) => e.line === i + 1);
+            if (!error)
+              return (
+                <div key={i} className="h-6">
+                  {""}
+                </div>
+              );
 
             const col = Math.max(0, error.col - 1);
             return (
               <div key={i} className="h-6 relative">
-                <div className="absolute -left-4 right-0 h-6 bg-[var(--text-error)]/10 border-l-2 border-[var(--text-error)]" style={{ width: 'calc(100% + 1000px)' }} />
+                <div
+                  className="absolute -left-4 right-0 h-6 bg-[var(--text-error)]/10 border-l-2 border-[var(--text-error)]"
+                  style={{ width: "calc(100% + 1000px)" }}
+                />
                 <span className="invisible">{line.slice(0, col)}</span>
                 <motion.span
                   initial={{ opacity: 0.5 }}
@@ -46,7 +62,12 @@ export const SchemaEditor = ({ value, onChange, errors }: { value: string, onCha
         className="absolute inset-0 w-full h-full bg-transparent p-4 font-mono text-sm leading-6 text-transparent caret-white focus:outline-none focus:border-[var(--cyber-neon-blue)]/80 resize-none whitespace-pre overflow-auto custom-scrollbar border-none shadow-none"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        onScroll={(e) => setScroll({ top: e.currentTarget.scrollTop, left: e.currentTarget.scrollLeft })}
+        onScroll={(e) =>
+          setScroll({
+            top: e.currentTarget.scrollTop,
+            left: e.currentTarget.scrollLeft,
+          })
+        }
         spellCheck={false}
       />
     </div>

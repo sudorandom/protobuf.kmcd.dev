@@ -1,5 +1,5 @@
-import { useState, useMemo, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useMemo, useEffect } from "react";
+import { motion } from "framer-motion";
 import {
   Zap,
   BarChart3,
@@ -8,27 +8,34 @@ import {
   Tag,
   Maximize,
   Minimize2,
-  CircleOff
-} from 'lucide-react';
-import { fromJson, toBinary, toJsonString, type DescMessage } from '@bufbuild/protobuf';
+  CircleOff,
+} from "lucide-react";
+import {
+  fromJson,
+  toBinary,
+  toJsonString,
+  type DescMessage,
+} from "@bufbuild/protobuf";
 import {
   Section,
   SectionTitle,
   CyberPanel,
-  ExternalLinkText
-} from '../components/shared/Common';
-import { JsonEditor } from '../components/shared/JsonEditor';
-import { Modal } from '../components/shared/Modal';
-import { InteractiveSchemaEditor } from '../components/shared/InteractiveSchemaEditor';
-import { decodeBinary } from '../utils/decoder';
-import { generateFake } from '../utils/wasm-parser';
-import { SIZE_EXAMPLES, INITIAL_PROTO } from '../utils/constants';
+  ExternalLinkText,
+} from "../components/shared/Common";
+import { JsonEditor } from "../components/shared/JsonEditor";
+import { Modal } from "../components/shared/Modal";
+import { InteractiveSchemaEditor } from "../components/shared/InteractiveSchemaEditor";
+import { decodeBinary } from "../utils/decoder";
+import { generateFake } from "../utils/wasm-parser";
+import { SIZE_EXAMPLES, INITIAL_PROTO } from "../utils/constants";
 
 // --- Helpers ---
 
 async function getGzipSize(data: string | Uint8Array): Promise<number> {
   try {
-    const stream = new Blob([data as BlobPart]).stream().pipeThrough(new CompressionStream('gzip'));
+    const stream = new Blob([data as BlobPart])
+      .stream()
+      .pipeThrough(new CompressionStream("gzip"));
     const response = new Response(stream);
     const buffer = await response.arrayBuffer();
     return buffer.byteLength;
@@ -37,19 +44,23 @@ async function getGzipSize(data: string | Uint8Array): Promise<number> {
   }
 }
 
-export const SizeComparison = ({ 
-  messageSchema, 
-  fileDescriptorSet, 
-  protoSource, 
-  setProtoSource 
-}: { 
-  messageSchema: DescMessage | null, 
-  fileDescriptorSet: Uint8Array | null,
-  protoSource: string,
-  setProtoSource: (s: string) => void
+export const SizeComparison = ({
+  messageSchema,
+  fileDescriptorSet,
+  protoSource,
+  setProtoSource,
+}: {
+  messageSchema: DescMessage | null;
+  fileDescriptorSet: Uint8Array | null;
+  protoSource: string;
+  setProtoSource: (s: string) => void;
 }) => {
-  const [activeExample, setActiveExample] = useState<keyof typeof SIZE_EXAMPLES | null>('BASIC');
-  const [jsonInput, setJsonInput] = useState(JSON.stringify(SIZE_EXAMPLES.BASIC, null, 2));
+  const [activeExample, setActiveExample] = useState<
+    keyof typeof SIZE_EXAMPLES | null
+  >("BASIC");
+  const [jsonInput, setJsonInput] = useState(
+    JSON.stringify(SIZE_EXAMPLES.BASIC, null, 2),
+  );
   const [isGenerating, setIsGenerating] = useState(false);
   const [gzipStats, setGzipStats] = useState({ json: 0, pb: 0 });
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -63,7 +74,10 @@ export const SizeComparison = ({
     if (!messageSchema || !fileDescriptorSet) return;
     setIsGenerating(true);
     try {
-      const fakeJson = await generateFake(messageSchema.typeName, fileDescriptorSet);
+      const fakeJson = await generateFake(
+        messageSchema.typeName,
+        fileDescriptorSet,
+      );
       setJsonInput(fakeJson);
       setActiveExample(null);
     } catch (e) {
@@ -74,7 +88,15 @@ export const SizeComparison = ({
   };
 
   const stats = useMemo(() => {
-    if (!messageSchema) return { jsonSize: 0, pbSize: 0, ratio: '0', error: "NO_SCHEMA", binary: new Uint8Array(), segments: [] };
+    if (!messageSchema)
+      return {
+        jsonSize: 0,
+        pbSize: 0,
+        ratio: "0",
+        error: "NO_SCHEMA",
+        binary: new Uint8Array(),
+        segments: [],
+      };
     try {
       const obj = JSON.parse(jsonInput);
       const user = fromJson(messageSchema, obj, { ignoreUnknownFields: true });
@@ -83,14 +105,31 @@ export const SizeComparison = ({
 
       const jsonSize = new TextEncoder().encode(jsonStr).length;
       const pbSize = binary.length;
-      const ratio = jsonSize > 0 ? ((1 - pbSize / jsonSize) * 100).toFixed(1) : '0';
+      const ratio =
+        jsonSize > 0 ? ((1 - pbSize / jsonSize) * 100).toFixed(1) : "0";
 
       const segments = decodeBinary(binary);
 
-      return { jsonSize, pbSize, ratio, error: null, binary, segments, jsonStr };
+      return {
+        jsonSize,
+        pbSize,
+        ratio,
+        error: null,
+        binary,
+        segments,
+        jsonStr,
+      };
     } catch (e: unknown) {
       const error = e instanceof Error ? e.message : String(e);
-      return { jsonSize: 0, pbSize: 0, ratio: '0', error, binary: new Uint8Array(), segments: [], jsonStr: '' };
+      return {
+        jsonSize: 0,
+        pbSize: 0,
+        ratio: "0",
+        error,
+        binary: new Uint8Array(),
+        segments: [],
+        jsonStr: "",
+      };
     }
   }, [jsonInput, messageSchema]);
 
@@ -99,7 +138,7 @@ export const SizeComparison = ({
     const fetchGzip = async () => {
       const [jSize, pSize] = await Promise.all([
         getGzipSize(stats.jsonStr),
-        getGzipSize(stats.binary)
+        getGzipSize(stats.binary),
       ]);
       setGzipStats({ json: jSize, pb: pSize });
     };
@@ -107,17 +146,33 @@ export const SizeComparison = ({
   }, [stats.jsonStr, stats.binary, stats.error]);
 
   return (
-    <Section id="efficiency" className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]">
+    <Section
+      id="efficiency"
+      className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]"
+    >
       <div className="max-w-7xl mx-auto">
-        <SectionTitle icon={Zap} subtitle="04_PERFORMANCE">Efficiency</SectionTitle>
+        <SectionTitle icon={Zap} subtitle="04_PERFORMANCE">
+          Efficiency
+        </SectionTitle>
 
         <div className="mb-12 space-y-12 text-[var(--text-color)] leading-relaxed">
           <div className="space-y-4 text-lg">
             <p>
-              The message size savings you can expect from Protobuf highly depend on your data. Large strings will always take space, but numeric data and sparse messages (many optional fields) see massive reductions compared to JSON.
+              The message size savings you can expect from Protobuf highly
+              depend on your data. Large strings will always take space, but
+              numeric data and sparse messages (many optional fields) see
+              massive reductions compared to JSON.
             </p>
             <p className="text-base text-[var(--text-dim)]">
-              Try a few different scenarios below: use the preset examples, <span className="text-[var(--cyber-neon-pink)] font-bold uppercase">generate fake data</span> (powered by <ExternalLinkText href="https://fauxrpc.com"><strong>FauxRPC</strong></ExternalLinkText>), or fill in your own.
+              Try a few different scenarios below: use the preset examples,{" "}
+              <span className="text-[var(--cyber-neon-pink)] font-bold uppercase">
+                generate fake data
+              </span>{" "}
+              (powered by{" "}
+              <ExternalLinkText href="https://fauxrpc.com">
+                <strong>FauxRPC</strong>
+              </ExternalLinkText>
+              ), or fill in your own.
             </p>
           </div>
         </div>
@@ -142,14 +197,17 @@ export const SizeComparison = ({
             </div>
 
             <div className="flex flex-wrap gap-2 mb-2">
-              {(Object.keys(SIZE_EXAMPLES) as Array<keyof typeof SIZE_EXAMPLES>).map((key) => (
+              {(
+                Object.keys(SIZE_EXAMPLES) as Array<keyof typeof SIZE_EXAMPLES>
+              ).map((key) => (
                 <button
                   key={key}
                   onClick={() => handleExampleChange(key)}
-                  className={`px-3 py-1 text-xs font-mono border transition-all rounded ${activeExample === key
-                    ? 'bg-[var(--cyber-neon-blue)]/20 border-[var(--cyber-neon-blue)] text-[var(--cyber-neon-blue)]'
-                    : 'bg-[var(--overlay-bg)] border-[var(--border-light)] text-[var(--text-dim)] hover:border-white/30 hover:text-[var(--text-color)]'
-                    }`}
+                  className={`px-3 py-1 text-xs font-mono border transition-all rounded ${
+                    activeExample === key
+                      ? "bg-[var(--cyber-neon-blue)]/20 border-[var(--cyber-neon-blue)] text-[var(--cyber-neon-blue)]"
+                      : "bg-[var(--overlay-bg)] border-[var(--border-light)] text-[var(--text-dim)] hover:border-white/30 hover:text-[var(--text-color)]"
+                  }`}
                 >
                   {key}
                 </button>
@@ -159,19 +217,31 @@ export const SizeComparison = ({
                 disabled={!messageSchema || !fileDescriptorSet || isGenerating}
                 className="px-2 py-1 text-xs font-cyber font-bold border border-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/10 text-[var(--cyber-neon-pink)] hover:bg-[var(--cyber-neon-pink)]/20 transition-all flex items-center gap-1.5 disabled:opacity-30 disabled:cursor-not-allowed rounded uppercase tracking-wider"
               >
-                <Zap className={`w-2.5 h-2.5 ${isGenerating ? 'animate-spin' : ''}`} />
+                <Zap
+                  className={`w-2.5 h-2.5 ${isGenerating ? "animate-spin" : ""}`}
+                />
                 Randomize
               </button>
             </div>
 
-            <CyberPanel title="DATA_INPUT (JSON)" className="flex-1 min-h-[400px] flex flex-col">
+            <CyberPanel
+              title="DATA_INPUT (JSON)"
+              className="flex-1 min-h-[400px] flex flex-col"
+            >
               <div className="flex-1 relative">
                 {stats.error && stats.error !== "NO_SCHEMA" && (
-                  <div className="absolute top-0 left-0 right-0 p-2 bg-[var(--text-error)]/10 border-b border-[var(--text-error)]/30 text-[var(--text-error)] text-xs font-mono z-30 break-words line-clamp-2" title={stats.error}>
+                  <div
+                    className="absolute top-0 left-0 right-0 p-2 bg-[var(--text-error)]/10 border-b border-[var(--text-error)]/30 text-[var(--text-error)] text-xs font-mono z-30 break-words line-clamp-2"
+                    title={stats.error}
+                  >
                     {stats.error}
                   </div>
                 )}
-                <JsonEditor value={jsonInput} onChange={setJsonInput} className="h-full rounded-none border-none bg-transparent" />
+                <JsonEditor
+                  value={jsonInput}
+                  onChange={setJsonInput}
+                  className="h-full rounded-none border-none bg-transparent"
+                />
               </div>
             </CyberPanel>
           </div>
@@ -185,10 +255,14 @@ export const SizeComparison = ({
               </h3>
             </div>
 
-            <CyberPanel title="EFFICIENCY_STATS" className="flex-1 min-h-[400px] flex flex-col">
+            <CyberPanel
+              title="EFFICIENCY_STATS"
+              className="flex-1 min-h-[400px] flex flex-col"
+            >
               <div className="flex-1 py-4 px-2 space-y-8">
                 <p className="text-xs text-[var(--text-dim)] leading-relaxed uppercase tracking-wide">
-                  Watch as the binary encoder strips away the redundant field names and formatting that bloats JSON payloads.
+                  Watch as the binary encoder strips away the redundant field
+                  names and formatting that bloats JSON payloads.
                 </p>
 
                 {/* Size Bars */}
@@ -196,10 +270,15 @@ export const SizeComparison = ({
                   <div>
                     <div className="flex justify-between text-xs font-mono mb-2 uppercase tracking-widest">
                       <span>JSON_RAW</span>
-                      <span className="text-[var(--text-color)]">{stats.jsonSize} B</span>
+                      <span className="text-[var(--text-color)]">
+                        {stats.jsonSize} B
+                      </span>
                     </div>
                     <div className="h-2 bg-[var(--border-light)] rounded-full overflow-hidden">
-                      <div className="h-full bg-[var(--text-dim)] opacity-40" style={{ width: '100%' }}></div>
+                      <div
+                        className="h-full bg-[var(--text-dim)] opacity-40"
+                        style={{ width: "100%" }}
+                      ></div>
                     </div>
                     {gzipStats.json > 0 && (
                       <div className="flex justify-between text-xs font-mono mt-2 text-[var(--text-dim)] uppercase tracking-widest">
@@ -212,12 +291,16 @@ export const SizeComparison = ({
                   <div>
                     <div className="flex justify-between text-xs font-mono mb-2 text-[var(--cyber-neon-green)] uppercase tracking-widest">
                       <span>PROTOBUF_BINARY</span>
-                      <span className="text-[var(--cyber-neon-green)] font-bold">{stats.pbSize} B</span>
+                      <span className="text-[var(--cyber-neon-green)] font-bold">
+                        {stats.pbSize} B
+                      </span>
                     </div>
                     <div className="h-2 bg-[var(--border-light)] rounded-full overflow-hidden">
                       <motion.div
                         initial={{ width: 0 }}
-                        animate={{ width: `${stats.jsonSize > 0 ? (stats.pbSize / stats.jsonSize) * 100 : 0}%` }}
+                        animate={{
+                          width: `${stats.jsonSize > 0 ? (stats.pbSize / stats.jsonSize) * 100 : 0}%`,
+                        }}
                         className="h-full bg-[var(--cyber-neon-green)] shadow-[0_0_10px_rgba(0,255,159,0.3)]"
                       />
                     </div>
@@ -232,15 +315,31 @@ export const SizeComparison = ({
 
                 <div className="pt-8 border-t border-[var(--border-light)] flex items-end justify-between">
                   <div>
-                    <p className="text-5xl font-cyber font-bold text-[var(--cyber-neon-green)] shadow-glow">-{stats.ratio}%</p>
-                    <p className="text-xs font-mono text-[var(--text-dim)] mt-2 uppercase tracking-[0.2em]">RAW_PAYLOAD_REDUCTION</p>
+                    <p className="text-5xl font-cyber font-bold text-[var(--cyber-neon-green)] shadow-glow">
+                      -{stats.ratio}%
+                    </p>
+                    <p className="text-xs font-mono text-[var(--text-dim)] mt-2 uppercase tracking-[0.2em]">
+                      RAW_PAYLOAD_REDUCTION
+                    </p>
                   </div>
                   {gzipStats.json > 0 && gzipStats.pb > 0 && (
                     <div className="text-right">
-                      <p className={`text-2xl font-cyber font-bold ${gzipStats.pb < gzipStats.json ? 'text-[var(--cyber-neon-blue)]' : 'text-[var(--cyber-neon-yellow)]'}`}>
-                        {gzipStats.pb < gzipStats.json ? '-' : '+'}{Math.abs(Number(((1 - gzipStats.pb / gzipStats.json) * 100).toFixed(1)))}%
+                      <p
+                        className={`text-2xl font-cyber font-bold ${gzipStats.pb < gzipStats.json ? "text-[var(--cyber-neon-blue)]" : "text-[var(--cyber-neon-yellow)]"}`}
+                      >
+                        {gzipStats.pb < gzipStats.json ? "-" : "+"}
+                        {Math.abs(
+                          Number(
+                            ((1 - gzipStats.pb / gzipStats.json) * 100).toFixed(
+                              1,
+                            ),
+                          ),
+                        )}
+                        %
                       </p>
-                      <p className="text-xs font-mono text-[var(--text-dim)] uppercase tracking-widest">GZIPPED_PB vs JSON</p>
+                      <p className="text-xs font-mono text-[var(--text-dim)] uppercase tracking-widest">
+                        GZIPPED_PB vs JSON
+                      </p>
                     </div>
                   )}
                 </div>
@@ -251,38 +350,51 @@ export const SizeComparison = ({
 
         <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {[
-            { 
-              icon: Tag, 
-              title: "Numeric Tags", 
+            {
+              icon: Tag,
+              title: "Numeric Tags",
               desc: "Field names are never sent on the wire, only small numeric tags.",
-              color: "var(--cyber-neon-blue)"
+              color: "var(--cyber-neon-blue)",
             },
-            { 
-              icon: Maximize, 
-              title: "No Overhead", 
+            {
+              icon: Maximize,
+              title: "No Overhead",
               desc: "Eliminates braces, quotes, and commas required by JSON structure.",
-              color: "var(--cyber-neon-pink)"
+              color: "var(--cyber-neon-pink)",
             },
-            { 
-              icon: Minimize2, 
-              title: "Varints", 
+            {
+              icon: Minimize2,
+              title: "Varints",
               desc: "Small integers are compressed to take only 1-2 bytes of space.",
-              color: "var(--cyber-neon-green)"
+              color: "var(--cyber-neon-green)",
             },
-            { 
-              icon: CircleOff, 
-              title: "Zero-Cost Options", 
+            {
+              icon: CircleOff,
+              title: "Zero-Cost Options",
               desc: "Unset fields take exactly zero space in the binary payload.",
-              color: "var(--cyber-neon-yellow)"
-            }
+              color: "var(--cyber-neon-yellow)",
+            },
           ].map((item, i) => (
-            <div key={i} className="p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg flex flex-col gap-3 group hover:border-[var(--cyber-neon-blue)]/50 transition-all">
-              <div className="p-2 w-fit rounded-md bg-[var(--bg-color)] border border-[var(--border-light)] group-hover:scale-110 transition-transform" style={{ color: item.color }}>
+            <div
+              key={i}
+              className="p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg flex flex-col gap-3 group hover:border-[var(--cyber-neon-blue)]/50 transition-all"
+            >
+              <div
+                className="p-2 w-fit rounded-md bg-[var(--bg-color)] border border-[var(--border-light)] group-hover:scale-110 transition-transform"
+                style={{ color: item.color }}
+              >
                 <item.icon className="w-5 h-5" />
               </div>
               <div className="space-y-1">
-                <h4 className="text-xs font-cyber font-bold uppercase tracking-widest" style={{ color: item.color }}>{item.title}</h4>
-                <p className="text-xs text-[var(--text-dim)] leading-relaxed">{item.desc}</p>
+                <h4
+                  className="text-xs font-cyber font-bold uppercase tracking-widest"
+                  style={{ color: item.color }}
+                >
+                  {item.title}
+                </h4>
+                <p className="text-xs text-[var(--text-dim)] leading-relaxed">
+                  {item.desc}
+                </p>
               </div>
             </div>
           ))}
@@ -299,14 +411,22 @@ export const SizeComparison = ({
             onSave={async (s, result) => {
               setProtoSource(s);
               if (result) {
-                const schema = result.registry.getMessage("demo.v1.User") || result.registry.getFile("input.proto")?.messages[0];
+                const schema =
+                  result.registry.getMessage("demo.v1.User") ||
+                  result.registry.getFile("input.proto")?.messages[0];
                 if (schema) {
                   try {
-                    const fakeJson = await generateFake(schema.typeName, result.fds);
+                    const fakeJson = await generateFake(
+                      schema.typeName,
+                      result.fds,
+                    );
                     setJsonInput(fakeJson);
                     setActiveExample(null);
                   } catch (e) {
-                    console.error("Failed to generate faux data after save:", e);
+                    console.error(
+                      "Failed to generate faux data after save:",
+                      e,
+                    );
                   }
                 }
               }
@@ -318,42 +438,81 @@ export const SizeComparison = ({
 
         <div className="mt-24 space-y-16">
           <div className="space-y-6">
-            <h3 className="text-xl sm:text-2xl md:text-3xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">Size vs. Compression</h3>
+            <h3 className="text-xl sm:text-2xl md:text-3xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">
+              Size vs. Compression
+            </h3>
             <p className="text-[var(--text-dim)] leading-relaxed">
-              While Protobuf provides a massive reduction in <span className="text-[var(--cyber-neon-green)] font-bold">raw payload size (typically 30-50%)</span> compared to JSON, the gap often narrows when GZIP or Brotli compression is applied. For GZIP compressed payloads, the difference is usually in the <span className="text-[var(--cyber-neon-blue)] font-bold">15-30% range</span>.
+              While Protobuf provides a massive reduction in{" "}
+              <span className="text-[var(--cyber-neon-green)] font-bold">
+                raw payload size (typically 30-50%)
+              </span>{" "}
+              compared to JSON, the gap often narrows when GZIP or Brotli
+              compression is applied. For GZIP compressed payloads, the
+              difference is usually in the{" "}
+              <span className="text-[var(--cyber-neon-blue)] font-bold">
+                15-30% range
+              </span>
+              .
             </p>
             <p className="text-[var(--text-dim)] leading-relaxed">
-              However, there is a critical tradeoff: compression adds significant CPU overhead to every request. For smaller payloads, the time spent compressing and decompressing can be greater than the time saved by the smaller transfer size. In these cases, sending uncompressed Protobuf is often the most optimal path for overall latency.
+              However, there is a critical tradeoff: compression adds
+              significant CPU overhead to every request. For smaller payloads,
+              the time spent compressing and decompressing can be greater than
+              the time saved by the smaller transfer size. In these cases,
+              sending uncompressed Protobuf is often the most optimal path for
+              overall latency.
             </p>
             <p className="text-[var(--text-dim)] leading-relaxed text-sm">
-              Protobuf shines when your data has many numbers, enums, or sparse fields. String-heavy payloads benefit less from binary encoding but still benefit from Protobuf's schema-driven performance and type safety.
+              Protobuf shines when your data has many numbers, enums, or sparse
+              fields. String-heavy payloads benefit less from binary encoding
+              but still benefit from Protobuf's schema-driven performance and
+              type safety.
             </p>
           </div>
 
           <div className="space-y-8">
             <div className="flex items-center gap-3 text-[var(--cyber-neon-blue)]">
               <BarChart3 className="w-6 h-6" />
-              <h3 className="text-xl sm:text-2xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">The Benchmark Landscape</h3>
+              <h3 className="text-xl sm:text-2xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">
+                The Benchmark Landscape
+              </h3>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
               <div className="space-y-4">
-                <h4 className="text-sm font-cyber font-bold text-[var(--cyber-neon-pink)] uppercase tracking-widest">Language Matters</h4>
+                <h4 className="text-sm font-cyber font-bold text-[var(--cyber-neon-pink)] uppercase tracking-widest">
+                  Language Matters
+                </h4>
                 <p className="text-sm text-[var(--text-dim)] leading-relaxed">
-                  Protobuf performance is highly dependent on the language and library implementation. In languages with native binary support like <strong>C++, Go, and Java</strong>, Protobuf can be decodes <strong>5x-10x faster</strong> than JSON.
+                  Protobuf performance is highly dependent on the language and
+                  library implementation. In languages with native binary
+                  support like <strong>C++, Go, and Java</strong>, Protobuf can
+                  be decodes <strong>5x-10x faster</strong> than JSON.
                 </p>
                 <p className="text-sm text-[var(--text-dim)] leading-relaxed">
-                  In interpreted languages like <strong>JavaScript (Node.js) or Python</strong>, the gap can be smaller due to the overhead of moving data between the runtime and the binary parser, though it still generally outperforms standard JSON libraries in high-throughput scenarios.
+                  In interpreted languages like{" "}
+                  <strong>JavaScript (Node.js) or Python</strong>, the gap can
+                  be smaller due to the overhead of moving data between the
+                  runtime and the binary parser, though it still generally
+                  outperforms standard JSON libraries in high-throughput
+                  scenarios.
                 </p>
               </div>
 
               <div className="space-y-4">
-                <h4 className="text-sm font-cyber font-bold text-[var(--cyber-neon-green)] uppercase tracking-widest">Data Type Sensitivity</h4>
+                <h4 className="text-sm font-cyber font-bold text-[var(--cyber-neon-green)] uppercase tracking-widest">
+                  Data Type Sensitivity
+                </h4>
                 <p className="text-sm text-[var(--text-dim)] leading-relaxed">
-                  If your payload is 90% long strings (like blog posts), Protobuf will only save you a few percentage points of space. However, if your data is <strong>numeric-heavy</strong> (IDs, timestamps, coordinates, or metrics), Protobuf DECIMATES JSON in both size and speed.
+                  If your payload is 90% long strings (like blog posts),
+                  Protobuf will only save you a few percentage points of space.
+                  However, if your data is <strong>numeric-heavy</strong> (IDs,
+                  timestamps, coordinates, or metrics), Protobuf DECIMATES JSON
+                  in both size and speed.
                 </p>
                 <p className="text-sm text-[var(--text-dim)] leading-relaxed italic border-l-2 border-[var(--cyber-neon-green)]/80 pl-4">
-                  "The win isn't just bytes on the wire; it's the CPU cycles saved by not parsing millions of brackets and quotes."
+                  "The win isn't just bytes on the wire; it's the CPU cycles
+                  saved by not parsing millions of brackets and quotes."
                 </p>
               </div>
             </div>
@@ -366,8 +525,13 @@ export const SizeComparison = ({
                   rel="noopener noreferrer"
                   className="group p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg hover:border-[var(--cyber-neon-blue)]/40 transition-all"
                 >
-                  <h5 className="font-cyber text-xs text-[var(--cyber-neon-blue)] mb-2 group-hover:underline">Auth0 Engineering</h5>
-                  <p className="text-xs text-[var(--text-dim)] leading-relaxed">Classic deep dive comparing binary vs text overhead in real-world API requests.</p>
+                  <h5 className="font-cyber text-xs text-[var(--cyber-neon-blue)] mb-2 group-hover:underline">
+                    Auth0 Engineering
+                  </h5>
+                  <p className="text-xs text-[var(--text-dim)] leading-relaxed">
+                    Classic deep dive comparing binary vs text overhead in
+                    real-world API requests.
+                  </p>
                 </a>
                 <a
                   href="https://grpc.io/docs/guides/benchmarking/"
@@ -375,8 +539,13 @@ export const SizeComparison = ({
                   rel="noopener noreferrer"
                   className="group p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg hover:border-[var(--cyber-neon-pink)]/40 transition-all"
                 >
-                  <h5 className="font-cyber text-xs text-[var(--cyber-neon-pink)] mb-2 group-hover:underline">Official gRPC Benchmarks</h5>
-                  <p className="text-xs text-[var(--text-dim)] leading-relaxed">Throughput and latency metrics for Protobuf-over-HTTP/2 across various languages.</p>
+                  <h5 className="font-cyber text-xs text-[var(--cyber-neon-pink)] mb-2 group-hover:underline">
+                    Official gRPC Benchmarks
+                  </h5>
+                  <p className="text-xs text-[var(--text-dim)] leading-relaxed">
+                    Throughput and latency metrics for Protobuf-over-HTTP/2
+                    across various languages.
+                  </p>
                 </a>
                 <a
                   href="https://www.atlassian.com/blog/atlassian-engineering/using-protobuf-to-make-jira-cloud-faster"
@@ -384,8 +553,13 @@ export const SizeComparison = ({
                   rel="noopener noreferrer"
                   className="group p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg hover:border-[var(--cyber-neon-green)]/40 transition-all"
                 >
-                  <h5 className="font-cyber text-xs text-[var(--cyber-neon-green)] mb-2 group-hover:underline">Atlassian Engineering</h5>
-                  <p className="text-xs text-[var(--text-dim)] leading-relaxed">A detailed case study on how Jira improved p99 latency by 20% and reduced CPU usage by 75% using Protobuf.</p>
+                  <h5 className="font-cyber text-xs text-[var(--cyber-neon-green)] mb-2 group-hover:underline">
+                    Atlassian Engineering
+                  </h5>
+                  <p className="text-xs text-[var(--text-dim)] leading-relaxed">
+                    A detailed case study on how Jira improved p99 latency by
+                    20% and reduced CPU usage by 75% using Protobuf.
+                  </p>
                 </a>
               </div>
             </CyberPanel>

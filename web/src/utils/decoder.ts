@@ -22,7 +22,10 @@ export interface DecodedSegment {
   payloadBytes: Uint8Array;
 }
 
-export function decodeBinary(binary: Uint8Array, schema?: DescMessage): DecodedSegment[] {
+export function decodeBinary(
+  binary: Uint8Array,
+  schema?: DescMessage,
+): DecodedSegment[] {
   const segments: DecodedSegment[] = [];
   let offset = 0;
 
@@ -47,7 +50,7 @@ export function decodeBinary(binary: Uint8Array, schema?: DescMessage): DecodedS
   while (offset < binary.length) {
     const startOffset = offset;
     let res: { value: bigint; bytes: number[] };
-    
+
     try {
       res = readVarint();
     } catch {
@@ -58,7 +61,7 @@ export function decodeBinary(binary: Uint8Array, schema?: DescMessage): DecodedS
     const tagBytesArray = res.bytes;
     const fieldNo = Number(tagValue >> 3n);
     const wireType = Number(tagValue & 0x07n);
-    const field = schema?.fields.find(f => f.number === fieldNo);
+    const field = schema?.fields.find((f) => f.number === fieldNo);
 
     let data: Uint8Array;
     let value: bigint | number | string;
@@ -69,11 +72,15 @@ export function decodeBinary(binary: Uint8Array, schema?: DescMessage): DecodedS
       const { value: v, bytes: vBytes } = readVarint();
       value = v;
       data = new Uint8Array(vBytes);
-      
+
       if (field?.fieldKind === "scalar") {
-        if (field.scalar === ScalarType.SINT32 || field.scalar === ScalarType.SINT64) {
+        if (
+          field.scalar === ScalarType.SINT32 ||
+          field.scalar === ScalarType.SINT64
+        ) {
           value = decodeZigZag(v);
-          fieldTypeLabel = field.scalar === ScalarType.SINT32 ? "sint32" : "sint64";
+          fieldTypeLabel =
+            field.scalar === ScalarType.SINT32 ? "sint32" : "sint64";
         } else if (field.scalar === ScalarType.INT32) {
           value = Number(BigInt.asIntN(32, v));
           fieldTypeLabel = "int32";
@@ -85,7 +92,9 @@ export function decodeBinary(binary: Uint8Array, schema?: DescMessage): DecodedS
         }
       } else if (field?.fieldKind === "enum") {
         fieldTypeLabel = "enum";
-        const enumValue = field.enum.values.find(ev => BigInt(ev.number) === v);
+        const enumValue = field.enum.values.find(
+          (ev) => BigInt(ev.number) === v,
+        );
         if (enumValue) value = `${enumValue.name} (${v})`;
       }
     } else if (wireType === WireType.LengthDelimited) {
@@ -94,7 +103,7 @@ export function decodeBinary(binary: Uint8Array, schema?: DescMessage): DecodedS
       const lengthNum = Number(length);
       data = binary.slice(offset, offset + lengthNum);
       offset += lengthNum;
-      
+
       if (field?.fieldKind === "scalar" && field.scalar === ScalarType.STRING) {
         value = new TextDecoder().decode(data);
         fieldTypeLabel = "string";
@@ -103,7 +112,10 @@ export function decodeBinary(binary: Uint8Array, schema?: DescMessage): DecodedS
         fieldTypeLabel = "message";
       } else {
         value = length;
-        fieldTypeLabel = field?.fieldKind === "scalar" ? ScalarType[field.scalar].toLowerCase() : "bytes";
+        fieldTypeLabel =
+          field?.fieldKind === "scalar"
+            ? ScalarType[field.scalar].toLowerCase()
+            : "bytes";
       }
     } else if (wireType === WireType.Fixed64) {
       data = binary.slice(offset, offset + 8);
@@ -112,12 +124,18 @@ export function decodeBinary(binary: Uint8Array, schema?: DescMessage): DecodedS
       if (field?.fieldKind === "scalar" && field.scalar === ScalarType.DOUBLE) {
         value = view.getFloat64(0, true);
         fieldTypeLabel = "double";
-      } else if (field?.fieldKind === "scalar" && field.scalar === ScalarType.SFIXED64) {
+      } else if (
+        field?.fieldKind === "scalar" &&
+        field.scalar === ScalarType.SFIXED64
+      ) {
         value = view.getBigInt64(0, true);
         fieldTypeLabel = "sfixed64";
       } else {
         value = view.getBigUint64(0, true);
-        fieldTypeLabel = field?.fieldKind === "scalar" ? ScalarType[field.scalar].toLowerCase() : "fixed64";
+        fieldTypeLabel =
+          field?.fieldKind === "scalar"
+            ? ScalarType[field.scalar].toLowerCase()
+            : "fixed64";
       }
     } else if (wireType === WireType.Fixed32) {
       data = binary.slice(offset, offset + 4);
@@ -126,19 +144,27 @@ export function decodeBinary(binary: Uint8Array, schema?: DescMessage): DecodedS
       if (field?.fieldKind === "scalar" && field.scalar === ScalarType.FLOAT) {
         value = view.getFloat32(0, true);
         fieldTypeLabel = "float";
-      } else if (field?.fieldKind === "scalar" && field.scalar === ScalarType.SFIXED32) {
+      } else if (
+        field?.fieldKind === "scalar" &&
+        field.scalar === ScalarType.SFIXED32
+      ) {
         value = view.getInt32(0, true);
         fieldTypeLabel = "sfixed32";
       } else {
         value = view.getUint32(0, true);
-        fieldTypeLabel = field?.fieldKind === "scalar" ? ScalarType[field.scalar].toLowerCase() : "fixed32";
+        fieldTypeLabel =
+          field?.fieldKind === "scalar"
+            ? ScalarType[field.scalar].toLowerCase()
+            : "fixed32";
       }
     } else {
       break;
     }
 
     const segmentBytes = binary.slice(startOffset, offset);
-    const rawHex = Array.from(segmentBytes).map(b => b.toString(16).padStart(2, '0').toUpperCase());
+    const rawHex = Array.from(segmentBytes).map((b) =>
+      b.toString(16).padStart(2, "0").toUpperCase(),
+    );
 
     segments.push({
       tag: fieldNo,
@@ -150,7 +176,7 @@ export function decodeBinary(binary: Uint8Array, schema?: DescMessage): DecodedS
       rawHex,
       tagBytes: new Uint8Array(tagBytesArray),
       lengthBytes,
-      payloadBytes: data
+      payloadBytes: data,
     });
   }
 

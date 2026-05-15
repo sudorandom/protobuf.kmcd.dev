@@ -59,9 +59,9 @@ export const SIZE_EXAMPLES = {
     heightCm: 175.5,
     weightKg: 70.2,
     role: 2,
-    birthDate: { year: 1992, month: 5, day: 22 }
+    birthDate: { year: 1992, month: 5, day: 22 },
   },
-  'LARGE PAYLOAD': {
+  "LARGE PAYLOAD": {
     id: "user-ceo",
     name: "CEO",
     email: "ceo@megacorp.com",
@@ -105,17 +105,17 @@ export const SIZE_EXAMPLES = {
             heightCm: 175.0,
             weightKg: 70.0,
             role: 1,
-            birthDate: { year: 1996, month: 5, day: 5 }
-          }
-        }
-      }
-    }
+            birthDate: { year: 1996, month: 5, day: 5 },
+          },
+        },
+      },
+    },
   },
   MINIMAL: {
     id: "550e8400-e29b-41d4-a716-446655440000",
     name: "Recursive Node",
     email: "node@cluster.local",
     age: 1,
-    role: 0
-  }
+    role: 0,
+  },
 };
