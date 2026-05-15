@@ -98,7 +98,7 @@ export const AdvancedProtobuf = () => {
             <code>import</code> statement. However, this is where many
             developers encounter the "Include Path Nightmare."
           </p>
-          <TechnicalNuance title="COMPILER_RESOLUTION_PITFALLS">
+          <TechnicalNuance title="Import Resolution">
             <p className="leading-relaxed">
               The standard <code>protoc</code> compiler requires you to manually
               specify every include directory via <code>-I</code> (or{" "}

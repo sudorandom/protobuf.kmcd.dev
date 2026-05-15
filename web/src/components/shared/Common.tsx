@@ -253,7 +253,7 @@ export const SectionTitle = ({
         <div className="p-2 bg-[var(--cyber-neon-blue)]/10 rounded-lg border border-[var(--cyber-neon-blue)]/20 shrink-0">
           <Icon className="w-5 h-5 md:w-6 md:h-6 text-[var(--cyber-neon-blue)]" />
         </div>
-        <h2 className="text-xl sm:text-2xl md:text-3xl font-cyber font-bold tracking-tight text-[var(--text-color)] uppercase break-words min-w-0 relative group/title">
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-cyber font-bold tracking-wider text-[var(--text-color)] uppercase break-words min-w-0 relative group/title">
           <a
             href={sectionId ? `#${sectionId}` : "#"}
             className="hover:text-[var(--cyber-neon-blue)] transition-colors"
