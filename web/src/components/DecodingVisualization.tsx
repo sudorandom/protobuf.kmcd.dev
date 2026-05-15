@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 export const DecodingVisualization = () => {
   return (
-    <div className="w-full max-w-4xl mx-auto my-12 overflow-hidden flex justify-center">
+    <div className="w-full max-w-4xl mx-auto my-12 overflow-hidden flex justify-center -mx-4 sm:mx-auto w-[calc(100%+2rem)] sm:w-full px-0 sm:px-4">
       <svg
         viewBox="0 0 800 440"
         className="w-full h-auto max-w-full font-mono drop-shadow-2xl"

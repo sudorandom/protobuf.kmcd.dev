@@ -94,7 +94,7 @@ export const Conclusion = () => (
   <>
     <Section
       id="conclusion"
-      className="min-h-screen flex flex-col items-center justify-center p-8 bg-[var(--section-bg-dark)]"
+      className="min-h-[100dvh] flex flex-col items-center justify-center p-8 bg-[var(--section-bg-dark)]"
     >
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}

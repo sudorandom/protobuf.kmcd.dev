@@ -231,11 +231,10 @@ export const SizeComparison = ({
                 <button
                   key={key}
                   onClick={() => handleExampleChange(key)}
-                  className={`px-3 py-1 text-xs font-mono border transition-all rounded ${
-                    activeExample === key
+                  className={`px-3 py-1 text-xs font-mono border transition-all rounded ${activeExample === key
                       ? "bg-[var(--cyber-neon-blue)]/20 border-[var(--cyber-neon-blue)] text-[var(--cyber-neon-blue)]"
                       : "bg-[var(--overlay-bg)] border-[var(--border-light)] text-[var(--text-dim)] hover:border-white/30 hover:text-[var(--text-color)]"
-                  }`}
+                    }`}
                   aria-label={`Load ${key} example data`}
                 >
                   {key}
@@ -279,20 +278,15 @@ export const SizeComparison = ({
           {/* Right Column: Analysis */}
           <div className="space-y-4 flex flex-col">
             <CyberPanel
-              title="EFFICIENCY_STATS"
+              title="EFFICIENCY_STATS; Size in bytes (lower is better)"
               className="flex-1 min-h-[400px] flex flex-col"
             >
               <div className="flex-1 py-4 px-2 space-y-8">
-                <p className="text-xs text-[var(--text-dim)] leading-relaxed uppercase tracking-wide">
-                  Compare how Protobuf's binary format reduces overhead by
-                  removing field names and structural formatting.
-                </p>
-
                 {/* Size Bars */}
                 <div className="space-y-8">
                   <div>
                     <div className="flex justify-between text-xs font-mono mb-2 text-[var(--cyber-neon-yellow)] uppercase tracking-widest">
-                      <span>JSON_RAW</span>
+                      <span>json</span>
                       <span className="text-[var(--cyber-neon-yellow)]">
                         {stats.jsonSize} B
                       </span>
@@ -306,7 +300,7 @@ export const SizeComparison = ({
                     {gzipStats.json > 0 && (
                       <div className="mt-4">
                         <div className="flex justify-between text-xs font-mono mb-2 text-[var(--cyber-neon-yellow)]/80 uppercase tracking-widest">
-                          <span>WITH_GZIP</span>
+                          <span>json.gz</span>
                           <span>{gzipStats.json} B</span>
                         </div>
                         <div className="h-2 bg-[var(--border-light)] rounded-full overflow-hidden">
@@ -338,7 +332,7 @@ export const SizeComparison = ({
 
                   <div>
                     <div className="flex justify-between text-xs font-mono mb-2 text-[var(--cyber-neon-green)] uppercase tracking-widest">
-                      <span>PROTOBUF_BINARY</span>
+                      <span>pb</span>
                       <span className="text-[var(--cyber-neon-green)] font-bold">
                         {stats.pbSize} B
                       </span>
@@ -355,7 +349,7 @@ export const SizeComparison = ({
                     {gzipStats.pb > 0 && (
                       <div className="mt-4">
                         <div className="flex justify-between text-xs font-mono mb-2 text-[var(--cyber-neon-green)]/80 uppercase tracking-widest">
-                          <span>WITH_GZIP</span>
+                          <span>pb.gz</span>
                           <span>{gzipStats.pb} B</span>
                         </div>
                         <div className="h-2 bg-[var(--border-light)] rounded-full overflow-hidden">
@@ -367,21 +361,6 @@ export const SizeComparison = ({
                             className="h-full bg-[var(--cyber-neon-green)]/30"
                           />
                         </div>
-                        {gzipStats.pb >= stats.pbSize && stats.pbSize > 0 && (
-                          <motion.div
-                            initial={{ opacity: 0, y: 5 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="mt-2 flex items-start gap-2 p-2 bg-[var(--cyber-neon-blue)]/5 border border-[var(--cyber-neon-blue)]/20 rounded"
-                          >
-                            <AlertTriangle className="w-3 h-3 text-[var(--cyber-neon-blue)] mt-0.5 shrink-0" />
-                            <p className="text-[10px] text-[var(--cyber-neon-blue)]/80 leading-tight">
-                              Surprised? Gzip adds metadata and headers. For
-                              very small, efficient binary payloads, this
-                              overhead can actually exceed the compression
-                              gains!
-                            </p>
-                          </motion.div>
-                        )}
                       </div>
                     )}
                   </div>
@@ -418,6 +397,21 @@ export const SizeComparison = ({
                   )}
                 </div>
               </div>
+              {gzipStats.pb >= stats.pbSize && stats.pbSize > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-2 flex items-start gap-2 p-2 bg-[var(--cyber-neon-blue)]/5 border border-[var(--cyber-neon-blue)]/20 rounded"
+                >
+                  <AlertTriangle className="w-3 h-3 text-[var(--cyber-neon-blue)] mt-0.5 shrink-0" />
+                  <p className="text-sm text-[var(--cyber-neon-blue)]/80 leading-tight">
+                    Surprised to see pb.gz larger than pb? Gzip adds
+                    metadata and headers. For very small, efficient
+                    binary payloads, this overhead can actually exceed
+                    the compression gains!
+                  </p>
+                </motion.div>
+              )}
             </CyberPanel>
           </div>
         </div>
