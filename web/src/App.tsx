@@ -15,7 +15,6 @@ import {
 } from "lucide-react";
 
 import { type FileRegistry } from "@bufbuild/protobuf";
-import { ScrollToTop } from "./components/shared/Common";
 import { createDynamicRegistry } from "./utils/dynamic-registry";
 import { INITIAL_PROTO } from "./utils/constants";
 
@@ -148,6 +147,10 @@ function App() {
   const [isAtTop, setIsAtTop] = useState(true);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
+  useEffect(() => {
     const handleScroll = () => {
       setIsAtTop(window.scrollY < 100);
     };
@@ -202,7 +205,6 @@ function App() {
       <a href="#main-content" className="skip-to-content">
         Skip to content
       </a>
-      <ScrollToTop />
       <header className="h-[64px] border-b border-[var(--border-light)] bg-[var(--bg-color)]/90 backdrop-blur-md fixed top-0 left-0 w-full z-[100] px-4 sm:px-8 flex items-center">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-[var(--cyber-neon-blue)]/10 rounded border border-[var(--cyber-neon-blue)]/30 flex items-center justify-center">

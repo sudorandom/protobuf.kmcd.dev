@@ -20,6 +20,8 @@ import {
 import { JsonEditor } from "../components/shared/JsonEditor";
 import VarintExplainer from "../components/VarintExplainer";
 import { MemoryLayoutVisualization } from "../components/MemoryLayoutVisualization";
+import { BitShiftingVisualization } from "../components/BitShiftingVisualization";
+import { BitwiseMergeVisualization } from "../components/BitwiseMergeVisualization";
 import MultiFieldEncoding from "../components/MultiFieldEncoding";
 import { decodeBinary, type DecodedSegment } from "../utils/decoder";
 import { SIZE_EXAMPLES } from "../utils/constants";
@@ -329,107 +331,36 @@ const TagSectionBreakdown = ({
 const TagCalculator = () => {
   const [mode, setMode] = useState<"small" | "large">("small");
 
-  const examples = {
-    small: {
-      field: 1,
-      type: 2,
-      label: "Length-Delimited",
-      bytes: [
-        {
-          bits: [0, 0, 0, 0, 1, 0, 1, 0],
-          labels: ["MSB", "NUM", "NUM", "NUM", "NUM", "TYPE", "TYPE", "TYPE"],
-          colors: [
-            "pink",
-            "blue",
-            "blue",
-            "blue",
-            "blue",
-            "yellow",
-            "yellow",
-            "yellow",
-          ],
-        },
-      ],
-      steps: [
-        {
-          label: "1. Combined Value",
-          math: "(field << 3) | type",
-          calc: "(1 << 3) | 2",
-          res: "10",
-          color: "var(--text-color)",
-        },
-        {
-          label: "2. Varint Byte 0",
-          math: "val & 0b01111111",
-          calc: "10 & 0b01111111",
-          res: "0b00001010",
-          color: "var(--cyber-neon-green)",
-          bold: true,
-        },
-      ],
-    },
-    large: {
-      field: 16,
-      type: 2,
-      label: "Length-Delimited",
-      bytes: [
-        {
-          bits: [1, 0, 0, 0, 0, 0, 1, 0],
-          labels: ["MSB", "NUM", "NUM", "NUM", "NUM", "TYPE", "TYPE", "TYPE"],
-          colors: [
-            "pink",
-            "blue",
-            "blue",
-            "blue",
-            "blue",
-            "yellow",
-            "yellow",
-            "yellow",
-          ],
-        },
-        {
-          bits: [0, 0, 0, 0, 0, 0, 0, 1],
-          labels: ["MSB", "NUM", "NUM", "NUM", "NUM", "NUM", "NUM", "NUM"],
-          colors: [
-            "pink",
-            "blue",
-            "blue",
-            "blue",
-            "blue",
-            "blue",
-            "blue",
-            "blue",
-          ],
-        },
-      ],
-      steps: [
-        {
-          label: "1. Combined Value",
-          math: "(field << 3) | type",
-          calc: "(16 << 3) | 2",
-          res: "130",
-          color: "var(--text-color)",
-        },
-        {
-          label: "2. Varint Byte 0",
-          math: "(val & 0b01111111) | 0b10000000",
-          calc: "(130 & 0b01111111) | 0b10000000",
-          res: "0b10000010",
-          color: "var(--cyber-neon-pink)",
-        },
-        {
-          label: "3. Varint Byte 1",
-          math: "val >> 7",
-          calc: "130 >> 7",
-          res: "0b00000001",
-          color: "var(--cyber-neon-green)",
-          bold: true,
-        },
-      ],
-    },
-  };
+  const field = mode === "small" ? 1 : 16;
+  const type = 2; // Length-delimited
+  const tagValue = (field << 3) | type;
 
-  const current = examples[mode];
+  // Step calculations
+  const fieldBits = field.toString(2).padStart(8, "0").split("").map(Number);
+  const shiftedBits = (field << 3)
+    .toString(2)
+    .padStart(8, "0")
+    .split("")
+    .map(Number);
+  const typeBits = type.toString(2).padStart(3, "0").split("").map(Number);
+
+  // Tag bits are shifted bits OR type bits
+  const tagBits = [...shiftedBits];
+  if (tagBits.length >= 3) {
+    tagBits[tagBits.length - 1] = typeBits[2];
+    tagBits[tagBits.length - 2] = typeBits[1];
+    tagBits[tagBits.length - 3] = typeBits[0];
+  }
+
+  // Varint logic
+  const varintBytes: number[] = [];
+  let temp = tagValue;
+  if (temp === 0) varintBytes.push(0);
+  while (temp >= 128) {
+    varintBytes.push((temp & 0x7f) | 0x80);
+    temp >>= 7;
+  }
+  varintBytes.push(temp);
 
   return (
     <CyberPanel
@@ -453,81 +384,134 @@ const TagCalculator = () => {
         </div>
       }
     >
-      <div className="p-6 space-y-8">
-        <div className="space-y-6">
-          {current.bytes.map((byte, byteIdx) => (
-            <div key={byteIdx} className="space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] font-mono text-[var(--text-dim)] uppercase opacity-60">
-                  Byte {byteIdx}
-                </span>
-                {byteIdx === 0 && (
-                  <span className="text-[10px] font-mono text-[var(--cyber-neon-green)] uppercase">
-                    Wire Type 2
-                  </span>
-                )}
-              </div>
-              <div className="flex gap-1 h-10">
-                {byte.bits.map((bit, i) => {
-                  const color = `var(--cyber-neon-${byte.colors[i]})`;
-                  return (
-                    <div
-                      key={i}
-                      className="flex-1 flex items-center justify-center font-mono text-base border"
-                      style={{
-                        backgroundColor: `color-mix(in srgb, ${color}, transparent 90%)`,
-                        borderColor: `color-mix(in srgb, ${color}, transparent 70%)`,
-                        color: color,
-                      }}
-                    >
-                      {bit}
-                    </div>
-                  );
-                })}
-              </div>
-              <div className="flex justify-between">
-                {byte.labels.map((label, i) => (
-                  <div
-                    key={i}
-                    className="flex-1 text-center text-[7px] font-mono opacity-60 uppercase"
-                    style={{ color: `var(--cyber-neon-${byte.colors[i]})` }}
-                  >
-                    {label}
-                  </div>
-                ))}
+      <div className="p-6 space-y-10">
+        {/* Step 1: Shift */}
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h4 className="text-[10px] font-cyber text-[var(--cyber-neon-blue)] uppercase tracking-widest">
+              01. Bit Shift (field &lt;&lt; 3)
+            </h4>
+            <div className="text-[10px] font-mono text-[var(--text-dim)] bg-[var(--section-bg-dark)] px-2 py-0.5 rounded border border-[var(--border-light)]">
+              {field} &lt;&lt; 3 = {field << 3}
+            </div>
+          </div>
+          <div className="space-y-2">
+            <div className="grid grid-cols-8 gap-1">
+              {fieldBits.map((bit, i) => (
+                <div
+                  key={i}
+                  className="h-9 flex items-center justify-center font-mono border border-[var(--cyber-neon-blue)]/30 text-[var(--cyber-neon-blue)] bg-[var(--cyber-neon-blue)]/5 rounded-sm"
+                >
+                  {bit}
+                </div>
+              ))}
+            </div>
+            <div className="flex justify-center py-1">
+              <div className="text-[var(--cyber-neon-blue)] opacity-50 text-xs font-bold">
+                ↓
               </div>
             </div>
-          ))}
+            <div className="grid grid-cols-8 gap-1">
+              {shiftedBits.slice(-8).map((bit, i) => (
+                <div
+                  key={i}
+                  className={`h-9 flex items-center justify-center font-mono border rounded-sm ${i >= 5 ? "border-[var(--cyber-neon-blue)]/60 text-[var(--cyber-neon-blue)] bg-[var(--cyber-neon-blue)]/20 font-bold" : "border-[var(--cyber-neon-blue)]/30 text-[var(--cyber-neon-blue)] bg-[var(--cyber-neon-blue)]/5"}`}
+                >
+                  {bit}
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
+        {/* Step 2: Merge */}
         <div className="space-y-4">
-          <p className="text-xs text-[var(--text-dim)] leading-relaxed italic">
-            {mode === "small"
-              ? "Tag value (10) fits in 7 bits, so only one Varint byte is needed."
-              : "Tag value (130) exceeds 127, requiring the Varint continuation logic (MSB=1)."}
-          </p>
-          <div className="p-4 bg-[var(--overlay-bg)] rounded border border-[var(--border-light)] font-mono text-xs space-y-4">
-            {current.steps.map((step, i) => (
-              <div
-                key={i}
-                className={`space-y-1 ${step.bold ? "pt-3 mt-3 border-t border-[var(--border-light)]" : ""}`}
-              >
-                <div className="flex justify-between opacity-50 text-[10px] uppercase">
-                  <span>{step.label}</span>
-                  <span>{step.math}</span>
-                </div>
-                <div className="flex justify-between items-baseline">
-                  <span className="text-[var(--text-dim)]">{step.calc}</span>
-                  <span
-                    className="text-base font-bold"
-                    style={{ color: step.color }}
-                  >
-                    = {step.res}
-                  </span>
-                </div>
-              </div>
-            ))}
+          <div className="flex items-center justify-between">
+            <h4 className="text-[10px] font-cyber text-[var(--cyber-neon-yellow)] uppercase tracking-widest">
+              02. Bitwise OR (| wire_type)
+            </h4>
+            <div className="text-[10px] font-mono text-[var(--text-dim)] bg-[var(--section-bg-dark)] px-2 py-0.5 rounded border border-[var(--border-light)]">
+              {field << 3} | {type} = {tagValue}
+            </div>
           </div>
+          <div className="space-y-2">
+            <div className="grid grid-cols-8 gap-1">
+              {tagBits.slice(-8).map((bit, i) => (
+                <div
+                  key={i}
+                  className={`h-9 flex items-center justify-center font-mono border rounded-sm ${i >= 5 ? "border-[var(--cyber-neon-yellow)] text-[var(--cyber-neon-yellow)] bg-[var(--cyber-neon-yellow)]/10 font-bold" : "border-[var(--cyber-neon-blue)]/30 text-[var(--cyber-neon-blue)] bg-[var(--cyber-neon-blue)]/5"}`}
+                >
+                  {bit}
+                </div>
+              ))}
+            </div>
+            <div className="flex justify-between px-1 text-[7px] font-mono uppercase tracking-tighter opacity-70">
+              <div className="text-[var(--cyber-neon-blue)]">
+                Field Number Bits
+              </div>
+              <div className="text-[var(--cyber-neon-yellow)] font-bold">
+                Wire Type (3 Bits)
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Step 3: Varint */}
+        <div className="space-y-4 pt-6 border-t border-[var(--border-light)]">
+          <div className="flex items-center justify-between">
+            <h4 className="text-[10px] font-cyber text-[var(--cyber-neon-green)] uppercase tracking-widest">
+              03. Varint Encoding (Little-Endian)
+            </h4>
+            <div className="text-[10px] font-mono text-[var(--text-dim)] bg-[var(--section-bg-dark)] px-2 py-0.5 rounded border border-[var(--border-light)]">
+              {tagValue} → {varintBytes.length} Byte(s)
+            </div>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-4">
+            {varintBytes.map((byte, byteIdx) => {
+              const bits = byte.toString(2).padStart(8, "0").split("");
+              return (
+                <div key={byteIdx} className="flex-1 space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-[9px] font-mono text-[var(--text-dim)] uppercase opacity-60">
+                      Byte {byteIdx}
+                    </span>
+                    <span className="text-[9px] font-mono text-[var(--cyber-neon-green)] font-bold">
+                      0x{byte.toString(16).toUpperCase().padStart(2, "0")}
+                    </span>
+                  </div>
+                  <div className="flex gap-1 h-8">
+                    {bits.map((bit, bitIdx) => (
+                      <div
+                        key={bitIdx}
+                        className={`flex-1 flex items-center justify-center font-mono text-xs border rounded-sm ${bitIdx === 0 ? "border-[var(--cyber-neon-pink)]/50 text-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/10" : "border-[var(--cyber-neon-green)]/30 text-[var(--cyber-neon-green)] bg-[var(--cyber-neon-green)]/5"}`}
+                      >
+                        {bit}
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex justify-between text-[7px] font-mono opacity-50 uppercase tracking-tighter">
+                    <span className="text-[var(--cyber-neon-pink)]">MSB</span>
+                    <span>7-Bit Value Chunk</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          {mode === "large" && (
+            <div className="p-3 bg-[var(--cyber-neon-pink)]/5 border border-[var(--cyber-neon-pink)]/20 rounded-sm">
+              <p className="text-[10px] text-[var(--text-dim)] leading-relaxed italic">
+                <strong className="text-[var(--cyber-neon-pink)] not-italic uppercase">
+                  Overflow Alert:
+                </strong>{" "}
+                Field 16 shifted by 3 is 128 (
+                <code className="bg-black/20 px-1 rounded text-[var(--cyber-neon-blue)]">
+                  10000000
+                </code>
+                ). This exceeds the 7-bit capacity of a single Varint byte,
+                forcing the "1" into Byte 1 and setting MSB=1 in Byte 0.
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </CyberPanel>
@@ -782,72 +766,7 @@ const BinaryBasics = () => (
       </div>
       <div className="max-w-3xl mx-auto">
         <CyberPanel title="LEFT_SHIFT_LOGIC (<< 3)">
-          <div className="p-8 space-y-6 font-mono text-sm">
-            <div className="space-y-2">
-              <div className="flex justify-between text-[var(--text-dim)] uppercase text-xs">
-                <span>1. Original bits (Field #1)</span>
-                <span className="text-[var(--cyber-neon-blue)]">00001</span>
-              </div>
-              <div className="flex gap-1 h-10">
-                {[0, 0, 0, 0, 1].map((b, i) => (
-                  <div
-                    key={i}
-                    className="flex-1 flex items-center justify-center border border-[var(--cyber-neon-blue)]/30 bg-[var(--cyber-neon-blue)]/10 text-[var(--cyber-neon-blue)] text-lg rounded-sm"
-                  >
-                    {b}
-                  </div>
-                ))}
-                <div className="w-16 flex items-center justify-center text-xl font-bold">
-                  {"<<"}
-                </div>
-                <div className="w-12 flex items-center justify-center text-xl text-[var(--cyber-neon-pink)] font-bold">
-                  3
-                </div>
-              </div>
-            </div>
-
-            <div className="relative h-12">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-px h-full bg-gradient-to-b from-transparent via-[var(--border-light)] to-transparent"></div>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex justify-between text-[var(--text-dim)] uppercase text-xs">
-                <span>2. Result (Value 8)</span>
-                <span>01000</span>
-              </div>
-              <div className="flex gap-1 h-10">
-                <div className="flex-[0.625] flex gap-1">
-                  {[0, 1, 0, 0, 0].map((b, i) => (
-                    <div
-                      key={i}
-                      className={`flex-1 flex items-center justify-center border ${i === 1 ? "border-[var(--cyber-neon-blue)]/50 bg-[var(--cyber-neon-blue)]/20 text-[var(--cyber-neon-blue)]" : "border-[var(--border-light)] text-[var(--text-dim)]"} text-lg rounded-sm`}
-                    >
-                      {b}
-                    </div>
-                  ))}
-                </div>
-                <div className="flex-[0.375] flex gap-1">
-                  <div className="flex-1 flex items-center justify-center border border-[var(--cyber-neon-pink)]/40 bg-[var(--cyber-neon-pink)]/10 text-[var(--cyber-neon-pink)] text-lg rounded-sm">
-                    0
-                  </div>
-                  <div className="flex-1 flex items-center justify-center border border-[var(--cyber-neon-pink)]/40 bg-[var(--cyber-neon-pink)]/10 text-[var(--cyber-neon-pink)] text-lg rounded-sm">
-                    0
-                  </div>
-                  <div className="flex-1 flex items-center justify-center border border-[var(--cyber-neon-pink)]/40 bg-[var(--cyber-neon-pink)]/10 text-[var(--cyber-neon-pink)] text-lg rounded-sm">
-                    0
-                  </div>
-                </div>
-              </div>
-              <div className="flex justify-between text-[10px] opacity-40 uppercase">
-                <span>Original shifted left</span>
-                <span className="text-[var(--cyber-neon-pink)]">
-                  3 New Zeroes
-                </span>
-              </div>
-            </div>
-          </div>
+          <BitShiftingVisualization />
         </CyberPanel>
       </div>
     </div>
@@ -864,67 +783,15 @@ const BinaryBasics = () => (
           <code>1</code>, the output bit is <code>1</code>.
         </p>
         <p className="text-sm text-[var(--text-dim)] leading-relaxed max-w-2xl mx-auto">
-          In Protobuf, this is the final assembly step. We take the shifted
-          field number (which now has three <code>0</code>s at the end) and "OR"
-          it with the 3-bit wire type. This effectively plugs the wire type into
-          the empty slot.
+          Bitwise merging is a standard technique for assembly. We take two
+          values, one shifted to provide a specific bitmask or "slot," and "OR"
+          them together. This effectively "plugs" the second value into the
+          empty bits of the first.
         </p>
       </div>
       <div className="max-w-3xl mx-auto">
         <CyberPanel title="BITWISE_MERGE_LOGIC">
-          <div className="p-8 flex flex-col gap-3 font-mono">
-            <div className="flex items-center justify-between px-6 py-4 bg-[var(--cyber-neon-blue)]/5 border border-[var(--cyber-neon-blue)]/20 rounded-lg group hover:border-[var(--cyber-neon-blue)]/40 transition-colors">
-              <div className="flex flex-col">
-                <span className="text-[10px] uppercase opacity-50 mb-1">
-                  Shifted Field
-                </span>
-                <span className="text-xl tracking-[0.2em] text-[var(--cyber-neon-blue)]">
-                  00001 <span className="opacity-30">000</span>
-                </span>
-              </div>
-              <span className="text-xs text-[var(--text-dim)]">
-                #1 {"<<"} 3
-              </span>
-            </div>
-
-            <div className="flex items-center justify-center text-2xl text-[var(--text-dim)] font-bold py-2">
-              <span className="bg-[var(--section-bg-dark)] px-4 py-1 rounded-full border border-[var(--border-light)] text-xs">
-                OR
-              </span>
-            </div>
-
-            <div className="flex items-center justify-between px-6 py-4 bg-[var(--cyber-neon-yellow)]/5 border border-[var(--cyber-neon-yellow)]/20 rounded-lg group hover:border-[var(--cyber-neon-yellow)]/40 transition-colors">
-              <div className="flex flex-col">
-                <span className="text-[10px] uppercase opacity-50 mb-1">
-                  Wire Type
-                </span>
-                <span className="text-xl tracking-[0.2em] text-[var(--cyber-neon-yellow)]">
-                  <span className="opacity-30">00000</span> 010
-                </span>
-              </div>
-              <span className="text-xs text-[var(--text-dim)]">Type 2</span>
-            </div>
-
-            <div className="mt-6 pt-6 border-t-2 border-dashed border-[var(--border-light)] flex items-center justify-between px-6">
-              <div className="flex flex-col">
-                <span className="text-xs uppercase font-bold text-[var(--cyber-neon-green)] mb-1 tracking-widest">
-                  Final Encoded Tag
-                </span>
-                <span className="text-2xl tracking-[0.3em] font-bold">
-                  <span className="text-[var(--cyber-neon-blue)]">00001</span>
-                  <span className="text-[var(--cyber-neon-yellow)]">010</span>
-                </span>
-              </div>
-              <div className="text-right">
-                <span className="block text-2xl font-bold text-[var(--cyber-neon-green)]">
-                  0A
-                </span>
-                <span className="text-[10px] opacity-50 uppercase">
-                  Hex Result
-                </span>
-              </div>
-            </div>
-          </div>
+          <BitwiseMergeVisualization />
         </CyberPanel>
       </div>
     </div>
@@ -1069,7 +936,7 @@ export const BinaryMatrix = ({
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 relative">
           {/* Global Interactive Sign for Large Screens */}
-          <div className="absolute -left-48 top-48 hidden xl:flex flex-col items-end gap-2 text-[var(--cyber-neon-pink)] pointer-events-none animate-pulse z-10 opacity-70">
+          <div className="absolute -left-48 top-48 hidden 2xl:flex flex-col items-end gap-2 text-[var(--cyber-neon-pink)] pointer-events-none animate-pulse z-10 opacity-70">
             <span className="font-cyber text-xs uppercase tracking-widest text-right">
               These Panels
               <br />
@@ -1492,7 +1359,7 @@ const BinaryPage = ({
     >
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
-          <div className="lg:col-span-7 space-y-8">
+          <div className="lg:col-span-6 space-y-8">
             <h3 className="text-3xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">
               The Field Tag
             </h3>
@@ -1538,7 +1405,7 @@ const BinaryPage = ({
             </div>
           </div>
 
-          <div className="lg:col-span-5">
+          <div className="lg:col-span-6">
             <TagCalculator />
           </div>
         </div>

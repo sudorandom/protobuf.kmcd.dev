@@ -750,7 +750,7 @@ message DescriptorProto {
 
         <div className="pt-16 border-t border-[var(--border-light)] relative">
           {/* Global Interactive Sign for Large Screens */}
-          <div className="absolute -left-48 top-48 hidden xl:flex flex-col items-end gap-2 text-[var(--cyber-neon-pink)] pointer-events-none animate-pulse z-10 opacity-70">
+          <div className="absolute -left-48 top-48 hidden 2xl:flex flex-col items-end gap-2 text-[var(--cyber-neon-pink)] pointer-events-none animate-pulse z-10 opacity-70">
             <span className="font-cyber text-xs uppercase tracking-widest text-right">
               These Panels
               <br />
@@ -1273,7 +1273,7 @@ export const ValidationLab = ({
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch relative">
             {/* Global Interactive Sign for Large Screens */}
-            <div className="absolute -left-48 top-48 hidden xl:flex flex-col items-end gap-2 text-[var(--cyber-neon-pink)] pointer-events-none animate-pulse z-10 opacity-70">
+            <div className="absolute -left-48 top-48 hidden 2xl:flex flex-col items-end gap-2 text-[var(--cyber-neon-pink)] pointer-events-none animate-pulse z-10 opacity-70">
               <span className="font-cyber text-xs uppercase tracking-widest text-right">
                 These Panels
                 <br />

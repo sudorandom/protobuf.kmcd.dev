@@ -40,9 +40,9 @@ const VarintExplainer = () => {
   })();
 
   return (
-    <div className="space-y-8 relative">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 relative">
       {/* Global Interactive Sign for Large Screens */}
-      <div className="absolute -left-48 top-4 hidden xl:flex flex-col items-end gap-2 text-[var(--cyber-neon-pink)] pointer-events-none animate-pulse z-10 opacity-70">
+      <div className="absolute -left-48 top-4 hidden 2xl:flex flex-col items-end gap-2 text-[var(--cyber-neon-pink)] pointer-events-none animate-pulse z-10 opacity-70">
         <span className="font-cyber text-xs uppercase tracking-widest text-right">
           These Panels
           <br />
