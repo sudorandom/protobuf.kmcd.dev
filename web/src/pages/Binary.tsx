@@ -707,13 +707,13 @@ const BinaryBasics = () => (
               1. Base-128 Mechanics
             </h4>
             <p className="text-sm text-[var(--text-dim)] leading-relaxed">
-              The Varint algorithm processes integers by dropping leading
-              zeros. It looks at the least significant 7 bits, sets a
-              continuation bit, and writes it. Because this loop starts at the
-              bottom and works its way up, the least significant bytes are
-              inherently written first. Sticking to Little-Endian allows
-              encoding and decoding in a single, lightning-fast loop without
-              extra buffering or length look-ahead.
+              The Varint algorithm processes integers by dropping leading zeros.
+              It looks at the least significant 7 bits, sets a continuation bit,
+              and writes it. Because this loop starts at the bottom and works
+              its way up, the least significant bytes are inherently written
+              first. Sticking to Little-Endian allows encoding and decoding in a
+              single, lightning-fast loop without extra buffering or length
+              look-ahead.
             </p>
           </div>
           <div className="space-y-4">
@@ -722,11 +722,11 @@ const BinaryBasics = () => (
             </h4>
             <p className="text-sm text-[var(--text-dim)] leading-relaxed">
               Google's data centers were built on x86 hardware, which is
-              natively Little-Endian. Forcing servers to flip bytes into "network
-              order" just to satisfy convention wastes CPU cycles. At Google's
-              massive scale, those wasted cycles translate to significant hardware
-              and power costs. By aligning the format with the native CPU
-              architecture, they optimized for raw performance.
+              natively Little-Endian. Forcing servers to flip bytes into
+              "network order" just to satisfy convention wastes CPU cycles. At
+              Google's massive scale, those wasted cycles translate to
+              significant hardware and power costs. By aligning the format with
+              the native CPU architecture, they optimized for raw performance.
             </p>
           </div>
           <div className="space-y-4">
@@ -736,9 +736,9 @@ const BinaryBasics = () => (
             <p className="text-sm text-[var(--text-dim)] leading-relaxed">
               It helps to draw a hard line between transport and payload. TCP/IP
               headers are Big-Endian so routers can read them, but Protobuf is
-              an application-layer payload. The network infrastructure never reads
-              it. As long as the sending and receiving applications agree on the
-              rules, the payload can be formatted in whatever way is most
+              an application-layer payload. The network infrastructure never
+              reads it. As long as the sending and receiving applications agree
+              on the rules, the payload can be formatted in whatever way is most
               computationally efficient for the end hosts.
             </p>
           </div>
@@ -1254,7 +1254,8 @@ const BinaryPage = ({
                   <p className="text-xs text-[var(--text-dim)] mt-1">
                     The fundamental compression technique for integers.
                   </p>
-                </div>              </div>
+                </div>{" "}
+              </div>
             </div>
             <div className="space-y-4">
               <div className="flex gap-3 items-start">

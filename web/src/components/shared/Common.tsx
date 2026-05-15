@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import React from "react";
 import { Info, Terminal, ExternalLink, Link as LinkIcon } from "lucide-react";
 
 import { SectionIdContext } from "./SectionIdContext";
@@ -179,7 +178,9 @@ export const SyntaxHighlighter = ({
       );
     } else if (language === "bash") {
       output = output.replace(/^(\$|#)/gm, (match) =>
-        push(`<span class="text-[var(--cyber-neon-pink)] opacity-50 font-bold">${match}</span>`),
+        push(
+          `<span class="text-[var(--cyber-neon-pink)] opacity-50 font-bold">${match}</span>`,
+        ),
       );
       output = output.replace(/#.*$/gm, (match) =>
         push(`<span class="text-[var(--text-dim)]">${match}</span>`),
@@ -188,12 +189,19 @@ export const SyntaxHighlighter = ({
       output = output.replace(/#.*$/gm, (match) =>
         push(`<span class="text-[var(--text-dim)]">${match}</span>`),
       );
-      output = output.replace(/^(\s*)([\w-]+):/gm, (_, p1, p2) =>
-        p1 + push(`<span class="text-[var(--cyber-neon-blue)]">${p2}</span>`) + ":",
+      output = output.replace(
+        /^(\s*)([\w-]+):/gm,
+        (_, p1, p2) =>
+          p1 +
+          push(`<span class="text-[var(--cyber-neon-blue)]">${p2}</span>`) +
+          ":",
       );
       output = output.replace(/: (.*)$/gm, (match, p1) => {
         if (p1.trim() === "") return match;
-        return ": " + push(`<span class="text-[var(--cyber-neon-green)]">${p1}</span>`);
+        return (
+          ": " +
+          push(`<span class="text-[var(--cyber-neon-green)]">${p1}</span>`)
+        );
       });
     }
 

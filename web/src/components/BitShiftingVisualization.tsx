@@ -6,11 +6,11 @@ export const BitShiftingVisualization = () => {
   const GAP = 4;
 
   const originalBits = [0, 0, 0, 0, 0, 0, 0, 1];
-  
+
   const duration = 6;
   const repeatDelay = 2;
-  const shiftStartTime = 0.4; 
-  const shiftEndTime = 0.55; 
+  const shiftStartTime = 0.4;
+  const shiftEndTime = 0.55;
 
   return (
     <div className="w-full max-w-4xl mx-auto my-4 overflow-hidden flex flex-col items-center gap-8">
@@ -20,7 +20,13 @@ export const BitShiftingVisualization = () => {
         style={{ color: "var(--text-color)" }}
       >
         <defs>
-          <filter id="glow-shifting" x="-20%" y="-20%" width="140%" height="140%">
+          <filter
+            id="glow-shifting"
+            x="-20%"
+            y="-20%"
+            width="140%"
+            height="140%"
+          >
             <feGaussianBlur stdDeviation="3" result="blur" />
             <feComposite in="SourceGraphic" in2="blur" operator="over" />
           </filter>
@@ -59,17 +65,20 @@ export const BitShiftingVisualization = () => {
 
           {/* Animating Bits */}
           {originalBits.map((bit, i) => (
-            <g key={`bit-pos-${i}`} transform={`translate(${i * (BIT_WIDTH + GAP)}, 0)`}>
+            <g
+              key={`bit-pos-${i}`}
+              transform={`translate(${i * (BIT_WIDTH + GAP)}, 0)`}
+            >
               <motion.g
-                animate={{ 
+                animate={{
                   x: [0, 0, -(BIT_WIDTH + GAP) * 3, -(BIT_WIDTH + GAP) * 3],
                   opacity: [1, 1, i < 3 ? 0 : 1, i < 3 ? 0 : 1],
                 }}
-                transition={{ 
-                  duration, 
+                transition={{
+                  duration,
                   repeat: Infinity,
                   repeatDelay,
-                  times: [0, shiftStartTime, shiftEndTime, 1]
+                  times: [0, shiftStartTime, shiftEndTime, 1],
                 }}
               >
                 <rect
@@ -97,19 +106,22 @@ export const BitShiftingVisualization = () => {
 
           {/* Incoming Zeroes */}
           {[0, 1, 2].map((i) => (
-            <g key={`wire-slot-${i}`} transform={`translate(${(5 + i) * (BIT_WIDTH + GAP)}, 0)`}>
+            <g
+              key={`wire-slot-${i}`}
+              transform={`translate(${(5 + i) * (BIT_WIDTH + GAP)}, 0)`}
+            >
               <motion.g
                 initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ 
+                animate={{
                   opacity: [0, 0, 1, 1],
                   scale: [0.8, 0.8, 1, 1],
-                  x: [ (BIT_WIDTH + GAP) * 3, (BIT_WIDTH + GAP) * 3, 0, 0]
+                  x: [(BIT_WIDTH + GAP) * 3, (BIT_WIDTH + GAP) * 3, 0, 0],
                 }}
-                transition={{ 
-                  duration, 
-                  repeat: Infinity, 
-                  repeatDelay, 
-                  times: [0, shiftStartTime, shiftEndTime, 1] 
+                transition={{
+                  duration,
+                  repeat: Infinity,
+                  repeatDelay,
+                  times: [0, shiftStartTime, shiftEndTime, 1],
                 }}
               >
                 <rect
@@ -137,14 +149,27 @@ export const BitShiftingVisualization = () => {
           ))}
 
           {/* Shift Action Operator (To the right) */}
-          <g transform={`translate(${8 * (BIT_WIDTH + GAP) + 20}, ${BIT_HEIGHT / 2})`}>
+          <g
+            transform={`translate(${8 * (BIT_WIDTH + GAP) + 20}, ${BIT_HEIGHT / 2})`}
+          >
             <motion.text
-              animate={{ 
+              animate={{
                 opacity: [0.2, 0.2, 1, 1, 0.2],
                 x: [0, 0, 5, 5, 0],
-                scale: [1, 1, 1.2, 1.2, 1]
+                scale: [1, 1, 1.2, 1.2, 1],
               }}
-              transition={{ duration, repeat: Infinity, repeatDelay, times: [0, shiftStartTime - 0.1, shiftStartTime, shiftEndTime, shiftEndTime + 0.1] }}
+              transition={{
+                duration,
+                repeat: Infinity,
+                repeatDelay,
+                times: [
+                  0,
+                  shiftStartTime - 0.1,
+                  shiftStartTime,
+                  shiftEndTime,
+                  shiftEndTime + 0.1,
+                ],
+              }}
               textAnchor="start"
               fill="var(--cyber-neon-pink)"
               fontSize="20"
@@ -160,23 +185,38 @@ export const BitShiftingVisualization = () => {
         <g transform="translate(300, 150)">
           {/* Always show original value */}
           <g>
-            <text textAnchor="middle" fill="var(--cyber-neon-blue)" fontSize="14" className="font-bold uppercase tracking-widest">
+            <text
+              textAnchor="middle"
+              fill="var(--cyber-neon-blue)"
+              fontSize="14"
+              className="font-bold uppercase tracking-widest"
+            >
               VALUE: 1 (00000001)
             </text>
           </g>
-          
+
           {/* Reveal shifted value after shift is done */}
           <g transform="translate(0, 35)">
             <motion.g
-              animate={{ 
+              animate={{
                 opacity: [0, 0, 1, 1],
-                y: [5, 5, 0, 0] 
+                y: [5, 5, 0, 0],
               }}
-              transition={{ duration, repeat: Infinity, repeatDelay, times: [0, shiftEndTime, shiftEndTime + 0.05, 1] }}
+              transition={{
+                duration,
+                repeat: Infinity,
+                repeatDelay,
+                times: [0, shiftEndTime, shiftEndTime + 0.05, 1],
+              }}
             >
-               <text textAnchor="middle" fill="var(--cyber-neon-pink)" fontSize="14" className="font-bold uppercase tracking-widest">
-                 SHIFTED VALUE: 8 (00001000)
-               </text>
+              <text
+                textAnchor="middle"
+                fill="var(--cyber-neon-pink)"
+                fontSize="14"
+                className="font-bold uppercase tracking-widest"
+              >
+                SHIFTED VALUE: 8 (00001000)
+              </text>
             </motion.g>
           </g>
         </g>

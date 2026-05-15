@@ -123,11 +123,33 @@ export const Conclusion = () => (
             href="https://github.com/sudorandom/protobuf.kmcd.dev"
             target="_blank"
             rel="noopener noreferrer"
-            className="px-8 py-3 bg-[var(--cyber-neon-blue)] text-black font-cyber font-bold uppercase hover:bg-[var(--cyber-neon-blue)]/90 transition-all rounded-md shadow-[0_0_20px_rgba(0,243,255,0.4)]"
+            className="px-8 py-3 bg-[var(--cyber-neon-blue)] text-[var(--bg-color)] font-cyber font-bold uppercase hover:bg-[var(--cyber-neon-blue)]/90 transition-all rounded-md shadow-[0_0_20px_rgba(0,243,255,0.4)]"
           >
             View on GitHub
           </a>
         </div>
+
+        <p className="text-xs font-mono text-[var(--text-dim)] uppercase tracking-widest pt-8">
+          See a mistake?{" "}
+          <a
+            href="https://github.com/sudorandom/protobuf.kmcd.dev/issues"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[var(--cyber-neon-pink)] hover:underline font-bold"
+          >
+            Create an issue
+          </a>{" "}
+          or make a{" "}
+          <a
+            href="https://github.com/sudorandom/protobuf.kmcd.dev/pulls"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[var(--cyber-neon-green)] hover:underline font-bold"
+          >
+            PR on GitHub
+          </a>
+          !
+        </p>
       </motion.div>
     </Section>
     <References />

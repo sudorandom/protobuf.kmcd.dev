@@ -9,7 +9,13 @@ export const MemoryLayoutVisualization = () => {
   const GAP = 4;
   const BYTE_GAP = 20;
 
-  const renderByte = (bits: number[], startX: number, startY: number, color: string, powerOffset: number) => {
+  const renderByte = (
+    bits: number[],
+    startX: number,
+    startY: number,
+    color: string,
+    powerOffset: number,
+  ) => {
     return bits.map((bit, i) => {
       const x = startX + i * (BIT_WIDTH + GAP);
       return (
@@ -118,13 +124,27 @@ export const MemoryLayoutVisualization = () => {
             </text>
 
             <g transform="translate(0, 30)">
-              <text x="0" y="-10" fill="var(--text-dim)" fontSize="10" className="font-mono uppercase opacity-50">
+              <text
+                x="0"
+                y="-10"
+                fill="var(--text-dim)"
+                fontSize="10"
+                className="font-mono uppercase opacity-50"
+              >
                 High Byte (Most Sig)
               </text>
               {renderByte(highByte, 0, 0, "var(--cyber-neon-blue)", 15)}
 
-              <g transform={`translate(${(BIT_WIDTH + GAP) * 8 + BYTE_GAP}, 0)`}>
-                <text x="0" y="-10" fill="var(--text-dim)" fontSize="10" className="font-mono uppercase opacity-50">
+              <g
+                transform={`translate(${(BIT_WIDTH + GAP) * 8 + BYTE_GAP}, 0)`}
+              >
+                <text
+                  x="0"
+                  y="-10"
+                  fill="var(--text-dim)"
+                  fontSize="10"
+                  className="font-mono uppercase opacity-50"
+                >
                   Low Byte (Least Sig)
                 </text>
                 {renderByte(lowByte, 0, 0, "var(--cyber-neon-green)", 7)}
@@ -139,7 +159,12 @@ export const MemoryLayoutVisualization = () => {
           {highByte.map((_, i) => {
             const startX = 50 + i * (BIT_WIDTH + GAP) + BIT_WIDTH / 2;
             const startY = 140;
-            const endX = 50 + (BIT_WIDTH + GAP) * 8 + BYTE_GAP + i * (BIT_WIDTH + GAP) + BIT_WIDTH / 2;
+            const endX =
+              50 +
+              (BIT_WIDTH + GAP) * 8 +
+              BYTE_GAP +
+              i * (BIT_WIDTH + GAP) +
+              BIT_WIDTH / 2;
             const endY = 280;
             return (
               <motion.path
@@ -160,7 +185,12 @@ export const MemoryLayoutVisualization = () => {
 
           {/* Low Byte to Storage First */}
           {lowByte.map((_, i) => {
-            const startX = 50 + (BIT_WIDTH + GAP) * 8 + BYTE_GAP + i * (BIT_WIDTH + GAP) + BIT_WIDTH / 2;
+            const startX =
+              50 +
+              (BIT_WIDTH + GAP) * 8 +
+              BYTE_GAP +
+              i * (BIT_WIDTH + GAP) +
+              BIT_WIDTH / 2;
             const startY = 140;
             const endX = 50 + i * (BIT_WIDTH + GAP) + BIT_WIDTH / 2;
             const endY = 280;
@@ -211,13 +241,27 @@ export const MemoryLayoutVisualization = () => {
             </text>
 
             <g transform="translate(0, 30)">
-              <text x="0" y="-10" fill="var(--text-dim)" fontSize="10" className="font-mono uppercase opacity-50">
+              <text
+                x="0"
+                y="-10"
+                fill="var(--text-dim)"
+                fontSize="10"
+                className="font-mono uppercase opacity-50"
+              >
                 Low Byte (Stored First)
               </text>
               {renderByte(lowByte, 0, 0, "var(--cyber-neon-green)", 7)}
 
-              <g transform={`translate(${(BIT_WIDTH + GAP) * 8 + BYTE_GAP}, 0)`}>
-                <text x="0" y="-10" fill="var(--text-dim)" fontSize="10" className="font-mono uppercase opacity-50">
+              <g
+                transform={`translate(${(BIT_WIDTH + GAP) * 8 + BYTE_GAP}, 0)`}
+              >
+                <text
+                  x="0"
+                  y="-10"
+                  fill="var(--text-dim)"
+                  fontSize="10"
+                  className="font-mono uppercase opacity-50"
+                >
                   High Byte (Stored Second)
                 </text>
                 {renderByte(highByte, 0, 0, "var(--cyber-neon-blue)", 15)}

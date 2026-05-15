@@ -126,126 +126,138 @@ export const SchemaDrivenAPIs = () => (
             schema using both the traditional <code>protoc</code> compiler and
             the modern <code>buf</code> toolchain.
           </p>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-4">
-            <CyberPanel title="proto/demo/v1/user.proto">
-              <div className="p-4">
-                <SyntaxHighlighter
-                  language="proto"
-                  code={`syntax = "proto3";\n\npackage demo.v1;\n\nmessage User {\n  string id = 1;\n  string username = 2;\n  bool is_active = 3;\n}`}
-                  wrap={true}
-                />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-4">
+              <CyberPanel title="proto/demo/v1/user.proto">
+                <div className="p-4">
+                  <SyntaxHighlighter
+                    language="proto"
+                    code={`syntax = "proto3";\n\npackage demo.v1;\n\nmessage User {\n  string id = 1;\n  string username = 2;\n  bool is_active = 3;\n}`}
+                    wrap={true}
+                  />
+                </div>
+              </CyberPanel>
+            </div>
+            <div className="space-y-6">
+              <h4 className="text-[var(--cyber-neon-green)] font-cyber font-bold text-sm tracking-widest uppercase">
+                The Schema Definition
+              </h4>
+              <div className="space-y-4 text-[var(--text-dim)] leading-relaxed">
+                <p>
+                  In this <code>user.proto</code> file, we define a{" "}
+                  <code>User</code> message with three fields. Each field has a
+                  type (<code>string</code>, <code>bool</code>) and a unique{" "}
+                  <strong>field number</strong> which identifies it in the
+                  binary format.
+                </p>
+                <p>Once you generate code from this schema, you can:</p>
+                <ul className="list-disc pl-5 space-y-2">
+                  <li>
+                    <strong>Instantiate:</strong> Create <code>User</code>{" "}
+                    objects in your language with full type safety and
+                    auto-completion.
+                  </li>
+                  <li>
+                    <strong>Serialize:</strong> Convert objects into highly
+                    compressed binary buffers for transmission or storage.
+                  </li>
+                  <li>
+                    <strong>Validate:</strong> Ensure data conforms to the
+                    schema rules before it ever reaches your application logic.
+                  </li>
+                </ul>
               </div>
-            </CyberPanel>
+            </div>
           </div>
+        </div>
+
+        <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-12">
           <div className="space-y-6">
-            <h4 className="text-[var(--cyber-neon-green)] font-cyber font-bold text-sm tracking-widest uppercase">
-              The Schema Definition
+            <h4 className="text-[var(--cyber-neon-blue)] font-cyber font-bold text-sm tracking-widest uppercase">
+              Option 1: The Classic protoc
             </h4>
-            <div className="space-y-4 text-[var(--text-dim)] leading-relaxed">
-              <p>
-                In this <code>user.proto</code> file, we define a <code>User</code> message with three fields. Each field has a type (<code>string</code>, <code>bool</code>) and a unique <strong>field number</strong> which identifies it in the binary format.
-              </p>
-              <p>
-                Once you generate code from this schema, you can:
-              </p>
-              <ul className="list-disc pl-5 space-y-2">
-                <li><strong>Instantiate:</strong> Create <code>User</code> objects in your language with full type safety and auto-completion.</li>
-                <li><strong>Serialize:</strong> Convert objects into highly compressed binary buffers for transmission or storage.</li>
-                <li><strong>Validate:</strong> Ensure data conforms to the schema rules before it ever reaches your application logic.</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-12">
-        <div className="space-y-6">
-          <h4 className="text-[var(--cyber-neon-blue)] font-cyber font-bold text-sm tracking-widest uppercase">
-            Option 1: The Classic protoc
-          </h4>
-          <p className="text-sm text-[var(--text-dim)] leading-relaxed">
-            The <code>protoc</code> compiler is the original tool for
-            Protobuf. It requires manual management of plugins and complex
-            CLI flags.
-          </p>
-          <CyberPanel title="TERMINAL">
-            <div className="p-4">
-              <SyntaxHighlighter
-                language="bash"
-                code={`$ protoc --es_out=src/gen \\ \n    --es_opt=target=ts \\ \n    proto/demo/v1/user.proto`}
-                wrap={true}
-              />
-            </div>
-          </CyberPanel>
-        </div>
-
-        <div className="space-y-6">
-          <h4 className="text-[var(--cyber-neon-pink)] font-cyber font-bold text-sm tracking-widest uppercase">
-            Option 2: The Modern buf
-          </h4>
-          <p className="text-sm text-[var(--text-dim)] leading-relaxed">
-            <code>buf</code> simplifies generation by using a declarative{" "}
-            <code>buf.gen.yaml</code> file, making your workflow
-            reproducible and easier to share.
-          </p>
-          <div className="space-y-4">
-            <CyberPanel title="buf.gen.yaml">
-              <div className="p-4">
-                <SyntaxHighlighter
-                  language="yaml"
-                  code={`version: v2\nplugins:\n  - remote: buf.build/bufbuild/es:v2.2.3\n    out: src/gen\n    opt: target=ts`}
-                  wrap={true}
-                />
-              </div>
-            </CyberPanel>
+            <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+              The <code>protoc</code> compiler is the original tool for
+              Protobuf. It requires manual management of plugins and complex CLI
+              flags.
+            </p>
             <CyberPanel title="TERMINAL">
               <div className="p-4">
                 <SyntaxHighlighter
                   language="bash"
-                  code={`$ buf generate`}
+                  code={`$ protoc --es_out=src/gen \\ \n    --es_opt=target=ts \\ \n    proto/demo/v1/user.proto`}
                   wrap={true}
                 />
               </div>
             </CyberPanel>
           </div>
-        </div>
-      </div>
 
-      <div className="mt-24 space-y-8">
-        <div className="space-y-4">
-          <h4 className="text-[var(--cyber-neon-blue)] font-cyber font-bold text-sm tracking-widest uppercase">
-            3. Using the Generated Code
-          </h4>
-          <p className="text-[var(--text-dim)] max-w-3xl">
-            With your code generated via{" "}
-            <ExternalLinkText href="https://github.com/bufbuild/protobuf-es">
-              protobuf-es (v2.12.0)
-            </ExternalLinkText>
-            , you can now use your schema as native TypeScript classes with full
-            type safety.
-          </p>
-        </div>
-
-        <CyberPanel title="src/main.ts">
-          <div className="p-4">
-            <SyntaxHighlighter
-              language="typescript"
-              code={`import { create, toBinary, toJsonString } from "@bufbuild/protobuf";\nimport { UserSchema } from "./gen/demo/v1/user_pb";\n\n// 1. Create a message using the schema\nconst user = create(UserSchema, {\n  id: "usr_123",\n  username: "cyber_ninja",\n  isActive: true,\n});\n\n// 2. Serialize to binary (Uint8Array)\nconst bytes = toBinary(UserSchema, user);\n\n// 3. Serialize to a JSON string\nconst json = toJsonString(UserSchema, user);`}
-              wrap={true}
-            />
+          <div className="space-y-6">
+            <h4 className="text-[var(--cyber-neon-pink)] font-cyber font-bold text-sm tracking-widest uppercase">
+              Option 2: The Modern buf
+            </h4>
+            <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+              <code>buf</code> simplifies generation by using a declarative{" "}
+              <code>buf.gen.yaml</code> file, making your workflow reproducible
+              and easier to share.
+            </p>
+            <div className="space-y-4">
+              <CyberPanel title="buf.gen.yaml">
+                <div className="p-4">
+                  <SyntaxHighlighter
+                    language="yaml"
+                    code={`version: v2\nplugins:\n  - remote: buf.build/bufbuild/es:v2.2.3\n    out: src/gen\n    opt: target=ts`}
+                    wrap={true}
+                  />
+                </div>
+              </CyberPanel>
+              <CyberPanel title="TERMINAL">
+                <div className="p-4">
+                  <SyntaxHighlighter
+                    language="bash"
+                    code={`$ buf generate`}
+                    wrap={true}
+                  />
+                </div>
+              </CyberPanel>
+            </div>
           </div>
-        </CyberPanel>
+        </div>
 
-        <TechnicalNuance title="Different languages and runtimes">
-          While this example uses TypeScript, the fundamental process is similar
-          across every supported language (Go, Python, Rust, Java, etc.).
-          However, there are always language-specific details, such as how
-          generated packages are imported, how native structs or objects are
-          managed, and how the runtime libraries are integrated into your
-          specific build system.
-        </TechnicalNuance>
-      </div>
+        <div className="mt-24 space-y-8">
+          <div className="space-y-4">
+            <h4 className="text-[var(--cyber-neon-blue)] font-cyber font-bold text-sm tracking-widest uppercase">
+              3. Using the Generated Code
+            </h4>
+            <p className="text-[var(--text-dim)] max-w-3xl">
+              With your code generated via{" "}
+              <ExternalLinkText href="https://github.com/bufbuild/protobuf-es">
+                protobuf-es (v2.12.0)
+              </ExternalLinkText>
+              , you can now use your schema as native TypeScript classes with
+              full type safety.
+            </p>
+          </div>
+
+          <CyberPanel title="src/main.ts">
+            <div className="p-4">
+              <SyntaxHighlighter
+                language="typescript"
+                code={`import { create, toBinary, toJsonString } from "@bufbuild/protobuf";\nimport { UserSchema } from "./gen/demo/v1/user_pb";\n\n// 1. Create a message using the schema\nconst user = create(UserSchema, {\n  id: "usr_123",\n  username: "cyber_ninja",\n  isActive: true,\n});\n\n// 2. Serialize to binary (Uint8Array)\nconst bytes = toBinary(UserSchema, user);\n\n// 3. Serialize to a JSON string\nconst json = toJsonString(UserSchema, user);`}
+                wrap={true}
+              />
+            </div>
+          </CyberPanel>
+
+          <TechnicalNuance title="Different languages and runtimes">
+            While this example uses TypeScript, the fundamental process is
+            similar across every supported language (Go, Python, Rust, Java,
+            etc.). However, there are always language-specific details, such as
+            how generated packages are imported, how native structs or objects
+            are managed, and how the runtime libraries are integrated into your
+            specific build system.
+          </TechnicalNuance>
+        </div>
       </div>
     </div>
   </Section>
