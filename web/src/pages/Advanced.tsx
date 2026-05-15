@@ -1086,7 +1086,20 @@ export const ValidationLab = ({
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch relative">
+            {/* Global Interactive Sign for Large Screens */}
+            <div className="absolute -left-48 top-48 hidden xl:flex flex-col items-end gap-2 text-[var(--cyber-neon-pink)] pointer-events-none animate-pulse z-10 opacity-70">
+              <span className="font-cyber text-xs uppercase tracking-widest text-right">
+                These Panels<br/>Are Live!<br/>Change The Data
+              </span>
+              <div className="flex gap-2">
+                <svg width="40" height="24" viewBox="0 0 40 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M0 12h30" />
+                  <path d="M24 6l6 6-6 6" />
+                </svg>
+              </div>
+            </div>
+
             {/* Left Column: Payload Input */}
             <div className="space-y-4 flex flex-col">
               <div className="flex items-center justify-between h-8">
