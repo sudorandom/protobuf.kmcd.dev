@@ -24,6 +24,9 @@ build-wasm:
 		mv web/public/parser.wasm.gz web/public/parser.wasm; \
 	fi
 
+generate:
+	mise exec -- buf generate
+
 web-check: web-format build-wasm
 	cd web && mise exec -- pnpm run lint
 	cd web && mise exec -- pnpm run build

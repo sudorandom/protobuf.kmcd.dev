@@ -18,6 +18,7 @@ import {
   ExternalLinkText,
   SyntaxHighlighter,
 } from "../components/shared/Common";
+import { ConsoleMock } from "../components/ConsoleMock";
 
 export const SchemaDrivenAPIs = () => (
   <Section
@@ -112,6 +113,48 @@ export const SchemaDrivenAPIs = () => (
               3. BUILD & DEPLOY SERVICES
             </div>
           </div>
+        </div>
+      </div>
+
+      <div className="mt-16 space-y-8">
+        <h3 className="text-xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">
+          Local Example
+        </h3>
+        <p className="text-[var(--text-dim)]">
+          Let's see how this looks in practice. Below is a walkthrough of setting up a local <ExternalLinkText href="https://buf.build/">Buf</ExternalLinkText> workspace and generating TypeScript code with <ExternalLinkText href="https://github.com/bufbuild/protobuf-es">protobuf-es</ExternalLinkText>.
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <CyberPanel title="1. DEFINE SCHEMA (proto/demo/v1/user.proto)">
+            <div className="p-4">
+              <SyntaxHighlighter
+                language="proto"
+                code={`syntax = "proto3";\n\npackage demo.v1;\n\nmessage User {\n  string id = 1;\n  string username = 2;\n  bool is_active = 3;\n}`}
+                wrap={true}
+              />
+            </div>
+          </CyberPanel>
+          <CyberPanel title="2. CONFIGURE GENERATOR (buf.gen.yaml)">
+            <div className="p-4">
+              <SyntaxHighlighter
+                language="yaml"
+                code={`version: v2\nplugins:\n  - local: protoc-gen-es\n    out: src/gen\n    opt: target=ts`}
+                wrap={true}
+              />
+            </div>
+          </CyberPanel>
+        </div>
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+          <CyberPanel title="3. GENERATE CODE">
+            <div className="p-4 h-full">
+              <p className="mb-4 text-sm text-[var(--text-dim)]">Using <ExternalLinkText href="https://mise.jdx.dev/">mise</ExternalLinkText> or installing <code>@bufbuild/buf</code> and <code>@bufbuild/protoc-gen-es</code> globally via npm:</p>
+              <SyntaxHighlighter
+                language="bash"
+                code={`$ buf generate`}
+                wrap={true}
+              />
+            </div>
+          </CyberPanel>
+          <ConsoleMock />
         </div>
       </div>
     </div>

@@ -104,7 +104,7 @@ export const SyntaxHighlighter = ({
   wrap = false,
 }: {
   code: string;
-  language: "proto" | "json" | null;
+  language: "proto" | "json" | "yaml" | "bash" | "typescript" | null;
   wrap?: boolean;
 }) => {
   const highlight = (text: string) => {
