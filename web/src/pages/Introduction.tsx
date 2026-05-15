@@ -409,8 +409,13 @@ export const Introduction = ({
                   </ExternalLinkText>
                 </CyberPanel>
                 <CyberPanel className="text-center p-3 text-xs">
-                  <ExternalLinkText href="https://protobuf.dev/getting-started/javatutorial/">
-                    Java
+                  <ExternalLinkText href="https://protobuf.dev/getting-started/csharptutorial/">
+                    C#
+                  </ExternalLinkText>
+                </CyberPanel>
+                <CyberPanel className="text-center p-3 text-xs">
+                  <ExternalLinkText href="https://protobuf.dev/reference/dart/dart-generated/">
+                    Dart
                   </ExternalLinkText>
                 </CyberPanel>
                 <CyberPanel className="text-center p-3 text-xs">
@@ -419,13 +424,13 @@ export const Introduction = ({
                   </ExternalLinkText>
                 </CyberPanel>
                 <CyberPanel className="text-center p-3 text-xs">
-                  <ExternalLinkText href="https://protobuf.dev/reference/ruby/ruby-generated/">
-                    Ruby
+                  <ExternalLinkText href="https://protobuf.dev/getting-started/javatutorial/">
+                    Java
                   </ExternalLinkText>
                 </CyberPanel>
                 <CyberPanel className="text-center p-3 text-xs">
-                  <ExternalLinkText href="https://protobuf.dev/getting-started/csharptutorial/">
-                    C#
+                  <ExternalLinkText href="https://protobuf.dev/reference/kotlin/kotlin-generated/">
+                    Kotlin
                   </ExternalLinkText>
                 </CyberPanel>
                 <CyberPanel className="text-center p-3 text-xs">
