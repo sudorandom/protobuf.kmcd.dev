@@ -221,3 +221,10 @@ button:active {
     transform: translate(0);
   }
 }
+
+code:not(pre code) {
+  background-color: var(--overlay-bg);
+  padding: 0.15em 0.3em;
+  border-radius: 4px;
+  font-family: "JetBrains Mono", monospace;
+}

@@ -887,28 +887,20 @@ message User {
       desc: (
         <div className="space-y-4">
           <p>
-            Not all breaking changes are equal. Protobuf has three distinct
-            layers of compatibility:
+            Not all breaking changes are equal. Tools like <ExternalLinkText href="https://buf.build/docs/breaking/">Buf</ExternalLinkText> categorize breaking changes into four distinct levels of severity:
           </p>
           <ul className="list-disc pl-4 space-y-2 text-sm">
             <li>
-              <strong>Wire Breakage:</strong> Changing a field number or using
-              an incompatible type (e.g., <code>string</code> to{" "}
-              <code>int32</code>). Causes catastrophic data corruption.{" "}
-              <em>Never do this.</em>
+              <strong>WIRE:</strong> The most severe level. Changing a field number or using an incompatible type (e.g., <code>string</code> to <code>int32</code>). This causes catastrophic data corruption during serialization. <em>Never do this.</em>
             </li>
             <li>
-              <strong>JSON Breakage:</strong> Renaming a field. It's safe on the
-              wire, but clients expecting the old JSON key will fail. You can
-              mitigate this using the <code>[json_name="old_name"]</code>{" "}
-              annotation.
+              <strong>WIRE_JSON:</strong> Breakage in JSON representation. Renaming a field is safe on the binary wire, but clients expecting the old JSON key will fail. You can mitigate this using the <code>[json_name="old_name"]</code> annotation.
             </li>
             <li>
-              <strong>Code Breakage:</strong> Changing a type in a
-              wire-compatible way (e.g., <code>int32</code> to{" "}
-              <code>int64</code>). The data transmits safely, but when
-              developers update their generated code, their builds will fail
-              until they update their types.
+              <strong>PACKAGE:</strong> Source code breakage at the package level. Changing a type in a wire-compatible way (e.g., <code>int32</code> to <code>int64</code>) transmits safely, but when developers update their generated code, their builds will fail until they update their types.
+            </li>
+            <li>
+              <strong>FILE:</strong> The strictest level. Ensures source code compatibility down to the individual file level. Moving a message to another file might break code generation that relies on specific file imports.
             </li>
           </ul>
         </div>
@@ -932,8 +924,7 @@ message User {
       desc: (
         <div className="space-y-4">
           <p>
-            You can never truly delete a field if it was ever in production.
-            Instead, you manage its lifecycle:
+            Because Protobuf identifies data on the wire using field numbers rather than names, the concept of "deleting" a field requires careful handling. If a schema has ever been used in production—where older clients or databases might still hold data serialized with a specific field number—you cannot simply remove the field and let its number be reused. Instead, you must manage its lifecycle:
           </p>
           <ol className="list-decimal pl-4 space-y-2 text-sm">
             <li>
@@ -1291,12 +1282,12 @@ export const ValidationLab = ({
         {/* Row 4: Pro Tip & External Playground */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 border-t border-[var(--border-light)]/30 pt-8">
           <div className="md:col-span-2">
-            <TechnicalNuance title="VALIDATION_STRATEGY">
-              By putting validation in the schema, you ensure that every service
-              enforcing the contract (Go, Java, TS) applies the same rules
-              consistently. This eliminates "validation drift" across your
-              microservices architecture.
-            </TechnicalNuance>
+            <h3 className="text-2xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight mb-4">
+              Validation Strategy
+            </h3>
+            <p className="text-[var(--text-dim)] leading-relaxed text-sm">
+              By putting validation in the schema, you ensure that every part of your system enforcing the contract applies the exact same rules. This eliminates "validation drift" not just between microservices, but across your entire stack. For instance, you can use the same rules to validate a form on your web frontend (using TypeScript) before the request ever hits your backend (running Go, Java, etc.).
+            </p>
           </div>
           <div className="p-4 bg-[var(--cyber-neon-cyan)]/5 border border-[var(--cyber-neon-cyan)]/20 rounded-lg text-sm flex flex-col justify-center hover:bg-[var(--cyber-neon-cyan)]/10 transition-colors group/dive">
             <span className="text-xs font-cyber font-bold text-[var(--cyber-neon-cyan)] uppercase mb-2 tracking-widest">
