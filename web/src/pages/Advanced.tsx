@@ -32,6 +32,7 @@ import {
   CyberPanel,
   ExternalLinkText,
   SyntaxHighlighter,
+  TechnicalNuance,
 } from "../components/shared/Common";
 import { JsonEditor } from "../components/shared/JsonEditor";
 import { Modal } from "../components/shared/Modal";
@@ -97,14 +98,14 @@ export const AdvancedProtobuf = () => {
             <code>import</code> statement. However, this is where many
             developers encounter the "Include Path Nightmare."
           </p>
-          <div className="p-4 bg-[var(--text-error)]/5 border border-[var(--text-error)]/10 rounded text-sm space-y-3">
+          <TechnicalNuance title="COMPILER_RESOLUTION_PITFALLS">
             <p className="leading-relaxed">
               The standard <code>protoc</code> compiler requires you to manually
               specify every include directory via <code>-I</code> (or{" "}
               <code>--proto_path</code>) flags. The compiler resolves files
               based on the current working directory combined with these flags.
             </p>
-            <p className="leading-relaxed text-[var(--text-error)]">
+            <p className="leading-relaxed">
               If your import paths are inconsistent across your project (e.g.,
               one file uses <code>import "proto/user.proto"</code> and another
               uses <code>import "user.proto"</code> depending on how{" "}
@@ -113,7 +114,7 @@ export const AdvancedProtobuf = () => {
               "Duplicate Symbol" errors or "Type not found" failures when
               compiling.
             </p>
-          </div>
+          </TechnicalNuance>
           <p>
             <ExternalLinkText href="https://buf.build/">Buf</ExternalLinkText>{" "}
             eliminates this by using a <code>buf.yaml</code> to define your
@@ -422,7 +423,7 @@ message User {
     {
       id: "services",
       icon: Zap,
-      title: "Services (gRPC & RPC)",
+      title: "Services",
       subtitle: "03g_NETWORKING",
       panelTitle: "SERVICE_DEFINITION",
       desc: (
@@ -530,6 +531,66 @@ message LegacyProfile {
 
   return (
     <>
+      <Section
+        id="intro"
+        className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]"
+      >
+        <div className="max-w-7xl mx-auto">
+          <div className="space-y-8">
+            <SectionTitle icon={HelpCircle} subtitle="03_OVERVIEW">
+              Deep Dives
+            </SectionTitle>
+            <div className="space-y-6 text-lg text-[var(--text-dim)] leading-relaxed">
+              <p>
+                Beyond simple message definitions lies the true power of
+                Protobuf as a{" "}
+                <strong className="text-[var(--text-color)]">
+                  language-agnostic engineering system
+                </strong>
+                .
+              </p>
+              <p>
+                This section explores the architectural features that make
+                Protobuf suitable for high-scale, evolving systems:
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-4">
+                <div className="space-y-3">
+                  <h4 className="text-[var(--cyber-neon-blue)] font-cyber font-bold text-xs uppercase tracking-widest">
+                    Dependency Management
+                  </h4>
+                  <p className="text-sm">
+                    Handling imports and module roots deterministically with
+                    tools like{" "}
+                    <ExternalLinkText href="https://buf.build/">
+                      Buf
+                    </ExternalLinkText>
+                    .
+                  </p>
+                </div>
+                <div className="space-y-3">
+                  <h4 className="text-[var(--cyber-neon-pink)] font-cyber font-bold text-xs uppercase tracking-widest">
+                    Dynamic Types
+                  </h4>
+                  <p className="text-sm">
+                    Using <code>Any</code> and <code>Value</code> for
+                    polymorphic payloads and arbitrary JSON integration.
+                  </p>
+                </div>
+                <div className="space-y-3">
+                  <h4 className="text-[var(--cyber-neon-green)] font-cyber font-bold text-xs uppercase tracking-widest">
+                    Runtime Intelligence
+                  </h4>
+                  <p className="text-sm">
+                    Leveraging Descriptors and Reflection for generic tooling,
+                    validation, and dynamic routing.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Section>
+
       {topics.map((topic) => (
         <TopicSection
           key={topic.id}
@@ -687,7 +748,33 @@ message DescriptorProto {
           </div>
         </div>
 
-        <div className="pt-16 border-t border-[var(--border-light)]">
+        <div className="pt-16 border-t border-[var(--border-light)] relative">
+          {/* Global Interactive Sign for Large Screens */}
+          <div className="absolute -left-48 top-48 hidden xl:flex flex-col items-end gap-2 text-[var(--cyber-neon-pink)] pointer-events-none animate-pulse z-10 opacity-70">
+            <span className="font-cyber text-xs uppercase tracking-widest text-right">
+              These Panels
+              <br />
+              Are Live!
+              <br />
+              Change The Data
+            </span>
+            <div className="flex gap-2">
+              <svg
+                width="40"
+                height="24"
+                viewBox="0 0 40 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M0 12h30" />
+                <path d="M24 6l6 6-6 6" />
+              </svg>
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
             <InteractiveSchemaEditor
               initialValue={DESCRIPTOR_PROTO}

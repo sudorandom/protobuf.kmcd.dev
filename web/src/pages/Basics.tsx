@@ -119,7 +119,7 @@ export const SchemaDrivenAPIs = () => (
       <div className="mt-24 space-y-12 border-t border-[var(--border-light)] pt-16">
         <div className="space-y-4">
           <h3 className="text-2xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">
-            Local Example
+            Generating Code
           </h3>
           <p className="text-[var(--text-dim)] max-w-3xl">
             Let's see how to generate TypeScript code from a <code>.proto</code>{" "}
