@@ -6,13 +6,13 @@ import "buf/validate/validate.proto";
 
 message User {
   string id = 1 [(buf.validate.field).string.uuid = true];
-  string name = 2 [(buf.validate.field).string.min_len = 1];
-  string email = 3 [(buf.validate.field).string.email = true];
+  string name = 2;
+  string email = 3;
   
   // Numeric data for efficiency demo
   uint32 age = 4 [(buf.validate.field).uint32.lt = 150];
-  float height_cm = 5 [(buf.validate.field).float = {gte: 0, lte: 500}];
-  double weight_kg = 6 [(buf.validate.field).double = {gte: 0, lte: 2000}];
+  float height_cm = 5;
+  double weight_kg = 6;
   
   Role role = 7;
   Date birth_date = 8;
@@ -26,9 +26,9 @@ message User {
 }
 
 message Date {
-  int32 year = 1 [(buf.validate.field).int32 = {gte: 1900, lte: 2100}];
-  int32 month = 2 [(buf.validate.field).int32 = {gte: 1, lte: 12}];
-  int32 day = 3 [(buf.validate.field).int32 = {gte: 1, lte: 31}];
+  int32 year = 1;
+  int32 month = 2;
+  int32 day = 3;
 }`;
 
 export const DESCRIPTOR_PROTO = `edition = "2023";

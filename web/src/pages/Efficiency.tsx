@@ -166,7 +166,7 @@ export const SizeComparison = ({
             <p className="text-base text-[var(--text-dim)]">
               Try a few different scenarios below: use the preset examples,{" "}
               <span className="text-[var(--cyber-neon-pink)] font-bold uppercase">
-                generate fake data
+                randomize
               </span>{" "}
               (powered by{" "}
               <ExternalLinkText href="https://fauxrpc.com">
@@ -215,6 +215,7 @@ export const SizeComparison = ({
                 <button
                   onClick={() => setIsModalOpen(true)}
                   className="text-xs font-cyber font-bold text-[var(--cyber-neon-blue)] hover:text-[var(--cyber-neon-blue)]/80 transition-colors uppercase flex items-center gap-1 group"
+                  aria-label="Edit Protobuf Schema"
                 >
                   <Settings2 className="w-3 h-3 group-hover:rotate-45 transition-transform" />
                   Edit Schema
@@ -234,6 +235,7 @@ export const SizeComparison = ({
                       ? "bg-[var(--cyber-neon-blue)]/20 border-[var(--cyber-neon-blue)] text-[var(--cyber-neon-blue)]"
                       : "bg-[var(--overlay-bg)] border-[var(--border-light)] text-[var(--text-dim)] hover:border-white/30 hover:text-[var(--text-color)]"
                   }`}
+                  aria-label={`Load ${key} example data`}
                 >
                   {key}
                 </button>
@@ -242,6 +244,7 @@ export const SizeComparison = ({
                 onClick={generateFauxData}
                 disabled={!messageSchema || !fileDescriptorSet || isGenerating}
                 className="px-2 py-1 text-xs font-cyber font-bold border border-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/10 text-[var(--cyber-neon-pink)] hover:bg-[var(--cyber-neon-pink)]/20 transition-all flex items-center gap-1.5 disabled:opacity-30 disabled:cursor-not-allowed rounded uppercase tracking-wider"
+                aria-label="Generate Random Data"
               >
                 <Zap
                   className={`w-2.5 h-2.5 ${isGenerating ? "animate-spin" : ""}`}
@@ -287,8 +290,8 @@ export const SizeComparison = ({
             >
               <div className="flex-1 py-4 px-2 space-y-8">
                 <p className="text-xs text-[var(--text-dim)] leading-relaxed uppercase tracking-wide">
-                  Watch as the binary encoder strips away the redundant field
-                  names and formatting that bloats JSON payloads.
+                  Compare how Protobuf's binary format reduces overhead by
+                  removing field names and structural formatting.
                 </p>
 
                 {/* Size Bars */}
@@ -307,9 +310,20 @@ export const SizeComparison = ({
                       ></div>
                     </div>
                     {gzipStats.json > 0 && (
-                      <div className="flex justify-between text-xs font-mono mt-2 text-[var(--text-dim)] uppercase tracking-widest">
-                        <span>WITH_GZIP</span>
-                        <span>{gzipStats.json} B</span>
+                      <div className="mt-4">
+                        <div className="flex justify-between text-xs font-mono mb-2 text-[var(--text-dim)] uppercase tracking-widest">
+                          <span>WITH_GZIP</span>
+                          <span>{gzipStats.json} B</span>
+                        </div>
+                        <div className="h-2 bg-[var(--border-light)] rounded-full overflow-hidden">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{
+                              width: `${stats.jsonSize > 0 ? (gzipStats.json / stats.jsonSize) * 100 : 0}%`,
+                            }}
+                            className="h-full bg-[var(--text-dim)] opacity-25"
+                          />
+                        </div>
                       </div>
                     )}
                   </div>
@@ -331,9 +345,20 @@ export const SizeComparison = ({
                       />
                     </div>
                     {gzipStats.pb > 0 && (
-                      <div className="flex justify-between text-xs font-mono mt-2 text-[var(--cyber-neon-green)]/80 uppercase tracking-widest">
-                        <span>WITH_GZIP</span>
-                        <span>{gzipStats.pb} B</span>
+                      <div className="mt-4">
+                        <div className="flex justify-between text-xs font-mono mb-2 text-[var(--cyber-neon-green)]/80 uppercase tracking-widest">
+                          <span>WITH_GZIP</span>
+                          <span>{gzipStats.pb} B</span>
+                        </div>
+                        <div className="h-2 bg-[var(--border-light)] rounded-full overflow-hidden">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{
+                              width: `${stats.jsonSize > 0 ? (gzipStats.pb / stats.jsonSize) * 100 : 0}%`,
+                            }}
+                            className="h-full bg-[var(--cyber-neon-green)]/30"
+                          />
+                        </div>
                       </div>
                     )}
                   </div>
@@ -481,13 +506,12 @@ export const SizeComparison = ({
               .
             </p>
             <p className="text-[var(--text-dim)] leading-relaxed">
-              However, there is a critical tradeoff: compression adds
-              significant CPU overhead to every request. For smaller payloads,
-              the time spent compressing and decompressing can be greater than
-              the time saved by the smaller transfer size. In these cases,
-              sending uncompressed Protobuf is often the most optimal path for
-              overall latency.
-            </p>
+              This comes with a tradeoff: while compression reduces size
+              further, it introduces CPU overhead for every request. For smaller
+              payloads, the time spent on compression can exceed the transfer
+              time savings. Uncompressed Protobuf often provides the best
+              balance of size and latency.
+            </p>{" "}
             <p className="text-[var(--text-dim)] leading-relaxed text-sm">
               Protobuf shines when your data has many numbers, enums, or sparse
               fields. String-heavy payloads benefit less from binary encoding

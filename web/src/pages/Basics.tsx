@@ -17,8 +17,8 @@ import {
   CyberPanel,
   ExternalLinkText,
   SyntaxHighlighter,
+  TechnicalNuance,
 } from "../components/shared/Common";
-import { ConsoleMock } from "../components/ConsoleMock";
 
 export const SchemaDrivenAPIs = () => (
   <Section
@@ -96,66 +96,156 @@ export const SchemaDrivenAPIs = () => (
           <h4 className="text-[var(--cyber-neon-blue)] font-cyber font-bold text-sm tracking-widest uppercase mb-4 text-center">
             THE_WORKFLOW
           </h4>
-          <div className="space-y-4 font-mono text-xs">
-            <div className="p-3 bg-[var(--section-bg-dark)] border border-[var(--cyber-neon-blue)]/30 rounded text-[var(--cyber-neon-blue)]/80">
+          <div className="space-y-4 font-mono text-xs font-bold">
+            <div className="p-3 bg-[var(--section-bg-dark)] border border-[var(--cyber-neon-blue)]/30 rounded text-[var(--cyber-neon-blue)]">
               1. DEFINE SCHEMA (.proto)
             </div>
             <div className="flex justify-center">
               <ArrowRight className="w-4 h-4 rotate-90 text-[var(--text-dim)]" />
             </div>
-            <div className="p-3 bg-[var(--section-bg-dark)] border border-[var(--cyber-neon-pink)]/30 rounded text-[var(--cyber-neon-pink)]/80">
+            <div className="p-3 bg-[var(--section-bg-dark)] border border-[var(--cyber-neon-pink)]/30 rounded text-[var(--cyber-neon-pink)]">
               2. COMPILE TARGETS (Go, TS, etc.)
             </div>
             <div className="flex justify-center">
               <ArrowRight className="w-4 h-4 rotate-90 text-[var(--text-dim)]" />
             </div>
-            <div className="p-3 bg-[var(--section-bg-dark)] border border-[var(--cyber-neon-green)]/30 rounded text-[var(--cyber-neon-green)]/80">
+            <div className="p-3 bg-[var(--section-bg-dark)] border border-[var(--cyber-neon-green)]/30 rounded text-[var(--cyber-neon-green)]">
               3. BUILD & DEPLOY SERVICES
             </div>
           </div>
         </div>
       </div>
 
-      <div className="mt-16 space-y-8">
-        <h3 className="text-xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">
-          Local Example
-        </h3>
-        <p className="text-[var(--text-dim)]">
-          Let's see how this looks in practice. Below is a walkthrough of setting up a local <ExternalLinkText href="https://buf.build/">Buf</ExternalLinkText> workspace and generating TypeScript code with <ExternalLinkText href="https://github.com/bufbuild/protobuf-es">protobuf-es</ExternalLinkText>.
-        </p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <CyberPanel title="1. DEFINE SCHEMA (proto/demo/v1/user.proto)">
-            <div className="p-4">
-              <SyntaxHighlighter
-                language="proto"
-                code={`syntax = "proto3";\n\npackage demo.v1;\n\nmessage User {\n  string id = 1;\n  string username = 2;\n  bool is_active = 3;\n}`}
-                wrap={true}
-              />
+      <div className="mt-24 space-y-12 border-t border-[var(--border-light)] pt-16">
+        <div className="space-y-4">
+          <h3 className="text-2xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">
+            Local Example
+          </h3>
+          <p className="text-[var(--text-dim)] max-w-3xl">
+            Let's see how to generate TypeScript code from a <code>.proto</code>{" "}
+            schema using both the traditional <code>protoc</code> compiler and
+            the modern <code>buf</code> toolchain.
+          </p>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="space-y-4">
+            <CyberPanel title="proto/demo/v1/user.proto">
+              <div className="p-4">
+                <SyntaxHighlighter
+                  language="proto"
+                  code={`syntax = "proto3";\n\npackage demo.v1;\n\nmessage User {\n  string id = 1;\n  string username = 2;\n  bool is_active = 3;\n}`}
+                  wrap={true}
+                />
+              </div>
+            </CyberPanel>
+          </div>
+          <div className="space-y-6">
+            <h4 className="text-[var(--cyber-neon-green)] font-cyber font-bold text-sm tracking-widest uppercase">
+              The Schema Definition
+            </h4>
+            <div className="space-y-4 text-[var(--text-dim)] leading-relaxed">
+              <p>
+                In this <code>user.proto</code> file, we define a <code>User</code> message with three fields. Each field has a type (<code>string</code>, <code>bool</code>) and a unique <strong>field number</strong> which identifies it in the binary format.
+              </p>
+              <p>
+                Once you generate code from this schema, you can:
+              </p>
+              <ul className="list-disc pl-5 space-y-2">
+                <li><strong>Instantiate:</strong> Create <code>User</code> objects in your language with full type safety and auto-completion.</li>
+                <li><strong>Serialize:</strong> Convert objects into highly compressed binary buffers for transmission or storage.</li>
+                <li><strong>Validate:</strong> Ensure data conforms to the schema rules before it ever reaches your application logic.</li>
+              </ul>
             </div>
-          </CyberPanel>
-          <CyberPanel title="2. CONFIGURE GENERATOR (buf.gen.yaml)">
-            <div className="p-4">
-              <SyntaxHighlighter
-                language="yaml"
-                code={`version: v2\nplugins:\n  - local: protoc-gen-es\n    out: src/gen\n    opt: target=ts`}
-                wrap={true}
-              />
-            </div>
-          </CyberPanel>
+          </div>
         </div>
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
-          <CyberPanel title="3. GENERATE CODE">
-            <div className="p-4 h-full">
-              <p className="mb-4 text-sm text-[var(--text-dim)]">Using <ExternalLinkText href="https://mise.jdx.dev/">mise</ExternalLinkText> or installing <code>@bufbuild/buf</code> and <code>@bufbuild/protoc-gen-es</code> globally via npm:</p>
+      </div>
+
+      <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-12">
+        <div className="space-y-6">
+          <h4 className="text-[var(--cyber-neon-blue)] font-cyber font-bold text-sm tracking-widest uppercase">
+            Option 1: The Classic protoc
+          </h4>
+          <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+            The <code>protoc</code> compiler is the original tool for
+            Protobuf. It requires manual management of plugins and complex
+            CLI flags.
+          </p>
+          <CyberPanel title="TERMINAL">
+            <div className="p-4">
               <SyntaxHighlighter
                 language="bash"
-                code={`$ buf generate`}
+                code={`$ protoc --es_out=src/gen \\ \n    --es_opt=target=ts \\ \n    proto/demo/v1/user.proto`}
                 wrap={true}
               />
             </div>
           </CyberPanel>
-          <ConsoleMock />
         </div>
+
+        <div className="space-y-6">
+          <h4 className="text-[var(--cyber-neon-pink)] font-cyber font-bold text-sm tracking-widest uppercase">
+            Option 2: The Modern buf
+          </h4>
+          <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+            <code>buf</code> simplifies generation by using a declarative{" "}
+            <code>buf.gen.yaml</code> file, making your workflow
+            reproducible and easier to share.
+          </p>
+          <div className="space-y-4">
+            <CyberPanel title="buf.gen.yaml">
+              <div className="p-4">
+                <SyntaxHighlighter
+                  language="yaml"
+                  code={`version: v2\nplugins:\n  - remote: buf.build/bufbuild/es:v2.2.3\n    out: src/gen\n    opt: target=ts`}
+                  wrap={true}
+                />
+              </div>
+            </CyberPanel>
+            <CyberPanel title="TERMINAL">
+              <div className="p-4">
+                <SyntaxHighlighter
+                  language="bash"
+                  code={`$ buf generate`}
+                  wrap={true}
+                />
+              </div>
+            </CyberPanel>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-24 space-y-8">
+        <div className="space-y-4">
+          <h4 className="text-[var(--cyber-neon-blue)] font-cyber font-bold text-sm tracking-widest uppercase">
+            3. Using the Generated Code
+          </h4>
+          <p className="text-[var(--text-dim)] max-w-3xl">
+            With your code generated via{" "}
+            <ExternalLinkText href="https://github.com/bufbuild/protobuf-es">
+              protobuf-es (v2.12.0)
+            </ExternalLinkText>
+            , you can now use your schema as native TypeScript classes with full
+            type safety.
+          </p>
+        </div>
+
+        <CyberPanel title="src/main.ts">
+          <div className="p-4">
+            <SyntaxHighlighter
+              language="typescript"
+              code={`import { create, toBinary, toJsonString } from "@bufbuild/protobuf";\nimport { UserSchema } from "./gen/demo/v1/user_pb";\n\n// 1. Create a message using the schema\nconst user = create(UserSchema, {\n  id: "usr_123",\n  username: "cyber_ninja",\n  isActive: true,\n});\n\n// 2. Serialize to binary (Uint8Array)\nconst bytes = toBinary(UserSchema, user);\n\n// 3. Serialize to a JSON string\nconst json = toJsonString(UserSchema, user);`}
+              wrap={true}
+            />
+          </div>
+        </CyberPanel>
+
+        <TechnicalNuance title="Different languages and runtimes">
+          While this example uses TypeScript, the fundamental process is similar
+          across every supported language (Go, Python, Rust, Java, etc.).
+          However, there are always language-specific details, such as how
+          generated packages are imported, how native structs or objects are
+          managed, and how the runtime libraries are integrated into your
+          specific build system.
+        </TechnicalNuance>
+      </div>
       </div>
     </div>
   </Section>
@@ -875,6 +965,12 @@ export const TypeSystem = () => {
                           json: "Object",
                           ex: "{}",
                           note: "An empty JSON object.",
+                        },
+                        {
+                          pb: "google.protobuf.Struct",
+                          json: "Object",
+                          ex: '{"foo": "bar", "baz": 123}',
+                          note: "Standard representation for a generic JSON object.",
                         },
                         {
                           pb: "google.protobuf.Value",

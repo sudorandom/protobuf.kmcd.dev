@@ -199,6 +199,9 @@ function App() {
 
   return (
     <div className="min-h-screen bg-[var(--bg-color)] text-[var(--text-color)]">
+      <a href="#main-content" className="skip-to-content">
+        Skip to content
+      </a>
       <ScrollToTop />
       <header className="h-[64px] border-b border-[var(--border-light)] bg-[var(--bg-color)]/90 backdrop-blur-md fixed top-0 left-0 w-full z-[100] px-4 sm:px-8 flex items-center">
         <div className="flex items-center gap-3">
@@ -312,6 +315,7 @@ function App() {
                 <button
                   onClick={() => setIsMenuOpen(false)}
                   className="p-2 text-[var(--text-dim)] hover:text-[var(--text-color)] transition-colors"
+                  aria-label="Close Menu"
                 >
                   <X className="w-6 h-6" />
                 </button>
@@ -369,7 +373,7 @@ function App() {
         )}
       </AnimatePresence>
 
-      <main>
+      <main id="main-content">
         <Routes>
           <Route path="/" element={<Hero isAtTop={isAtTop} />} />
           <Route

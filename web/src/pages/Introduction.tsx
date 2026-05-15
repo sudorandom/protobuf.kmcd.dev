@@ -296,6 +296,7 @@ export const Introduction = ({
                         ? "bg-[var(--cyber-neon-blue)]/10 border-[var(--cyber-neon-blue)] text-[var(--cyber-neon-blue)]"
                         : "bg-[var(--overlay-bg)] border-[var(--border-light)] text-[var(--text-dim)] hover:border-white/20 hover:text-[var(--text-color)]"
                     }`}
+                    aria-label={`View ${face.label} representation`}
                   >
                     <face.icon
                       className={`w-5 h-5 ${activeFace === face.id ? "text-[var(--cyber-neon-blue)]" : "text-[var(--text-dim)] group-hover:text-[var(--text-dim)]"}`}

@@ -9,8 +9,11 @@ import type { Message } from "@bufbuild/protobuf";
 /**
  * Describes the file demo/v1/user.proto.
  */
-export const file_demo_v1_user: GenFile = /*@__PURE__*/
-  fileDesc("ChJkZW1vL3YxL3VzZXIucHJvdG8SB2RlbW8udjEiNwoEVXNlchIKCgJpZBgBIAEoCRIQCgh1c2VybmFtZRgCIAEoCRIRCglpc19hY3RpdmUYAyABKAhiBnByb3RvMw");
+export const file_demo_v1_user: GenFile =
+  /*@__PURE__*/
+  fileDesc(
+    "ChJkZW1vL3YxL3VzZXIucHJvdG8SB2RlbW8udjEiNwoEVXNlchIKCgJpZBgBIAEoCRIQCgh1c2VybmFtZRgCIAEoCRIRCglpc19hY3RpdmUYAyABKAhiBnByb3RvMw",
+  );
 
 /**
  * @generated from message demo.v1.User
@@ -36,5 +39,6 @@ export type User = Message<"demo.v1.User"> & {
  * Describes the message demo.v1.User.
  * Use `create(UserSchema)` to create a new message.
  */
-export const UserSchema: GenMessage<User> = /*@__PURE__*/
+export const UserSchema: GenMessage<User> =
+  /*@__PURE__*/
   messageDesc(file_demo_v1_user, 0);

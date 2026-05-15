@@ -7,10 +7,10 @@ web-format:
 web-dev: web-format
 	cd web && mise exec -- pnpm run dev
 
-web-build: web-format build-wasm
+web-build: web-format wasm-build
 	cd web && mise exec -- pnpm run build
 
-build-wasm:
+wasm-build:
 	@if [ -f web/public/parser.wasm ] && [ -z "$(find wasm-parser -type f -newer web/public/parser.wasm)" ]; then \
 		echo "WASM is up to date."; \
 	else \
@@ -27,7 +27,7 @@ build-wasm:
 generate:
 	mise exec -- buf generate
 
-web-check: web-format build-wasm
+web-check: web-format wasm-build
 	cd web && mise exec -- pnpm run lint
 	cd web && mise exec -- pnpm run build
 

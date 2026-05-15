@@ -438,12 +438,14 @@ const TagCalculator = () => {
           <button
             onClick={() => setMode("small")}
             className={`px-3 py-1 text-xs font-mono rounded transition-all ${mode === "small" ? "bg-[var(--cyber-neon-blue)]/20 text-[var(--cyber-neon-blue)]" : "text-[var(--text-dim)] hover:text-[var(--text-color)]"}`}
+            aria-label="Show tag for field number 1"
           >
             FIELD_1
           </button>
           <button
             onClick={() => setMode("large")}
             className={`px-3 py-1 text-xs font-mono rounded transition-all ${mode === "large" ? "bg-[var(--cyber-neon-pink)]/20 text-[var(--cyber-neon-pink)]" : "text-[var(--text-dim)] hover:text-[var(--text-color)]"}`}
+            aria-label="Show tag for field number 16"
           >
             FIELD_16
           </button>
@@ -1124,6 +1126,7 @@ export const BinaryMatrix = ({
                     ? "bg-[var(--cyber-neon-blue)] border-[var(--cyber-neon-blue)] text-black shadow-[0_0_10px_rgba(0,243,255,0.3)]"
                     : "bg-[var(--overlay-bg)] border-[var(--border-light)] text-[var(--text-dim)] hover:border-white/30 hover:text-[var(--text-color)]"
                 }`}
+                aria-label={`Load ${key} example`}
               >
                 {key}
               </button>
@@ -1133,11 +1136,12 @@ export const BinaryMatrix = ({
             onClick={handleGenerateFake}
             disabled={isGenerating || !fds}
             className="px-4 py-1.5 text-xs font-cyber font-bold border border-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)] text-black hover:bg-[var(--cyber-neon-pink)]/90 transition-all flex items-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed rounded-md shadow-[0_0_15px_rgba(255,0,255,0.4)]"
+            aria-label="Generate Random Data"
           >
             <Zap
               className={`w-3.5 h-3.5 ${isGenerating ? "animate-spin" : ""}`}
             />
-            {isGenerating ? "GENERATING..." : "GENERATE_FAUX_DATA"}
+            {isGenerating ? "GENERATING..." : "RANDOMIZE"}
           </button>
         </div>
 
@@ -1163,12 +1167,14 @@ export const BinaryMatrix = ({
                   <button
                     onClick={() => setViewMode("hex")}
                     className={`px-3 py-1 text-xs font-mono rounded transition-all ${viewMode === "hex" ? "bg-[var(--cyber-neon-blue)]/20 text-[var(--cyber-neon-blue)]" : "text-[var(--text-dim)] hover:text-[var(--text-color)]"}`}
+                    aria-label="Switch to HEX view"
                   >
                     HEX
                   </button>
                   <button
                     onClick={() => setViewMode("scope")}
                     className={`px-3 py-1 text-xs font-mono rounded transition-all ${viewMode === "scope" ? "bg-[var(--cyber-neon-pink)]/20 text-[var(--cyber-neon-pink)]" : "text-[var(--text-dim)] hover:text-[var(--text-color)]"}`}
+                    aria-label="Switch to Protoscope view"
                   >
                     SCOPE
                   </button>
@@ -1188,6 +1194,7 @@ export const BinaryMatrix = ({
                             key={i}
                             onClick={() => setSelectedSegmentIdx(i)}
                             className={`group relative grid grid-cols-[1rem_1fr_auto] items-center gap-4 p-2 rounded-lg border transition-all text-left ${isActive ? "bg-[var(--overlay-bg)] border-[var(--border-light)]" : "border-transparent hover:bg-[var(--overlay-bg)]/50"}`}
+                            aria-label={`Inspect segment ${i}${seg.fieldName ? `: ${seg.fieldName}` : ""}`}
                           >
                             <div className="flex justify-center">
                               {isActive && (

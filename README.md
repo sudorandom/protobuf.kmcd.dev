@@ -42,7 +42,7 @@ The site will be available at `http://localhost:5173`.
 If you make changes to the Go code in `wasm-parser/`, you can rebuild the WASM binary manually:
 
 ```bash
-just build-wasm
+just wasm-build
 ```
 
 ## Building for Production

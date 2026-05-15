@@ -89,9 +89,7 @@ export const VersionTimeline = () => {
               >
                 {/* Content */}
                 <div className="flex-1 ml-12 md:ml-0 md:px-12">
-                  <div
-                    className={`p-6 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-xl hover:border-[${v.color}]/50 transition-all group`}
-                  >
+                  <div className="p-6 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-xl hover:border-[var(--cyber-neon-blue)]/50 transition-all group">
                     <div className="flex items-center gap-3 mb-2">
                       <span
                         className="font-mono text-xs font-bold px-2 py-0.5 rounded"

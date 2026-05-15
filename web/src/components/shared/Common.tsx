@@ -168,6 +168,43 @@ export const SyntaxHighlighter = ({
         (_, p1) =>
           "= " + push(`<span class="text-[var(--text-color)]">${p1}</span>`),
       );
+    } else if (language === "typescript") {
+      output = output.replace(/\/\/.*$/gm, (match) =>
+        push(`<span class="text-[var(--text-dim)]">${match}</span>`),
+      );
+      output = output.replace(
+        /("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|`(?:[^`\\]|\\.)*`)/g,
+        (match) =>
+          push(`<span class="text-[var(--cyber-neon-green)]">${match}</span>`),
+      );
+      output = output.replace(
+        /\b(import|from|const|export|return|interface|type|new|await|async|let|var|if|else|for|while|function|class|extends|implements)\b/g,
+        (match) =>
+          push(`<span class="text-[var(--cyber-neon-pink)]">${match}</span>`),
+      );
+      output = output.replace(
+        /\b(string|number|boolean|any|void|unknown|never|Record|Partial|Required|Readonly|Pick|Omit)\b/g,
+        (match) =>
+          push(`<span class="text-[var(--cyber-neon-blue)]">${match}</span>`),
+      );
+    } else if (language === "bash") {
+      output = output.replace(/^(\$|#)/gm, (match) =>
+        push(`<span class="text-[var(--cyber-neon-pink)] opacity-50 font-bold">${match}</span>`),
+      );
+      output = output.replace(/#.*$/gm, (match) =>
+        push(`<span class="text-[var(--text-dim)]">${match}</span>`),
+      );
+    } else if (language === "yaml") {
+      output = output.replace(/#.*$/gm, (match) =>
+        push(`<span class="text-[var(--text-dim)]">${match}</span>`),
+      );
+      output = output.replace(/^(\s*)([\w-]+):/gm, (_, p1, p2) =>
+        p1 + push(`<span class="text-[var(--cyber-neon-blue)]">${p2}</span>`) + ":",
+      );
+      output = output.replace(/: (.*)$/gm, (match, p1) => {
+        if (p1.trim() === "") return match;
+        return ": " + push(`<span class="text-[var(--cyber-neon-green)]">${p1}</span>`);
+      });
     }
 
     for (let i = placeholders.length - 1; i >= 0; i--) {

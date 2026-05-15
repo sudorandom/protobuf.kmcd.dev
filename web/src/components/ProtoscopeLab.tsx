@@ -122,6 +122,7 @@ export const ProtoscopeLab: React.FC<ProtoscopeLabProps> = ({
               <button
                 onClick={() => setIsModalOpen(true)}
                 className="text-xs font-cyber font-bold text-[var(--cyber-neon-blue)] hover:text-[var(--cyber-neon-blue)]/80 transition-colors uppercase flex items-center gap-1 group"
+                aria-label="Open Protobuf schema editor"
               >
                 <Settings2 className="w-3 h-3 group-hover:rotate-45 transition-transform" />
                 Edit Schema
@@ -134,6 +135,7 @@ export const ProtoscopeLab: React.FC<ProtoscopeLabProps> = ({
               onClick={handleGenerateFake}
               disabled={isGenerating || !fds}
               className="px-2 py-1 text-xs font-cyber font-bold border border-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/10 text-[var(--cyber-neon-pink)] hover:bg-[var(--cyber-neon-pink)]/20 transition-all flex items-center gap-1.5 disabled:opacity-30 disabled:cursor-not-allowed rounded uppercase tracking-wider"
+              aria-label="Generate random JSON data from schema"
             >
               <Zap
                 className={`w-2.5 h-2.5 ${isGenerating ? "animate-spin" : ""}`}

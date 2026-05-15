@@ -155,6 +155,7 @@ export const InteractiveSchemaEditor: React.FC<
         <button
           onClick={handleReset}
           className="flex items-center gap-2 px-4 py-2 text-xs font-cyber font-bold text-[var(--text-dim)] hover:text-[var(--text-color)] transition-colors uppercase tracking-widest"
+          aria-label="Reset schema to default values"
         >
           <RotateCcw className="w-3.5 h-3.5" />
           Reset
@@ -165,6 +166,7 @@ export const InteractiveSchemaEditor: React.FC<
             <button
               onClick={onCancel}
               className="flex items-center gap-2 px-6 py-2 text-xs font-cyber font-bold border border-[var(--border-light)] text-[var(--text-dim)] hover:bg-[var(--overlay-bg)] hover:text-[var(--text-color)] transition-all rounded-md uppercase tracking-widest"
+              aria-label="Cancel schema changes"
             >
               <X className="w-3.5 h-3.5" />
               Cancel
@@ -175,6 +177,9 @@ export const InteractiveSchemaEditor: React.FC<
               onClick={handleSave}
               disabled={localErrors.length > 0 || isValidating}
               className="flex items-center gap-2 px-8 py-2 text-xs font-cyber font-bold bg-[var(--cyber-neon-blue)] text-black hover:bg-[var(--cyber-neon-blue)]/90 transition-all rounded-md uppercase tracking-widest disabled:opacity-30 disabled:cursor-not-allowed shadow-[0_0_15px_rgba(0,243,255,0.3)]"
+              aria-label={
+                onSave ? "Save schema changes" : "Apply schema changes"
+              }
             >
               <Check className="w-3.5 h-3.5" />
               {onSave ? "Save Changes" : "Apply Changes"}

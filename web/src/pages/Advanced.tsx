@@ -372,16 +372,38 @@ $ buf lint
             <ExternalLinkText href="https://protobuf.dev/programming-guides/editions/">
               Protobuf Editions
             </ExternalLinkText>{" "}
-            is the modern evolution of the language, replacing the old{" "}
-            <code>proto2</code> and <code>proto3</code> syntax specifiers.
+            is the modern evolution of the language, unifying{" "}
+            <code>proto2</code> and <code>proto3</code> into a single, flexible
+            syntax.
           </p>
           <p>
             Instead of massive, breaking syntax upgrades, Editions allows
-            features to be added or deprecated gradually over time. A schema
-            specifies its edition (e.g., <code>edition = "2023";</code>), giving
-            developers fine-grained control over language features using the{" "}
-            <code>features</code> option.
+            features to be toggled individually. This allows for smooth
+            migrations and fine-grained control over behaviors:
           </p>
+          <ul className="space-y-2 text-xs">
+            <li className="flex gap-2">
+              <div className="w-1 h-1 bg-[var(--cyber-neon-green)] mt-1.5 shrink-0"></div>
+              <span>
+                <strong>Field Presence:</strong> Choose between IMPLICIT (proto3
+                default) or EXPLICIT (proto2 default).
+              </span>
+            </li>
+            <li className="flex gap-2">
+              <div className="w-1 h-1 bg-[var(--cyber-neon-green)] mt-1.5 shrink-0"></div>
+              <span>
+                <strong>Enum Type:</strong> OPEN enums allow unknown values,
+                while CLOSED enums treat them as invalid.
+              </span>
+            </li>
+            <li className="flex gap-2">
+              <div className="w-1 h-1 bg-[var(--cyber-neon-green)] mt-1.5 shrink-0"></div>
+              <span>
+                <strong>Repeated Encoding:</strong> Standardize on PACKED (for
+                efficiency) or EXPANDED (for compatibility).
+              </span>
+            </li>
+          </ul>
         </div>
       ),
       example: `edition = "2023";
@@ -392,13 +414,60 @@ option features.field_presence = EXPLICIT;
 message User {
   // Optional fields are back
   string name = 1;
+  
+  // Mixed behavior in one file!
+  int32 age = 2 [features.enum_type = OPEN];
+}`,
+    },
+    {
+      id: "services",
+      icon: Zap,
+      title: "Services (gRPC & RPC)",
+      subtitle: "03g_NETWORKING",
+      panelTitle: "SERVICE_DEFINITION",
+      desc: (
+        <div className="space-y-4">
+          <p>
+            Protobuf isn't just for data; it also defines how services
+            communicate. Using the <code>service</code> keyword, you can define
+            RPC (Remote Procedure Call) interfaces that frameworks like{" "}
+            <strong>gRPC</strong> or <strong>Connect</strong> use to generate
+            client and server code.
+          </p>
+          <p>Services support four types of communication:</p>
+          <ul className="space-y-2 text-xs">
+            <li className="flex gap-2">
+              <div className="w-1 h-1 bg-[var(--cyber-neon-pink)] mt-1.5 shrink-0"></div>
+              <span>
+                <strong>Unary:</strong> Simple request-response.
+              </span>
+            </li>
+            <li className="flex gap-2">
+              <div className="w-1 h-1 bg-[var(--cyber-neon-pink)] mt-1.5 shrink-0"></div>
+              <span>
+                <strong>Streaming:</strong> Send or receive sequences of
+                messages in a single call (Client, Server, or Bidirectional).
+              </span>
+            </li>
+          </ul>
+        </div>
+      ),
+      example: `service UserService {
+  // Unary: One request, one response
+  rpc GetUser(GetUserRequest) returns (User);
+
+  // Server Stream: One request, many responses
+  rpc ListUsers(ListUsersRequest) returns (stream User);
+
+  // Bidirectional Stream: Real-time chat
+  rpc Chat(stream Message) returns (stream Message);
 }`,
     },
     {
       id: "presence",
       icon: HelpCircle,
       title: "Field Presence",
-      subtitle: "03g_OPTIONALITY",
+      subtitle: "03h_OPTIONALITY",
       panelTitle: "PRESENCE_COMPARISON",
       desc: (
         <div className="space-y-4">
@@ -564,24 +633,30 @@ export const DescriptorsAndReflection = () => {
                 can use Protobuf tools to read and analyze Protobuf schemas
                 dynamically at runtime.
               </p>
-              <div className="p-4 bg-[var(--cyber-neon-blue)]/5 border border-[var(--cyber-neon-blue)]/10 rounded text-sm text-[var(--text-dim)] space-y-3">
-                <p>
-                  <strong>Why is this useful?</strong>
+              <div className="p-4 bg-[var(--cyber-neon-blue)]/5 border border-[var(--cyber-neon-blue)]/10 rounded text-sm text-[var(--text-dim)] space-y-4">
+                <p className="font-cyber font-bold text-[var(--cyber-neon-blue)] uppercase tracking-widest text-xs">
+                  Why is this useful?
                 </p>
-                <ul className="space-y-2">
-                  <li className="flex gap-2">
-                    <div className="w-1 h-1 bg-[var(--cyber-neon-blue)] mt-1.5 shrink-0"></div>{" "}
-                    <strong>Dynamic Decoding:</strong> Tools like this web
-                    explorer use descriptors to decode arbitrary binary data
-                    without generating static code.
-                  </li>
-                  <li className="flex gap-2">
-                    <div className="w-1 h-1 bg-[var(--cyber-neon-blue)] mt-1.5 shrink-0"></div>{" "}
-                    <strong>Validation:</strong> Complex rule engines (like
-                    protovalidate) use descriptors to apply constraints
-                    dynamically.
-                  </li>
-                </ul>
+                <div className="space-y-4">
+                  <div className="space-y-1">
+                    <p className="font-bold text-[var(--text-color)]">
+                      Dynamic Decoding
+                    </p>
+                    <p>
+                      Tools like this web explorer use descriptors to decode
+                      arbitrary binary data without generating static code.
+                    </p>
+                  </div>
+                  <div className="space-y-1">
+                    <p className="font-bold text-[var(--text-color)]">
+                      Validation
+                    </p>
+                    <p>
+                      Complex rule engines (like protovalidate) use descriptors
+                      to apply constraints dynamically.
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
             <CyberPanel title="DESCRIPTOR.PROTO (SNIPPET)">
@@ -637,12 +712,14 @@ message DescriptorProto {
                         <button
                           onClick={downloadBinary}
                           className="px-2 py-0.5 text-xs font-mono rounded border border-[var(--cyber-neon-blue)]/50 text-[var(--cyber-neon-blue)] bg-[var(--cyber-neon-blue)]/10 hover:bg-[var(--cyber-neon-blue)]/20 transition-all uppercase flex items-center gap-1"
+                          aria-label="Save as binary protocol buffer"
                         >
                           <Download className="w-3 h-3" /> SAVE_PB
                         </button>
                         <button
                           onClick={downloadJson}
                           className="px-2 py-0.5 text-xs font-mono rounded border border-[var(--cyber-neon-pink)]/50 text-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/10 hover:bg-[var(--cyber-neon-pink)]/20 transition-all uppercase flex items-center gap-1"
+                          aria-label="Save as JSON"
                         >
                           <Download className="w-3 h-3" /> SAVE_JSON
                         </button>
@@ -1145,6 +1222,7 @@ export const ValidationLab = ({
                   <button
                     onClick={() => setIsModalOpen(true)}
                     className="text-xs font-cyber font-bold text-[var(--cyber-neon-blue)] hover:text-[var(--cyber-neon-blue)]/80 transition-colors uppercase flex items-center gap-1 group"
+                    aria-label="Open validation schema editor"
                   >
                     <Settings2 className="w-3 h-3 group-hover:rotate-45 transition-transform" />
                     Edit Schema
@@ -1166,6 +1244,7 @@ export const ValidationLab = ({
                         ? "bg-[var(--cyber-neon-blue)]/20 border-[var(--cyber-neon-blue)] text-[var(--cyber-neon-blue)]"
                         : "bg-[var(--overlay-bg)] border-[var(--border-light)] text-[var(--text-dim)] hover:border-white/30 hover:text-[var(--text-color)]"
                     }`}
+                    aria-label={`Load validation example: ${key}`}
                   >
                     {key}
                   </button>
@@ -1186,6 +1265,7 @@ export const ValidationLab = ({
                   }}
                   disabled={!messageSchema || !fds}
                   className="px-2 py-1 text-xs font-cyber font-bold border border-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/10 text-[var(--cyber-neon-pink)] hover:bg-[var(--cyber-neon-pink)]/20 transition-all flex items-center gap-1.5 disabled:opacity-30 disabled:cursor-not-allowed rounded uppercase tracking-wider"
+                  aria-label="Generate random JSON data for validation"
                 >
                   <Zap className="w-2.5 h-2.5" />
                   Randomize
