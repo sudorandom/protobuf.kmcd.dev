@@ -19,6 +19,7 @@ import {
 } from "../components/shared/Common";
 import { JsonEditor } from "../components/shared/JsonEditor";
 import VarintExplainer from "../components/VarintExplainer";
+import { MemoryLayoutVisualization } from "../components/MemoryLayoutVisualization";
 import MultiFieldEncoding from "../components/MultiFieldEncoding";
 import { decodeBinary, type DecodedSegment } from "../utils/decoder";
 import { SIZE_EXAMPLES } from "../utils/constants";
@@ -681,7 +682,7 @@ const BinaryBasics = () => (
         <p className="text-lg text-[var(--text-dim)] leading-relaxed">
           Endianness refers to the order in which bytes are arranged in computer
           memory. Protobuf standardizes on <strong>Little-Endian</strong> for
-          all fixed-size numeric types and varints.
+          all fixed-size numeric types and <strong>Base-128 Varints</strong>.
         </p>
         <p className="text-sm text-[var(--text-dim)] leading-relaxed max-w-2xl mx-auto">
           In Little-Endian systems, the "least significant byte" (the one with
@@ -690,153 +691,74 @@ const BinaryBasics = () => (
       </div>
       <div className="max-w-4xl mx-auto">
         <CyberPanel title="MEMORY_LAYOUT_VISUALIZATION">
-          <div className="p-8 space-y-12">
-            <div className="flex flex-col items-center gap-8">
-              {/* Step 1: Logical Value */}
-              <div className="w-full space-y-4">
-                <div className="flex justify-between items-center px-2">
-                  <span className="text-xs font-cyber font-bold text-[var(--text-color)] uppercase tracking-widest">
-                    1. Logical Value (1,000)
-                  </span>
-                  <span className="text-xs font-mono text-[var(--text-dim)] uppercase">
-                    Binary representation
-                  </span>
-                </div>
-                <div className="flex gap-4 p-6 bg-[var(--bg-color)] border border-[var(--border-light)] rounded-xl relative group overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-                  <div className="flex-1 space-y-2 relative">
-                    <div className="flex justify-between text-[10px] font-mono uppercase opacity-50">
-                      <span>High Byte (Most Sig)</span>
-                      <span>0x03</span>
-                    </div>
-                    <div className="flex gap-1 h-10">
-                      {[0, 0, 0, 0, 0, 0, 1, 1].map((bit, i) => (
-                        <div
-                          key={i}
-                          className="flex-1 flex items-center justify-center border border-[var(--cyber-neon-blue)]/30 bg-[var(--cyber-neon-blue)]/5 text-[var(--cyber-neon-blue)] font-mono text-lg rounded-sm"
-                        >
-                          {bit}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="flex items-center text-[var(--text-dim)] px-2 font-bold">
-                    +
-                  </div>
-                  <div className="flex-1 space-y-2 relative">
-                    <div className="flex justify-between text-[10px] font-mono uppercase opacity-50">
-                      <span>Low Byte (Least Sig)</span>
-                      <span>0xE8</span>
-                    </div>
-                    <div className="flex gap-1 h-10">
-                      {[1, 1, 1, 0, 1, 0, 0, 0].map((bit, i) => (
-                        <div
-                          key={i}
-                          className="flex-1 flex items-center justify-center border border-[var(--cyber-neon-green)]/30 bg-[var(--cyber-neon-green)]/5 text-[var(--cyber-neon-green)] font-mono text-lg rounded-sm"
-                        >
-                          {bit}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex justify-center">
-                <div className="flex flex-col items-center gap-1">
-                  <div className="text-[10px] font-mono text-[var(--text-dim)] uppercase">
-                    Reordered for storage
-                  </div>
-                  <ChevronRight className="w-6 h-6 rotate-90 text-[var(--text-dim)]" />
-                </div>
-              </div>
-
-              {/* Step 2: Memory Layout */}
-              <div className="w-full space-y-4">
-                <div className="flex justify-between items-center px-2">
-                  <span className="text-xs font-cyber font-bold text-[var(--text-color)] uppercase tracking-widest">
-                    2. Little-Endian Memory (Storage)
-                  </span>
-                  <span className="text-xs font-mono text-[var(--text-dim)] uppercase">
-                    Low address first
-                  </span>
-                </div>
-
-                <div className="flex flex-col gap-4">
-                  <div className="flex gap-6 items-center">
-                    <div className="w-24 text-right space-y-1">
-                      <span className="block text-[10px] font-mono text-[var(--text-dim)] uppercase">
-                        Addr: 0x00
-                      </span>
-                      <span className="block text-[10px] font-mono text-[var(--cyber-neon-green)] uppercase font-bold">
-                        Byte 0
-                      </span>
-                    </div>
-                    <div className="flex-1 flex gap-1 h-12">
-                      {[1, 1, 1, 0, 1, 0, 0, 0].map((bit, i) => (
-                        <div
-                          key={i}
-                          className="flex-1 flex flex-col items-center gap-1"
-                        >
-                          <div className="w-full h-full flex items-center justify-center border border-[var(--cyber-neon-green)]/30 bg-[var(--cyber-neon-green)]/10 text-[var(--cyber-neon-green)] font-mono text-xl font-bold rounded shadow-[0_0_10px_rgba(0,255,159,0.05)]">
-                            {bit}
-                          </div>
-                          <span className="text-[8px] font-mono opacity-40">
-                            2^{7 - i}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="w-20 px-3 py-1 bg-[var(--cyber-neon-green)]/5 border border-[var(--cyber-neon-green)]/20 rounded font-mono text-xs text-[var(--cyber-neon-green)] text-center">
-                      0xE8
-                    </div>
-                  </div>
-
-                  <div className="flex gap-6 items-center">
-                    <div className="w-24 text-right space-y-1">
-                      <span className="block text-[10px] font-mono text-[var(--text-dim)] uppercase">
-                        Addr: 0x01
-                      </span>
-                      <span className="block text-[10px] font-mono text-[var(--cyber-neon-blue)] uppercase font-bold">
-                        Byte 1
-                      </span>
-                    </div>
-                    <div className="flex-1 flex gap-1 h-12">
-                      {[0, 0, 0, 0, 0, 0, 1, 1].map((bit, i) => (
-                        <div
-                          key={i}
-                          className="flex-1 flex flex-col items-center gap-1"
-                        >
-                          <div className="w-full h-full flex items-center justify-center border border-[var(--cyber-neon-blue)]/30 bg-[var(--cyber-neon-blue)]/10 text-[var(--cyber-neon-blue)] font-mono text-xl font-bold rounded shadow-[0_0_10px_rgba(243,255,0,0.05)]">
-                            {bit}
-                          </div>
-                          <span className="text-[8px] font-mono opacity-40">
-                            2^{15 - i}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="w-20 px-3 py-1 bg-[var(--cyber-neon-blue)]/5 border border-[var(--cyber-neon-blue)]/20 rounded font-mono text-xs text-[var(--cyber-neon-blue)] text-center">
-                      0x03
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-4 p-4 bg-[var(--overlay-bg)] rounded-lg border border-[var(--border-light)] text-center max-w-2xl">
-                <p className="text-xs text-[var(--text-dim)] leading-relaxed">
-                  Protobuf stores the{" "}
-                  <strong className="text-[var(--cyber-neon-green)]">
-                    Least Significant Byte (Low Weight)
-                  </strong>{" "}
-                  at the first memory address. This "Little-Endian" order is why
-                  the green part of the number appears to come "before" the blue
-                  part in the raw binary stream.
-                </p>
-              </div>
-            </div>
+          <MemoryLayoutVisualization />
+          <div className="mt-4 p-4 bg-[var(--overlay-bg)] rounded-lg border border-[var(--border-light)] text-center max-w-2xl mx-auto">
+            <p className="text-xs text-[var(--text-dim)] leading-relaxed">
+              Protobuf stores the{" "}
+              <strong className="text-[var(--cyber-neon-green)]">
+                Least Significant Byte (Low Weight)
+              </strong>{" "}
+              at the first memory address. This is why the green part appears to
+              come "before" the blue part in the raw binary stream.
+            </p>
           </div>
         </CyberPanel>
+      </div>
+
+      <div className="mt-16 max-w-4xl mx-auto space-y-12">
+        <div className="text-center space-y-4">
+          <h3 className="text-3xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">
+            Why Little Endian?
+          </h3>
+          <p className="text-lg text-[var(--text-dim)] leading-relaxed">
+            Choosing Little-Endian over the traditional Big-Endian "Network
+            Order" was a deliberate engineering decision based on speed and
+            scale.
+          </p>
+        </div>
+
+        <div className="max-w-3xl mx-auto space-y-12">
+          <div className="space-y-4">
+            <h4 className="text-sm font-cyber font-bold text-[var(--cyber-neon-blue)] uppercase tracking-widest">
+              1. Base-128 Mechanics
+            </h4>
+            <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+              The Varint algorithm processes integers by dropping leading
+              zeros. It looks at the least significant 7 bits, sets a
+              continuation bit, and writes it. Because this loop starts at the
+              bottom and works its way up, the least significant bytes are
+              inherently written first. Sticking to Little-Endian allows
+              encoding and decoding in a single, lightning-fast loop without
+              extra buffering or length look-ahead.
+            </p>
+          </div>
+          <div className="space-y-4">
+            <h4 className="text-sm font-cyber font-bold text-[var(--cyber-neon-green)] uppercase tracking-widest">
+              2. Hardware Synergy
+            </h4>
+            <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+              Google's data centers were built on x86 hardware, which is
+              natively Little-Endian. Forcing servers to flip bytes into "network
+              order" just to satisfy convention wastes CPU cycles. At Google's
+              massive scale, those wasted cycles translate to significant hardware
+              and power costs. By aligning the format with the native CPU
+              architecture, they optimized for raw performance.
+            </p>
+          </div>
+          <div className="space-y-4">
+            <h4 className="text-sm font-cyber font-bold text-[var(--cyber-neon-pink)] uppercase tracking-widest">
+              3. Payload vs Transport
+            </h4>
+            <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+              It helps to draw a hard line between transport and payload. TCP/IP
+              headers are Big-Endian so routers can read them, but Protobuf is
+              an application-layer payload. The network infrastructure never reads
+              it. As long as the sending and receiving applications agree on the
+              rules, the payload can be formatted in whatever way is most
+              computationally efficient for the end hosts.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1460,13 +1382,12 @@ const BinaryPage = ({
                 </div>
                 <div>
                   <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--text-color)]">
-                    Varint Encoding
+                    Base-128 Varint Encoding
                   </h4>
                   <p className="text-xs text-[var(--text-dim)] mt-1">
                     The fundamental compression technique for integers.
                   </p>
-                </div>
-              </div>
+                </div>              </div>
             </div>
             <div className="space-y-4">
               <div className="flex gap-3 items-start">
@@ -1531,7 +1452,7 @@ const BinaryPage = ({
       <div className="max-w-7xl mx-auto space-y-16">
         <div className="max-w-4xl mx-auto text-center space-y-6">
           <h3 className="text-4xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">
-            Varint Encoding
+            Base-128 Varint Encoding
           </h3>
           <p className="text-xl text-[var(--text-dim)] leading-relaxed">
             Varints are the fundamental building block of Protobuf efficiency,

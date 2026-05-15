@@ -1,6 +1,6 @@
 # protobuf.kmcd.dev
 
-An interactive, deep-dive explainer for Protocol Buffers (Protobuf). This project aims to demystify the Protobuf wire format, varint encoding, and the relationship between schemas and binary data.
+An interactive, deep-dive explainer for Protocol Buffers (Protobuf). This project aims to demystify the Protobuf wire format, Base-128 Varint encoding, and the relationship between schemas and binary data.
 
 ## Project Structure
 
