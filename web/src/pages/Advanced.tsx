@@ -48,15 +48,17 @@ const TopicSection = ({
   panelTitle,
   desc,
   example,
+  children,
   bgClass = "bg-[var(--section-bg-dark)]",
 }: {
   id: string;
   icon: React.ElementType;
   title: string;
   subtitle: string;
-  panelTitle: string;
+  panelTitle?: string;
   desc: React.ReactNode;
-  example: string;
+  example?: string;
+  children?: React.ReactNode;
   bgClass?: string;
 }) => (
   <Section
@@ -73,11 +75,19 @@ const TopicSection = ({
             {desc}
           </div>
         </div>
-        <CyberPanel title={panelTitle} className="h-full">
-          <div className="p-2">
-            <SyntaxHighlighter language="proto" code={example} wrap={true} />
-          </div>
-        </CyberPanel>
+        {children ? (
+          children
+        ) : (
+          <CyberPanel title={panelTitle || ""} className="h-full">
+            <div className="p-2">
+              <SyntaxHighlighter
+                language="proto"
+                code={example || ""}
+                wrap={true}
+              />
+            </div>
+          </CyberPanel>
+        )}
       </div>
     </div>
   </Section>
@@ -382,7 +392,7 @@ $ buf lint
             features to be toggled individually. This allows for smooth
             migrations and fine-grained control over behaviors:
           </p>
-          <ul className="space-y-2 text-xs">
+          <ul className="space-y-2 text-sm">
             <li className="flex gap-2">
               <div className="w-1 h-1 bg-[var(--cyber-neon-green)] mt-1.5 shrink-0"></div>
               <span>
@@ -436,7 +446,7 @@ message User {
             client and server code.
           </p>
           <p>Services support four types of communication:</p>
-          <ul className="space-y-2 text-xs">
+          <ul className="space-y-2 text-sm">
             <li className="flex gap-2">
               <div className="w-1 h-1 bg-[var(--cyber-neon-pink)] mt-1.5 shrink-0"></div>
               <span>
@@ -931,8 +941,46 @@ message User {
         <div className="space-y-4">
           <p>
             You can define custom "options" (annotations) to attach metadata to
-            your schema. These are often used by compiler plugins (like
-            generating validation) or read via reflection.
+            your schema. Common use cases include defining{" "}
+            <strong>data validation rules</strong> (e.g., protovalidate),{" "}
+            <strong>field-level data classification</strong> (e.g., tagging PII),
+            and <strong>service-level access control</strong> (e.g., defining
+            required roles for RBAC).
+          </p>
+          <div className="space-y-3">
+            <p className="text-xs font-bold uppercase text-[var(--cyber-neon-blue)] tracking-widest">
+              Available Scopes
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {[
+                "File",
+                "Message",
+                "Field",
+                "Oneof",
+                "Enum",
+                "EnumValue",
+                "Service",
+                "Method",
+              ].map((scope) => (
+                <span
+                  key={scope}
+                  className="px-2 py-1 bg-[var(--cyber-neon-blue)]/5 border border-[var(--cyber-neon-blue)]/20 rounded font-mono text-xs text-[var(--cyber-neon-blue)]"
+                >
+                  {scope}
+                </span>
+              ))}
+            </div>
+            <p className="text-[var(--text-dim)]">
+              Metadata can be attached to any of these points by extending the
+              respective standard descriptor messages.
+            </p>
+          </div>
+          <p>
+            For a deep dive, see the{" "}
+            <ExternalLinkText href="https://protobuf.dev/programming-guides/proto2/#customoptions">
+              Custom Options Guide
+            </ExternalLinkText>
+            .
           </p>
           <TechnicalNuance title="Extension Registries">
             <p>
@@ -945,9 +993,7 @@ message User {
               <ExternalLinkText href="https://github.com/protocolbuffers/protobuf/blob/main/docs/options.md">
                 Global Extension Registry
               </ExternalLinkText>{" "}
-              for public projects. For internal use, organizations typically
-              assign specific ranges (e.g., 50000-99999) to different teams to
-              avoid "collision hell."
+              for public projects.
             </p>
           </TechnicalNuance>
         </div>
@@ -961,12 +1007,9 @@ extend google.protobuf.FieldOptions {
   optional bool is_pii = 50001;
 }
 
-// user.proto
-edition = "2023";
-import "options.proto";
-
-message User {
-  string ssn = 1 [(is_pii) = true];
+extend google.protobuf.MethodOptions {
+  // Example: Required role for RBAC
+  optional string required_role = 50002;
 }`,
     },
     {
@@ -985,11 +1028,24 @@ message User {
           </p>
           <p>
             A plugin is just a program that reads a{" "}
-            <code>CodeGeneratorRequest</code> from <code>stdin</code> and writes
-            a <code>CodeGeneratorResponse</code> to <code>stdout</code>. This
-            architecture allows anyone to write a plugin to generate
-            anything—documentation, client libraries, or even SQL schemas—from a
-            Protobuf definition.
+            <ExternalLinkText href="https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/compiler/plugin.proto">
+              <code>CodeGeneratorRequest</code>
+            </ExternalLinkText>{" "}
+            from <code>stdin</code> and writes a{" "}
+            <ExternalLinkText href="https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/compiler/plugin.proto">
+              <code>CodeGeneratorResponse</code>
+            </ExternalLinkText>{" "}
+            to <code>stdout</code>.
+          </p>
+          <p>
+            This architecture allows anyone to write a plugin to generate a wide
+            range of outputs, such as documentation, client libraries, or even
+            SQL schemas, from a Protobuf definition. For more information, see
+            the{" "}
+            <ExternalLinkText href="https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/compiler/plugin.proto">
+              plugin.proto file itself
+            </ExternalLinkText>
+            .
           </p>
         </div>
       ),
@@ -1052,53 +1108,6 @@ $ protoc --plugin=protoc-gen-custom=./my-plugin \\
   int64 count = 2;
 }`,
     },
-    {
-      id: "lifecycle",
-      icon: ShieldCheck,
-      title: "Deprecation",
-      subtitle: "03k_EVOLUTION",
-      panelTitle: "LIFECYCLE_SCHEMA",
-      desc: (
-        <div className="space-y-4">
-          <p>
-            Because Protobuf identifies data on the wire using field numbers
-            rather than names, the concept of "deleting" a field requires
-            careful handling. If a schema has ever been used in production—where
-            older clients or databases might still hold data serialized with a
-            specific field number—you cannot simply remove the field and let its
-            number be reused. Instead, you must manage its lifecycle:
-          </p>
-          <ol className="list-decimal pl-4 space-y-2 text-sm">
-            <li>
-              <strong>Deprecate:</strong> Add <code>[deprecated = true]</code>.
-              This warns developers in their IDEs (via generated code
-              annotations like <code>@Deprecated</code>) not to use it for new
-              features.
-            </li>
-            <li>
-              <strong>Stop Using:</strong> Wait until metrics show zero traffic
-              using the field.
-            </li>
-            <li>
-              <strong>Reserve:</strong> Remove the field entirely and add its
-              number/name to a <code>reserved</code> block. This prevents future
-              developers from accidentally reusing the number and corrupting old
-              data that might still be in a database.
-            </li>
-          </ol>
-        </div>
-      ),
-      example: `message Product {
-  // Step 3: Block reuse permanently
-  reserved 1, "old_price";
-
-  // Step 1: Warn developers
-  int32 price_cents = 2 [deprecated = true];
-  
-  // The new way
-  int64 price_micros = 3;
-}`,
-    },
   ];
 
   return (
@@ -1116,6 +1125,74 @@ $ protoc --plugin=protoc-gen-custom=./my-plugin \\
           bgClass="bg-[var(--section-bg-alt)]/20"
         />
       ))}
+
+      <TopicSection
+        id="lifecycle"
+        icon={ShieldCheck}
+        title="Deprecation"
+        subtitle="03k_EVOLUTION"
+        bgClass="bg-[var(--section-bg-alt)]/20"
+        desc={
+          <div className="space-y-4">
+            <p>
+              Because Protobuf identifies data on the wire using field numbers
+              rather than names, the concept of "deleting" a field requires
+              careful handling. If a schema has ever been used in production—where
+              older clients or databases might still hold data serialized with a
+              specific field number—you cannot simply remove the field and let its
+              number be reused. Instead, you must manage its lifecycle:
+            </p>
+            <ol className="list-decimal pl-4 space-y-2 text-sm">
+              <li>
+                <strong>Deprecate:</strong> Add <code>[deprecated = true]</code>.
+                This warns developers in their IDEs (via generated code
+                annotations like <code>@Deprecated</code>) not to use it for new
+                features.
+              </li>
+              <li>
+                <strong>Stop Using:</strong> Wait until metrics show zero traffic
+                using the field.
+              </li>
+              <li>
+                <strong>Reserve:</strong> Remove the field entirely and add its
+                number/name to a <code>reserved</code> block. This prevents future
+                developers from accidentally reusing the number and corrupting old
+                data that might still be in a database.
+              </li>
+            </ol>
+          </div>
+        }
+      >
+        <div className="space-y-4">
+          <CyberPanel title="Step 1: The original schema">
+            <div className="p-2">
+              <SyntaxHighlighter
+                language="proto"
+                code={`message Product {\n  int32 price_cents = 1;\n}`}
+                wrap={true}
+              />
+            </div>
+          </CyberPanel>
+          <CyberPanel title="Step 2: Deprecate the old field, add the new one">
+            <div className="p-2">
+              <SyntaxHighlighter
+                language="proto"
+                code={`message Product {\n  int32 price_cents = 1 [deprecated = true];\n  int64 price_micros = 2;\n}`}
+                wrap={true}
+              />
+            </div>
+          </CyberPanel>
+          <CyberPanel title="Step 3: Remove the old field and reserve its ID/name">
+            <div className="p-2">
+              <SyntaxHighlighter
+                language="proto"
+                code={`message Product {\n  reserved 1, "price_cents";\n\n  int64 price_micros = 2;\n}`}
+                wrap={true}
+              />
+            </div>
+          </CyberPanel>
+        </div>
+      </TopicSection>
     </>
   );
 };

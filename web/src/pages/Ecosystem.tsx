@@ -339,14 +339,14 @@ export const Toolbox = () => {
                 <h4 className="font-mono text-xs font-bold text-[var(--cyber-neon-pink)] mb-2">
                   {p.name}
                 </h4>
-                <p className="text-[10px] text-[var(--text-dim)] leading-relaxed mb-4">
+                <p className="text-xs text-[var(--text-dim)] leading-relaxed mb-4">
                   {p.desc}
                 </p>
                 <a
                   href={p.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[10px] font-bold text-[var(--text-color)] hover:underline uppercase tracking-widest"
+                  className="text-xs font-bold text-[var(--text-color)] hover:underline uppercase tracking-widest"
                 >
                   Source
                 </a>
