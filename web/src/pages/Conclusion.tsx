@@ -1,94 +1,9 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ChevronLeft, BookOpen } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import {
   Section,
-  SectionTitle,
-  ExternalLinkText,
 } from "../components/shared/Common";
-
-const References = () => (
-  <Section
-    id="references"
-    className="py-24 px-4 sm:px-8 border-t border-[var(--border-light)] relative overflow-hidden"
-    style={{
-      background:
-        "linear-gradient(to bottom, transparent, var(--bg-color) 400px)",
-    }}
-  >
-    <div className="max-w-7xl mx-auto text-[var(--text-color)] relative z-10">
-      <SectionTitle icon={BookOpen}>References & Specs</SectionTitle>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div className="space-y-4">
-          <h4 className="text-[var(--cyber-neon-blue)] font-cyber text-sm tracking-widest uppercase">
-            Core Specifications
-          </h4>
-          <ul className="space-y-2 text-sm">
-            <li>
-              <ExternalLinkText href="https://protobuf.dev/programming-guides/encoding/">
-                Protobuf Encoding Specification
-              </ExternalLinkText>
-            </li>
-            <li>
-              <ExternalLinkText href="https://protobuf.dev/programming-guides/proto3/">
-                Proto3 Language Guide
-              </ExternalLinkText>
-            </li>
-            <li>
-              <ExternalLinkText href="https://protobuf.dev/programming-guides/proto3/#json">
-                ProtoJSON Mapping Standard
-              </ExternalLinkText>
-            </li>
-          </ul>
-        </div>
-        <div className="space-y-4">
-          <h4 className="text-[var(--cyber-neon-pink)] font-cyber text-sm tracking-widest uppercase">
-            Tooling & Ecosystem
-          </h4>
-          <ul className="space-y-2 text-sm">
-            <li>
-              <ExternalLinkText href="https://buf.build/">
-                Buf Schema Registry (BSR)
-              </ExternalLinkText>
-            </li>
-            <li>
-              <ExternalLinkText href="https://github.com/bufbuild/protovalidate">
-                Protovalidate GitHub
-              </ExternalLinkText>
-            </li>
-            <li>
-              <ExternalLinkText href="https://connectrpc.com/">
-                Connect Protocol
-              </ExternalLinkText>
-            </li>
-          </ul>
-        </div>
-        <div className="space-y-4">
-          <h4 className="text-[var(--cyber-neon-green)] font-cyber text-sm tracking-widest uppercase">
-            Standards & Protocols
-          </h4>
-          <ul className="space-y-2 text-sm">
-            <li>
-              <ExternalLinkText href="https://grpc.io/">
-                gRPC Remote Procedure Calls
-              </ExternalLinkText>
-            </li>
-            <li>
-              <ExternalLinkText href="https://en.wikipedia.org/wiki/IEEE_754">
-                IEEE 754 Floating Point
-              </ExternalLinkText>
-            </li>
-            <li>
-              <ExternalLinkText href="https://en.wikipedia.org/wiki/UTF-8">
-                UTF-8 Character Encoding
-              </ExternalLinkText>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </Section>
-);
 
 export const Conclusion = () => (
   <>
@@ -103,7 +18,7 @@ export const Conclusion = () => (
       >
         <div className="space-y-4">
           <h2 className="text-4xl md:text-6xl font-cyber font-black text-[var(--text-color)] uppercase italic tracking-tighter">
-            Transmission Complete.
+            Congratulations!
           </h2>
           <p className="text-[var(--text-dim)] text-xl leading-relaxed">
             You've dissected the raw binary stream, mastered the data contracts,
@@ -130,8 +45,7 @@ export const Conclusion = () => (
         </div>
 
         <p className="text-xs font-mono text-[var(--text-dim)] uppercase tracking-widest pt-8">
-          See a mistake?{" "}
-          Missing an important detail?{" "}
+          See a mistake? Missing an important detail?{" "}
           <a
             href="https://github.com/sudorandom/protobuf.kmcd.dev/issues"
             target="_blank"
@@ -153,7 +67,6 @@ export const Conclusion = () => (
         </p>
       </motion.div>
     </Section>
-    <References />
   </>
 );
 

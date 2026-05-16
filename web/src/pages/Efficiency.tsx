@@ -231,10 +231,11 @@ export const SizeComparison = ({
                 <button
                   key={key}
                   onClick={() => handleExampleChange(key)}
-                  className={`px-3 py-1 text-xs font-mono border transition-all rounded ${activeExample === key
+                  className={`px-3 py-1 text-xs font-mono border transition-all rounded ${
+                    activeExample === key
                       ? "bg-[var(--cyber-neon-blue)]/20 border-[var(--cyber-neon-blue)] text-[var(--cyber-neon-blue)]"
                       : "bg-[var(--overlay-bg)] border-[var(--border-light)] text-[var(--text-dim)] hover:border-white/30 hover:text-[var(--text-color)]"
-                    }`}
+                  }`}
                   aria-label={`Load ${key} example data`}
                 >
                   {key}
@@ -278,10 +279,36 @@ export const SizeComparison = ({
           {/* Right Column: Analysis */}
           <div className="space-y-4 flex flex-col">
             <CyberPanel
-              title="EFFICIENCY_STATS; Size in bytes (lower is better)"
+              title="BENCHMARK_ANALYSIS (Bytes)"
               className="flex-1 min-h-[400px] flex flex-col"
             >
               <div className="flex-1 py-4 px-2 space-y-8">
+                {/* Stats Explainer */}
+                <div className="p-3 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg text-[10px] font-mono text-[var(--text-dim)] uppercase tracking-wider space-y-1">
+                  <p>
+                    <span className="text-[var(--cyber-neon-yellow)]">
+                      JSON:
+                    </span>{" "}
+                    Standard minified text
+                  </p>
+                  <p>
+                    <span className="text-[var(--cyber-neon-yellow)] opacity-60">
+                      JSON.GZ:
+                    </span>{" "}
+                    Text compressed with Gzip
+                  </p>
+                  <p>
+                    <span className="text-[var(--cyber-neon-green)]">PB:</span>{" "}
+                    Raw Protobuf binary
+                  </p>
+                  <p>
+                    <span className="text-[var(--cyber-neon-green)] opacity-60">
+                      PB.GZ:
+                    </span>{" "}
+                    Binary compressed with Gzip
+                  </p>
+                </div>
+
                 {/* Size Bars */}
                 <div className="space-y-8">
                   <div>
@@ -405,10 +432,9 @@ export const SizeComparison = ({
                 >
                   <AlertTriangle className="w-3 h-3 text-[var(--cyber-neon-blue)] mt-0.5 shrink-0" />
                   <p className="text-sm text-[var(--cyber-neon-blue)]/80 leading-tight">
-                    Surprised to see pb.gz larger than pb? Gzip adds
-                    metadata and headers. For very small, efficient
-                    binary payloads, this overhead can actually exceed
-                    the compression gains!
+                    Surprised to see pb.gz larger than pb? Gzip adds metadata
+                    and headers. For very small, efficient binary payloads, this
+                    overhead can actually exceed the compression gains!
                   </p>
                 </motion.div>
               )}

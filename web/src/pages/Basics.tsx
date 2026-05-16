@@ -433,23 +433,64 @@ message SearchRequest {
             <strong>must always map to zero</strong>. This serves as the default
             value when the field is not explicitly set in the binary payload.
           </p>
+          <div className="p-3 bg-[var(--cyber-neon-blue)]/10 border border-[var(--cyber-neon-blue)]/20 rounded text-xs space-y-2">
+            <p className="font-bold text-[var(--cyber-neon-blue)] uppercase">
+              Naming Convention
+            </p>
+            <p>
+              To avoid name collisions in languages like C++ or Go (where enum
+              values are often in the parent scope), it is a best practice to{" "}
+              <strong>prefix values with the enum name</strong>.
+            </p>
+          </div>
           <p>
             <strong>Open Enums:</strong> Modern Protobuf implementations support
             "open" enums, meaning if a server sends a value that a client
-            doesn't recognize (e.g., a new state added later), the client will
-            still preserve that value instead of crashing or defaulting to zero.
+            doesn't recognize, the client will still preserve that value instead
+            of crashing.
           </p>
         </div>
       ),
-      example: `enum Corpus {
-  CORPUS_UNSPECIFIED = 0;
-  CORPUS_UNIVERSAL = 1;
-  CORPUS_WEB = 2;
-  CORPUS_IMAGES = 3;
+      example: `enum Status {
+  // Prefixing avoids collisions
+  STATUS_UNSPECIFIED = 0;
+  STATUS_ACTIVE = 1;
+  STATUS_DEFERRED = 2;
 }
 
-message SearchRequest {
-  Corpus corpus = 4;
+message User {
+  Status current_status = 1;
+}`,
+    },
+    {
+      id: "packages",
+      icon: Layers,
+      title: "Packages",
+      subtitle: "02j_NAMESPACING",
+      panelTitle: "PACKAGE_DECLARATION",
+      desc: (
+        <div className="space-y-4">
+          <p>
+            As your project grows, you'll likely have many messages with similar
+            names. Protobuf uses <code>package</code> declarations to prevent
+            name clashes.
+          </p>
+          <p>
+            These packages often map directly to namespaces in C++, packages in
+            Go/Java, or modules in TypeScript. They are essential for organizing
+            large-scale schemas and ensuring that an <code>Account</code> in the
+            billing service doesn't conflict with an <code>Account</code> in the
+            identity service.
+          </p>
+        </div>
+      ),
+      example: `syntax = "proto3";
+
+// Defines the namespace
+package demo.identity.v1;
+
+message Account {
+  string id = 1;
 }`,
     },
     {

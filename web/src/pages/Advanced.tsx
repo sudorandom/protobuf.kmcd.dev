@@ -451,6 +451,14 @@ message User {
               </span>
             </li>
           </ul>
+          <div className="p-3 bg-[var(--cyber-neon-blue)]/10 border border-[var(--cyber-neon-blue)]/20 rounded text-xs">
+            <p className="italic text-[var(--text-dim)]">
+              <strong>Note:</strong> While Protobuf provides the language to
+              define these interfaces, the underlying networking protocols and
+              implementation frameworks (like gRPC or Connect) are a broad topic
+              and are <strong>out of scope</strong> for this guide.
+            </p>
+          </div>
         </div>
       ),
       example: `service UserService {
@@ -860,76 +868,6 @@ message DescriptorProto {
             </div>
           </div>
         </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 pt-16 border-t border-[var(--border-light)]">
-          <CyberPanel title="SERVER_REFLECTION">
-            <div className="p-4 space-y-4 overflow-x-auto">
-              <SyntaxHighlighter
-                language="proto"
-                code={`// gRPC Server Reflection Protocol
-package grpc.reflection.v1alpha;
-
-service ServerReflection {
-  // The reflection service is queried by clients to
-  // discover the API surface of the server dynamically.
-  rpc ServerReflectionInfo(stream ServerReflectionRequest)
-      returns (stream ServerReflectionResponse);
-}`}
-              />
-              <div className="mt-4 text-xs font-mono text-[var(--text-dim)]">
-                Client: "What services do you have?"
-                <br />
-                Server: "I have User Service and Auth Service"
-                <br />
-                Client: "Send me the descriptors for User Service"
-                <br />
-                Server: *Sends FileDescriptorSet binary*
-              </div>
-            </div>
-          </CyberPanel>
-          <div className="space-y-6 text-[var(--text-color)]">
-            <h3 className="text-xl font-cyber font-bold text-[var(--text-color)] uppercase flex items-center gap-3">
-              <ShieldCheck className="w-6 h-6 text-[var(--cyber-neon-pink)]" />
-              Server Reflection
-            </h3>
-            <p className="text-sm leading-relaxed">
-              By combining the standardized RPC mechanism of gRPC with Protobuf
-              Descriptors, servers can implement{" "}
-              <strong>Server Reflection</strong>. This is a standardized service
-              that allows clients to ask the server for its own schema.
-            </p>
-            <div className="space-y-4 text-sm">
-              <h4 className="font-cyber font-bold text-[var(--cyber-neon-blue)] uppercase text-xs tracking-widest">
-                The Ecosystem it Enables
-              </h4>
-              <ul className="list-disc pl-4 space-y-2">
-                <li>
-                  <strong>CLI Tools:</strong> Tools like{" "}
-                  <ExternalLinkText href="https://github.com/fullstorydev/grpcurl">
-                    <code>grpcurl</code>
-                  </ExternalLinkText>{" "}
-                  can interact with your server just like <code>curl</code> does
-                  for REST, without needing you to share `.proto` files
-                  beforehand.
-                </li>
-                <li>
-                  <strong>GUI Clients:</strong> Postman, Insomnia, and Buf
-                  Studio can dynamically generate UI forms for testing your APIs
-                  by reading the reflected descriptors.
-                </li>
-              </ul>
-            </div>
-            <div className="p-3 bg-[var(--warning-bg)] border border-[var(--warning-border)] rounded text-[var(--warning-text)] text-sm">
-              <strong>Security Warning:</strong> Enabling Server Reflection on a
-              public-facing API exposes your entire internal data model and
-              service structure to the internet. It is highly recommended to{" "}
-              <em>
-                only enable reflection in development environments or internal
-                private networks.
-              </em>
-            </div>
-          </div>
-        </div>
       </div>
     </Section>
   );
@@ -946,37 +884,39 @@ export const SchemaEngineering = () => {
       desc: (
         <div className="space-y-4">
           <p>
-            Protobuf comes with a wide range of built-in "options" that control
-            everything from how code is generated to how data is mapped to JSON.
-          </p>
-          <p>
-            Options are categorized by their scope: <strong>File</strong>{" "}
-            (affects the whole file), <strong>Message</strong>,{" "}
-            <strong>Field</strong>, or <strong>Service</strong>.
+            Protobuf options control how code is generated and how data is
+            mapped. They are categorized by scope: <strong>File</strong>,{" "}
+            <strong>Message</strong>, <strong>Field</strong>, or{" "}
+            <strong>Service</strong>.
           </p>
           <ul className="list-disc pl-4 space-y-1 text-sm">
             <li>
-              <code>option go_package</code>: Defines the import path for
-              generated Go code.
+              <code>option go_package</code>: Defines the Go import path.
             </li>
             <li>
-              <code>[deprecated = true]</code>: Marks a field as old/risky to
-              use.
+              <code>option java_package</code>: Defines the Java package.
             </li>
             <li>
-              <code>[json_name = "custom"]</code>: Changes the key used in JSON
-              serialization.
+              <code>option optimize_for = SPEED;</code>: Generates highly
+              optimized (but larger) code. Alternatives: <code>CODE_SIZE</code>,{" "}
+              <code>LITE_RUNTIME</code>.
+            </li>
+            <li>
+              <code>[deprecated = true]</code>: Marks a field as deprecated.
+            </li>
+            <li>
+              <code>[json_name = "custom"]</code>: Sets a custom JSON key.
             </li>
           </ul>
         </div>
       ),
       example: `edition = "2023";
 
-// File-level option
 option go_package = "github.com/example/v1";
+option java_multiple_files = true;
+option optimize_for = SPEED;
 
 message User {
-  // Field-level options
   string user_id = 1 [json_name = "uid"];
   string old_field = 2 [deprecated = true];
 }`,
@@ -990,56 +930,73 @@ message User {
       desc: (
         <div className="space-y-4">
           <p>
-            Protobuf schemas are extensible. You can define custom "options"
-            (often called annotations) to attach metadata to messages, fields,
-            or services.
+            You can define custom "options" (annotations) to attach metadata to
+            your schema. These are often used by compiler plugins (like
+            generating validation) or read via reflection.
           </p>
-          <p>
-            These options provide instructions to compiler plugins (like
-            generating validation code) or are read dynamically at runtime via
-            reflection.
-          </p>
-          <div className="p-3 bg-[var(--cyber-neon-blue)]/10 border border-[var(--cyber-neon-blue)]/20 rounded text-xs space-y-2">
+          <TechnicalNuance title="Extension Registries">
             <p>
-              <strong>
-                <span className="text-[var(--cyber-neon-blue)]">
-                  Historical Note:
-                </span>
-              </strong>{" "}
-              Custom options were originally a <code>proto2</code> feature that
-              uses the <code>extend</code> keyword. While <code>proto3</code>{" "}
-              removed general-purpose extensions, it kept them for descriptor
-              objects specifically so options would continue to work.
+              Because extensions are defined globally for a descriptor (like{" "}
+              <code>FieldOptions</code>), you must ensure your field numbers
+              don't conflict with others.
             </p>
             <p>
-              <strong>
-                <span className="text-[var(--cyber-neon-green)]">
-                  The Future:
-                </span>
-              </strong>{" "}
-              In <strong>Protobuf Editions</strong> (2023+), this distinction is
-              removed. Editions allow native definition of options and introduce{" "}
-              <code>features</code>, a specialized type of option used by the
-              compiler itself to control behavior.
+              Google maintains a{" "}
+              <ExternalLinkText href="https://github.com/protocolbuffers/protobuf/blob/main/docs/options.md">
+                Global Extension Registry
+              </ExternalLinkText>{" "}
+              for public projects. For internal use, organizations typically
+              assign specific ranges (e.g., 50000-99999) to different teams to
+              avoid "collision hell."
             </p>
-          </div>
+          </TechnicalNuance>
         </div>
       ),
-      example: `// options.proto (Must be proto2 to define)
+      example: `// options.proto
 syntax = "proto2";
 import "google/protobuf/descriptor.proto";
 
 extend google.protobuf.FieldOptions {
+  // Use a unique number from your range
   optional bool is_pii = 50001;
 }
 
-// user.proto (Modern Edition)
+// user.proto
 edition = "2023";
 import "options.proto";
 
 message User {
   string ssn = 1 [(is_pii) = true];
 }`,
+    },
+    {
+      id: "plugins",
+      icon: Code2,
+      title: "Custom Plugins",
+      subtitle: "03j_COMPILER_EXT",
+      panelTitle: "PLUGIN_ARCHITECTURE",
+      desc: (
+        <div className="space-y-4">
+          <p>
+            The <code>protoc</code> compiler doesn't actually know how to
+            generate code for Go, Java, or TypeScript. Instead, it parses the{" "}
+            <code>.proto</code> files and hands the resulting{" "}
+            <strong>Descriptors</strong> to a <strong>plugin</strong>.
+          </p>
+          <p>
+            A plugin is just a program that reads a{" "}
+            <code>CodeGeneratorRequest</code> from <code>stdin</code> and writes
+            a <code>CodeGeneratorResponse</code> to <code>stdout</code>. This
+            architecture allows anyone to write a plugin to generate
+            anything—documentation, client libraries, or even SQL schemas—from a
+            Protobuf definition.
+          </p>
+        </div>
+      ),
+      example: `// Example: Running a custom plugin
+$ protoc --plugin=protoc-gen-custom=./my-plugin \\
+         --custom_out=./generated \\
+         schema.proto`,
     },
     {
       id: "breaking-levels",
