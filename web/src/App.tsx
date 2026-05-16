@@ -21,13 +21,24 @@ import { INITIAL_PROTO } from "./utils/constants";
 
 // Pages
 import Hero from "./pages/Hero";
-const Introduction = React.lazy(() => import("./pages/Introduction"));
-const Basics = React.lazy(() => import("./pages/Basics"));
-const Advanced = React.lazy(() => import("./pages/Advanced"));
-const Efficiency = React.lazy(() => import("./pages/Efficiency"));
-const Binary = React.lazy(() => import("./pages/Binary"));
-const Ecosystem = React.lazy(() => import("./pages/Ecosystem"));
-const Conclusion = React.lazy(() => import("./pages/Conclusion"));
+
+const PRELOAD_MAP: Record<string, () => Promise<any>> = {
+  intro: () => import("./pages/Introduction"),
+  basics: () => import("./pages/Basics"),
+  advanced: () => import("./pages/Advanced"),
+  efficiency: () => import("./pages/Efficiency"),
+  binary: () => import("./pages/Binary"),
+  ecosystem: () => import("./pages/Ecosystem"),
+  conclusion: () => import("./pages/Conclusion"),
+};
+
+const Introduction = React.lazy(PRELOAD_MAP.intro);
+const Basics = React.lazy(PRELOAD_MAP.basics);
+const Advanced = React.lazy(PRELOAD_MAP.advanced);
+const Efficiency = React.lazy(PRELOAD_MAP.efficiency);
+const Binary = React.lazy(PRELOAD_MAP.binary);
+const Ecosystem = React.lazy(PRELOAD_MAP.ecosystem);
+const Conclusion = React.lazy(PRELOAD_MAP.conclusion);
 
 interface NavItemDef {
   id: string;
@@ -152,6 +163,26 @@ function App() {
     const pageName = SECTION_LABELS[activeSection] || "Welcome";
     document.title = `${pageName} | Protobuf Visualized`;
   }, [location.pathname, activeSection]);
+
+  useEffect(() => {
+    const preloadPages = async () => {
+      try {
+        if (nextNav && PRELOAD_MAP[nextNav.id]) {
+          await PRELOAD_MAP[nextNav.id]();
+        }
+      } catch (e) {
+        console.error("Failed to preload next page:", e);
+      }
+      try {
+        if (prevNav && PRELOAD_MAP[prevNav.id]) {
+          await PRELOAD_MAP[prevNav.id]();
+        }
+      } catch (e) {
+        console.error("Failed to preload previous page:", e);
+      }
+    };
+    preloadPages();
+  }, [nextNav, prevNav]);
 
   useEffect(() => {
     const handleScroll = () => {
