@@ -338,7 +338,7 @@ export const Introduction = ({
                 {activeFace === "bin" && (
                   <div className="flex gap-3 p-4 bg-[var(--cyber-neon-pink)]/5 border border-[var(--cyber-neon-pink)]/10 rounded-lg animate-in fade-in slide-in-from-top-2">
                     <Terminal className="w-5 h-5 text-[var(--cyber-neon-pink)] shrink-0" />
-                    <p className="text-xs text-[var(--text-dim)] leading-relaxed italic">
+                    <p className="text-sm text-[var(--text-dim)] leading-relaxed italic">
                       If you're currently trying to "read" the hex block above
                       and failing: congratulations, you're human. We'll be
                       investigating how machines actually make sense of this
@@ -377,7 +377,7 @@ export const Introduction = ({
             </CyberPanel>
             <div className="flex flex-col items-center gap-2">
               <ArrowRight className="w-8 h-8 text-[var(--cyber-neon-blue)] rotate-90 md:rotate-0" />
-              <span className="text-xs font-mono text-[var(--text-dim)] uppercase">
+              <span className="text-sm font-mono text-[var(--text-dim)] uppercase">
                 <ExternalLinkText href="https://github.com/protocolbuffers/protobuf/releases">
                   protoc
                 </ExternalLinkText>{" "}
@@ -398,58 +398,58 @@ export const Introduction = ({
             </CyberPanel>
             <div className="flex flex-col items-center gap-2">
               <ArrowRight className="w-8 h-8 text-[var(--cyber-neon-pink)] rotate-90 md:rotate-0" />
-              <span className="text-xs font-mono text-[var(--text-dim)] uppercase">
+              <span className="text-sm font-mono text-[var(--text-dim)] uppercase">
                 TARGETS
               </span>
             </div>
             <div className="flex flex-col gap-4">
               <div className="grid grid-cols-2 gap-4 w-full md:w-auto">
-                <CyberPanel className="text-center p-3 text-xs">
+                <CyberPanel className="text-center p-3 text-sm">
                   <ExternalLinkText href="https://protobuf.dev/getting-started/cpptutorial/">
                     C++
                   </ExternalLinkText>
                 </CyberPanel>
-                <CyberPanel className="text-center p-3 text-xs">
+                <CyberPanel className="text-center p-3 text-sm">
                   <ExternalLinkText href="https://protobuf.dev/getting-started/csharptutorial/">
                     C#
                   </ExternalLinkText>
                 </CyberPanel>
-                <CyberPanel className="text-center p-3 text-xs">
+                <CyberPanel className="text-center p-3 text-sm">
                   <ExternalLinkText href="https://protobuf.dev/reference/dart/dart-generated/">
                     Dart
                   </ExternalLinkText>
                 </CyberPanel>
-                <CyberPanel className="text-center p-3 text-xs">
+                <CyberPanel className="text-center p-3 text-sm">
                   <ExternalLinkText href="https://protobuf.dev/getting-started/gotutorial/">
                     Go
                   </ExternalLinkText>
                 </CyberPanel>
-                <CyberPanel className="text-center p-3 text-xs">
+                <CyberPanel className="text-center p-3 text-sm">
                   <ExternalLinkText href="https://protobuf.dev/getting-started/javatutorial/">
                     Java
                   </ExternalLinkText>
                 </CyberPanel>
-                <CyberPanel className="text-center p-3 text-xs">
+                <CyberPanel className="text-center p-3 text-sm">
                   <ExternalLinkText href="https://protobuf.dev/reference/kotlin/kotlin-generated/">
                     Kotlin
                   </ExternalLinkText>
                 </CyberPanel>
-                <CyberPanel className="text-center p-3 text-xs">
+                <CyberPanel className="text-center p-3 text-sm">
                   <ExternalLinkText href="https://protobuf.dev/getting-started/pythontutorial/">
                     Python
                   </ExternalLinkText>
                 </CyberPanel>
               </div>
               <div className="p-3 bg-[var(--cyber-neon-green)]/5 border border-[var(--cyber-neon-green)]/20 rounded text-center">
-                <span className="text-xs font-mono text-[var(--cyber-neon-green)] uppercase block mb-1">
+                <span className="text-sm font-mono text-[var(--cyber-neon-green)] uppercase block mb-1">
                   Plus Community Tools
                 </span>
                 <div className="flex flex-col gap-1">
                   <ExternalLinkText href="https://github.com/sudorandom/protoc-gen-connect-openapi">
-                    <span className="text-xs">OpenAPI</span>
+                    <span className="text-sm">OpenAPI</span>
                   </ExternalLinkText>
                   <ExternalLinkText href="https://github.com/protocolbuffers/protobuf/blob/main/docs/third_party.md">
-                    <span className="text-xs italic">
+                    <span className="text-sm italic">
                       And Many, Many More...
                     </span>
                   </ExternalLinkText>

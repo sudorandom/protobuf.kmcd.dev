@@ -7,11 +7,12 @@ export const BitwiseMergeVisualization = () => {
   const GAP = 4;
   const BYTE_GAP = 12;
 
-  const shiftedField = [0, 0, 0, 0, 1, 0, 0, 0];
-  const wireType = [0, 0, 0, 0, 0, 0, 1, 0];
+  const shiftedField = [0, 0, 0, 1, 1, 0, 0, 0];
+  const wireType = [0, 0, 0, 0, 1, 0, 1, 0];
 
   const COLOR_A = "var(--cyber-neon-blue)";
   const COLOR_B = "var(--cyber-neon-yellow)";
+  const COLOR_BOTH = "var(--cyber-neon-green)";
 
   const controls = useAnimationControls();
 
@@ -250,11 +251,14 @@ export const BitwiseMergeVisualization = () => {
               const isFromA = shiftedField[i] === 1;
               const isFromB = wireType[i] === 1;
               const isActive = isFromA || isFromB;
-              const resultColor = isFromA
-                ? COLOR_A
-                : isFromB
-                  ? COLOR_B
-                  : "white";
+              const resultColor =
+                isFromA && isFromB
+                  ? COLOR_BOTH
+                  : isFromA
+                    ? COLOR_A
+                    : isFromB
+                      ? COLOR_B
+                      : "white";
 
               return (
                 <g key={`r-${i}`} transform={`translate(${x}, 0)`}>
@@ -309,7 +313,7 @@ export const BitwiseMergeVisualization = () => {
               fontSize="18"
               className="font-bold"
             >
-              = 0x0A
+              = 0x1A
             </text>
           </motion.g>
         </g>

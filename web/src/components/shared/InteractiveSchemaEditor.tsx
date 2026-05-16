@@ -117,7 +117,7 @@ export const InteractiveSchemaEditor: React.FC<
           {isValidating && (
             <div className="flex items-center gap-2 bg-[var(--bg-color)]/80 backdrop-blur-sm px-2 py-1 rounded border border-[var(--cyber-neon-blue)]/30">
               <div className="w-1.5 h-1.5 bg-[var(--cyber-neon-blue)] rounded-full animate-pulse" />
-              <span className="text-xs font-mono text-[var(--cyber-neon-blue)] uppercase tracking-widest">
+              <span className="text-sm font-mono text-[var(--cyber-neon-blue)] uppercase tracking-widest">
                 Compiling
               </span>
             </div>
@@ -125,7 +125,7 @@ export const InteractiveSchemaEditor: React.FC<
           {!isValidating && localErrors.length === 0 && (
             <div className="flex items-center gap-2 bg-[var(--bg-color)]/80 backdrop-blur-sm px-2 py-1 rounded border border-[var(--cyber-neon-green)]/30 text-[var(--cyber-neon-green)]">
               <Check className="w-3 h-3" />
-              <span className="text-xs font-mono uppercase tracking-widest">
+              <span className="text-sm font-mono uppercase tracking-widest">
                 Valid
               </span>
             </div>
@@ -139,7 +139,7 @@ export const InteractiveSchemaEditor: React.FC<
           {localErrors.map((err, i) => (
             <div
               key={i}
-              className="p-2 bg-[var(--text-error)]/5 border border-[var(--text-error)]/10 rounded flex gap-2 text-xs font-mono text-[var(--text-error)]"
+              className="p-2 bg-[var(--text-error)]/5 border border-[var(--text-error)]/10 rounded flex gap-2 text-sm font-mono text-[var(--text-error)]"
             >
               <XCircle className="w-3.5 h-3.5 shrink-0 mt-0.5" />
               <span>
@@ -154,7 +154,7 @@ export const InteractiveSchemaEditor: React.FC<
       <div className="flex items-center justify-between pt-4 border-t border-[var(--border-light)] shrink-0">
         <button
           onClick={handleReset}
-          className="flex items-center gap-2 px-4 py-2 text-xs font-cyber font-bold text-[var(--text-dim)] hover:text-[var(--text-color)] transition-colors uppercase tracking-widest"
+          className="flex items-center gap-2 px-4 py-2 text-sm font-cyber font-bold text-[var(--text-dim)] hover:text-[var(--text-color)] transition-colors uppercase tracking-widest"
           aria-label="Reset schema to default values"
         >
           <RotateCcw className="w-3.5 h-3.5" />
@@ -165,7 +165,7 @@ export const InteractiveSchemaEditor: React.FC<
           {onCancel && (
             <button
               onClick={onCancel}
-              className="flex items-center gap-2 px-6 py-2 text-xs font-cyber font-bold border border-[var(--border-light)] text-[var(--text-dim)] hover:bg-[var(--overlay-bg)] hover:text-[var(--text-color)] transition-all rounded-md uppercase tracking-widest"
+              className="flex items-center gap-2 px-6 py-2 text-sm font-cyber font-bold border border-[var(--border-light)] text-[var(--text-dim)] hover:bg-[var(--overlay-bg)] hover:text-[var(--text-color)] transition-all rounded-md uppercase tracking-widest"
               aria-label="Cancel schema changes"
             >
               <X className="w-3.5 h-3.5" />
@@ -176,7 +176,7 @@ export const InteractiveSchemaEditor: React.FC<
             <button
               onClick={handleSave}
               disabled={localErrors.length > 0 || isValidating}
-              className="flex items-center gap-2 px-8 py-2 text-xs font-cyber font-bold bg-[var(--cyber-neon-blue)] text-black hover:bg-[var(--cyber-neon-blue)]/90 transition-all rounded-md uppercase tracking-widest disabled:opacity-30 disabled:cursor-not-allowed shadow-[0_0_15px_rgba(0,243,255,0.3)]"
+              className="flex items-center gap-2 px-8 py-2 text-sm font-cyber font-bold bg-[var(--cyber-neon-blue)] text-black hover:bg-[var(--cyber-neon-blue)]/90 transition-all rounded-md uppercase tracking-widest disabled:opacity-30 disabled:cursor-not-allowed shadow-[0_0_15px_rgba(0,243,255,0.3)]"
               aria-label={
                 onSave ? "Save schema changes" : "Apply schema changes"
               }

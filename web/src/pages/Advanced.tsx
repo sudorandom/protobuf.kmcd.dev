@@ -31,6 +31,8 @@ import {
   ExternalLinkText,
   SyntaxHighlighter,
   TechnicalNuance,
+  RoadmapGrid,
+  type RoadmapItem,
 } from "../components/shared/Common";
 import { JsonEditor } from "../components/shared/JsonEditor";
 import { Modal } from "../components/shared/Modal";
@@ -97,7 +99,7 @@ export const AdvancedProtobuf = () => {
     {
       id: "imports",
       icon: FileCode,
-      title: "Imports",
+      title: "Imports & Well-Known Types",
       subtitle: "03a_DEPENDENCIES",
       panelTitle: "DEPENDENCY_SCHEMA",
       desc: (
@@ -107,6 +109,17 @@ export const AdvancedProtobuf = () => {
             <code>import</code> statement. However, this is where many
             developers encounter the "Include Path Nightmare."
           </p>
+          <div className="space-y-2">
+            <p className="text-sm font-bold uppercase text-[var(--cyber-neon-green)]">
+              Well-Known Types (WKTs)
+            </p>
+            <p>
+              Google provides a set of "Well-Known Types"—standardized schemas
+              for common concepts like timestamps, durations, and dynamic values.
+              These are built into every Protobuf compiler and should be
+              preferred over custom implementations to ensure interoperability.
+            </p>
+          </div>
           <TechnicalNuance title="Import Resolution">
             <p className="leading-relaxed">
               The standard <code>protoc</code> compiler requires you to manually
@@ -117,32 +130,28 @@ export const AdvancedProtobuf = () => {
             <p className="leading-relaxed">
               If your import paths are inconsistent across your project (e.g.,
               one file uses <code>import "proto/user.proto"</code> and another
-              uses <code>import "user.proto"</code> depending on how{" "}
-              <code>protoc</code> was invoked), the compiler will treat them as
-              entirely different types. This commonly leads to baffling
-              "Duplicate Symbol" errors or "Type not found" failures when
-              compiling.
+              uses <code>import "user.proto"</code>), the compiler will treat
+              them as entirely different types. This commonly leads to baffling
+              "Duplicate Symbol" errors.
             </p>
           </TechnicalNuance>
           <p>
             <ExternalLinkText href="https://buf.build/">Buf</ExternalLinkText>{" "}
             eliminates this by using a <code>buf.yaml</code> to define your
-            deterministic module root. It handles imports gracefully, allows for
-            remote dependencies (similar to NPM/Cargo), and ensures paths are
-            always consistent across your entire team regardless of where the
-            build command is run.
+            deterministic module root. It handles imports gracefully and allows
+            for remote dependencies (similar to NPM/Cargo).
           </p>
         </div>
       ),
       example: `edition = "2023";
 
-// Import another file
+// Standard Google imports
 import "google/protobuf/timestamp.proto";
-import "myproject/common.proto";
+import "google/protobuf/duration.proto";
 
 message Event {
-  google.protobuf.Timestamp time = 1;
-  myproject.Status status = 2;
+  google.protobuf.Timestamp start_time = 1;
+  google.protobuf.Duration length = 2;
 }`,
     },
     {
@@ -311,7 +320,7 @@ message UpdateUserRequest {
             (ignoring unknown fields), and new clients can read old messages
             (using default values for missing fields).
           </p>
-          <div className="p-3 bg-[var(--cyber-neon-blue)]/10 border border-[var(--cyber-neon-blue)]/20 rounded text-xs space-y-2">
+          <div className="p-3 bg-[var(--cyber-neon-blue)]/10 border border-[var(--cyber-neon-blue)]/20 rounded text-sm space-y-2">
             <p className="font-bold text-[var(--cyber-neon-blue)]">
               Automated Enforcement
             </p>
@@ -460,7 +469,7 @@ message User {
               </span>
             </li>
           </ul>
-          <div className="p-3 bg-[var(--cyber-neon-blue)]/10 border border-[var(--cyber-neon-blue)]/20 rounded text-xs">
+          <div className="p-3 bg-[var(--cyber-neon-blue)]/10 border border-[var(--cyber-neon-blue)]/20 rounded text-sm">
             <p className="italic text-[var(--text-dim)]">
               <strong>Note:</strong> While Protobuf provides the language to
               define these interfaces, the underlying networking protocols and
@@ -497,10 +506,10 @@ message User {
           </p>
           <div className="grid grid-cols-1 gap-4">
             <div className="p-3 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded">
-              <h5 className="text-[var(--cyber-neon-blue)] font-cyber text-xs uppercase mb-1">
+              <h5 className="text-[var(--cyber-neon-blue)] font-cyber text-sm uppercase mb-1">
                 Proto3 (Implicit)
               </h5>
-              <p className="text-xs text-[var(--text-dim)]">
+              <p className="text-sm text-[var(--text-dim)]">
                 Scalar fields have implicit presence. If a value is{" "}
                 <code>0</code>, it's not sent on the wire, and the receiver sees{" "}
                 <code>0</code>. You can't tell if it was missing or explicitly
@@ -508,10 +517,10 @@ message User {
               </p>
             </div>
             <div className="p-3 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded">
-              <h5 className="text-[var(--cyber-neon-green)] font-cyber text-xs uppercase mb-1">
+              <h5 className="text-[var(--cyber-neon-green)] font-cyber text-sm uppercase mb-1">
                 Editions (Explicit)
               </h5>
-              <p className="text-xs text-[var(--text-dim)]">
+              <p className="text-sm text-[var(--text-dim)]">
                 By setting <code>features.field_presence = EXPLICIT</code>,
                 presence is tracked for all fields. Receiving a zero means it
                 was explicitly sent. If missing, the generated code provides{" "}
@@ -519,7 +528,7 @@ message User {
               </p>
             </div>
           </div>
-          <p className="text-xs italic text-[var(--text-dim)]">
+          <p className="text-sm italic text-[var(--text-dim)]">
             Editions 2023 allows you to mix and match behaviors or globally
             enforce one, finally resolving the "presence" debate that divided
             Proto2 and Proto3.
@@ -546,6 +555,57 @@ message LegacyProfile {
     },
   ];
 
+  const roadmapItems: RoadmapItem[] = [
+    {
+      id: "imports",
+      title: "Well-Known Types",
+      desc: "Standard schemas for Any, JSON, and common structures.",
+      color: "green",
+    },
+    {
+      id: "services",
+      title: "Services",
+      desc: "Defining RPC interfaces for networked communication.",
+      color: "yellow",
+    },
+    {
+      id: "reflection",
+      title: "Reflection",
+      desc: "Dynamic schema inspection and runtime descriptors.",
+      color: "cyan",
+    },
+    {
+      id: "plugins",
+      title: "Compiler Plugins",
+      desc: "Extending protoc to generate custom code and docs.",
+      color: "blue",
+    },
+    {
+      id: "editions",
+      title: "Version Editions",
+      desc: "The modern evolution of Protobuf feature management.",
+      color: "blue",
+    },
+    {
+      id: "presence",
+      title: "Field Presence",
+      desc: "Understanding implicit vs explicit field set tracking.",
+      color: "pink",
+    },
+    {
+      id: "annotations",
+      title: "Custom Options",
+      desc: "Attaching domain metadata to any schema element.",
+      color: "green",
+    },
+    {
+      id: "validation",
+      title: "Validation Lab",
+      desc: "Live playground for protovalidate business rules.",
+      color: "yellow",
+    },
+  ];
+
   return (
     <>
       <Section
@@ -553,56 +613,19 @@ message LegacyProfile {
         className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]"
       >
         <div className="max-w-7xl mx-auto">
-          <div className="space-y-8">
-            <SectionTitle icon={HelpCircle} subtitle="03_OVERVIEW">
-              Deep Dives
-            </SectionTitle>
-            <div className="space-y-6 text-lg text-[var(--text-dim)] leading-relaxed">
-              <p>
-                Beyond simple message definitions lies the true power of
-                Protobuf as a{" "}
-                <strong className="text-[var(--text-color)]">
-                  language-agnostic engineering system
-                </strong>
-                .
-              </p>
-              <p>
-                This section explores the architectural features that make
-                Protobuf suitable for high-scale, evolving systems:
-              </p>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-4">
-                <div className="space-y-3">
-                  <h4 className="text-[var(--cyber-neon-blue)] font-cyber font-bold text-xs uppercase tracking-widest">
-                    Dependency Management
-                  </h4>
-                  <p className="text-sm">
-                    Handling imports and module roots deterministically with
-                    tools like{" "}
-                    <ExternalLinkText href="https://buf.build/">
-                      Buf
-                    </ExternalLinkText>
-                    .
-                  </p>
-                </div>
-                <div className="space-y-3">
-                  <h4 className="text-[var(--cyber-neon-pink)] font-cyber font-bold text-xs uppercase tracking-widest">
-                    Dynamic Types
-                  </h4>
-                  <p className="text-sm">
-                    Using <code>Any</code> and <code>Value</code> for
-                    polymorphic payloads and arbitrary JSON integration.
-                  </p>
-                </div>
-                <div className="space-y-3">
-                  <h4 className="text-[var(--cyber-neon-green)] font-cyber font-bold text-xs uppercase tracking-widest">
-                    Runtime Intelligence
-                  </h4>
-                  <p className="text-sm">
-                    Leveraging Descriptors and Reflection for generic tooling,
-                    validation, and dynamic routing.
-                  </p>
-                </div>
-              </div>
+          <SectionTitle icon={HelpCircle} subtitle="03_OVERVIEW">
+            Advanced Protobuf
+          </SectionTitle>
+
+          <div className="mb-16 max-w-4xl space-y-6 mx-auto text-center">
+            <p className="text-lg text-[var(--text-dim)] leading-relaxed">
+              Beyond basic messages and fields, Protobuf offers advanced
+              features for complex systems. These tools allow for deep
+              integration, metadata enrichment, and long-term evolutionary
+              safety.
+            </p>
+            <div className="pt-8 text-left">
+              <RoadmapGrid items={roadmapItems} cols="lg:grid-cols-4" />
             </div>
           </div>
         </div>
@@ -712,7 +735,7 @@ export const DescriptorsAndReflection = () => {
                 dynamically at runtime.
               </p>
               <div className="p-4 bg-[var(--cyber-neon-blue)]/5 border border-[var(--cyber-neon-blue)]/10 rounded text-sm text-[var(--text-dim)] space-y-4">
-                <p className="font-cyber font-bold text-[var(--cyber-neon-blue)] uppercase tracking-widest text-xs">
+                <p className="font-cyber font-bold text-[var(--cyber-neon-blue)] uppercase tracking-widest text-sm">
                   Why is this useful?
                 </p>
                 <div className="space-y-4">
@@ -737,8 +760,9 @@ export const DescriptorsAndReflection = () => {
                 </div>
               </div>
             </div>
-            <CyberPanel title="DESCRIPTOR.PROTO (SNIPPET)">
-              <div className="p-4 h-64 overflow-auto">
+            <div className="flex flex-col h-full">
+              <CyberPanel title="DESCRIPTOR.PROTO (SNIPPET)" className="h-full">
+                <div className="p-4 overflow-auto h-full">
                 <SyntaxHighlighter
                   language="proto"
                   code={`// The schema that describes a schema
@@ -763,12 +787,13 @@ message DescriptorProto {
               </div>
             </CyberPanel>
           </div>
+          </div>
         </div>
 
         <div className="pt-16 border-t border-[var(--border-light)] relative">
           {/* Global Interactive Sign for Large Screens */}
           <div className="absolute -left-48 top-48 hidden 2xl:flex flex-col items-end gap-2 text-[var(--cyber-neon-pink)] pointer-events-none animate-pulse z-10 opacity-70">
-            <span className="font-cyber text-xs uppercase tracking-widest text-right">
+            <span className="font-cyber text-sm uppercase tracking-widest text-right">
               These Panels
               <br />
               Are Live!
@@ -815,14 +840,14 @@ message DescriptorProto {
                       <>
                         <button
                           onClick={downloadBinary}
-                          className="px-2 py-0.5 text-xs font-mono rounded border border-[var(--cyber-neon-blue)]/50 text-[var(--cyber-neon-blue)] bg-[var(--cyber-neon-blue)]/10 hover:bg-[var(--cyber-neon-blue)]/20 transition-all uppercase flex items-center gap-1"
+                          className="px-2 py-0.5 text-sm font-mono rounded border border-[var(--cyber-neon-blue)]/50 text-[var(--cyber-neon-blue)] bg-[var(--cyber-neon-blue)]/10 hover:bg-[var(--cyber-neon-blue)]/20 transition-all uppercase flex items-center gap-1"
                           aria-label="Save as binary protocol buffer"
                         >
                           <Download className="w-3 h-3" /> SAVE_PB
                         </button>
                         <button
                           onClick={downloadJson}
-                          className="px-2 py-0.5 text-xs font-mono rounded border border-[var(--cyber-neon-pink)]/50 text-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/10 hover:bg-[var(--cyber-neon-pink)]/20 transition-all uppercase flex items-center gap-1"
+                          className="px-2 py-0.5 text-sm font-mono rounded border border-[var(--cyber-neon-pink)]/50 text-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/10 hover:bg-[var(--cyber-neon-pink)]/20 transition-all uppercase flex items-center gap-1"
                           aria-label="Save as JSON"
                         >
                           <Download className="w-3 h-3" /> SAVE_JSON
@@ -845,7 +870,7 @@ message DescriptorProto {
                     ) : (
                       <div className="flex flex-col items-center justify-center h-full text-[var(--text-dim)] gap-4 py-20">
                         <Terminal className="w-12 h-12 opacity-20" />
-                        <p className="font-cyber text-xs uppercase tracking-widest opacity-40 text-center">
+                        <p className="font-cyber text-sm uppercase tracking-widest opacity-40 text-center">
                           Correct compilation errors
                           <br />
                           to view descriptor
@@ -860,10 +885,10 @@ message DescriptorProto {
                           <Database className="w-4 h-4 text-[var(--cyber-neon-blue)]" />
                         </div>
                         <div className="space-y-1">
-                          <h5 className="text-xs font-cyber font-bold text-[var(--text-color)] uppercase tracking-wider">
+                          <h5 className="text-sm font-cyber font-bold text-[var(--text-color)] uppercase tracking-wider">
                             Reflection Ready
                           </h5>
-                          <p className="text-xs text-[var(--text-dim)] leading-relaxed uppercase">
+                          <p className="text-sm text-[var(--text-dim)] leading-relaxed uppercase">
                             This schema is now representable as a{" "}
                             <code>FileDescriptorSet</code> message, enabling
                             dynamic tools and reflection.
@@ -947,7 +972,7 @@ message User {
             defining required roles for RBAC).
           </p>
           <div className="space-y-3">
-            <p className="text-xs font-bold uppercase text-[var(--cyber-neon-blue)] tracking-widest">
+            <p className="text-sm font-bold uppercase text-[var(--cyber-neon-blue)] tracking-widest">
               Available Scopes
             </p>
             <div className="flex flex-wrap gap-2">
@@ -963,7 +988,7 @@ message User {
               ].map((scope) => (
                 <span
                   key={scope}
-                  className="px-2 py-1 bg-[var(--cyber-neon-blue)]/5 border border-[var(--cyber-neon-blue)]/20 rounded font-mono text-xs text-[var(--cyber-neon-blue)]"
+                  className="px-2 py-1 bg-[var(--cyber-neon-blue)]/5 border border-[var(--cyber-neon-blue)]/20 rounded font-mono text-sm text-[var(--cyber-neon-blue)]"
                 >
                   {scope}
                 </span>
@@ -1339,7 +1364,7 @@ export const ValidationLab = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch relative">
             {/* Global Interactive Sign for Large Screens */}
             <div className="absolute -left-48 top-48 hidden 2xl:flex flex-col items-end gap-2 text-[var(--cyber-neon-pink)] pointer-events-none animate-pulse z-10 opacity-70">
-              <span className="font-cyber text-xs uppercase tracking-widest text-right">
+              <span className="font-cyber text-sm uppercase tracking-widest text-right">
                 These Panels
                 <br />
                 Are Live!
@@ -1373,7 +1398,7 @@ export const ValidationLab = () => {
                   </h3>
                   <button
                     onClick={() => setIsModalOpen(true)}
-                    className="text-xs font-cyber font-bold text-[var(--cyber-neon-blue)] hover:text-[var(--cyber-neon-blue)]/80 transition-colors uppercase flex items-center gap-1 group"
+                    className="text-sm font-cyber font-bold text-[var(--cyber-neon-blue)] hover:text-[var(--cyber-neon-blue)]/80 transition-colors uppercase flex items-center gap-1 group"
                     aria-label="Open validation schema editor"
                   >
                     <Settings2 className="w-3 h-3 group-hover:rotate-45 transition-transform" />
@@ -1391,7 +1416,7 @@ export const ValidationLab = () => {
                   <button
                     key={key}
                     onClick={() => handleExampleChange(key)}
-                    className={`px-3 py-1 text-xs font-mono border transition-all rounded ${
+                    className={`px-3 py-1 text-sm font-mono border transition-all rounded ${
                       activeExample === key
                         ? "bg-[var(--cyber-neon-blue)]/20 border-[var(--cyber-neon-blue)] text-[var(--cyber-neon-blue)]"
                         : "bg-[var(--overlay-bg)] border-[var(--border-light)] text-[var(--text-dim)] hover:border-white/30 hover:text-[var(--text-color)]"
@@ -1416,7 +1441,7 @@ export const ValidationLab = () => {
                     }
                   }}
                   disabled={!localMessageSchema || !localFds}
-                  className="px-2 py-1 text-xs font-cyber font-bold border border-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/10 text-[var(--cyber-neon-pink)] hover:bg-[var(--cyber-neon-pink)]/20 transition-all flex items-center gap-1.5 disabled:opacity-30 disabled:cursor-not-allowed rounded uppercase tracking-wider"
+                  className="px-2 py-1 text-sm font-cyber font-bold border border-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/10 text-[var(--cyber-neon-pink)] hover:bg-[var(--cyber-neon-pink)]/20 transition-all flex items-center gap-1.5 disabled:opacity-30 disabled:cursor-not-allowed rounded uppercase tracking-wider"
                   aria-label="Generate random JSON data for validation"
                 >
                   <Zap className="w-2.5 h-2.5" />
@@ -1432,7 +1457,7 @@ export const ValidationLab = () => {
                   {validationResults.error &&
                     validationResults.error !== "NO_SCHEMA" && (
                       <div
-                        className="absolute top-0 left-0 right-0 p-2 bg-[var(--text-error)]/10 border-b border-[var(--text-error)]/30 text-[var(--text-error)] text-xs font-mono z-30 break-words line-clamp-2"
+                        className="absolute top-0 left-0 right-0 p-2 bg-[var(--text-error)]/10 border-b border-[var(--text-error)]/30 text-[var(--text-error)] text-sm font-mono z-30 break-words line-clamp-2"
                         title={validationResults.error}
                       >
                         {validationResults.error}
@@ -1462,7 +1487,7 @@ export const ValidationLab = () => {
               >
                 <div className="flex-1 py-4 px-2 overflow-y-auto space-y-4 custom-scrollbar">
                   {validationResults.error ? (
-                    <div className="p-4 bg-[var(--text-error)]/10 border border-[var(--text-error)]/30 text-[var(--text-error)] text-xs font-mono">
+                    <div className="p-4 bg-[var(--text-error)]/10 border border-[var(--text-error)]/30 text-[var(--text-error)] text-sm font-mono">
                       SCHEMA_MISMATCH: {validationResults.error}
                     </div>
                   ) : validationResults.results?.kind === "valid" ? (
@@ -1472,7 +1497,7 @@ export const ValidationLab = () => {
                         <span className="font-cyber text-sm uppercase tracking-[0.2em]">
                           Validation Passed
                         </span>
-                        <span className="text-xs text-[var(--text-dim)] mt-2 uppercase text-center tracking-widest">
+                        <span className="text-sm text-[var(--text-dim)] mt-2 uppercase text-center tracking-widest">
                           All contract terms satisfied
                         </span>
                       </div>
@@ -1487,7 +1512,7 @@ export const ValidationLab = () => {
                           >
                             <AlertTriangle className="w-4 h-4 text-[var(--cyber-neon-yellow)] shrink-0" />
                             <div className="flex flex-col gap-1">
-                              <span className="text-xs font-mono text-[var(--cyber-neon-yellow)] uppercase tracking-wider">
+                              <span className="text-sm font-mono text-[var(--cyber-neon-yellow)] uppercase tracking-wider">
                                 {v.field.toString()}
                               </span>
                               <p className="text-sm text-[var(--text-color)]">
@@ -1501,7 +1526,7 @@ export const ValidationLab = () => {
                   ) : (
                     <div className="h-full flex flex-col items-center justify-center text-[var(--text-dim)] gap-4 opacity-40 py-20">
                       <ShieldCheck className="w-10 h-10" />
-                      <p className="font-cyber text-xs uppercase tracking-widest text-center">
+                      <p className="font-cyber text-sm uppercase tracking-widest text-center">
                         Waiting for
                         <br />
                         valid input
@@ -1575,7 +1600,7 @@ export const ValidationLab = () => {
             </p>
           </div>
           <div className="p-4 bg-[var(--cyber-neon-cyan)]/5 border border-[var(--cyber-neon-cyan)]/20 rounded-lg text-sm flex flex-col justify-center hover:bg-[var(--cyber-neon-cyan)]/10 transition-colors group/dive">
-            <span className="text-xs font-cyber font-bold text-[var(--cyber-neon-cyan)] uppercase mb-2 tracking-widest">
+            <span className="text-sm font-cyber font-bold text-[var(--cyber-neon-cyan)] uppercase mb-2 tracking-widest">
               Dive Deeper
             </span>
             <ExternalLinkText href="https://protovalidate.com/playground/">

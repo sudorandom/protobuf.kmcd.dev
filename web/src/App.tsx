@@ -81,7 +81,7 @@ const NavItem = ({
           className="flex flex-col flex-1 px-2"
         >
           <span
-            className={`text-xs font-mono mb-0.5 ${isActive ? "text-[var(--cyber-neon-blue)]" : "text-[var(--cyber-neon-blue)]/80"}`}
+            className={`text-sm font-mono mb-0.5 ${isActive ? "text-[var(--cyber-neon-blue)]" : "text-[var(--cyber-neon-blue)]/80"}`}
           >
             0{index + 1}
           </span>
@@ -219,7 +219,7 @@ function App() {
             </Link>
             <a
               href={`#${activeSection}`}
-              className="text-xs font-mono text-[var(--cyber-neon-blue)] tracking-widest -mt-1 uppercase opacity-90 hover:opacity-100 transition-opacity block max-w-[150px] truncate lg:max-w-none"
+              className="text-sm font-mono text-[var(--cyber-neon-blue)] tracking-widest -mt-1 uppercase opacity-90 hover:opacity-100 transition-opacity block max-w-[150px] truncate lg:max-w-none"
             >
               <span className="lg:hidden">
                 {SECTION_LABELS[activeSection] || "Welcome"}
@@ -229,7 +229,7 @@ function App() {
           </div>
         </div>
         {error && (
-          <div className="ml-8 px-3 py-1 bg-[var(--text-error)]/10 border border-[var(--text-error)]/30 rounded text-[var(--text-error)] text-xs font-mono animate-pulse uppercase">
+          <div className="ml-8 px-3 py-1 bg-[var(--text-error)]/10 border border-[var(--text-error)]/30 rounded text-[var(--text-error)] text-sm font-mono animate-pulse uppercase">
             SCHEMA_ERROR: {error}
           </div>
         )}
@@ -247,7 +247,7 @@ function App() {
             ) : (
               <div className="w-8 h-8" />
             )}
-            <div className="text-xs font-mono font-bold text-[var(--text-color)] uppercase tracking-widest bg-[var(--overlay-bg)] px-4 py-1.5 rounded border border-[var(--border-light)] backdrop-blur-sm min-w-[200px] text-center">
+            <div className="text-sm font-mono font-bold text-[var(--text-color)] uppercase tracking-widest bg-[var(--overlay-bg)] px-4 py-1.5 rounded border border-[var(--border-light)] backdrop-blur-sm min-w-[200px] text-center">
               {SECTION_LABELS[activeSection] || "Welcome"}
             </div>
             {nextNav ? (
@@ -310,7 +310,7 @@ function App() {
                   <div className="w-6 h-6 bg-[var(--cyber-neon-blue)]/10 rounded border border-[var(--cyber-neon-blue)]/30 flex items-center justify-center">
                     <Cpu className="w-3.5 h-3.5 text-[var(--cyber-neon-blue)]" />
                   </div>
-                  <span className="font-cyber font-bold text-[var(--cyber-neon-blue)] text-xs tracking-[0.2em] uppercase">
+                  <span className="font-cyber font-bold text-[var(--cyber-neon-blue)] text-sm tracking-[0.2em] uppercase">
                     Navigation
                   </span>
                 </div>
@@ -337,7 +337,7 @@ function App() {
               </nav>
 
               <div className="p-8 border-t border-[var(--border-light)] bg-[var(--overlay-bg)]">
-                <div className="text-xs font-mono text-[var(--text-dim)] uppercase tracking-widest mb-4">
+                <div className="text-sm font-mono text-[var(--text-dim)] uppercase tracking-widest mb-4">
                   Quick Links
                 </div>
                 <div className="flex gap-4">
@@ -417,7 +417,7 @@ function App() {
                 to={prevNav.path}
                 className="flex flex-col items-start gap-1 group transition-all"
               >
-                <span className="text-xs font-mono text-[var(--text-dim)] uppercase tracking-[0.2em]">
+                <span className="text-sm font-mono text-[var(--text-dim)] uppercase tracking-[0.2em]">
                   Previous
                 </span>
                 <div className="flex items-center gap-2 text-[var(--text-color)] group-hover:text-[var(--cyber-neon-blue)]">
@@ -436,7 +436,7 @@ function App() {
                 to={nextNav.path}
                 className="flex flex-col items-end gap-1 group transition-all"
               >
-                <span className="text-xs font-mono text-[var(--text-dim)] uppercase tracking-[0.2em]">
+                <span className="text-sm font-mono text-[var(--text-dim)] uppercase tracking-[0.2em]">
                   Next
                 </span>
                 <div className="flex items-center gap-2 text-[var(--text-color)] group-hover:text-[var(--cyber-neon-blue)]">
@@ -483,7 +483,7 @@ function App() {
             <Database className="w-5 h-5" />
           </a>
         </div>
-        <p className="text-xs font-mono text-[var(--text-dim)] uppercase tracking-[0.2em] flex flex-wrap justify-center gap-x-4 gap-y-2">
+        <p className="text-sm font-mono text-[var(--text-dim)] uppercase tracking-[0.2em] flex flex-wrap justify-center gap-x-4 gap-y-2">
           <span>
             Created by{" "}
             <a

@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import {
   Zap,
@@ -71,13 +71,15 @@ export const SizeComparison = ({
     setJsonInput(JSON.stringify(SIZE_EXAMPLES[key], null, 2));
   };
 
-  const generateFauxData = async () => {
+  const generateFauxData = useCallback(async () => {
     if (!messageSchema || !fileDescriptorSet) return;
     setIsGenerating(true);
     try {
+      const maxDepth = Math.floor(Math.random() * 5) + 1;
       const fakeJson = await generateFake(
         messageSchema.typeName,
         fileDescriptorSet,
+        maxDepth,
       );
       setJsonInput(fakeJson);
       setActiveExample(null);
@@ -86,7 +88,7 @@ export const SizeComparison = ({
     } finally {
       setIsGenerating(false);
     }
-  };
+  }, [messageSchema, fileDescriptorSet]);
 
   const stats = useMemo(() => {
     if (!messageSchema)
@@ -181,7 +183,7 @@ export const SizeComparison = ({
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 relative">
           {/* Global Interactive Sign for Large Screens */}
           <div className="absolute -left-48 top-48 hidden 2xl:flex flex-col items-end gap-2 text-[var(--cyber-neon-pink)] pointer-events-none animate-pulse z-10 opacity-70">
-            <span className="font-cyber text-xs uppercase tracking-widest text-right">
+            <span className="font-cyber text-sm uppercase tracking-widest text-right">
               These Panels
               <br />
               Are Live!
@@ -215,7 +217,7 @@ export const SizeComparison = ({
                 </h3>
                 <button
                   onClick={() => setIsModalOpen(true)}
-                  className="text-xs font-cyber font-bold text-[var(--cyber-neon-blue)] hover:text-[var(--cyber-neon-blue)]/80 transition-colors uppercase flex items-center gap-1 group"
+                  className="text-sm font-cyber font-bold text-[var(--cyber-neon-blue)] hover:text-[var(--cyber-neon-blue)]/80 transition-colors uppercase flex items-center gap-1 group"
                   aria-label="Edit Protobuf Schema"
                 >
                   <Settings2 className="w-3 h-3 group-hover:rotate-45 transition-transform" />
@@ -231,7 +233,7 @@ export const SizeComparison = ({
                 <button
                   key={key}
                   onClick={() => handleExampleChange(key)}
-                  className={`px-3 py-1 text-xs font-mono border transition-all rounded ${
+                  className={`px-3 py-1 text-sm font-mono border transition-all rounded ${
                     activeExample === key
                       ? "bg-[var(--cyber-neon-blue)]/20 border-[var(--cyber-neon-blue)] text-[var(--cyber-neon-blue)]"
                       : "bg-[var(--overlay-bg)] border-[var(--border-light)] text-[var(--text-dim)] hover:border-white/30 hover:text-[var(--text-color)]"
@@ -244,7 +246,7 @@ export const SizeComparison = ({
               <button
                 onClick={generateFauxData}
                 disabled={!messageSchema || !fileDescriptorSet || isGenerating}
-                className="px-2 py-1 text-xs font-cyber font-bold border border-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/10 text-[var(--cyber-neon-pink)] hover:bg-[var(--cyber-neon-pink)]/20 transition-all flex items-center gap-1.5 disabled:opacity-30 disabled:cursor-not-allowed rounded uppercase tracking-wider"
+                className="px-2 py-1 text-sm font-cyber font-bold border border-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/10 text-[var(--cyber-neon-pink)] hover:bg-[var(--cyber-neon-pink)]/20 transition-all flex items-center gap-1.5 disabled:opacity-30 disabled:cursor-not-allowed rounded uppercase tracking-wider"
                 aria-label="Generate Random Data"
               >
                 <Zap
@@ -261,7 +263,7 @@ export const SizeComparison = ({
               <div className="flex-1 relative">
                 {stats.error && stats.error !== "NO_SCHEMA" && (
                   <div
-                    className="absolute top-0 left-0 right-0 p-2 bg-[var(--text-error)]/10 border-b border-[var(--text-error)]/30 text-[var(--text-error)] text-xs font-mono z-30 break-words line-clamp-2"
+                    className="absolute top-0 left-0 right-0 p-2 bg-[var(--text-error)]/10 border-b border-[var(--text-error)]/30 text-[var(--text-error)] text-sm font-mono z-30 break-words line-clamp-2"
                     title={stats.error}
                   >
                     {stats.error}
@@ -284,7 +286,7 @@ export const SizeComparison = ({
             >
               <div className="flex-1 py-4 px-2 space-y-8">
                 {/* Stats Explainer */}
-                <div className="p-3 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg text-xs font-mono text-[var(--text-dim)] font-bold leading-relaxed">
+                <div className="p-3 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg text-sm font-mono text-[var(--text-dim)] font-bold leading-relaxed">
                   Comparing standard minified{" "}
                   <span className="text-[var(--cyber-neon-yellow)]">JSON</span>{" "}
                   and gzipped{" "}
@@ -303,7 +305,7 @@ export const SizeComparison = ({
                 {/* Size Bars */}
                 <div className="space-y-8">
                   <div>
-                    <div className="flex justify-between text-xs font-mono mb-2 text-[var(--cyber-neon-yellow)] uppercase tracking-widest">
+                    <div className="flex justify-between text-sm font-mono mb-2 text-[var(--cyber-neon-yellow)] uppercase tracking-widest">
                       <span>json</span>
                       <span className="text-[var(--cyber-neon-yellow)]">
                         {stats.jsonSize} B
@@ -317,7 +319,7 @@ export const SizeComparison = ({
                     </div>
                     {gzipStats.json > 0 && (
                       <div className="mt-4">
-                        <div className="flex justify-between text-xs font-mono mb-2 text-[var(--cyber-neon-yellow)]/80 uppercase tracking-widest">
+                        <div className="flex justify-between text-sm font-mono mb-2 text-[var(--cyber-neon-yellow)]/80 uppercase tracking-widest">
                           <span>json.gz</span>
                           <span>{gzipStats.json} B</span>
                         </div>
@@ -349,7 +351,7 @@ export const SizeComparison = ({
                   </div>
 
                   <div>
-                    <div className="flex justify-between text-xs font-mono mb-2 text-[var(--cyber-neon-green)] uppercase tracking-widest">
+                    <div className="flex justify-between text-sm font-mono mb-2 text-[var(--cyber-neon-green)] uppercase tracking-widest">
                       <span>pb</span>
                       <span className="text-[var(--cyber-neon-green)] font-bold">
                         {stats.pbSize} B
@@ -366,7 +368,7 @@ export const SizeComparison = ({
                     </div>
                     {gzipStats.pb > 0 && (
                       <div className="mt-4">
-                        <div className="flex justify-between text-xs font-mono mb-2 text-[var(--cyber-neon-green)]/80 uppercase tracking-widest">
+                        <div className="flex justify-between text-sm font-mono mb-2 text-[var(--cyber-neon-green)]/80 uppercase tracking-widest">
                           <span>pb.gz</span>
                           <span>{gzipStats.pb} B</span>
                         </div>
@@ -389,7 +391,7 @@ export const SizeComparison = ({
                     <p className="text-5xl font-cyber font-bold text-[var(--cyber-neon-green)] shadow-glow">
                       -{stats.ratio}%
                     </p>
-                    <p className="text-xs font-mono text-[var(--text-dim)] mt-2 uppercase tracking-[0.2em]">
+                    <p className="text-sm font-mono text-[var(--text-dim)] mt-2 uppercase tracking-[0.2em]">
                       RAW_PAYLOAD_REDUCTION
                     </p>
                   </div>
@@ -408,7 +410,7 @@ export const SizeComparison = ({
                         )}
                         %
                       </p>
-                      <p className="text-xs font-mono text-[var(--text-dim)] uppercase tracking-widest">
+                      <p className="text-sm font-mono text-[var(--text-dim)] uppercase tracking-widest">
                         GZIPPED_PB vs JSON
                       </p>
                     </div>
@@ -472,12 +474,12 @@ export const SizeComparison = ({
               </div>
               <div className="space-y-1">
                 <h4
-                  className="text-xs font-cyber font-bold uppercase tracking-widest"
+                  className="text-sm font-cyber font-bold uppercase tracking-widest"
                   style={{ color: item.color }}
                 >
                   {item.title}
                 </h4>
-                <p className="text-xs text-[var(--text-dim)] leading-relaxed">
+                <p className="text-sm text-[var(--text-dim)] leading-relaxed">
                   {item.desc}
                 </p>
               </div>
@@ -601,52 +603,50 @@ export const SizeComparison = ({
               </div>
             </div>
 
-            <CyberPanel title="REPUTABLE_ENGINEERING_REPORTS">
-              <div className="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <a
-                  href="https://auth0.com/blog/beating-json-performance-with-protobuf/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg hover:border-[var(--cyber-neon-blue)]/40 transition-all"
-                >
-                  <h5 className="font-cyber text-xs text-[var(--cyber-neon-blue)] mb-2 group-hover:underline">
-                    Auth0 Engineering
-                  </h5>
-                  <p className="text-xs text-[var(--text-dim)] leading-relaxed">
-                    Classic deep dive comparing binary vs text overhead in
-                    real-world API requests.
-                  </p>
-                </a>
-                <a
-                  href="https://grpc.io/docs/guides/benchmarking/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg hover:border-[var(--cyber-neon-pink)]/40 transition-all"
-                >
-                  <h5 className="font-cyber text-xs text-[var(--cyber-neon-pink)] mb-2 group-hover:underline">
-                    Official gRPC Benchmarks
-                  </h5>
-                  <p className="text-xs text-[var(--text-dim)] leading-relaxed">
-                    Throughput and latency metrics for Protobuf-over-HTTP/2
-                    across various languages.
-                  </p>
-                </a>
-                <a
-                  href="https://www.atlassian.com/blog/atlassian-engineering/using-protobuf-to-make-jira-cloud-faster"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg hover:border-[var(--cyber-neon-green)]/40 transition-all"
-                >
-                  <h5 className="font-cyber text-xs text-[var(--cyber-neon-green)] mb-2 group-hover:underline">
-                    Atlassian Engineering
-                  </h5>
-                  <p className="text-xs text-[var(--text-dim)] leading-relaxed">
-                    A detailed case study on how Jira improved p99 latency by
-                    20% and reduced CPU usage by 75% using Protobuf.
-                  </p>
-                </a>
-              </div>
-            </CyberPanel>
+            <div className="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <a
+                href="https://auth0.com/blog/beating-json-performance-with-protobuf/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg hover:border-[var(--cyber-neon-blue)]/40 transition-all"
+              >
+                <h5 className="font-cyber text-sm text-[var(--cyber-neon-blue)] mb-2 group-hover:underline">
+                  Auth0 Engineering
+                </h5>
+                <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+                  Classic deep dive comparing binary vs text overhead in
+                  real-world API requests.
+                </p>
+              </a>
+              <a
+                href="https://grpc.io/docs/guides/benchmarking/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg hover:border-[var(--cyber-neon-pink)]/40 transition-all"
+              >
+                <h5 className="font-cyber text-sm text-[var(--cyber-neon-pink)] mb-2 group-hover:underline">
+                  Official gRPC Benchmarks
+                </h5>
+                <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+                  Throughput and latency metrics for Protobuf-over-HTTP/2
+                  across various languages.
+                </p>
+              </a>
+              <a
+                href="https://www.atlassian.com/blog/atlassian-engineering/using-protobuf-to-make-jira-cloud-faster"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg hover:border-[var(--cyber-neon-green)]/40 transition-all"
+              >
+                <h5 className="font-cyber text-sm text-[var(--cyber-neon-green)] mb-2 group-hover:underline">
+                  Atlassian Engineering
+                </h5>
+                <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+                  A detailed case study on how Jira improved p99 latency by
+                  20% and reduced CPU usage by 75% using Protobuf.
+                </p>
+              </a>
+            </div>
           </div>
         </div>
       </div>

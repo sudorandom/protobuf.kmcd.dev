@@ -15,7 +15,7 @@ export const TechnicalNuance = ({
       <Info className="w-5 h-5 text-[var(--cyber-neon-blue)]" />
     </div>
     <div className="space-y-1">
-      <span className="text-xs font-mono text-[var(--cyber-neon-blue)] uppercase tracking-[0.2em] font-bold">
+      <span className="text-sm font-mono text-[var(--cyber-neon-blue)] uppercase tracking-[0.2em] font-bold">
         {title}
       </span>
       <div className="text-sm text-[var(--text-color)] leading-relaxed">
@@ -54,7 +54,7 @@ export const HexViewer = ({
   }
 
   return (
-    <div className="font-mono text-xs text-[var(--text-dim)] bg-[var(--section-bg-dark)] p-4 rounded border border-[var(--border-light)] space-y-1 max-h-64 overflow-y-auto custom-scrollbar">
+    <div className="font-mono text-sm text-[var(--text-dim)] bg-[var(--section-bg-dark)] p-4 rounded border border-[var(--border-light)] space-y-1 max-h-64 overflow-y-auto custom-scrollbar">
       <div className="grid grid-cols-[60px_max-content_1fr] gap-8 pb-2 border-b border-[var(--border-light)] opacity-80 mb-2">
         <span>OFFSET</span>
         <span>HEX</span>
@@ -264,10 +264,83 @@ export const SectionTitle = ({
         </h2>
       </div>
       {subtitle && (
-        <p className="text-[var(--text-dim)] font-mono text-xs md:text-sm uppercase tracking-widest ml-11 md:ml-14">
+        <p className="text-[var(--text-dim)] font-mono text-sm md:text-sm uppercase tracking-widest ml-11 md:ml-14">
           {subtitle}
         </p>
       )}
+    </div>
+  );
+};
+
+export const RoadmapGrid = ({
+  items,
+  cols = "lg:grid-cols-3",
+}: {
+  items: { id: string; title: string; desc: string }[];
+  cols?: string;
+}) => {
+  const themes = [
+    {
+      border: "border-[var(--cyber-neon-blue)]/30",
+      bg: "bg-[var(--cyber-neon-blue)]/10",
+      text: "text-[var(--cyber-neon-blue)]",
+      hoverBorder: "group-hover/item:border-[var(--cyber-neon-blue)]",
+      hoverText: "group-hover/item:text-[var(--cyber-neon-blue)]",
+    },
+    {
+      border: "border-[var(--cyber-neon-pink)]/30",
+      bg: "bg-[var(--cyber-neon-pink)]/10",
+      text: "text-[var(--cyber-neon-pink)]",
+      hoverBorder: "group-hover/item:border-[var(--cyber-neon-pink)]",
+      hoverText: "group-hover/item:text-[var(--cyber-neon-pink)]",
+    },
+    {
+      border: "border-[var(--cyber-neon-green)]/30",
+      bg: "bg-[var(--cyber-neon-green)]/10",
+      text: "text-[var(--cyber-neon-green)]",
+      hoverBorder: "group-hover/item:border-[var(--cyber-neon-green)]",
+      hoverText: "group-hover/item:text-[var(--cyber-neon-green)]",
+    },
+    {
+      border: "border-[var(--cyber-neon-yellow)]/30",
+      bg: "bg-[var(--cyber-neon-yellow)]/10",
+      text: "text-[var(--cyber-neon-yellow)]",
+      hoverBorder: "group-hover/item:border-[var(--cyber-neon-yellow)]",
+      hoverText: "group-hover/item:text-[var(--cyber-neon-yellow)]",
+    },
+  ];
+
+  const numColsMatch = cols.match(/lg:grid-cols-(\d+)/);
+  const numCols = numColsMatch ? parseInt(numColsMatch[1], 10) : 3;
+
+  return (
+    <div
+      className={`grid grid-cols-1 md:grid-cols-2 ${cols} gap-8 pt-8 text-left`}
+    >
+      {items.map((item, index) => {
+        const theme = themes[index % numCols];
+        return (
+          <a
+            key={item.id}
+            href={`#${item.id}`}
+            className="group/item hover:bg-white/5 p-2 -m-2 rounded-lg transition-all flex gap-3 items-center"
+          >
+            <div
+              className={`w-8 h-8 rounded border flex items-center justify-center shrink-0 font-mono text-sm transition-colors ${theme.bg} ${theme.border} ${theme.text} ${theme.hoverBorder}`}
+            >
+              {(index + 1).toString().padStart(2, "0")}
+            </div>
+            <div>
+              <h4
+                className={`text-sm font-bold uppercase tracking-wider text-[var(--text-color)] transition-colors ${theme.hoverText}`}
+              >
+                {item.title}
+              </h4>
+              <p className="text-sm text-[var(--text-dim)] mt-1">{item.desc}</p>
+            </div>
+          </a>
+        );
+      })}
     </div>
   );
 };
@@ -288,7 +361,7 @@ export const CyberPanel = ({
       <div className="flex flex-wrap items-center justify-between mb-4 border-b border-[var(--cyber-neon-blue)]/20 pb-2 gap-2">
         <div className="flex items-center gap-2">
           <Terminal className="w-4 h-4 text-[var(--cyber-neon-blue)] shrink-0" />
-          <span className="text-xs sm:text-xs font-mono text-[var(--cyber-neon-blue)] uppercase tracking-tighter">
+          <span className="text-sm sm:text-sm font-mono text-[var(--cyber-neon-blue)] uppercase tracking-tighter">
             {title}
           </span>
         </div>

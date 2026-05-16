@@ -120,8 +120,9 @@ export const Conclusion = () => (
           </a>
         </div>
 
-        <p className="text-xs font-mono text-[var(--text-dim)] uppercase tracking-widest pt-8">
-          See a mistake? Missing an important detail?{" "}
+        <p className="text-sm font-mono text-[var(--text-dim)] uppercase tracking-widest pt-8">
+          See a mistake? Missing an important detail?
+          <br />
           <a
             href="https://github.com/sudorandom/protobuf.kmcd.dev/issues"
             target="_blank"

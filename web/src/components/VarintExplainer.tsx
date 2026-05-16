@@ -43,7 +43,7 @@ const VarintExplainer = () => {
     <div className="grid grid-cols-1 gap-8 relative">
       {/* Global Interactive Sign for Large Screens */}
       <div className="absolute -left-48 top-4 hidden 2xl:flex flex-col items-end gap-2 text-[var(--cyber-neon-pink)] pointer-events-none animate-pulse z-10 opacity-70">
-        <span className="font-cyber text-xs uppercase tracking-widest text-right">
+        <span className="font-cyber text-sm uppercase tracking-widest text-right">
           These Panels
           <br />
           Are Live!
@@ -86,10 +86,10 @@ const VarintExplainer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="p-4 bg-[var(--cyber-neon-blue)]/5 border border-[var(--cyber-neon-blue)]/20 rounded-lg flex flex-col gap-3">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-mono text-[var(--cyber-neon-blue)] uppercase tracking-widest">
+              <span className="text-sm font-mono text-[var(--cyber-neon-blue)] uppercase tracking-widest">
                 Standard Binary
               </span>
-              <span className="text-xs font-mono text-[var(--cyber-neon-blue)]/90 bg-[var(--cyber-neon-blue)]/10 px-2 py-0.5 rounded">
+              <span className="text-sm font-mono text-[var(--cyber-neon-blue)]/90 bg-[var(--cyber-neon-blue)]/10 px-2 py-0.5 rounded">
                 {standardBinary.length} BITS
               </span>
             </div>
@@ -107,10 +107,10 @@ const VarintExplainer = () => {
 
           <div className="p-4 bg-[var(--cyber-neon-cyan)]/5 border border-[var(--cyber-neon-cyan)]/20 rounded-lg flex flex-col gap-3">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-mono text-[var(--cyber-neon-cyan)] uppercase tracking-widest">
+              <span className="text-sm font-mono text-[var(--cyber-neon-cyan)] uppercase tracking-widest">
                 7-Bit Partitioning
               </span>
-              <span className="text-xs font-mono text-[var(--cyber-neon-cyan)]/90 bg-[var(--cyber-neon-cyan)]/10 px-2 py-0.5 rounded">
+              <span className="text-sm font-mono text-[var(--cyber-neon-cyan)]/90 bg-[var(--cyber-neon-cyan)]/10 px-2 py-0.5 rounded">
                 {partitionedBinary.length} BITS
               </span>
             </div>
@@ -129,10 +129,10 @@ const VarintExplainer = () => {
 
         <div className="p-4 bg-[var(--cyber-neon-pink)]/5 border border-[var(--cyber-neon-pink)]/20 rounded-lg flex flex-col gap-3">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-mono text-[var(--cyber-neon-pink)] uppercase tracking-widest">
+            <span className="text-sm font-mono text-[var(--cyber-neon-pink)] uppercase tracking-widest">
               Final Varint (Little-Endian)
             </span>
-            <span className="text-xs font-mono text-[var(--cyber-neon-pink)]/90 bg-[var(--cyber-neon-pink)]/10 px-2 py-0.5 rounded">
+            <span className="text-sm font-mono text-[var(--cyber-neon-pink)]/90 bg-[var(--cyber-neon-pink)]/10 px-2 py-0.5 rounded">
               {varintBytes.length * 8} BITS
             </span>
           </div>

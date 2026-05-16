@@ -14,6 +14,7 @@ import { fromJson, toBinary, type DescMessage } from "@bufbuild/protobuf";
 import {
   Section,
   SectionTitle,
+  RoadmapGrid,
   CyberPanel,
   ExternalLinkText,
 } from "../components/shared/Common";
@@ -37,49 +38,49 @@ const PacketDiagram = ({
 }) => (
   <div className="w-full max-w-2xl mx-auto my-12">
     <div className="flex items-stretch gap-1 h-20">
-      <div className="flex-1 bg-[var(--cyber-neon-blue)]/10 border border-[var(--cyber-neon-blue)]/30 rounded flex flex-col items-center justify-center text-[var(--cyber-neon-blue)] font-mono text-xs relative group px-2 text-center">
-        <div className="absolute -top-6 left-0 text-xs uppercase text-[var(--text-dim)] font-bold tracking-widest flex items-center gap-1">
+      <div className="flex-1 bg-[var(--cyber-neon-blue)]/10 border border-[var(--cyber-neon-blue)]/30 rounded flex flex-col items-center justify-center text-[var(--cyber-neon-blue)] font-mono text-sm relative group px-2 text-center">
+        <div className="absolute -top-6 left-0 text-sm uppercase text-[var(--text-dim)] font-bold tracking-widest flex items-center gap-1">
           <Hash className="w-3 h-3" /> Tag
         </div>
         <span className="font-bold">VARINT</span>
-        <span className="text-xs opacity-60">(Field # | Type)</span>
+        <span className="text-sm opacity-60">(Field # | Type)</span>
       </div>
-      <div className="flex-[0.7] bg-[var(--cyber-neon-yellow)]/10 border border-[var(--cyber-neon-yellow)]/30 rounded flex flex-col items-center justify-center text-[var(--cyber-neon-yellow)] font-mono text-xs relative group px-2 text-center">
-        <div className="absolute -top-6 left-0 text-xs uppercase text-[var(--text-dim)] font-bold tracking-widest flex items-center gap-1">
+      <div className="flex-[0.7] bg-[var(--cyber-neon-yellow)]/10 border border-[var(--cyber-neon-yellow)]/30 rounded flex flex-col items-center justify-center text-[var(--cyber-neon-yellow)] font-mono text-sm relative group px-2 text-center">
+        <div className="absolute -top-6 left-0 text-sm uppercase text-[var(--text-dim)] font-bold tracking-widest flex items-center gap-1">
           <Zap className="w-3 h-3" /> Length
         </div>
         <span className="font-bold">VARINT</span>
-        <span className="text-xs opacity-60">N Bytes</span>
+        <span className="text-sm opacity-60">N Bytes</span>
       </div>
-      <div className="flex-[2] bg-[var(--cyber-neon-green)]/10 border border-[var(--cyber-neon-green)]/30 rounded flex flex-col items-center justify-center text-[var(--cyber-neon-green)] font-mono text-xs relative group px-2 text-center">
-        <div className="absolute -top-6 left-0 text-xs uppercase text-[var(--text-dim)] font-bold tracking-widest flex items-center gap-1">
+      <div className="flex-[2] bg-[var(--cyber-neon-green)]/10 border border-[var(--cyber-neon-green)]/30 rounded flex flex-col items-center justify-center text-[var(--cyber-neon-green)] font-mono text-sm relative group px-2 text-center">
+        <div className="absolute -top-6 left-0 text-sm uppercase text-[var(--text-dim)] font-bold tracking-widest flex items-center gap-1">
           <Database className="w-3 h-3" /> Payload
         </div>
         <span className="font-bold">DATA</span>
-        <span className="text-xs opacity-60">Binary Bytes</span>
+        <span className="text-sm opacity-60">Binary Bytes</span>
       </div>
     </div>
     <div className="flex justify-between mt-8 px-2">
       <div className="flex flex-col items-center gap-1">
         <div className="w-px h-4 bg-[var(--border-light)]" />
-        <span className="text-xs font-mono text-[var(--text-dim)] uppercase">
+        <span className="text-sm font-mono text-[var(--text-dim)] uppercase">
           1-5 Bytes
         </span>
       </div>
       <div className="flex flex-col items-center gap-1">
         <div className="w-px h-4 bg-[var(--border-light)]" />
-        <span className="text-xs font-mono text-[var(--text-dim)] uppercase">
+        <span className="text-sm font-mono text-[var(--text-dim)] uppercase">
           1-5 Bytes
         </span>
       </div>
       <div className="flex flex-col items-center gap-1">
         <div className="w-px h-4 bg-[var(--border-light)]" />
-        <span className="text-xs font-mono text-[var(--text-dim)] uppercase">
+        <span className="text-sm font-mono text-[var(--text-dim)] uppercase">
           N Bytes
         </span>
       </div>
     </div>
-    <div className="text-xs font-mono text-[var(--text-dim)] uppercase text-center mt-4 italic border-t border-[var(--border-light)] pt-4">
+    <div className="text-sm font-mono text-[var(--text-dim)] uppercase text-center mt-4 italic border-t border-[var(--border-light)] pt-4">
       Anatomy of a {title}
     </div>
   </div>
@@ -94,36 +95,36 @@ const FixedPacketDiagram = ({
 }) => (
   <div className="w-full max-w-2xl mx-auto my-12">
     <div className="flex items-stretch gap-1 h-20">
-      <div className="flex-1 bg-[var(--cyber-neon-blue)]/10 border border-[var(--cyber-neon-blue)]/30 rounded flex flex-col items-center justify-center text-[var(--cyber-neon-blue)] font-mono text-xs relative group px-2 text-center">
-        <div className="absolute -top-6 left-0 text-xs uppercase text-[var(--text-dim)] font-bold tracking-widest flex items-center gap-1">
+      <div className="flex-1 bg-[var(--cyber-neon-blue)]/10 border border-[var(--cyber-neon-blue)]/30 rounded flex flex-col items-center justify-center text-[var(--cyber-neon-blue)] font-mono text-sm relative group px-2 text-center">
+        <div className="absolute -top-6 left-0 text-sm uppercase text-[var(--text-dim)] font-bold tracking-widest flex items-center gap-1">
           <Hash className="w-3 h-3" /> Tag
         </div>
         <span className="font-bold">VARINT</span>
-        <span className="text-xs opacity-60">(Field # | Type)</span>
+        <span className="text-sm opacity-60">(Field # | Type)</span>
       </div>
-      <div className="flex-[2.7] bg-[var(--cyber-neon-green)]/10 border border-[var(--cyber-neon-green)]/30 rounded flex flex-col items-center justify-center text-[var(--cyber-neon-green)] font-mono text-xs relative group px-2 text-center">
-        <div className="absolute -top-6 left-0 text-xs uppercase text-[var(--text-dim)] font-bold tracking-widest flex items-center gap-1">
+      <div className="flex-[2.7] bg-[var(--cyber-neon-green)]/10 border border-[var(--cyber-neon-green)]/30 rounded flex flex-col items-center justify-center text-[var(--cyber-neon-green)] font-mono text-sm relative group px-2 text-center">
+        <div className="absolute -top-6 left-0 text-sm uppercase text-[var(--text-dim)] font-bold tracking-widest flex items-center gap-1">
           <Database className="w-3 h-3" /> Payload
         </div>
         <span className="font-bold">DATA</span>
-        <span className="text-xs opacity-60">{size}</span>
+        <span className="text-sm opacity-60">{size}</span>
       </div>
     </div>
     <div className="flex justify-between mt-8 px-2">
       <div className="flex flex-col items-center gap-1">
         <div className="w-px h-4 bg-[var(--border-light)]" />
-        <span className="text-xs font-mono text-[var(--text-dim)] uppercase">
+        <span className="text-sm font-mono text-[var(--text-dim)] uppercase">
           1-5 Bytes
         </span>
       </div>
       <div className="flex flex-col items-center gap-1">
         <div className="w-px h-4 bg-[var(--border-light)]" />
-        <span className="text-xs font-mono text-[var(--text-dim)] uppercase">
+        <span className="text-sm font-mono text-[var(--text-dim)] uppercase">
           {size}
         </span>
       </div>
     </div>
-    <div className="text-xs font-mono text-[var(--text-dim)] uppercase text-center mt-4 italic border-t border-[var(--border-light)] pt-4">
+    <div className="text-sm font-mono text-[var(--text-dim)] uppercase text-center mt-4 italic border-t border-[var(--border-light)] pt-4">
       Anatomy of a {title}
     </div>
   </div>
@@ -132,36 +133,36 @@ const FixedPacketDiagram = ({
 const VarintPacketDiagram = () => (
   <div className="w-full max-w-2xl mx-auto my-12">
     <div className="flex items-stretch gap-1 h-20">
-      <div className="flex-1 bg-[var(--cyber-neon-blue)]/10 border border-[var(--cyber-neon-blue)]/30 rounded flex flex-col items-center justify-center text-[var(--cyber-neon-blue)] font-mono text-xs relative group px-2 text-center">
-        <div className="absolute -top-6 left-0 text-xs uppercase text-[var(--text-dim)] font-bold tracking-widest flex items-center gap-1">
+      <div className="flex-1 bg-[var(--cyber-neon-blue)]/10 border border-[var(--cyber-neon-blue)]/30 rounded flex flex-col items-center justify-center text-[var(--cyber-neon-blue)] font-mono text-sm relative group px-2 text-center">
+        <div className="absolute -top-6 left-0 text-sm uppercase text-[var(--text-dim)] font-bold tracking-widest flex items-center gap-1">
           <Hash className="w-3 h-3" /> Tag
         </div>
         <span className="font-bold">VARINT</span>
-        <span className="text-xs opacity-60">(Field # | Type)</span>
+        <span className="text-sm opacity-60">(Field # | Type)</span>
       </div>
-      <div className="flex-[2.7] bg-[var(--cyber-neon-green)]/10 border border-[var(--cyber-neon-green)]/30 rounded flex flex-col items-center justify-center text-[var(--cyber-neon-green)] font-mono text-xs relative group px-2 text-center">
-        <div className="absolute -top-6 left-0 text-xs uppercase text-[var(--text-dim)] font-bold tracking-widest flex items-center gap-1">
+      <div className="flex-[2.7] bg-[var(--cyber-neon-green)]/10 border border-[var(--cyber-neon-green)]/30 rounded flex flex-col items-center justify-center text-[var(--cyber-neon-green)] font-mono text-sm relative group px-2 text-center">
+        <div className="absolute -top-6 left-0 text-sm uppercase text-[var(--text-dim)] font-bold tracking-widest flex items-center gap-1">
           <Database className="w-3 h-3" /> Payload
         </div>
         <span className="font-bold">VARINT</span>
-        <span className="text-xs opacity-60">1-10 Bytes</span>
+        <span className="text-sm opacity-60">1-10 Bytes</span>
       </div>
     </div>
     <div className="flex justify-between mt-8 px-2">
       <div className="flex flex-col items-center gap-1">
         <div className="w-px h-4 bg-[var(--border-light)]" />
-        <span className="text-xs font-mono text-[var(--text-dim)] uppercase">
+        <span className="text-sm font-mono text-[var(--text-dim)] uppercase">
           1-5 Bytes
         </span>
       </div>
       <div className="flex flex-col items-center gap-1">
         <div className="w-px h-4 bg-[var(--border-light)]" />
-        <span className="text-xs font-mono text-[var(--text-dim)] uppercase">
+        <span className="text-sm font-mono text-[var(--text-dim)] uppercase">
           1-10 Bytes
         </span>
       </div>
     </div>
-    <div className="text-xs font-mono text-[var(--text-dim)] uppercase text-center mt-4 italic border-t border-[var(--border-light)] pt-4">
+    <div className="text-sm font-mono text-[var(--text-dim)] uppercase text-center mt-4 italic border-t border-[var(--border-light)] pt-4">
       Anatomy of a Varint Field (Wire Type 0)
     </div>
   </div>
@@ -182,10 +183,10 @@ const ByteBreakdown = ({
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between">
-        <span className="text-xs font-mono text-[var(--text-dim)] uppercase tracking-widest">
+        <span className="text-sm font-mono text-[var(--text-dim)] uppercase tracking-widest">
           {label}
         </span>
-        <span className="text-xs font-mono text-[var(--text-dim)] opacity-60 uppercase">
+        <span className="text-sm font-mono text-[var(--text-dim)] opacity-60 uppercase">
           {bytes.length} {bytes.length === 1 ? "Byte" : "Bytes"}
         </span>
       </div>
@@ -204,7 +205,7 @@ const ByteBreakdown = ({
           ))}
         </div>
         <div
-          className="flex flex-wrap gap-x-3 gap-y-1 font-mono text-xs opacity-70 break-all"
+          className="flex flex-wrap gap-x-3 gap-y-1 font-mono text-sm opacity-70 break-all"
           style={{ color }}
         >
           {Array.from(bytes).map((b, i) => (
@@ -232,10 +233,10 @@ const TagSectionBreakdown = ({
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <span className="text-xs font-mono text-[var(--text-dim)] uppercase tracking-widest">
+        <span className="text-sm font-mono text-[var(--text-dim)] uppercase tracking-widest">
           Tag Section
         </span>
-        <span className="text-xs font-mono text-[var(--text-dim)] opacity-60 uppercase">
+        <span className="text-sm font-mono text-[var(--text-dim)] opacity-60 uppercase">
           {bytes.length} {bytes.length === 1 ? "Byte" : "Bytes"}
         </span>
       </div>
@@ -247,11 +248,11 @@ const TagSectionBreakdown = ({
           return (
             <div key={i} className="space-y-2">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono text-[var(--cyber-neon-blue)] bg-[var(--cyber-neon-blue)]/10 px-1.5 py-0.5 rounded border border-[var(--cyber-neon-blue)]/20">
+                <span className="text-sm font-mono text-[var(--cyber-neon-blue)] bg-[var(--cyber-neon-blue)]/10 px-1.5 py-0.5 rounded border border-[var(--cyber-neon-blue)]/20">
                   {byte.toString(16).padStart(2, "0").toUpperCase()}
                 </span>
                 {bytes.length > 1 && (
-                  <span className="text-xs font-mono text-[var(--text-dim)] uppercase opacity-60">
+                  <span className="text-sm font-mono text-[var(--text-dim)] uppercase opacity-60">
                     Byte {i}
                   </span>
                 )}
@@ -286,7 +287,7 @@ const TagSectionBreakdown = ({
                       className="flex flex-col items-center flex-1 min-w-0"
                     >
                       <div
-                        className="w-full h-6 flex items-center justify-center font-mono text-xs border border-transparent transition-all"
+                        className="w-full h-6 flex items-center justify-center font-mono text-sm border border-transparent transition-all"
                         style={{
                           backgroundColor: `color-mix(in srgb, ${bitColor}, transparent 90%)`,
                           borderColor: `color-mix(in srgb, ${bitColor}, transparent 70%)`,
@@ -296,7 +297,7 @@ const TagSectionBreakdown = ({
                         {bit}
                       </div>
                       <div
-                        className="text-xs font-mono mt-1 opacity-60 overflow-hidden"
+                        className="text-sm font-mono mt-1 opacity-60 overflow-hidden"
                         style={{ color: bitColor }}
                       >
                         {label}
@@ -312,13 +313,13 @@ const TagSectionBreakdown = ({
         <div className="grid grid-cols-2 gap-4 mt-1 pt-3 border-t border-[var(--border-light)]/30">
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-[var(--cyber-neon-blue)]" />
-            <span className="text-xs font-mono text-[var(--text-dim)] uppercase tracking-tighter">
+            <span className="text-sm font-mono text-[var(--text-dim)] uppercase tracking-tighter">
               Field #{fieldNumber}
             </span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-[var(--cyber-neon-yellow)]" />
-            <span className="text-xs font-mono text-[var(--text-dim)] uppercase tracking-tighter">
+            <span className="text-sm font-mono text-[var(--text-dim)] uppercase tracking-tighter">
               Wire Type {wireType}
             </span>
           </div>
@@ -369,14 +370,14 @@ const TagCalculator = () => {
         <div className="flex bg-[var(--overlay-bg)] p-1 rounded border border-[var(--border-light)]">
           <button
             onClick={() => setMode("small")}
-            className={`px-3 py-1 text-xs font-mono rounded transition-all ${mode === "small" ? "bg-[var(--cyber-neon-blue)]/20 text-[var(--cyber-neon-blue)]" : "text-[var(--text-dim)] hover:text-[var(--text-color)]"}`}
+            className={`px-3 py-1 text-sm font-mono rounded transition-all ${mode === "small" ? "bg-[var(--cyber-neon-blue)]/20 text-[var(--cyber-neon-blue)]" : "text-[var(--text-dim)] hover:text-[var(--text-color)]"}`}
             aria-label="Show tag for field number 1"
           >
             FIELD_1
           </button>
           <button
             onClick={() => setMode("large")}
-            className={`px-3 py-1 text-xs font-mono rounded transition-all ${mode === "large" ? "bg-[var(--cyber-neon-pink)]/20 text-[var(--cyber-neon-pink)]" : "text-[var(--text-dim)] hover:text-[var(--text-color)]"}`}
+            className={`px-3 py-1 text-sm font-mono rounded transition-all ${mode === "large" ? "bg-[var(--cyber-neon-pink)]/20 text-[var(--cyber-neon-pink)]" : "text-[var(--text-dim)] hover:text-[var(--text-color)]"}`}
             aria-label="Show tag for field number 16"
           >
             FIELD_16
@@ -388,10 +389,10 @@ const TagCalculator = () => {
         {/* Step 1: Shift */}
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h4 className="text-[10px] font-cyber text-[var(--cyber-neon-blue)] uppercase tracking-widest">
+            <h4 className="text-xs font-cyber text-[var(--cyber-neon-blue)] uppercase tracking-widest">
               01. Bit Shift (field &lt;&lt; 3)
             </h4>
-            <div className="text-[10px] font-mono text-[var(--text-dim)] bg-[var(--section-bg-dark)] px-2 py-0.5 rounded border border-[var(--border-light)]">
+            <div className="text-xs font-mono text-[var(--text-dim)] bg-[var(--section-bg-dark)] px-2 py-0.5 rounded border border-[var(--border-light)]">
               {field} &lt;&lt; 3 = {field << 3}
             </div>
           </div>
@@ -407,7 +408,7 @@ const TagCalculator = () => {
               ))}
             </div>
             <div className="flex justify-center py-1">
-              <div className="text-[var(--cyber-neon-blue)] opacity-50 text-xs font-bold">
+              <div className="text-[var(--cyber-neon-blue)] opacity-50 text-sm font-bold">
                 ↓
               </div>
             </div>
@@ -427,10 +428,10 @@ const TagCalculator = () => {
         {/* Step 2: Merge */}
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h4 className="text-[10px] font-cyber text-[var(--cyber-neon-yellow)] uppercase tracking-widest">
+            <h4 className="text-xs font-cyber text-[var(--cyber-neon-yellow)] uppercase tracking-widest">
               02. Bitwise OR (| wire_type)
             </h4>
-            <div className="text-[10px] font-mono text-[var(--text-dim)] bg-[var(--section-bg-dark)] px-2 py-0.5 rounded border border-[var(--border-light)]">
+            <div className="text-xs font-mono text-[var(--text-dim)] bg-[var(--section-bg-dark)] px-2 py-0.5 rounded border border-[var(--border-light)]">
               {field << 3} | {type} = {tagValue}
             </div>
           </div>
@@ -459,10 +460,10 @@ const TagCalculator = () => {
         {/* Step 3: Varint */}
         <div className="space-y-4 pt-6 border-t border-[var(--border-light)]">
           <div className="flex items-center justify-between">
-            <h4 className="text-[10px] font-cyber text-[var(--cyber-neon-green)] uppercase tracking-widest">
+            <h4 className="text-xs font-cyber text-[var(--cyber-neon-green)] uppercase tracking-widest">
               03. Varint Encoding (Little-Endian)
             </h4>
-            <div className="text-[10px] font-mono text-[var(--text-dim)] bg-[var(--section-bg-dark)] px-2 py-0.5 rounded border border-[var(--border-light)]">
+            <div className="text-xs font-mono text-[var(--text-dim)] bg-[var(--section-bg-dark)] px-2 py-0.5 rounded border border-[var(--border-light)]">
               {tagValue} → {varintBytes.length} Byte(s)
             </div>
           </div>
@@ -483,7 +484,7 @@ const TagCalculator = () => {
                     {bits.map((bit, bitIdx) => (
                       <div
                         key={bitIdx}
-                        className={`flex-1 flex items-center justify-center font-mono text-xs border rounded-sm ${bitIdx === 0 ? "border-[var(--cyber-neon-pink)]/50 text-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/10" : "border-[var(--cyber-neon-green)]/30 text-[var(--cyber-neon-green)] bg-[var(--cyber-neon-green)]/5"}`}
+                        className={`flex-1 flex items-center justify-center font-mono text-sm border rounded-sm ${bitIdx === 0 ? "border-[var(--cyber-neon-pink)]/50 text-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/10" : "border-[var(--cyber-neon-green)]/30 text-[var(--cyber-neon-green)] bg-[var(--cyber-neon-green)]/5"}`}
                       >
                         {bit}
                       </div>
@@ -499,7 +500,7 @@ const TagCalculator = () => {
           </div>
           {mode === "large" && (
             <div className="p-3 bg-[var(--cyber-neon-pink)]/5 border border-[var(--cyber-neon-pink)]/20 rounded-sm">
-              <p className="text-[10px] text-[var(--text-dim)] leading-relaxed italic">
+              <p className="text-sm text-[var(--text-dim)] leading-relaxed italic">
                 <strong className="text-[var(--cyber-neon-pink)] not-italic uppercase">
                   Overflow Alert:
                 </strong>{" "}
@@ -565,7 +566,7 @@ const WireFormatBreakdown = () => {
               >
                 {wt.label}
               </h4>
-              <p className="text-xs text-[var(--text-dim)] leading-relaxed min-h-[40px]">
+              <p className="text-sm text-[var(--text-dim)] leading-relaxed min-h-[40px]">
                 {wt.desc}
               </p>
               <div className="pt-3 border-t border-[var(--border-light)]">
@@ -573,7 +574,7 @@ const WireFormatBreakdown = () => {
                   {wt.types.map((t) => (
                     <span
                       key={t}
-                      className="text-xs font-mono px-1.5 py-0.5 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded opacity-80"
+                      className="text-sm font-mono px-1.5 py-0.5 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded opacity-80"
                     >
                       {t}
                     </span>
@@ -677,7 +678,7 @@ const BinaryBasics = () => (
         <CyberPanel title="MEMORY_LAYOUT_VISUALIZATION">
           <MemoryLayoutVisualization />
           <div className="mt-4 p-4 bg-[var(--overlay-bg)] rounded-lg border border-[var(--border-light)] text-center max-w-2xl mx-auto">
-            <p className="text-xs text-[var(--text-dim)] leading-relaxed">
+            <p className="text-sm text-[var(--text-dim)] leading-relaxed">
               Protobuf stores the{" "}
               <strong className="text-[var(--cyber-neon-green)]">
                 Least Significant Byte (Low Weight)
@@ -888,7 +889,7 @@ export const BinaryMatrix = ({
     >
       <div className="max-w-7xl mx-auto">
         <SectionTitle icon={Binary} subtitle="05b_EXPLORER">
-          Segment Explorer
+          Binary Explorer
         </SectionTitle>
 
         <div className="mb-16 space-y-6">
@@ -910,7 +911,7 @@ export const BinaryMatrix = ({
               <button
                 key={key}
                 onClick={() => handleExampleChange(key)}
-                className={`px-3 py-1 text-xs font-cyber font-bold border transition-all rounded-md ${
+                className={`px-3 py-1 text-sm font-cyber font-bold border transition-all rounded-md ${
                   activeExample === key
                     ? "bg-[var(--cyber-neon-blue)] border-[var(--cyber-neon-blue)] text-black shadow-[0_0_10px_rgba(0,243,255,0.3)]"
                     : "bg-[var(--overlay-bg)] border-[var(--border-light)] text-[var(--text-dim)] hover:border-white/30 hover:text-[var(--text-color)]"
@@ -924,7 +925,7 @@ export const BinaryMatrix = ({
           <button
             onClick={handleGenerateFake}
             disabled={isGenerating || !fds}
-            className="px-4 py-1.5 text-xs font-cyber font-bold border border-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)] text-black hover:bg-[var(--cyber-neon-pink)]/90 transition-all flex items-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed rounded-md shadow-[0_0_15px_rgba(255,0,255,0.4)]"
+            className="px-4 py-1.5 text-sm font-cyber font-bold border border-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)] text-black hover:bg-[var(--cyber-neon-pink)]/90 transition-all flex items-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed rounded-md shadow-[0_0_15px_rgba(255,0,255,0.4)]"
             aria-label="Generate Random Data"
           >
             <Zap
@@ -937,7 +938,7 @@ export const BinaryMatrix = ({
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 relative">
           {/* Global Interactive Sign for Large Screens */}
           <div className="absolute -left-48 top-48 hidden 2xl:flex flex-col items-end gap-2 text-[var(--cyber-neon-pink)] pointer-events-none animate-pulse z-10 opacity-70">
-            <span className="font-cyber text-xs uppercase tracking-widest text-right">
+            <span className="font-cyber text-sm uppercase tracking-widest text-right">
               These Panels
               <br />
               Are Live!
@@ -981,14 +982,14 @@ export const BinaryMatrix = ({
                 <div className="flex bg-[var(--overlay-bg)] p-1 rounded border border-[var(--border-light)]">
                   <button
                     onClick={() => setViewMode("hex")}
-                    className={`px-3 py-1 text-xs font-mono rounded transition-all ${viewMode === "hex" ? "bg-[var(--cyber-neon-blue)]/20 text-[var(--cyber-neon-blue)]" : "text-[var(--text-dim)] hover:text-[var(--text-color)]"}`}
+                    className={`px-3 py-1 text-sm font-mono rounded transition-all ${viewMode === "hex" ? "bg-[var(--cyber-neon-blue)]/20 text-[var(--cyber-neon-blue)]" : "text-[var(--text-dim)] hover:text-[var(--text-color)]"}`}
                     aria-label="Switch to HEX view"
                   >
                     HEX
                   </button>
                   <button
                     onClick={() => setViewMode("scope")}
-                    className={`px-3 py-1 text-xs font-mono rounded transition-all ${viewMode === "scope" ? "bg-[var(--cyber-neon-pink)]/20 text-[var(--cyber-neon-pink)]" : "text-[var(--text-dim)] hover:text-[var(--text-color)]"}`}
+                    className={`px-3 py-1 text-sm font-mono rounded transition-all ${viewMode === "scope" ? "bg-[var(--cyber-neon-pink)]/20 text-[var(--cyber-neon-pink)]" : "text-[var(--text-dim)] hover:text-[var(--text-color)]"}`}
                     aria-label="Switch to Protoscope view"
                   >
                     SCOPE
@@ -1030,7 +1031,7 @@ export const BinaryMatrix = ({
                                 return (
                                   <span
                                     key={byteIdx}
-                                    className="px-1.5 py-0.5 rounded border font-mono text-xs transition-colors"
+                                    className="px-1.5 py-0.5 rounded border font-mono text-sm transition-colors"
                                     style={{
                                       borderColor: isActive
                                         ? byteColor
@@ -1051,7 +1052,7 @@ export const BinaryMatrix = ({
 
                             {seg.fieldName && (
                               <span
-                                className={`text-xs uppercase font-cyber tracking-widest opacity-60 flex-shrink-0 ${isActive ? "text-[var(--text-color)]" : "text-[var(--text-dim)]"}`}
+                                className={`text-sm uppercase font-cyber tracking-widest opacity-60 flex-shrink-0 ${isActive ? "text-[var(--text-color)]" : "text-[var(--text-dim)]"}`}
                               >
                                 {seg.fieldName}
                               </span>
@@ -1063,19 +1064,19 @@ export const BinaryMatrix = ({
                     <div className="pt-4 border-t border-[var(--border-light)] flex flex-wrap gap-4">
                       <div className="flex items-center gap-2">
                         <div className="w-2 h-2 rounded-full bg-[var(--cyber-neon-blue)]" />
-                        <span className="text-xs font-mono text-[var(--text-dim)] uppercase">
+                        <span className="text-sm font-mono text-[var(--text-dim)] uppercase">
                           Tag
                         </span>
                       </div>
                       <div className="flex items-center gap-2">
                         <div className="w-2 h-2 rounded-full bg-[var(--cyber-neon-yellow)]" />
-                        <span className="text-xs font-mono text-[var(--text-dim)] uppercase">
+                        <span className="text-sm font-mono text-[var(--text-dim)] uppercase">
                           Length
                         </span>
                       </div>
                       <div className="flex items-center gap-2">
                         <div className="w-2 h-2 rounded-full bg-[var(--cyber-neon-green)]" />
-                        <span className="text-xs font-mono text-[var(--text-dim)] uppercase">
+                        <span className="text-sm font-mono text-[var(--text-dim)] uppercase">
                           Payload
                         </span>
                       </div>
@@ -1086,7 +1087,7 @@ export const BinaryMatrix = ({
                     {protoscopeOutput}
                   </pre>
                 )}
-                <p className="text-xs font-mono text-[var(--text-dim)] uppercase tracking-widest">
+                <p className="text-sm font-mono text-[var(--text-dim)] uppercase tracking-widest">
                   {viewMode === "hex"
                     ? "Click a segment to investigate its structure"
                     : "Disassembled binary stream (schema-agnostic)"}
@@ -1106,7 +1107,7 @@ export const BinaryMatrix = ({
                   <div className="space-y-8">
                     <div className="grid grid-cols-2 gap-8">
                       <div className="space-y-1">
-                        <span className="text-xs font-mono text-[var(--text-dim)] uppercase tracking-widest">
+                        <span className="text-sm font-mono text-[var(--text-dim)] uppercase tracking-widest">
                           {selectedSegment.fieldName
                             ? `Field: ${selectedSegment.fieldName}`
                             : "Field ID"}
@@ -1116,7 +1117,7 @@ export const BinaryMatrix = ({
                         </div>
                       </div>
                       <div className="space-y-1">
-                        <span className="text-xs font-mono text-[var(--text-dim)] uppercase tracking-widest">
+                        <span className="text-sm font-mono text-[var(--text-dim)] uppercase tracking-widest">
                           Wire Type
                         </span>
                         <div className="text-2xl font-cyber font-bold text-[var(--cyber-neon-blue)]">
@@ -1147,12 +1148,12 @@ export const BinaryMatrix = ({
 
                     <div className="p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg space-y-4">
                       <div className="flex items-center justify-between">
-                        <span className="text-xs font-mono text-[var(--text-dim)] uppercase">
+                        <span className="text-sm font-mono text-[var(--text-dim)] uppercase">
                           Semantic Value{" "}
                           {selectedSegment.fieldType &&
                             `(${selectedSegment.fieldType})`}
                         </span>
-                        <span className="text-xs font-mono px-1.5 py-0.5 bg-[var(--cyber-neon-blue)]/10 text-[var(--cyber-neon-blue)] rounded uppercase">
+                        <span className="text-sm font-mono px-1.5 py-0.5 bg-[var(--cyber-neon-blue)]/10 text-[var(--cyber-neon-blue)] rounded uppercase">
                           {selectedSegment.wireType === 0
                             ? "Varint"
                             : selectedSegment.wireType === 2
@@ -1168,11 +1169,11 @@ export const BinaryMatrix = ({
                     <div className="space-y-3">
                       <div className="flex items-center gap-2">
                         <MousePointer2 className="w-4 h-4 text-[var(--cyber-neon-blue)]" />
-                        <span className="text-xs font-cyber font-bold uppercase tracking-widest">
+                        <span className="text-sm font-cyber font-bold uppercase tracking-widest">
                           Wire Logic
                         </span>
                       </div>
-                      <pre className="p-4 bg-[var(--section-bg-dark)] border border-[var(--border-light)] rounded font-mono text-xs leading-relaxed text-[var(--text-dim)]">
+                      <pre className="p-4 bg-[var(--section-bg-dark)] border border-[var(--border-light)] rounded font-mono text-sm leading-relaxed text-[var(--text-dim)]">
                         {selectedSegment.wireType === 0 &&
                           `// Wire Type 0: Read varint until MSB=0\nval = decodeVarint(stream)`}
                         {selectedSegment.wireType === 2 &&
@@ -1210,107 +1211,65 @@ const BinaryPage = ({
   fds: Uint8Array | null;
   protoSource: string;
   setProtoSource: (s: string) => void;
-}) => (
-  <>
-    {/* 1. Introduction & Roadmap */}
-    <Section
-      id="binary-intro"
-      className="py-24 px-4 sm:px-8 bg-[var(--bg-color)]"
-    >
-      <div className="max-w-7xl mx-auto">
-        <SectionTitle icon={Binary} subtitle="05_WIRE_FORMAT">
-          Digging into the binary
-        </SectionTitle>
+}) => {
+  const roadmapItems = [
+    {
+      id: "binary-intro",
+      title: "Binary Primitives",
+      desc: "Foundational concepts like Endianness and Bit Shifting.",
+    },
+    {
+      id: "varints",
+      title: "Base-128 Varint Encoding",
+      desc: "The fundamental compression technique for integers.",
+    },
+    {
+      id: "binary-tag",
+      title: "The Tag System",
+      desc: "How field numbers and wire types are packed into bytes.",
+    },
+    {
+      id: "wire-types",
+      title: "Wire Types",
+      desc: "Physical formats (Varint, Fixed, Length-Delimited).",
+    },
+    {
+      id: "matrix",
+      title: "Stream Explorer",
+      desc: "Live inspection and schema-agnostic disassembly.",
+    },
+  ];
 
-        <div className="mb-16 max-w-4xl space-y-6 mx-auto text-center">
-          <p className="text-lg text-[var(--text-dim)] leading-relaxed">
-            To understand how Protobuf achieves its performance, we must look at
-            the raw bytes. On this page, we will journey through the physical
-            layer of the specification:
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-8 text-left">
-            <div className="space-y-4">
-              <div className="flex gap-3 items-start">
-                <div className="w-8 h-8 rounded bg-[var(--cyber-neon-green)]/10 border border-[var(--cyber-neon-green)]/30 flex items-center justify-center shrink-0 font-mono text-xs text-[var(--cyber-neon-green)]">
-                  01
-                </div>
-                <div>
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--text-color)]">
-                    Binary Primitives
-                  </h4>
-                  <p className="text-xs text-[var(--text-dim)] mt-1">
-                    Foundational concepts like Endianness and Bit Shifting.
-                  </p>
-                </div>
-              </div>
-              <div className="flex gap-3 items-start">
-                <div className="w-8 h-8 rounded bg-[var(--cyber-neon-blue)]/10 border border-[var(--cyber-neon-blue)]/30 flex items-center justify-center shrink-0 font-mono text-xs text-[var(--cyber-neon-blue)]">
-                  02
-                </div>
-                <div>
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--text-color)]">
-                    Base-128 Varint Encoding
-                  </h4>
-                  <p className="text-xs text-[var(--text-dim)] mt-1">
-                    The fundamental compression technique for integers.
-                  </p>
-                </div>{" "}
-              </div>
-            </div>
-            <div className="space-y-4">
-              <div className="flex gap-3 items-start">
-                <div className="w-8 h-8 rounded bg-[var(--cyber-neon-yellow)]/10 border border-[var(--cyber-neon-yellow)]/30 flex items-center justify-center shrink-0 font-mono text-xs text-[var(--cyber-neon-yellow)]">
-                  03
-                </div>
-                <div>
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--text-color)]">
-                    The Tag System
-                  </h4>
-                  <p className="text-xs text-[var(--text-dim)] mt-1">
-                    How field numbers and wire types are packed into bytes.
-                  </p>
-                </div>
-              </div>
-              <div className="flex gap-3 items-start">
-                <div className="w-8 h-8 rounded bg-[var(--cyber-neon-pink)]/10 border border-[var(--cyber-neon-pink)]/30 flex items-center justify-center shrink-0 font-mono text-xs text-[var(--cyber-neon-pink)]">
-                  04
-                </div>
-                <div>
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--text-color)]">
-                    Wire Types
-                  </h4>
-                  <p className="text-xs text-[var(--text-dim)] mt-1">
-                    Physical formats (Varint, Fixed, Length-Delimited).
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="space-y-4">
-              <div className="flex gap-3 items-start">
-                <div className="w-8 h-8 rounded bg-[var(--cyber-neon-cyan)]/10 border border-[var(--cyber-neon-cyan)]/30 flex items-center justify-center shrink-0 font-mono text-xs text-[var(--cyber-neon-cyan)]">
-                  05
-                </div>
-                <div>
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--text-color)]">
-                    Stream Explorer
-                  </h4>
-                  <p className="text-xs text-[var(--text-dim)] mt-1">
-                    Live inspection and schema-agnostic disassembly.
-                  </p>
-                </div>
-              </div>
-            </div>
+  return (
+    <>
+      {/* 1. Introduction & Roadmap */}
+      <Section
+        id="binary-intro"
+        className="py-24 px-4 sm:px-8 bg-[var(--bg-color)]"
+      >
+        <div className="max-w-7xl mx-auto">
+          <SectionTitle icon={Binary} subtitle="05_WIRE_FORMAT">
+            Digging into the binary
+          </SectionTitle>
+
+          <div className="mb-16 max-w-4xl space-y-6 mx-auto text-center">
+            <p className="text-lg text-[var(--text-dim)] leading-relaxed">
+              To understand how Protobuf achieves its performance, we must look at
+              the raw bytes. On this page, we will journey through the physical
+              layer of the specification:
+            </p>
+
+            <RoadmapGrid items={roadmapItems} />
+          </div>
+
+          <div className="pt-24 mt-24 border-t border-[var(--border-light)]/30">
+            <SectionTitle icon={Zap} subtitle="05_BASICS">
+              Foundations: Binary 101
+            </SectionTitle>
+            <BinaryBasics />
           </div>
         </div>
-
-        <div className="pt-24 mt-24 border-t border-[var(--border-light)]/30">
-          <SectionTitle icon={Zap} subtitle="05_BASICS">
-            Foundations: Binary 101
-          </SectionTitle>
-          <BinaryBasics />
-        </div>
-      </div>
-    </Section>
+      </Section>
 
     {/* 1.2 Varints */}
     <Section
@@ -1373,7 +1332,7 @@ const BinaryPage = ({
 
             <div className="space-y-6">
               <div className="p-6 bg-[var(--section-bg-dark)] border-l-4 border-[var(--cyber-neon-blue)] rounded-r-xl">
-                <h4 className="text-xs font-bold text-[var(--cyber-neon-blue)] uppercase tracking-widest mb-2">
+                <h4 className="text-sm font-bold text-[var(--cyber-neon-blue)] uppercase tracking-widest mb-2">
                   Tag Composition
                 </h4>
                 <p className="text-sm text-[var(--text-dim)] leading-relaxed">
@@ -1468,22 +1427,22 @@ const BinaryPage = ({
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
               <div className="space-y-3">
-                <h4 className="font-cyber font-bold text-xs text-[var(--cyber-neon-green)] uppercase tracking-widest">
+                <h4 className="font-cyber font-bold text-sm text-[var(--cyber-neon-green)] uppercase tracking-widest">
                   Strengths
                 </h4>
                 <ul className="space-y-2">
-                  <li className="text-xs text-[var(--text-dim)] flex gap-2">
+                  <li className="text-sm text-[var(--text-dim)] flex gap-2">
                     <span className="text-[var(--cyber-neon-green)]">+</span>
                     <p>Schema-agnostic debugging of any Protobuf stream.</p>
                   </li>
-                  <li className="text-xs text-[var(--text-dim)] flex gap-2">
+                  <li className="text-sm text-[var(--text-dim)] flex gap-2">
                     <span className="text-[var(--cyber-neon-green)]">+</span>
                     <p>
                       Perfect for crafting malformed messages for security
                       testing.
                     </p>
                   </li>
-                  <li className="text-xs text-[var(--text-dim)] flex gap-2">
+                  <li className="text-sm text-[var(--text-dim)] flex gap-2">
                     <span className="text-[var(--cyber-neon-green)]">+</span>
                     <p>
                       Human-readable representation of complex binary
@@ -1493,24 +1452,24 @@ const BinaryPage = ({
                 </ul>
               </div>
               <div className="space-y-3">
-                <h4 className="font-cyber font-bold text-xs text-[var(--cyber-neon-pink)] uppercase tracking-widest">
+                <h4 className="font-cyber font-bold text-sm text-[var(--cyber-neon-pink)] uppercase tracking-widest">
                   Weaknesses
                 </h4>
                 <ul className="space-y-2">
-                  <li className="text-xs text-[var(--text-dim)] flex gap-2">
+                  <li className="text-sm text-[var(--text-dim)] flex gap-2">
                     <span className="text-[var(--cyber-neon-pink)]">-</span>
                     <p>
                       Lossy: Cannot distinguish between <code>int32</code> and{" "}
                       <code>uint32</code>.
                     </p>
                   </li>
-                  <li className="text-xs text-[var(--text-dim)] flex gap-2">
+                  <li className="text-sm text-[var(--text-dim)] flex gap-2">
                     <span className="text-[var(--cyber-neon-pink)]">-</span>
                     <p>
                       Ambiguous: May misidentify embedded messages as strings.
                     </p>
                   </li>
-                  <li className="text-xs text-[var(--text-dim)] flex gap-2">
+                  <li className="text-sm text-[var(--text-dim)] flex gap-2">
                     <span className="text-[var(--cyber-neon-pink)]">-</span>
                     <p>
                       No field names: You only see numeric tags (e.g.,{" "}
@@ -1526,29 +1485,29 @@ const BinaryPage = ({
             <CyberPanel title="HOW_IT_WORKS" className="h-full">
               <div className="p-6 space-y-6">
                 <div className="space-y-2">
-                  <p className="text-xs font-bold text-[var(--text-color)] uppercase">
+                  <p className="text-sm font-bold text-[var(--text-color)] uppercase">
                     1. Heuristic Disassembly
                   </p>
-                  <p className="text-xs text-[var(--text-dim)] leading-relaxed">
+                  <p className="text-sm text-[var(--text-dim)] leading-relaxed">
                     Protoscope scans bytes and "guesses" types based on valid
                     UTF-8 sequences or nested tag patterns.
                   </p>
                 </div>
                 <div className="space-y-2">
-                  <p className="text-xs font-bold text-[var(--text-color)] uppercase">
+                  <p className="text-sm font-bold text-[var(--text-color)] uppercase">
                     2. Minimalist Syntax
                   </p>
-                  <p className="text-xs text-[var(--text-dim)] leading-relaxed font-mono bg-[var(--overlay-bg)] p-2 rounded">
+                  <p className="text-sm text-[var(--text-dim)] leading-relaxed font-mono bg-[var(--overlay-bg)] p-2 rounded">
                     1: 150 {"// Varint"}
                     <br />
                     2: "Alice" {"// String"}
                   </p>
                 </div>
                 <div className="space-y-2">
-                  <p className="text-xs font-bold text-[var(--text-color)] uppercase">
+                  <p className="text-sm font-bold text-[var(--text-color)] uppercase">
                     3. Bi-directional
                   </p>
-                  <p className="text-xs text-[var(--text-dim)] leading-relaxed">
+                  <p className="text-sm text-[var(--text-dim)] leading-relaxed">
                     It can compile text back into binary, making it a powerful
                     "hex editor" for Protobuf.
                   </p>
@@ -1568,5 +1527,6 @@ const BinaryPage = ({
     </Section>
   </>
 );
+};
 
 export default BinaryPage;

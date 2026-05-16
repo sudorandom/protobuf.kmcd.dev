@@ -9,7 +9,6 @@ import {
   Braces,
   GitBranch,
   FileCode,
-  ArrowRight,
 } from "lucide-react";
 import {
   Section,
@@ -18,251 +17,237 @@ import {
   ExternalLinkText,
   SyntaxHighlighter,
   TechnicalNuance,
+  RoadmapGrid,
 } from "../components/shared/Common";
 
-export const SchemaDrivenAPIs = () => (
-  <Section
-    id="schema"
-    className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]"
-  >
-    <div className="max-w-7xl mx-auto">
-      <SectionTitle icon={FileCode} subtitle="02a_ARCHITECTURE">
-        Schema-Driven APIs
-      </SectionTitle>
+export const SchemaDrivenAPIs = () => {
+  const roadmapItems = [
+    {
+      id: "generating-code",
+      title: "Generating Code",
+      desc: "The contract-first workflow using protoc and buf.",
+    },
+    {
+      id: "messages",
+      title: "Messages",
+      desc: "The primary containers for Protobuf data.",
+    },
+    {
+      id: "fields",
+      title: "Fields",
+      desc: "Strongly-typed data points with unique identifies.",
+    },
+    {
+      id: "numbers",
+      title: "Field Numbers",
+      desc: "The critical IDs used for compact binary encoding.",
+    },
+    {
+      id: "enums",
+      title: "Enums",
+      desc: "Defining a restricted set of named constants.",
+    },
+    {
+      id: "packages",
+      title: "Packages",
+      desc: "Using namespaces to prevent naming collisions.",
+    },
+    {
+      id: "nested",
+      title: "Composition",
+      desc: "Building complex models through nesting and imports.",
+    },
+    {
+      id: "repeated",
+      title: "Collections",
+      desc: "Handling arrays and lists of data efficiently.",
+    },
+    {
+      id: "maps",
+      title: "Maps",
+      desc: "Using dictionaries for key-value pairs.",
+    },
+    {
+      id: "oneof",
+      title: "Oneof",
+      desc: "Polymorphic fields for mutually exclusive data.",
+    },
+    {
+      id: "types",
+      title: "Type Reference",
+      desc: "Comprehensive list of scalars and well-known types.",
+    },
+  ];
 
-      <div className="mb-16 space-y-4 max-w-3xl">
-        <p className="text-[var(--text-dim)] leading-relaxed">
-          In this section, we'll dive into the Interface Definition Language
-          (IDL) and the powerful type system that forms the foundation of every
-          Protobuf-powered application.
-        </p>
-      </div>
+  return (
+    <Section
+      id="schema"
+      className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]"
+    >
+      <div className="max-w-7xl mx-auto">
+        <SectionTitle icon={FileCode} subtitle="02a_ARCHITECTURE">
+          Protobuf Basics
+        </SectionTitle>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-        <div className="space-y-6 text-[var(--text-color)]">
-          <h3 className="text-xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">
-            The Source of Truth
-          </h3>
-          <p>
-            In the Protobuf world, the <strong>.proto</strong> file is the
-            contract. This encourages <strong>Contract-First</strong>{" "}
-            development, where the data model and API surface are defined before
-            any code is written.
+        <div className="mb-16 max-w-4xl space-y-6 mx-auto text-center">
+          <p className="text-lg text-[var(--text-dim)] leading-relaxed">
+            The foundation of Protobuf is the Schema. Unlike JSON, which is
+            often undefined and loose, Protobuf requires you to define your data
+            structures upfront. This leads to a Contract-First development
+            workflow that ensures consistency across every part of your system.
           </p>
-          <ul className="space-y-4">
-            <li className="flex gap-4">
-              <div className="w-1.5 h-1.5 bg-[var(--cyber-neon-blue)] mt-2 shrink-0"></div>
-              <p>
-                <strong>Universal Tooling:</strong> Generate code for reading
-                and writing protobuf messages for various languages using the{" "}
-                <ExternalLinkText href="https://buf.build/docs/bsr/introduction">
-                  BSR
-                </ExternalLinkText>{" "}
-                or local compilers.
-              </p>
-            </li>
-            <li className="flex gap-4">
-              <div className="w-1.5 h-1.5 bg-[var(--cyber-neon-pink)] mt-2 shrink-0"></div>
-              <p>
-                <strong>Compatibility:</strong> Robust rules for adding/removing
-                fields without breaking old clients, essential for distributed
-                systems.
-              </p>
-            </li>
-            <li className="flex gap-4">
-              <div className="w-1.5 h-1.5 bg-[var(--cyber-neon-green)] mt-2 shrink-0"></div>
-              <p>
-                <strong>Native RPC:</strong> Unlike most serialization formats,
-                Protobuf includes native <code>service</code> and{" "}
-                <code>rpc</code> definitions. This allows you to define your
-                entire API surface in one place, powering frameworks like{" "}
-                <ExternalLinkText href="https://grpc.io/">
-                  gRPC
-                </ExternalLinkText>
-                ,{" "}
-                <ExternalLinkText href="https://connectrpc.com/">
-                  ConnectRPC
-                </ExternalLinkText>
-                , and{" "}
-                <ExternalLinkText href="https://twitchtv.github.io/twirp/">
-                  Twirp
-                </ExternalLinkText>
-                .
-              </p>
-            </li>
-          </ul>
-        </div>
-        <div className="p-8 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-xl flex flex-col justify-center">
-          <h4 className="text-[var(--cyber-neon-blue)] font-cyber font-bold text-sm tracking-widest uppercase mb-4 text-center">
-            THE_WORKFLOW
-          </h4>
-          <div className="space-y-4 font-mono text-xs font-bold">
-            <div className="p-3 bg-[var(--section-bg-dark)] border border-[var(--cyber-neon-blue)]/30 rounded text-[var(--cyber-neon-blue)]">
-              1. DEFINE SCHEMA (.proto)
-            </div>
-            <div className="flex justify-center">
-              <ArrowRight className="w-4 h-4 rotate-90 text-[var(--text-dim)]" />
-            </div>
-            <div className="p-3 bg-[var(--section-bg-dark)] border border-[var(--cyber-neon-pink)]/30 rounded text-[var(--cyber-neon-pink)]">
-              2. COMPILE TARGETS (Go, TS, etc.)
-            </div>
-            <div className="flex justify-center">
-              <ArrowRight className="w-4 h-4 rotate-90 text-[var(--text-dim)]" />
-            </div>
-            <div className="p-3 bg-[var(--section-bg-dark)] border border-[var(--cyber-neon-green)]/30 rounded text-[var(--cyber-neon-green)]">
-              3. BUILD & DEPLOY SERVICES
-            </div>
+          <div className="pt-8 text-left">
+            <RoadmapGrid items={roadmapItems} cols="lg:grid-cols-4" />
           </div>
         </div>
-      </div>
 
-      <div className="mt-24 space-y-12 border-t border-[var(--border-light)] pt-16">
-        <div className="space-y-4">
-          <h3 className="text-2xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">
-            Generating Code
-          </h3>
-          <p className="text-[var(--text-dim)] max-w-3xl">
-            Let's see how to generate TypeScript code from a <code>.proto</code>{" "}
-            schema using both the traditional <code>protoc</code> compiler and
-            the modern <code>buf</code> toolchain.
-          </p>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-4">
-              <CyberPanel title="proto/demo/v1/user.proto">
-                <div className="p-4">
-                  <SyntaxHighlighter
-                    language="proto"
-                    code={`syntax = "proto3";\n\npackage demo.v1;\n\nmessage User {\n  string id = 1;\n  string username = 2;\n  bool is_active = 3;\n}`}
-                    wrap={true}
-                  />
+        <div id="generating-code" className="mt-24 space-y-12 border-t border-[var(--border-light)] pt-16">
+          <div className="space-y-4">
+            <h2 className="text-3xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">
+              Generating Code
+            </h2>
+            <p className="text-[var(--text-dim)] max-w-3xl">
+              Let's see how to generate TypeScript code from a <code>.proto</code>{" "}
+              schema using both the traditional <code>protoc</code> compiler and
+              the modern <code>buf</code> toolchain.
+            </p>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <div className="space-y-4">
+                <CyberPanel title="proto/demo/v1/user.proto">
+                  <div className="p-4">
+                    <SyntaxHighlighter
+                      language="proto"
+                      code={`syntax = "proto3";\n\npackage demo.v1;\n\nmessage User {\n  string id = 1;\n  string username = 2;\n  bool is_active = 3;\n}`}
+                      wrap={true}
+                    />
+                  </div>
+                </CyberPanel>
+              </div>
+              <div className="space-y-6">
+                <h4 className="text-[var(--cyber-neon-green)] font-cyber font-bold text-sm tracking-widest uppercase">
+                  The Schema Definition
+                </h4>
+                <div className="space-y-4 text-[var(--text-dim)] leading-relaxed">
+                  <p>
+                    In this <code>user.proto</code> file, we define a{" "}
+                    <code>User</code> message with three fields. Each field has a
+                    type (<code>string</code>, <code>bool</code>) and a unique{" "}
+                    <strong>field number</strong> which identifies it in the
+                    binary format.
+                  </p>
+                  <p>Once you generate code from this schema, you can:</p>
+                  <ul className="list-disc pl-5 space-y-2">
+                    <li>
+                      <strong>Instantiate:</strong> Create <code>User</code>{" "}
+                      objects in your language with full type safety and
+                      auto-completion.
+                    </li>
+                    <li>
+                      <strong>Serialize:</strong> Convert objects into highly
+                      compressed binary buffers for transmission or storage.
+                    </li>
+                    <li>
+                      <strong>Validate:</strong> Ensure data conforms to the
+                      schema rules before it ever reaches your application logic.
+                    </li>
+                  </ul>
                 </div>
-              </CyberPanel>
+              </div>
             </div>
+          </div>
+
+          <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-12">
             <div className="space-y-6">
-              <h4 className="text-[var(--cyber-neon-green)] font-cyber font-bold text-sm tracking-widest uppercase">
-                The Schema Definition
+              <h4 className="text-[var(--cyber-neon-blue)] font-cyber font-bold text-sm tracking-widest uppercase">
+                Option 1: The Classic protoc
               </h4>
-              <div className="space-y-4 text-[var(--text-dim)] leading-relaxed">
-                <p>
-                  In this <code>user.proto</code> file, we define a{" "}
-                  <code>User</code> message with three fields. Each field has a
-                  type (<code>string</code>, <code>bool</code>) and a unique{" "}
-                  <strong>field number</strong> which identifies it in the
-                  binary format.
-                </p>
-                <p>Once you generate code from this schema, you can:</p>
-                <ul className="list-disc pl-5 space-y-2">
-                  <li>
-                    <strong>Instantiate:</strong> Create <code>User</code>{" "}
-                    objects in your language with full type safety and
-                    auto-completion.
-                  </li>
-                  <li>
-                    <strong>Serialize:</strong> Convert objects into highly
-                    compressed binary buffers for transmission or storage.
-                  </li>
-                  <li>
-                    <strong>Validate:</strong> Ensure data conforms to the
-                    schema rules before it ever reaches your application logic.
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-12">
-          <div className="space-y-6">
-            <h4 className="text-[var(--cyber-neon-blue)] font-cyber font-bold text-sm tracking-widest uppercase">
-              Option 1: The Classic protoc
-            </h4>
-            <p className="text-sm text-[var(--text-dim)] leading-relaxed">
-              The <code>protoc</code> compiler is the original tool for
-              Protobuf. It requires manual management of plugins and complex CLI
-              flags.
-            </p>
-            <CyberPanel title="TERMINAL">
-              <div className="p-4">
-                <SyntaxHighlighter
-                  language="bash"
-                  code={`$ protoc --es_out=src/gen \\ \n    --es_opt=target=ts \\ \n    proto/demo/v1/user.proto`}
-                  wrap={true}
-                />
-              </div>
-            </CyberPanel>
-          </div>
-
-          <div className="space-y-6">
-            <h4 className="text-[var(--cyber-neon-pink)] font-cyber font-bold text-sm tracking-widest uppercase">
-              Option 2: The Modern buf
-            </h4>
-            <p className="text-sm text-[var(--text-dim)] leading-relaxed">
-              <code>buf</code> simplifies generation by using a declarative{" "}
-              <code>buf.gen.yaml</code> file, making your workflow reproducible
-              and easier to share.
-            </p>
-            <div className="space-y-4">
-              <CyberPanel title="buf.gen.yaml">
-                <div className="p-4">
-                  <SyntaxHighlighter
-                    language="yaml"
-                    code={`version: v2\nplugins:\n  - remote: buf.build/bufbuild/es:v2.2.3\n    out: src/gen\n    opt: target=ts`}
-                    wrap={true}
-                  />
-                </div>
-              </CyberPanel>
+              <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+                The <code>protoc</code> compiler is the original tool for
+                Protobuf. It requires manual management of plugins and complex CLI
+                flags.
+              </p>
               <CyberPanel title="TERMINAL">
                 <div className="p-4">
                   <SyntaxHighlighter
                     language="bash"
-                    code={`$ buf generate`}
+                    code={`$ protoc --es_out=src/gen \\ \n    --es_opt=target=ts \\ \n    proto/demo/v1/user.proto`}
                     wrap={true}
                   />
                 </div>
               </CyberPanel>
             </div>
-          </div>
-        </div>
 
-        <div className="mt-24 space-y-8">
-          <div className="space-y-4">
-            <h4 className="text-[var(--cyber-neon-blue)] font-cyber font-bold text-sm tracking-widest uppercase">
-              3. Using the Generated Code
-            </h4>
-            <p className="text-[var(--text-dim)] max-w-3xl">
-              With your code generated via{" "}
-              <ExternalLinkText href="https://github.com/bufbuild/protobuf-es">
-                protobuf-es (v2.12.0)
-              </ExternalLinkText>
-              , you can now use your schema as native TypeScript classes with
-              full type safety.
-            </p>
-          </div>
-
-          <CyberPanel title="src/main.ts">
-            <div className="p-4">
-              <SyntaxHighlighter
-                language="typescript"
-                code={`import { create, toBinary, toJsonString } from "@bufbuild/protobuf";\nimport { UserSchema } from "./gen/demo/v1/user_pb";\n\n// 1. Create a message using the schema\nconst user = create(UserSchema, {\n  id: "usr_123",\n  username: "cyber_ninja",\n  isActive: true,\n});\n\n// 2. Serialize to binary (Uint8Array)\nconst bytes = toBinary(UserSchema, user);\n\n// 3. Serialize to a JSON string\nconst json = toJsonString(UserSchema, user);`}
-                wrap={true}
-              />
+            <div className="space-y-6">
+              <h4 className="text-[var(--cyber-neon-pink)] font-cyber font-bold text-sm tracking-widest uppercase">
+                Option 2: The Modern buf
+              </h4>
+              <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+                <code>buf</code> simplifies generation by using a declarative{" "}
+                <code>buf.gen.yaml</code> file, making your workflow reproducible
+                and easier to share.
+              </p>
+              <div className="space-y-4">
+                <CyberPanel title="buf.gen.yaml">
+                  <div className="p-4">
+                    <SyntaxHighlighter
+                      language="yaml"
+                      code={`version: v2\nplugins:\n  - remote: buf.build/bufbuild/es:v2.2.3\n    out: src/gen\n    opt: target=ts`}
+                      wrap={true}
+                    />
+                  </div>
+                </CyberPanel>
+                <CyberPanel title="TERMINAL">
+                  <div className="p-4">
+                    <SyntaxHighlighter
+                      language="bash"
+                      code={`$ buf generate`}
+                      wrap={true}
+                    />
+                  </div>
+                </CyberPanel>
+              </div>
             </div>
-          </CyberPanel>
+          </div>
 
-          <TechnicalNuance title="Different languages and runtimes">
-            While this example uses TypeScript, the fundamental process is
-            similar across every supported language (Go, Python, Rust, Java,
-            etc.). However, there are always language-specific details, such as
-            how generated packages are imported, how native structs or objects
-            are managed, and how the runtime libraries are integrated into your
-            specific build system.
-          </TechnicalNuance>
+          <div className="mt-24 space-y-8">
+            <div className="space-y-4">
+              <h4 className="text-[var(--cyber-neon-blue)] font-cyber font-bold text-sm tracking-widest uppercase">
+                3. Using the Generated Code
+              </h4>
+              <p className="text-[var(--text-dim)] max-w-3xl">
+                With your code generated via{" "}
+                <ExternalLinkText href="https://github.com/bufbuild/protobuf-es">
+                  protobuf-es (v2.12.0)
+                </ExternalLinkText>
+                , you can now use your schema as native TypeScript classes with
+                full type safety.
+              </p>
+            </div>
+
+            <CyberPanel title="src/main.ts">
+              <div className="p-4">
+                <SyntaxHighlighter
+                  language="typescript"
+                  code={`import { create, toBinary, toJsonString } from "@bufbuild/protobuf";\nimport { UserSchema } from "./gen/demo/v1/user_pb";\n\n// 1. Create a message using the schema\nconst user = create(UserSchema, {\n  id: "usr_123",\n  username: "cyber_ninja",\n  isActive: true,\n});\n\n// 2. Serialize to binary (Uint8Array)\nconst bytes = toBinary(UserSchema, user);\n\n// 3. Serialize to a JSON string\nconst json = toJsonString(UserSchema, user);`}
+                  wrap={true}
+                />
+              </div>
+            </CyberPanel>
+
+            <TechnicalNuance title="Different languages and runtimes">
+              While this example uses TypeScript, the fundamental process is
+              similar across every supported language (Go, Python, Rust, Java,
+              etc.). However, there are always language-specific details, such as
+              how generated packages are imported, how native structs or objects
+              are managed, and how the runtime libraries are integrated into your
+              specific build system.
+            </TechnicalNuance>
+          </div>
         </div>
       </div>
-    </div>
-  </Section>
-);
-
+    </Section>
+  );
+};
 const TopicSection = ({
   id,
   icon,
@@ -398,7 +383,7 @@ message SearchRequest {
             use. Reusing a number for a different field will cause catastrophic
             data corruption.
           </p>
-          <div className="p-3 bg-[var(--cyber-neon-blue)]/10 border border-[var(--cyber-neon-blue)]/20 rounded text-xs space-y-2">
+          <div className="p-3 bg-[var(--cyber-neon-blue)]/10 border border-[var(--cyber-neon-blue)]/20 rounded text-sm space-y-2">
             <p>
               <strong>Optimization Tip:</strong> Numbers 1 through 15 take{" "}
               <strong>1 byte</strong> to encode (including the field number and
@@ -433,7 +418,7 @@ message SearchRequest {
             <strong>must always map to zero</strong>. This serves as the default
             value when the field is not explicitly set in the binary payload.
           </p>
-          <div className="p-3 bg-[var(--cyber-neon-blue)]/10 border border-[var(--cyber-neon-blue)]/20 rounded text-xs space-y-2">
+          <div className="p-3 bg-[var(--cyber-neon-blue)]/10 border border-[var(--cyber-neon-blue)]/20 rounded text-sm space-y-2">
             <p className="font-bold text-[var(--cyber-neon-blue)] uppercase">
               Naming Convention
             </p>
@@ -466,7 +451,7 @@ message User {
       id: "packages",
       icon: Layers,
       title: "Packages",
-      subtitle: "02j_NAMESPACING",
+      subtitle: "02f_NAMESPACING",
       panelTitle: "PACKAGE_DECLARATION",
       desc: (
         <div className="space-y-4">
@@ -497,7 +482,7 @@ message Account {
       id: "nested",
       icon: Combine,
       title: "Composition",
-      subtitle: "02f_NESTING",
+      subtitle: "02g_NESTING",
       panelTitle: "COMPOSITIONAL_SCHEMA",
       desc: (
         <div className="space-y-4">
@@ -533,7 +518,7 @@ message SearchResponse {
       id: "repeated",
       icon: Layers,
       title: "Collections",
-      subtitle: "02g_REPEATED",
+      subtitle: "02h_REPEATED",
       panelTitle: "COLLECTION_SYNTAX",
       desc: (
         <div className="space-y-4">
@@ -564,7 +549,7 @@ message SearchResponse {
       id: "maps",
       icon: Braces,
       title: "Maps",
-      subtitle: "02h_KEY_VALUE",
+      subtitle: "02i_KEY_VALUE",
       panelTitle: "MAP_STRUCTURE",
       desc: (
         <div className="space-y-4">
@@ -583,7 +568,7 @@ message SearchResponse {
               message, but <em>cannot</em> be another map or a repeated field.
             </li>
           </ul>
-          <p className="text-xs text-[var(--text-dim)] italic">
+          <p className="text-sm text-[var(--text-dim)] italic">
             Behind the scenes, maps are actually just <code>repeated</code>{" "}
             messages with <code>key</code> and <code>value</code> fields,
             ensuring backward compatibility with older decoders.
@@ -601,7 +586,7 @@ message SearchResponse {
       id: "oneof",
       icon: GitBranch,
       title: "Oneof",
-      subtitle: "02i_POLYMORPHISM",
+      subtitle: "02j_POLYMORPHISM",
       panelTitle: "MUTUAL_EXCLUSION",
       desc: (
         <div className="space-y-4">
@@ -791,17 +776,17 @@ export const TypeSystem = () => {
                   href={t.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-mono text-xs font-bold text-[var(--cyber-neon-blue)] hover:underline decoration-dotted"
+                  className="font-mono text-sm font-bold text-[var(--cyber-neon-blue)] hover:underline decoration-dotted"
                 >
                   {t.name}
                 </a>
               ) : (
-                <span className="font-mono text-xs font-bold text-[var(--text-color)] group-hover:text-[var(--cyber-neon-blue)]">
+                <span className="font-mono text-sm font-bold text-[var(--text-color)] group-hover:text-[var(--cyber-neon-blue)]">
                   {t.name}
                 </span>
               )}
             </div>
-            <div className="text-xs text-[var(--text-dim)] leading-relaxed">
+            <div className="text-sm text-[var(--text-dim)] leading-relaxed">
               {t.desc}
             </div>
           </div>
@@ -864,21 +849,21 @@ export const TypeSystem = () => {
               <CyberPanel title="DEFAULT_CHOICE">
                 <div className="p-4 space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="font-mono text-xs font-bold text-[var(--cyber-neon-blue)]">
+                    <span className="font-mono text-sm font-bold text-[var(--cyber-neon-blue)]">
                       int32 / int64
                     </span>
-                    <span className="text-xs bg-[var(--cyber-neon-blue)]/10 text-[var(--cyber-neon-blue)] px-1.5 py-0.5 rounded uppercase font-bold">
+                    <span className="text-sm bg-[var(--cyber-neon-blue)]/10 text-[var(--cyber-neon-blue)] px-1.5 py-0.5 rounded uppercase font-bold">
                       Recommended
                     </span>
                   </div>
-                  <p className="text-xs text-[var(--text-dim)] leading-relaxed">
+                  <p className="text-sm text-[var(--text-dim)] leading-relaxed">
                     Use for typical signed integers. <code>int32</code> covers
                     most use cases; use <code>int64</code> for large IDs or
                     timestamps.
                   </p>
                   <div className="pt-2 flex items-center gap-2">
                     <div className="w-1 h-1 rounded-full bg-[var(--cyber-neon-blue)]" />
-                    <span className="text-xs font-mono text-[var(--text-dim)] uppercase">
+                    <span className="text-sm font-mono text-[var(--text-dim)] uppercase">
                       Best for: General Data
                     </span>
                   </div>
@@ -888,21 +873,21 @@ export const TypeSystem = () => {
               <CyberPanel title="NON_NEGATIVE">
                 <div className="p-4 space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="font-mono text-xs font-bold text-[var(--cyber-neon-green)]">
+                    <span className="font-mono text-sm font-bold text-[var(--cyber-neon-green)]">
                       uint32 / uint64
                     </span>
-                    <span className="text-xs bg-[var(--cyber-neon-green)]/10 text-[var(--cyber-neon-green)] px-1.5 py-0.5 rounded uppercase font-bold">
+                    <span className="text-sm bg-[var(--cyber-neon-green)]/10 text-[var(--cyber-neon-green)] px-1.5 py-0.5 rounded uppercase font-bold">
                       Efficient
                     </span>
                   </div>
-                  <p className="text-xs text-[var(--text-dim)] leading-relaxed">
+                  <p className="text-sm text-[var(--text-dim)] leading-relaxed">
                     Ideal when you know values will never be negative. Slightly
                     more efficient than <code>int</code> for large positive
                     values.
                   </p>
                   <div className="pt-2 flex items-center gap-2">
                     <div className="w-1 h-1 rounded-full bg-[var(--cyber-neon-green)]" />
-                    <span className="text-xs font-mono text-[var(--text-dim)] uppercase">
+                    <span className="text-sm font-mono text-[var(--text-dim)] uppercase">
                       Best for: Counts & Sizes
                     </span>
                   </div>
@@ -912,20 +897,20 @@ export const TypeSystem = () => {
               <CyberPanel title="FIXED_PRECISION">
                 <div className="p-4 space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="font-mono text-xs font-bold text-[var(--cyber-neon-yellow)]">
+                    <span className="font-mono text-sm font-bold text-[var(--cyber-neon-yellow)]">
                       fixed32 / fixed64
                     </span>
-                    <span className="text-xs bg-[var(--cyber-neon-yellow)]/10 text-[var(--cyber-neon-yellow)] px-1.5 py-0.5 rounded uppercase font-bold">
+                    <span className="text-sm bg-[var(--cyber-neon-yellow)]/10 text-[var(--cyber-neon-yellow)] px-1.5 py-0.5 rounded uppercase font-bold">
                       Specialized
                     </span>
                   </div>
-                  <p className="text-xs text-[var(--text-dim)] leading-relaxed">
+                  <p className="text-sm text-[var(--text-dim)] leading-relaxed">
                     Always uses 4 or 8 bytes. More efficient than varints ONLY
                     if values are consistently greater than 2<sup>28</sup>.
                   </p>
                   <div className="pt-2 flex items-center gap-2">
                     <div className="w-1 h-1 rounded-full bg-[var(--cyber-neon-yellow)]" />
-                    <span className="text-xs font-mono text-[var(--text-dim)] uppercase">
+                    <span className="text-sm font-mono text-[var(--text-dim)] uppercase">
                       Best for: Large Constants
                     </span>
                   </div>
@@ -956,7 +941,7 @@ export const TypeSystem = () => {
                 <div className="p-4 space-y-4 text-sm overflow-x-auto">
                   <table className="w-full text-left border-collapse">
                     <thead>
-                      <tr className="border-b border-[var(--border-light)] font-mono text-xs text-[var(--text-dim)] uppercase">
+                      <tr className="border-b border-[var(--border-light)] font-mono text-sm text-[var(--text-dim)] uppercase">
                         <th className="py-2 pr-4 min-w-[200px]">
                           Protobuf Type
                         </th>
@@ -1047,7 +1032,7 @@ export const TypeSystem = () => {
                               {row.pb}
                             </code>
                           </td>
-                          <td className="py-3 pr-4 font-mono text-xs text-[var(--cyber-neon-pink)]">
+                          <td className="py-3 pr-4 font-mono text-sm text-[var(--cyber-neon-pink)]">
                             {row.json}
                           </td>
                           <td className="py-3 pr-4">
@@ -1055,7 +1040,7 @@ export const TypeSystem = () => {
                               {row.ex}
                             </code>
                           </td>
-                          <td className="py-3 text-[var(--text-dim)] text-xs">
+                          <td className="py-3 text-[var(--text-dim)] text-sm">
                             {row.note}
                           </td>
                         </tr>

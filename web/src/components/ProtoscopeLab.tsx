@@ -86,7 +86,7 @@ export const ProtoscopeLab: React.FC<ProtoscopeLabProps> = ({
     <div className="relative space-y-12">
       {/* Global Interactive Sign for Large Screens */}
       <div className="absolute -left-48 top-48 hidden 2xl:flex flex-col items-end gap-2 text-[var(--cyber-neon-pink)] pointer-events-none animate-pulse z-10 opacity-70">
-        <span className="font-cyber text-xs uppercase tracking-widest text-right">
+        <span className="font-cyber text-sm uppercase tracking-widest text-right">
           These Panels
           <br />
           Are Live!
@@ -121,7 +121,7 @@ export const ProtoscopeLab: React.FC<ProtoscopeLabProps> = ({
               </h3>
               <button
                 onClick={() => setIsModalOpen(true)}
-                className="text-xs font-cyber font-bold text-[var(--cyber-neon-blue)] hover:text-[var(--cyber-neon-blue)]/80 transition-colors uppercase flex items-center gap-1 group"
+                className="text-sm font-cyber font-bold text-[var(--cyber-neon-blue)] hover:text-[var(--cyber-neon-blue)]/80 transition-colors uppercase flex items-center gap-1 group"
                 aria-label="Open Protobuf schema editor"
               >
                 <Settings2 className="w-3 h-3 group-hover:rotate-45 transition-transform" />
@@ -134,7 +134,7 @@ export const ProtoscopeLab: React.FC<ProtoscopeLabProps> = ({
             <button
               onClick={handleGenerateFake}
               disabled={isGenerating || !fds}
-              className="px-2 py-1 text-xs font-cyber font-bold border border-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/10 text-[var(--cyber-neon-pink)] hover:bg-[var(--cyber-neon-pink)]/20 transition-all flex items-center gap-1.5 disabled:opacity-30 disabled:cursor-not-allowed rounded uppercase tracking-wider"
+              className="px-2 py-1 text-sm font-cyber font-bold border border-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/10 text-[var(--cyber-neon-pink)] hover:bg-[var(--cyber-neon-pink)]/20 transition-all flex items-center gap-1.5 disabled:opacity-30 disabled:cursor-not-allowed rounded uppercase tracking-wider"
               aria-label="Generate random JSON data from schema"
             >
               <Zap
@@ -150,7 +150,7 @@ export const ProtoscopeLab: React.FC<ProtoscopeLabProps> = ({
           >
             <div className="flex-1 relative">
               {error && (
-                <div className="absolute top-0 left-0 right-0 p-2 bg-[var(--text-error)]/10 border-b border-[var(--text-error)]/30 text-[var(--text-error)] text-xs font-mono z-30 break-words line-clamp-2">
+                <div className="absolute top-0 left-0 right-0 p-2 bg-[var(--text-error)]/10 border-b border-[var(--text-error)]/30 text-[var(--text-error)] text-sm font-mono z-30 break-words line-clamp-2">
                   {error}
                 </div>
               )}
@@ -174,9 +174,9 @@ export const ProtoscopeLab: React.FC<ProtoscopeLabProps> = ({
               href="https://github.com/protocolbuffers/protoscope"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs font-cyber font-bold text-[var(--text-dim)] hover:text-[var(--text-color)] transition-colors uppercase flex items-center gap-1"
+              className="text-sm font-cyber font-bold text-[var(--text-dim)] hover:text-[var(--text-color)] transition-colors uppercase flex items-center gap-1"
             >
-              Spec <ExternalLink className="w-2.5 h-2.5" />
+              Protoscope <ExternalLink className="w-2.5 h-2.5" />
             </a>
           </div>
 
@@ -193,7 +193,7 @@ export const ProtoscopeLab: React.FC<ProtoscopeLabProps> = ({
                 ) : (
                   <div className="h-full flex flex-col items-center justify-center text-[var(--text-dim)] gap-4 opacity-40 py-20">
                     <Terminal className="w-10 h-10" />
-                    <p className="font-cyber text-xs uppercase tracking-widest text-center">
+                    <p className="font-cyber text-sm uppercase tracking-widest text-center">
                       Correct input to
                       <br />
                       view stream

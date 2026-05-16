@@ -93,7 +93,7 @@ export const VersionTimeline = () => {
                   <div className="p-6 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-xl hover:border-[var(--cyber-neon-blue)]/50 transition-all group">
                     <div className="flex items-center gap-3 mb-2">
                       <span
-                        className="font-mono text-xs font-bold px-2 py-0.5 rounded"
+                        className="font-mono text-sm font-bold px-2 py-0.5 rounded"
                         style={{
                           backgroundColor: `${v.color}20`,
                           color: v.color,
@@ -101,7 +101,7 @@ export const VersionTimeline = () => {
                       >
                         {v.version}
                       </span>
-                      <span className="text-xs font-mono text-[var(--text-dim)]">
+                      <span className="text-sm font-mono text-[var(--text-dim)]">
                         {v.year}
                       </span>
                     </div>
@@ -292,7 +292,7 @@ export const Toolbox = () => {
             {tools.map((t) => (
               <CyberPanel key={t.name} title={t.name}>
                 <div className="p-4 space-y-4">
-                  <p className="text-xs text-[var(--text-dim)] leading-relaxed">
+                  <p className="text-sm text-[var(--text-dim)] leading-relaxed">
                     {t.desc}
                   </p>
                   <div className="flex flex-wrap gap-4">
@@ -324,7 +324,7 @@ export const Toolbox = () => {
               href="https://buf.build/plugins/protobuf"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs font-cyber font-bold text-[var(--cyber-neon-pink)] hover:text-[var(--cyber-neon-pink)]/80 transition-colors uppercase flex items-center gap-1 group"
+              className="text-sm font-cyber font-bold text-[var(--cyber-neon-pink)] hover:text-[var(--cyber-neon-pink)]/80 transition-colors uppercase flex items-center gap-1 group"
             >
               Browse BSR Registry
               <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
@@ -336,17 +336,17 @@ export const Toolbox = () => {
                 key={p.name}
                 className="p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg hover:border-[var(--cyber-neon-pink)]/50 transition-all"
               >
-                <h4 className="font-mono text-xs font-bold text-[var(--cyber-neon-pink)] mb-2">
+                <h4 className="font-mono text-sm font-bold text-[var(--cyber-neon-pink)] mb-2">
                   {p.name}
                 </h4>
-                <p className="text-xs text-[var(--text-dim)] leading-relaxed mb-4">
+                <p className="text-sm text-[var(--text-dim)] leading-relaxed mb-4">
                   {p.desc}
                 </p>
                 <a
                   href={p.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xs font-bold text-[var(--text-color)] hover:underline uppercase tracking-widest"
+                  className="text-sm font-bold text-[var(--text-color)] hover:underline uppercase tracking-widest"
                 >
                   Source
                 </a>
@@ -406,7 +406,7 @@ export const NetworkImplementations = () => {
           {frameworks.map((f) => (
             <CyberPanel key={f.name} title={f.name}>
               <div className="p-4 space-y-4">
-                <p className="text-xs text-[var(--text-dim)] leading-relaxed">
+                <p className="text-sm text-[var(--text-dim)] leading-relaxed">
                   {f.desc}
                 </p>
                 <ExternalLinkText href={f.url}>Visit Site</ExternalLinkText>
@@ -546,12 +546,12 @@ export const AlternativesLandscape = () => (
                 JSON / XML
               </h4>
             </div>
-            <p className="text-xs text-[var(--text-dim)] leading-relaxed">
+            <p className="text-sm text-[var(--text-dim)] leading-relaxed">
               Ubiquitous, human-readable, and easy to debug. However, they lack
               strict schemas (by default), are significantly slower to parse,
               and produce much larger payloads.
             </p>
-            <div className="text-xs font-mono text-[var(--cyber-neon-blue)] uppercase">
+            <div className="text-sm font-mono text-[var(--cyber-neon-blue)] uppercase">
               Best For: Public APIs, Web Apps
             </div>
           </div>
@@ -565,12 +565,12 @@ export const AlternativesLandscape = () => (
                 MessagePack / CBOR
               </h4>
             </div>
-            <p className="text-xs text-[var(--text-dim)] leading-relaxed">
+            <p className="text-sm text-[var(--text-dim)] leading-relaxed">
               Binary formats that don't require a schema. Think "Binary JSON".
               They are smaller and faster than JSON, but lack the type safety
               and code generation benefits of Protobuf.
             </p>
-            <div className="text-xs font-mono text-[var(--cyber-neon-pink)] uppercase">
+            <div className="text-sm font-mono text-[var(--cyber-neon-pink)] uppercase">
               Best For: Internal Caching, No-Schema Ops
             </div>
           </div>
@@ -584,12 +584,12 @@ export const AlternativesLandscape = () => (
                 FlatBuffers / Avro
               </h4>
             </div>
-            <p className="text-xs text-[var(--text-dim)] leading-relaxed">
+            <p className="text-sm text-[var(--text-dim)] leading-relaxed">
               FlatBuffers allows "zero-copy" access, meaning you can read data
               without parsing it at all. Avro is widely used in Big Data
               (Hadoop/Kafka) for its robust schema evolution.
             </p>
-            <div className="text-xs font-mono text-[var(--cyber-neon-green)] uppercase">
+            <div className="text-sm font-mono text-[var(--cyber-neon-green)] uppercase">
               Best For: Games, Real-time Stream Processing
             </div>
           </div>
