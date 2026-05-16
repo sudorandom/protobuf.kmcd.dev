@@ -628,8 +628,8 @@ export const SizeComparison = ({
                   Official gRPC Benchmarks
                 </h5>
                 <p className="text-sm text-[var(--text-dim)] leading-relaxed">
-                  Throughput and latency metrics for Protobuf-over-HTTP/2
-                  across various languages.
+                  Throughput and latency metrics for Protobuf-over-HTTP/2 across
+                  various languages.
                 </p>
               </a>
               <a
@@ -642,8 +642,8 @@ export const SizeComparison = ({
                   Atlassian Engineering
                 </h5>
                 <p className="text-sm text-[var(--text-dim)] leading-relaxed">
-                  A detailed case study on how Jira improved p99 latency by
-                  20% and reduced CPU usage by 75% using Protobuf.
+                  A detailed case study on how Jira improved p99 latency by 20%
+                  and reduced CPU usage by 75% using Protobuf.
                 </p>
               </a>
             </div>

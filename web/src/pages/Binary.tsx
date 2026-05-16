@@ -1254,9 +1254,9 @@ const BinaryPage = ({
 
           <div className="mb-16 max-w-4xl space-y-6 mx-auto text-center">
             <p className="text-lg text-[var(--text-dim)] leading-relaxed">
-              To understand how Protobuf achieves its performance, we must look at
-              the raw bytes. On this page, we will journey through the physical
-              layer of the specification:
+              To understand how Protobuf achieves its performance, we must look
+              at the raw bytes. On this page, we will journey through the
+              physical layer of the specification:
             </p>
 
             <RoadmapGrid items={roadmapItems} />
@@ -1271,262 +1271,262 @@ const BinaryPage = ({
         </div>
       </Section>
 
-    {/* 1.2 Varints */}
-    <Section
-      id="varints"
-      className="py-24 px-4 sm:px-8 bg-[var(--bg-color)] border-t border-[var(--border-light)]/30"
-    >
-      <div className="max-w-7xl mx-auto space-y-16">
-        <div className="max-w-4xl mx-auto text-center space-y-6">
-          <h3 className="text-4xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">
-            Base-128 Varint Encoding
-          </h3>
-          <p className="text-xl text-[var(--text-dim)] leading-relaxed">
-            Varints are the fundamental building block of Protobuf efficiency,
-            allowing integers to occupy only as many bytes as necessary.
-          </p>
-          <div className="max-w-3xl mx-auto text-[var(--text-dim)] leading-relaxed space-y-4 text-left bg-[var(--section-bg-dark)] p-8 rounded-xl border border-[var(--border-light)]">
-            <p>
-              Standard integers in memory take 4 or 8 bytes regardless of their
-              value. Varints use <strong>Base-128 Serialization</strong> to
-              represent smaller numbers with fewer bytes.
-            </p>
-            <p>
-              Each byte in a varint, except the last byte, has the{" "}
-              <strong>most significant bit (MSB)</strong> set to <code>1</code>.
-              This acts as a continuation flag, telling the decoder "more bytes
-              are coming."
-            </p>
-            <p>
-              The lower 7 bits of each byte store the data in groups of 7,{" "}
-              <strong>least significant group first</strong>. This means
-              Protobuf uses a Little-Endian approach even at the bit-group
-              level.
-            </p>
-          </div>
-        </div>
-
-        <div className="max-w-5xl mx-auto">
-          <VarintExplainer />
-        </div>
-      </div>
-    </Section>
-
-    {/* 1.5 The Tag Specification */}
-    <Section
-      id="binary-tag"
-      className="py-24 px-4 sm:px-8 bg-[var(--bg-color)] border-t border-[var(--border-light)]/30"
-    >
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
-          <div className="lg:col-span-6 space-y-8">
-            <h3 className="text-3xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">
-              The Field Tag
+      {/* 1.2 Varints */}
+      <Section
+        id="varints"
+        className="py-24 px-4 sm:px-8 bg-[var(--bg-color)] border-t border-[var(--border-light)]/30"
+      >
+        <div className="max-w-7xl mx-auto space-y-16">
+          <div className="max-w-4xl mx-auto text-center space-y-6">
+            <h3 className="text-4xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">
+              Base-128 Varint Encoding
             </h3>
-            <p className="text-lg text-[var(--text-dim)] leading-relaxed">
-              Every field in a Protobuf message is prefixed by a{" "}
-              <strong>Tag</strong>. This tag is the only reason the decoder
-              knows which field it's currently processing and how to interpret
-              the bytes that follow.
+            <p className="text-xl text-[var(--text-dim)] leading-relaxed">
+              Varints are the fundamental building block of Protobuf efficiency,
+              allowing integers to occupy only as many bytes as necessary.
             </p>
-
-            <div className="space-y-6">
-              <div className="p-6 bg-[var(--section-bg-dark)] border-l-4 border-[var(--cyber-neon-blue)] rounded-r-xl">
-                <h4 className="text-sm font-bold text-[var(--cyber-neon-blue)] uppercase tracking-widest mb-2">
-                  Tag Composition
-                </h4>
-                <p className="text-sm text-[var(--text-dim)] leading-relaxed">
-                  A tag is a single <strong>Varint</strong> that combines two
-                  pieces of information:
-                </p>
-                <ul className="mt-4 space-y-3">
-                  <li className="flex items-center gap-3">
-                    <div className="w-1.5 h-1.5 rounded-full bg-[var(--cyber-neon-blue)]" />
-                    <span className="text-sm text-[var(--text-color)]">
-                      <strong>Field Number</strong> (bits 3 through N)
-                    </span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <div className="w-1.5 h-1.5 rounded-full bg-[var(--cyber-neon-yellow)]" />
-                    <span className="text-sm text-[var(--text-color)]">
-                      <strong>Wire Type</strong> (the bottom 3 bits)
-                    </span>
-                  </li>
-                </ul>
-              </div>
-
-              <p className="text-[var(--text-dim)] leading-relaxed">
-                The formula for the tag value is{" "}
-                <code>(field_number &lt;&lt; 3) | wire_type</code>. While small
-                field numbers fit in a single byte, larger ones (16 and above)
-                will trigger the Varint continuation logic and require
-                additional bytes.
+            <div className="max-w-3xl mx-auto text-[var(--text-dim)] leading-relaxed space-y-4 text-left bg-[var(--section-bg-dark)] p-8 rounded-xl border border-[var(--border-light)]">
+              <p>
+                Standard integers in memory take 4 or 8 bytes regardless of
+                their value. Varints use <strong>Base-128 Serialization</strong>{" "}
+                to represent smaller numbers with fewer bytes.
+              </p>
+              <p>
+                Each byte in a varint, except the last byte, has the{" "}
+                <strong>most significant bit (MSB)</strong> set to{" "}
+                <code>1</code>. This acts as a continuation flag, telling the
+                decoder "more bytes are coming."
+              </p>
+              <p>
+                The lower 7 bits of each byte store the data in groups of 7,{" "}
+                <strong>least significant group first</strong>. This means
+                Protobuf uses a Little-Endian approach even at the bit-group
+                level.
               </p>
             </div>
           </div>
 
-          <div className="lg:col-span-6">
-            <TagCalculator />
+          <div className="max-w-5xl mx-auto">
+            <VarintExplainer />
           </div>
         </div>
-      </div>
-    </Section>
+      </Section>
 
-    {/* 2. Wire Types & Envelope Strategies */}
-    <Section
-      id="wire-types"
-      className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)]/20 border-y border-[var(--border-light)]"
-    >
-      <div className="max-w-7xl mx-auto">
-        <SectionTitle icon={Layers} subtitle="05a_STRUCTURE">
-          Wire Types & Envelopes
-        </SectionTitle>
-        <div className="mb-16 max-w-3xl">
-          <p className="text-[var(--text-dim)] leading-relaxed">
-            Every field on the wire is wrapped in an "envelope" that tells the
-            decoder two things: <strong>which field number</strong> it is, and{" "}
-            <strong>how to read</strong> the payload. These are packed into a
-            single Tag byte.
-          </p>
+      {/* 1.5 The Tag Specification */}
+      <Section
+        id="binary-tag"
+        className="py-24 px-4 sm:px-8 bg-[var(--bg-color)] border-t border-[var(--border-light)]/30"
+      >
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+            <div className="lg:col-span-6 space-y-8">
+              <h3 className="text-3xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">
+                The Field Tag
+              </h3>
+              <p className="text-lg text-[var(--text-dim)] leading-relaxed">
+                Every field in a Protobuf message is prefixed by a{" "}
+                <strong>Tag</strong>. This tag is the only reason the decoder
+                knows which field it's currently processing and how to interpret
+                the bytes that follow.
+              </p>
+
+              <div className="space-y-6">
+                <div className="p-6 bg-[var(--section-bg-dark)] border-l-4 border-[var(--cyber-neon-blue)] rounded-r-xl">
+                  <h4 className="text-sm font-bold text-[var(--cyber-neon-blue)] uppercase tracking-widest mb-2">
+                    Tag Composition
+                  </h4>
+                  <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+                    A tag is a single <strong>Varint</strong> that combines two
+                    pieces of information:
+                  </p>
+                  <ul className="mt-4 space-y-3">
+                    <li className="flex items-center gap-3">
+                      <div className="w-1.5 h-1.5 rounded-full bg-[var(--cyber-neon-blue)]" />
+                      <span className="text-sm text-[var(--text-color)]">
+                        <strong>Field Number</strong> (bits 3 through N)
+                      </span>
+                    </li>
+                    <li className="flex items-center gap-3">
+                      <div className="w-1.5 h-1.5 rounded-full bg-[var(--cyber-neon-yellow)]" />
+                      <span className="text-sm text-[var(--text-color)]">
+                        <strong>Wire Type</strong> (the bottom 3 bits)
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+
+                <p className="text-[var(--text-dim)] leading-relaxed">
+                  The formula for the tag value is{" "}
+                  <code>(field_number &lt;&lt; 3) | wire_type</code>. While
+                  small field numbers fit in a single byte, larger ones (16 and
+                  above) will trigger the Varint continuation logic and require
+                  additional bytes.
+                </p>
+              </div>
+            </div>
+
+            <div className="lg:col-span-6">
+              <TagCalculator />
+            </div>
+          </div>
         </div>
-        <WireFormatBreakdown />
-      </div>
-    </Section>
+      </Section>
 
-    {/* 3. The Explorer Matrix */}
-    <BinaryMatrix messageSchema={messageSchema} fds={fds} />
-
-    {/* 4. Protoscope Section */}
-    <Section
-      id="protoscope"
-      className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]"
-    >
-      <div className="max-w-7xl mx-auto">
-        <SectionTitle icon={SearchCheck} subtitle="05c_DEBUGGING">
-          Protoscope
-        </SectionTitle>
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-12">
-          <div className="lg:col-span-7 space-y-6">
-            <h3 className="text-2xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">
-              The Wire-Level Language
-            </h3>
-            <p className="text-lg text-[var(--text-dim)] leading-relaxed">
-              <strong>Protoscope</strong> is a specialized tool and
-              human-editable language designed for inspecting, debugging, and
-              manually constructing Protocol Buffers wire format data.
-            </p>
+      {/* 2. Wire Types & Envelope Strategies */}
+      <Section
+        id="wire-types"
+        className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)]/20 border-y border-[var(--border-light)]"
+      >
+        <div className="max-w-7xl mx-auto">
+          <SectionTitle icon={Layers} subtitle="05a_STRUCTURE">
+            Wire Types & Envelopes
+          </SectionTitle>
+          <div className="mb-16 max-w-3xl">
             <p className="text-[var(--text-dim)] leading-relaxed">
-              Standard tools like <code>protoc</code> require a{" "}
-              <code>.proto</code> schema to make sense of binary data.
-              Protoscope is different: it operates at the{" "}
-              <strong>wire level</strong>, decoding the underlying binary
-              structure (varints, tags, and length-prefixes) using heuristics,
-              even when the original schema is missing.
+              Every field on the wire is wrapped in an "envelope" that tells the
+              decoder two things: <strong>which field number</strong> it is, and{" "}
+              <strong>how to read</strong> the payload. These are packed into a
+              single Tag byte.
             </p>
+          </div>
+          <WireFormatBreakdown />
+        </div>
+      </Section>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
-              <div className="space-y-3">
-                <h4 className="font-cyber font-bold text-sm text-[var(--cyber-neon-green)] uppercase tracking-widest">
-                  Strengths
-                </h4>
-                <ul className="space-y-2">
-                  <li className="text-sm text-[var(--text-dim)] flex gap-2">
-                    <span className="text-[var(--cyber-neon-green)]">+</span>
-                    <p>Schema-agnostic debugging of any Protobuf stream.</p>
-                  </li>
-                  <li className="text-sm text-[var(--text-dim)] flex gap-2">
-                    <span className="text-[var(--cyber-neon-green)]">+</span>
-                    <p>
-                      Perfect for crafting malformed messages for security
-                      testing.
-                    </p>
-                  </li>
-                  <li className="text-sm text-[var(--text-dim)] flex gap-2">
-                    <span className="text-[var(--cyber-neon-green)]">+</span>
-                    <p>
-                      Human-readable representation of complex binary
-                      structures.
-                    </p>
-                  </li>
-                </ul>
+      {/* 3. The Explorer Matrix */}
+      <BinaryMatrix messageSchema={messageSchema} fds={fds} />
+
+      {/* 4. Protoscope Section */}
+      <Section
+        id="protoscope"
+        className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]"
+      >
+        <div className="max-w-7xl mx-auto">
+          <SectionTitle icon={SearchCheck} subtitle="05c_DEBUGGING">
+            Protoscope
+          </SectionTitle>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-12">
+            <div className="lg:col-span-7 space-y-6">
+              <h3 className="text-2xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">
+                The Wire-Level Language
+              </h3>
+              <p className="text-lg text-[var(--text-dim)] leading-relaxed">
+                <strong>Protoscope</strong> is a specialized tool and
+                human-editable language designed for inspecting, debugging, and
+                manually constructing Protocol Buffers wire format data.
+              </p>
+              <p className="text-[var(--text-dim)] leading-relaxed">
+                Standard tools like <code>protoc</code> require a{" "}
+                <code>.proto</code> schema to make sense of binary data.
+                Protoscope is different: it operates at the{" "}
+                <strong>wire level</strong>, decoding the underlying binary
+                structure (varints, tags, and length-prefixes) using heuristics,
+                even when the original schema is missing.
+              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
+                <div className="space-y-3">
+                  <h4 className="font-cyber font-bold text-sm text-[var(--cyber-neon-green)] uppercase tracking-widest">
+                    Strengths
+                  </h4>
+                  <ul className="space-y-2">
+                    <li className="text-sm text-[var(--text-dim)] flex gap-2">
+                      <span className="text-[var(--cyber-neon-green)]">+</span>
+                      <p>Schema-agnostic debugging of any Protobuf stream.</p>
+                    </li>
+                    <li className="text-sm text-[var(--text-dim)] flex gap-2">
+                      <span className="text-[var(--cyber-neon-green)]">+</span>
+                      <p>
+                        Perfect for crafting malformed messages for security
+                        testing.
+                      </p>
+                    </li>
+                    <li className="text-sm text-[var(--text-dim)] flex gap-2">
+                      <span className="text-[var(--cyber-neon-green)]">+</span>
+                      <p>
+                        Human-readable representation of complex binary
+                        structures.
+                      </p>
+                    </li>
+                  </ul>
+                </div>
+                <div className="space-y-3">
+                  <h4 className="font-cyber font-bold text-sm text-[var(--cyber-neon-pink)] uppercase tracking-widest">
+                    Weaknesses
+                  </h4>
+                  <ul className="space-y-2">
+                    <li className="text-sm text-[var(--text-dim)] flex gap-2">
+                      <span className="text-[var(--cyber-neon-pink)]">-</span>
+                      <p>
+                        Lossy: Cannot distinguish between <code>int32</code> and{" "}
+                        <code>uint32</code>.
+                      </p>
+                    </li>
+                    <li className="text-sm text-[var(--text-dim)] flex gap-2">
+                      <span className="text-[var(--cyber-neon-pink)]">-</span>
+                      <p>
+                        Ambiguous: May misidentify embedded messages as strings.
+                      </p>
+                    </li>
+                    <li className="text-sm text-[var(--text-dim)] flex gap-2">
+                      <span className="text-[var(--cyber-neon-pink)]">-</span>
+                      <p>
+                        No field names: You only see numeric tags (e.g.,{" "}
+                        <code>1:</code>).
+                      </p>
+                    </li>
+                  </ul>
+                </div>
               </div>
-              <div className="space-y-3">
-                <h4 className="font-cyber font-bold text-sm text-[var(--cyber-neon-pink)] uppercase tracking-widest">
-                  Weaknesses
-                </h4>
-                <ul className="space-y-2">
-                  <li className="text-sm text-[var(--text-dim)] flex gap-2">
-                    <span className="text-[var(--cyber-neon-pink)]">-</span>
-                    <p>
-                      Lossy: Cannot distinguish between <code>int32</code> and{" "}
-                      <code>uint32</code>.
+            </div>
+
+            <div className="lg:col-span-5">
+              <CyberPanel title="HOW_IT_WORKS" className="h-full">
+                <div className="p-6 space-y-6">
+                  <div className="space-y-2">
+                    <p className="text-sm font-bold text-[var(--text-color)] uppercase">
+                      1. Heuristic Disassembly
                     </p>
-                  </li>
-                  <li className="text-sm text-[var(--text-dim)] flex gap-2">
-                    <span className="text-[var(--cyber-neon-pink)]">-</span>
-                    <p>
-                      Ambiguous: May misidentify embedded messages as strings.
+                    <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+                      Protoscope scans bytes and "guesses" types based on valid
+                      UTF-8 sequences or nested tag patterns.
                     </p>
-                  </li>
-                  <li className="text-sm text-[var(--text-dim)] flex gap-2">
-                    <span className="text-[var(--cyber-neon-pink)]">-</span>
-                    <p>
-                      No field names: You only see numeric tags (e.g.,{" "}
-                      <code>1:</code>).
+                  </div>
+                  <div className="space-y-2">
+                    <p className="text-sm font-bold text-[var(--text-color)] uppercase">
+                      2. Minimalist Syntax
                     </p>
-                  </li>
-                </ul>
-              </div>
+                    <p className="text-sm text-[var(--text-dim)] leading-relaxed font-mono bg-[var(--overlay-bg)] p-2 rounded">
+                      1: 150 {"// Varint"}
+                      <br />
+                      2: "Alice" {"// String"}
+                    </p>
+                  </div>
+                  <div className="space-y-2">
+                    <p className="text-sm font-bold text-[var(--text-color)] uppercase">
+                      3. Bi-directional
+                    </p>
+                    <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+                      It can compile text back into binary, making it a powerful
+                      "hex editor" for Protobuf.
+                    </p>
+                  </div>
+                </div>
+              </CyberPanel>
             </div>
           </div>
 
-          <div className="lg:col-span-5">
-            <CyberPanel title="HOW_IT_WORKS" className="h-full">
-              <div className="p-6 space-y-6">
-                <div className="space-y-2">
-                  <p className="text-sm font-bold text-[var(--text-color)] uppercase">
-                    1. Heuristic Disassembly
-                  </p>
-                  <p className="text-sm text-[var(--text-dim)] leading-relaxed">
-                    Protoscope scans bytes and "guesses" types based on valid
-                    UTF-8 sequences or nested tag patterns.
-                  </p>
-                </div>
-                <div className="space-y-2">
-                  <p className="text-sm font-bold text-[var(--text-color)] uppercase">
-                    2. Minimalist Syntax
-                  </p>
-                  <p className="text-sm text-[var(--text-dim)] leading-relaxed font-mono bg-[var(--overlay-bg)] p-2 rounded">
-                    1: 150 {"// Varint"}
-                    <br />
-                    2: "Alice" {"// String"}
-                  </p>
-                </div>
-                <div className="space-y-2">
-                  <p className="text-sm font-bold text-[var(--text-color)] uppercase">
-                    3. Bi-directional
-                  </p>
-                  <p className="text-sm text-[var(--text-dim)] leading-relaxed">
-                    It can compile text back into binary, making it a powerful
-                    "hex editor" for Protobuf.
-                  </p>
-                </div>
-              </div>
-            </CyberPanel>
-          </div>
+          <ProtoscopeLab
+            messageSchema={messageSchema}
+            fds={fds}
+            protoSource={protoSource}
+            setProtoSource={setProtoSource}
+          />
         </div>
-
-        <ProtoscopeLab
-          messageSchema={messageSchema}
-          fds={fds}
-          protoSource={protoSource}
-          setProtoSource={setProtoSource}
-        />
-      </div>
-    </Section>
-  </>
-);
+      </Section>
+    </>
+  );
 };
 
 export default BinaryPage;

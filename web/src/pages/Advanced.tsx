@@ -32,7 +32,6 @@ import {
   SyntaxHighlighter,
   TechnicalNuance,
   RoadmapGrid,
-  type RoadmapItem,
 } from "../components/shared/Common";
 import { JsonEditor } from "../components/shared/JsonEditor";
 import { Modal } from "../components/shared/Modal";
@@ -115,8 +114,8 @@ export const AdvancedProtobuf = () => {
             </p>
             <p>
               Google provides a set of "Well-Known Types"—standardized schemas
-              for common concepts like timestamps, durations, and dynamic values.
-              These are built into every Protobuf compiler and should be
+              for common concepts like timestamps, durations, and dynamic
+              values. These are built into every Protobuf compiler and should be
               preferred over custom implementations to ensure interoperability.
             </p>
           </div>
@@ -763,9 +762,9 @@ export const DescriptorsAndReflection = () => {
             <div className="flex flex-col h-full">
               <CyberPanel title="DESCRIPTOR.PROTO (SNIPPET)" className="h-full">
                 <div className="p-4 overflow-auto h-full">
-                <SyntaxHighlighter
-                  language="proto"
-                  code={`// The schema that describes a schema
+                  <SyntaxHighlighter
+                    language="proto"
+                    code={`// The schema that describes a schema
 message FileDescriptorSet {
   repeated FileDescriptorProto file = 1;
 }
@@ -783,10 +782,10 @@ message DescriptorProto {
   repeated FieldDescriptorProto field = 2;
   // ...
 }`}
-                />
-              </div>
-            </CyberPanel>
-          </div>
+                  />
+                </div>
+              </CyberPanel>
+            </div>
           </div>
         </div>
 

@@ -101,15 +101,19 @@ export const SchemaDrivenAPIs = () => {
           </div>
         </div>
 
-        <div id="generating-code" className="mt-24 space-y-12 border-t border-[var(--border-light)] pt-16">
+        <div
+          id="generating-code"
+          className="mt-24 space-y-12 border-t border-[var(--border-light)] pt-16"
+        >
           <div className="space-y-4">
             <h2 className="text-3xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">
               Generating Code
             </h2>
             <p className="text-[var(--text-dim)] max-w-3xl">
-              Let's see how to generate TypeScript code from a <code>.proto</code>{" "}
-              schema using both the traditional <code>protoc</code> compiler and
-              the modern <code>buf</code> toolchain.
+              Let's see how to generate TypeScript code from a{" "}
+              <code>.proto</code> schema using both the traditional{" "}
+              <code>protoc</code> compiler and the modern <code>buf</code>{" "}
+              toolchain.
             </p>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div className="space-y-4">
@@ -130,8 +134,8 @@ export const SchemaDrivenAPIs = () => {
                 <div className="space-y-4 text-[var(--text-dim)] leading-relaxed">
                   <p>
                     In this <code>user.proto</code> file, we define a{" "}
-                    <code>User</code> message with three fields. Each field has a
-                    type (<code>string</code>, <code>bool</code>) and a unique{" "}
+                    <code>User</code> message with three fields. Each field has
+                    a type (<code>string</code>, <code>bool</code>) and a unique{" "}
                     <strong>field number</strong> which identifies it in the
                     binary format.
                   </p>
@@ -148,7 +152,8 @@ export const SchemaDrivenAPIs = () => {
                     </li>
                     <li>
                       <strong>Validate:</strong> Ensure data conforms to the
-                      schema rules before it ever reaches your application logic.
+                      schema rules before it ever reaches your application
+                      logic.
                     </li>
                   </ul>
                 </div>
@@ -163,8 +168,8 @@ export const SchemaDrivenAPIs = () => {
               </h4>
               <p className="text-sm text-[var(--text-dim)] leading-relaxed">
                 The <code>protoc</code> compiler is the original tool for
-                Protobuf. It requires manual management of plugins and complex CLI
-                flags.
+                Protobuf. It requires manual management of plugins and complex
+                CLI flags.
               </p>
               <CyberPanel title="TERMINAL">
                 <div className="p-4">
@@ -183,8 +188,8 @@ export const SchemaDrivenAPIs = () => {
               </h4>
               <p className="text-sm text-[var(--text-dim)] leading-relaxed">
                 <code>buf</code> simplifies generation by using a declarative{" "}
-                <code>buf.gen.yaml</code> file, making your workflow reproducible
-                and easier to share.
+                <code>buf.gen.yaml</code> file, making your workflow
+                reproducible and easier to share.
               </p>
               <div className="space-y-4">
                 <CyberPanel title="buf.gen.yaml">
@@ -237,10 +242,10 @@ export const SchemaDrivenAPIs = () => {
             <TechnicalNuance title="Different languages and runtimes">
               While this example uses TypeScript, the fundamental process is
               similar across every supported language (Go, Python, Rust, Java,
-              etc.). However, there are always language-specific details, such as
-              how generated packages are imported, how native structs or objects
-              are managed, and how the runtime libraries are integrated into your
-              specific build system.
+              etc.). However, there are always language-specific details, such
+              as how generated packages are imported, how native structs or
+              objects are managed, and how the runtime libraries are integrated
+              into your specific build system.
             </TechnicalNuance>
           </div>
         </div>
