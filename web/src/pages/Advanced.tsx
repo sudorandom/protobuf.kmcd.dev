@@ -97,7 +97,17 @@ const TopicSection = ({
 );
 
 export const AdvancedProtobuf = () => {
-  const topics = [
+  const topics: {
+    id: string;
+    icon: React.ElementType;
+    title: string;
+    subtitle: string;
+    panelTitle?: string;
+    desc: React.ReactNode;
+    example?: string;
+    children?: React.ReactNode;
+    fullWidthContent?: React.ReactNode;
+  }[] = [
     {
       id: "imports",
       icon: FileCode,
@@ -955,7 +965,17 @@ message DescriptorProto {
 };
 
 export const SchemaEngineering = () => {
-  const topics = [
+  const topics: {
+    id: string;
+    icon: React.ElementType;
+    title: string;
+    subtitle: string;
+    panelTitle?: string;
+    desc: React.ReactNode;
+    example?: string;
+    children?: React.ReactNode;
+    fullWidthContent?: React.ReactNode;
+  }[] = [
     {
       id: "plugins",
       icon: Code2,
