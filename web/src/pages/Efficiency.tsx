@@ -284,29 +284,20 @@ export const SizeComparison = ({
             >
               <div className="flex-1 py-4 px-2 space-y-8">
                 {/* Stats Explainer */}
-                <div className="p-3 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg text-[10px] font-mono text-[var(--text-dim)] uppercase tracking-wider space-y-1">
-                  <p>
-                    <span className="text-[var(--cyber-neon-yellow)]">
-                      JSON:
-                    </span>{" "}
-                    Standard minified text
-                  </p>
-                  <p>
-                    <span className="text-[var(--cyber-neon-yellow)] opacity-60">
-                      JSON.GZ:
-                    </span>{" "}
-                    Text compressed with Gzip
-                  </p>
-                  <p>
-                    <span className="text-[var(--cyber-neon-green)]">PB:</span>{" "}
-                    Raw Protobuf binary
-                  </p>
-                  <p>
-                    <span className="text-[var(--cyber-neon-green)] opacity-60">
-                      PB.GZ:
-                    </span>{" "}
-                    Binary compressed with Gzip
-                  </p>
+                <div className="p-3 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg text-xs font-mono text-[var(--text-dim)] font-bold leading-relaxed">
+                  Comparing standard minified{" "}
+                  <span className="text-[var(--cyber-neon-yellow)]">JSON</span>{" "}
+                  and gzipped{" "}
+                  <span className="text-[var(--cyber-neon-yellow)] opacity-60">
+                    JSON.GZ
+                  </span>{" "}
+                  against raw Protobuf binary{" "}
+                  <span className="text-[var(--cyber-neon-green)]">PB</span> and
+                  gzipped{" "}
+                  <span className="text-[var(--cyber-neon-green)] opacity-60">
+                    PB.GZ
+                  </span>
+                  .
                 </div>
 
                 {/* Size Bars */}

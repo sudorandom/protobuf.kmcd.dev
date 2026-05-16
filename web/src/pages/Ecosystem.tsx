@@ -215,7 +215,19 @@ export const PoweringTheIndustry = () => {
 };
 
 export const Toolbox = () => {
-  const tools = [
+  interface ToolLink {
+    label: string;
+    url: string;
+  }
+
+  interface Tool {
+    name: string;
+    desc: string;
+    url?: string;
+    links?: ToolLink[];
+  }
+
+  const tools: Tool[] = [
     {
       name: "Buf CLI",
       desc: "The modern standard for Protobuf management. Includes a linter, formatter, breaking change detector, editor LSP support, and a high-performance code generator.",
@@ -284,7 +296,7 @@ export const Toolbox = () => {
                     {t.desc}
                   </p>
                   <div className="flex flex-wrap gap-4">
-                    {"links" in t ? (
+                    {t.links ? (
                       t.links.map((l) => (
                         <ExternalLinkText key={l.label} href={l.url}>
                           {l.label}
@@ -587,83 +599,6 @@ export const AlternativesLandscape = () => (
   </Section>
 );
 
-export const EcosystemNextSteps = () => (
-  <Section
-    id="nextsteps"
-    className="py-24 px-4 sm:px-8 bg-[var(--section-bg-dark)] border-t border-[var(--border-light)]"
-  >
-    <div className="max-w-4xl mx-auto text-center space-y-12">
-      <div className="space-y-4">
-        <h3 className="text-3xl md:text-5xl font-cyber font-black text-[var(--text-color)] uppercase tracking-tighter">
-          Ready to Build?
-        </h3>
-        <p className="text-[var(--text-dim)] text-lg">
-          Protobuf is a deep ecosystem. Here is where to go next.
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
-        <a
-          href="https://protobuf.dev/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="p-6 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-xl hover:border-[var(--cyber-neon-blue)] transition-all group"
-        >
-          <h4 className="font-cyber font-bold text-[var(--cyber-neon-blue)] uppercase mb-2">
-            Official Docs
-          </h4>
-          <p className="text-sm text-[var(--text-dim)]">
-            The definitive source for language syntax, well-known types, and
-            standard practices.
-          </p>
-        </a>
-        <a
-          href="https://buf.build/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="p-6 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-xl hover:border-[var(--cyber-neon-pink)] transition-all group"
-        >
-          <h4 className="font-cyber font-bold text-[var(--cyber-neon-pink)] uppercase mb-2">
-            Buf.build
-          </h4>
-          <p className="text-sm text-[var(--text-dim)]">
-            Modern tooling for Protobuf. Linting, breaking change detection, and
-            dependency management.
-          </p>
-        </a>
-        <a
-          href="https://connectrpc.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="p-6 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-xl hover:border-[var(--cyber-neon-green)] transition-all group"
-        >
-          <h4 className="font-cyber font-bold text-[var(--cyber-neon-green)] uppercase mb-2">
-            ConnectRPC
-          </h4>
-          <p className="text-sm text-[var(--text-dim)]">
-            A better way to build gRPC-compatible APIs that work natively in the
-            browser and mobile.
-          </p>
-        </a>
-        <a
-          href="https://github.com/protocolbuffers/protobuf"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="p-6 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-xl hover:border-[var(--cyber-neon-yellow)] transition-all group"
-        >
-          <h4 className="font-cyber font-bold text-[var(--cyber-neon-yellow)] uppercase mb-2">
-            GitHub Repo
-          </h4>
-          <p className="text-sm text-[var(--text-dim)]">
-            Dive into the source code of the compilers and runtimes for every
-            major language.
-          </p>
-        </a>
-      </div>
-    </div>
-  </Section>
-);
-
 const Ecosystem = () => (
   <>
     <VersionTimeline />
@@ -672,7 +607,6 @@ const Ecosystem = () => (
     <NetworkImplementations />
     <CommunityResources />
     <AlternativesLandscape />
-    <EcosystemNextSteps />
   </>
 );
 
