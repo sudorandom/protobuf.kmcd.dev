@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ChevronRight } from "lucide-react";
+import { ChevronsRight } from "lucide-react";
 import { Section } from "../components/shared/Common";
 
 export const Hero = ({ isAtTop }: { isAtTop: boolean }) => (
@@ -28,18 +28,18 @@ export const Hero = ({ isAtTop }: { isAtTop: boolean }) => (
     </motion.div>
 
     <motion.div
-      className="absolute bottom-8 left-0 right-0 flex justify-center z-20 px-4"
+      className="absolute bottom-24 sm:bottom-32 left-0 right-0 flex justify-center z-20 px-4"
       animate={{ y: [0, -8, 0] }}
       transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
     >
       <Link
         to="/intro"
-        className="flex flex-col items-center gap-2 group text-[var(--cyber-neon-blue)] hover:text-[var(--cyber-neon-blue)]/80 transition-colors w-max"
+        className="relative flex items-center justify-center group text-[var(--cyber-neon-blue)] hover:text-[var(--cyber-neon-blue)]/80 transition-colors w-max"
       >
         <span className="font-cyber font-bold tracking-widest sm:tracking-[0.2em] text-lg sm:text-xl uppercase whitespace-nowrap">
           Get Started
         </span>
-        <ChevronRight className="w-6 h-6 sm:w-8 sm:h-8 rotate-90 group-hover:translate-y-2 transition-transform" />
+        <ChevronsRight className="absolute left-full ml-3 w-6 h-6 sm:w-8 sm:h-8 group-hover:translate-x-2 transition-transform" />
       </Link>
     </motion.div>
   </Section>
