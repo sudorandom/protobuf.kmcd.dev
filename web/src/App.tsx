@@ -383,10 +383,7 @@ function App() {
             element={<Introduction messageSchema={messageSchema} fds={fds} />}
           />
           <Route path="/basics" element={<Basics />} />
-          <Route
-            path="/advanced"
-            element={<Advanced />}
-          />
+          <Route path="/advanced" element={<Advanced />} />
           <Route
             path="/efficiency"
             element={

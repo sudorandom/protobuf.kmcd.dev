@@ -20,7 +20,6 @@ import {
   fromJson,
   fromBinary,
   toJson,
-  type Registry,
   type FileRegistry,
 } from "@bufbuild/protobuf";
 import { FileDescriptorSetSchema } from "@bufbuild/protobuf/wkt";
@@ -943,9 +942,9 @@ message User {
             You can define custom "options" (annotations) to attach metadata to
             your schema. Common use cases include defining{" "}
             <strong>data validation rules</strong> (e.g., protovalidate),{" "}
-            <strong>field-level data classification</strong> (e.g., tagging PII),
-            and <strong>service-level access control</strong> (e.g., defining
-            required roles for RBAC).
+            <strong>field-level data classification</strong> (e.g., tagging
+            PII), and <strong>service-level access control</strong> (e.g.,
+            defining required roles for RBAC).
           </p>
           <div className="space-y-3">
             <p className="text-xs font-bold uppercase text-[var(--cyber-neon-blue)] tracking-widest">
@@ -1137,27 +1136,28 @@ $ protoc --plugin=protoc-gen-custom=./my-plugin \\
             <p>
               Because Protobuf identifies data on the wire using field numbers
               rather than names, the concept of "deleting" a field requires
-              careful handling. If a schema has ever been used in production—where
-              older clients or databases might still hold data serialized with a
-              specific field number—you cannot simply remove the field and let its
-              number be reused. Instead, you must manage its lifecycle:
+              careful handling. If a schema has ever been used in
+              production—where older clients or databases might still hold data
+              serialized with a specific field number—you cannot simply remove
+              the field and let its number be reused. Instead, you must manage
+              its lifecycle:
             </p>
             <ol className="list-decimal pl-4 space-y-2 text-sm">
               <li>
-                <strong>Deprecate:</strong> Add <code>[deprecated = true]</code>.
-                This warns developers in their IDEs (via generated code
+                <strong>Deprecate:</strong> Add <code>[deprecated = true]</code>
+                . This warns developers in their IDEs (via generated code
                 annotations like <code>@Deprecated</code>) not to use it for new
                 features.
               </li>
               <li>
-                <strong>Stop Using:</strong> Wait until metrics show zero traffic
-                using the field.
+                <strong>Stop Using:</strong> Wait until metrics show zero
+                traffic using the field.
               </li>
               <li>
                 <strong>Reserve:</strong> Remove the field entirely and add its
-                number/name to a <code>reserved</code> block. This prevents future
-                developers from accidentally reusing the number and corrupting old
-                data that might still be in a database.
+                number/name to a <code>reserved</code> block. This prevents
+                future developers from accidentally reusing the number and
+                corrupting old data that might still be in a database.
               </li>
             </ol>
           </div>
@@ -1233,7 +1233,7 @@ const VALIDATION_EXAMPLES = {
 
 export const ValidationLab = () => {
   const [localProtoSource, setLocalProtoSource] = useState(VALIDATION_PROTO);
-  const [localRegistry, setLocalRegistry] = useState<Registry | null>(null);
+  const [localRegistry, setLocalRegistry] = useState<FileRegistry | null>(null);
   const [localFds, setLocalFds] = useState<Uint8Array | null>(null);
 
   useEffect(() => {
