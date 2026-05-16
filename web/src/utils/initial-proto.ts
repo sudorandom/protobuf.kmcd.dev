@@ -1,0 +1,32 @@
+export const INITIAL_PROTO = `edition = "2023";
+
+package demo.v1;
+
+import "buf/validate/validate.proto";
+
+message User {
+  string id = 1 [(buf.validate.field).string.uuid = true];
+  string name = 2;
+  string email = 3;
+  
+  // Numeric data for efficiency demo
+  uint32 age = 4 [(buf.validate.field).uint32.lt = 150];
+  float height_cm = 5;
+  double weight_kg = 6;
+  
+  Role role = 7;
+  Date birth_date = 8;
+  User manager = 9;
+
+  enum Role {
+    ROLE_UNSPECIFIED = 0;
+    ROLE_USER = 1;
+    ROLE_ADMIN = 2;
+  }
+}
+
+message Date {
+  int32 year = 1;
+  int32 month = 2;
+  int32 day = 3;
+}`;
