@@ -385,15 +385,7 @@ function App() {
           <Route path="/basics" element={<Basics />} />
           <Route
             path="/advanced"
-            element={
-              <Advanced
-                messageSchema={messageSchema}
-                fds={fds}
-                registry={registry}
-                protoSource={protoSource}
-                setProtoSource={setProtoSource}
-              />
-            }
+            element={<Advanced />}
           />
           <Route
             path="/efficiency"

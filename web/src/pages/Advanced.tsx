@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import {
   HelpCircle,
   Settings,
@@ -18,7 +18,6 @@ import {
 } from "lucide-react";
 import {
   fromJson,
-  type DescMessage,
   fromBinary,
   toJson,
   type Registry,
@@ -38,7 +37,8 @@ import { JsonEditor } from "../components/shared/JsonEditor";
 import { Modal } from "../components/shared/Modal";
 import { generateFake } from "../utils/wasm-parser";
 import { InteractiveSchemaEditor } from "../components/shared/InteractiveSchemaEditor";
-import { DESCRIPTOR_PROTO, INITIAL_PROTO } from "../utils/constants";
+import { createDynamicRegistry } from "../utils/dynamic-registry";
+import { DESCRIPTOR_PROTO, VALIDATION_PROTO } from "../utils/constants";
 
 const TopicSection = ({
   id,
@@ -1231,19 +1231,48 @@ const VALIDATION_EXAMPLES = {
   },
 };
 
-export const ValidationLab = ({
-  messageSchema,
-  fds,
-  registry,
-  protoSource,
-  setProtoSource,
-}: {
-  messageSchema: DescMessage | null;
-  fds: Uint8Array | null;
-  registry: Registry | null;
-  protoSource: string;
-  setProtoSource: (s: string) => void;
-}) => {
+export const ValidationLab = () => {
+  const [localProtoSource, setLocalProtoSource] = useState(VALIDATION_PROTO);
+  const [localRegistry, setLocalRegistry] = useState<Registry | null>(null);
+  const [localFds, setLocalFds] = useState<Uint8Array | null>(null);
+
+  useEffect(() => {
+    let active = true;
+    const timer = setTimeout(async () => {
+      try {
+        const result = await createDynamicRegistry(localProtoSource);
+        if (active) {
+          if (result.kind === "success") {
+            setLocalRegistry(result.registry);
+            setLocalFds(result.fileDescriptorSet);
+          } else {
+            setLocalRegistry(null);
+            setLocalFds(null);
+          }
+        }
+      } catch {
+        if (active) {
+          setLocalRegistry(null);
+          setLocalFds(null);
+        }
+      }
+    }, 500);
+
+    return () => {
+      active = false;
+      clearTimeout(timer);
+    };
+  }, [localProtoSource]);
+
+  const localMessageSchema = useMemo(() => {
+    if (!localRegistry) return null;
+    return (
+      localRegistry.getMessage("demo.v1.User") ||
+      localRegistry.getFile("input.proto")?.messages[0] ||
+      null
+    );
+  }, [localRegistry]);
+
   const [activeExample, setActiveExample] = useState<
     keyof typeof VALIDATION_EXAMPLES | null
   >("VALID");
@@ -1259,22 +1288,24 @@ export const ValidationLab = ({
 
   const validator = useMemo(() => {
     return createValidator({
-      registry: registry ?? undefined,
+      registry: localRegistry ?? undefined,
     });
-  }, [registry]);
+  }, [localRegistry]);
 
   const validationResults = useMemo(() => {
-    if (!messageSchema) return { results: null, error: "NO_SCHEMA" };
+    if (!localMessageSchema) return { results: null, error: "NO_SCHEMA" };
     try {
       const obj = JSON.parse(jsonInput);
-      const user = fromJson(messageSchema, obj, { ignoreUnknownFields: true });
-      const results = validator.validate(messageSchema, user);
+      const user = fromJson(localMessageSchema, obj, {
+        ignoreUnknownFields: true,
+      });
+      const results = validator.validate(localMessageSchema, user);
       return { results, error: null };
     } catch (e: unknown) {
       const error = e instanceof Error ? e.message : String(e);
       return { results: null, error };
     }
-  }, [jsonInput, validator, messageSchema]);
+  }, [jsonInput, validator, localMessageSchema]);
 
   return (
     <Section
@@ -1372,11 +1403,11 @@ export const ValidationLab = ({
                 ))}
                 <button
                   onClick={async () => {
-                    if (!messageSchema || !fds) return;
+                    if (!localMessageSchema || !localFds) return;
                     try {
                       const fakeJson = await generateFake(
-                        messageSchema.typeName,
-                        fds,
+                        localMessageSchema.typeName,
+                        localFds,
                       );
                       setJsonInput(fakeJson);
                       setActiveExample(null);
@@ -1384,7 +1415,7 @@ export const ValidationLab = ({
                       console.error("Failed to generate faux data:", e);
                     }
                   }}
-                  disabled={!messageSchema || !fds}
+                  disabled={!localMessageSchema || !localFds}
                   className="px-2 py-1 text-xs font-cyber font-bold border border-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/10 text-[var(--cyber-neon-pink)] hover:bg-[var(--cyber-neon-pink)]/20 transition-all flex items-center gap-1.5 disabled:opacity-30 disabled:cursor-not-allowed rounded uppercase tracking-wider"
                   aria-label="Generate random JSON data for validation"
                 >
@@ -1495,10 +1526,10 @@ export const ValidationLab = ({
             </div>
             <div className="flex-1 min-h-[500px]">
               <InteractiveSchemaEditor
-                initialValue={protoSource}
-                defaultValue={INITIAL_PROTO}
+                initialValue={localProtoSource}
+                defaultValue={VALIDATION_PROTO}
                 onSave={async (s, result) => {
-                  setProtoSource(s);
+                  setLocalProtoSource(s);
                   if (result) {
                     const schema =
                       result.registry.getMessage("demo.v1.User") ||
@@ -1557,30 +1588,12 @@ export const ValidationLab = ({
   );
 };
 
-const Advanced = ({
-  messageSchema,
-  fds,
-  registry,
-  protoSource,
-  setProtoSource,
-}: {
-  messageSchema: DescMessage | null;
-  fds: Uint8Array | null;
-  registry: Registry | null;
-  protoSource: string;
-  setProtoSource: (s: string) => void;
-}) => (
+const Advanced = () => (
   <>
     <AdvancedProtobuf />
     <DescriptorsAndReflection />
     <SchemaEngineering />
-    <ValidationLab
-      messageSchema={messageSchema}
-      fds={fds}
-      registry={registry}
-      protoSource={protoSource}
-      setProtoSource={setProtoSource}
-    />
+    <ValidationLab />
   </>
 );
 
