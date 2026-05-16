@@ -149,7 +149,9 @@ function App() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [location.pathname]);
+    const pageName = SECTION_LABELS[activeSection] || "Welcome";
+    document.title = `${pageName} | Protobuf Visualized`;
+  }, [location.pathname, activeSection]);
 
   useEffect(() => {
     const handleScroll = () => {
