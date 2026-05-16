@@ -50,6 +50,7 @@ const TopicSection = ({
   example,
   children,
   bgClass = "bg-[var(--section-bg-dark)]",
+  fullWidthContent,
 }: {
   id: string;
   icon: React.ElementType;
@@ -60,6 +61,7 @@ const TopicSection = ({
   example?: string;
   children?: React.ReactNode;
   bgClass?: string;
+  fullWidthContent?: React.ReactNode;
 }) => (
   <Section
     id={id}
@@ -89,6 +91,11 @@ const TopicSection = ({
           </CyberPanel>
         )}
       </div>
+      {fullWidthContent && (
+        <div className="mt-12">
+          {fullWidthContent}
+        </div>
+      )}
     </div>
   </Section>
 );
@@ -1044,21 +1051,10 @@ extend google.protobuf.MethodOptions {
       desc: (
         <div className="space-y-4">
           <p>
-            The <code>protoc</code> compiler doesn't actually know how to
+            The <code>protoc</code> (or <code>buf generate</code>) compiler doesn't actually know how to
             generate code for Go, Java, or TypeScript. Instead, it parses the{" "}
             <code>.proto</code> files and hands the resulting{" "}
             <strong>Descriptors</strong> to a <strong>plugin</strong>.
-          </p>
-          <p>
-            A plugin is just a program that reads a{" "}
-            <ExternalLinkText href="https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/compiler/plugin.proto">
-              <code>CodeGeneratorRequest</code>
-            </ExternalLinkText>{" "}
-            from <code>stdin</code> and writes a{" "}
-            <ExternalLinkText href="https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/compiler/plugin.proto">
-              <code>CodeGeneratorResponse</code>
-            </ExternalLinkText>{" "}
-            to <code>stdout</code>.
           </p>
           <p>
             This architecture allows anyone to write a plugin to generate a wide
@@ -1074,8 +1070,49 @@ extend google.protobuf.MethodOptions {
       ),
       example: `// Example: Running a custom plugin
 $ protoc --plugin=protoc-gen-custom=./my-plugin \\
+         --custom_opt=log_level=debug,other_flag=true \\
          --custom_out=./generated \\
          schema.proto`,
+      fullWidthContent: (
+        <div className="space-y-8 mt-4 text-[var(--text-color)] text-sm leading-relaxed">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <CyberPanel title="I/O Architecture">
+              <div className="p-4 space-y-4">
+                <p>
+                  The compiler starts the plugin program as a subprocess.
+                </p>
+                <ul className="space-y-2 list-disc pl-4 text-[var(--text-dim)]">
+                  <li>
+                    <strong className="text-[var(--cyber-neon-blue)]">stdin:</strong> The compiler passes a binary serialized{" "}
+                    <code>CodeGeneratorRequest</code> message.
+                  </li>
+                  <li>
+                    <strong className="text-[var(--cyber-neon-pink)]">stdout:</strong> The plugin must return a binary serialized{" "}
+                    <code>CodeGeneratorResponse</code> message. The plugin must <em>not</em> modify the filesystem directly; it returns the files to be written in this response.
+                  </li>
+                  <li>
+                    <strong className="text-[var(--cyber-neon-yellow)]">stderr:</strong> Used strictly for logging and errors. Any logging should be disabled by default and controlled by a CLI flag to keep the output clean.
+                  </li>
+                </ul>
+              </div>
+            </CyberPanel>
+
+            <CyberPanel title="Request & Response Details">
+              <div className="p-4 space-y-4 text-[var(--text-dim)]">
+                <p>
+                  <strong className="text-[var(--text-color)]">Flags & Parameters:</strong> Any options passed via <code>--&lt;plugin&gt;_opt</code> are provided to the plugin in the <code>parameter</code> field of the <code>CodeGeneratorRequest</code> as a single comma-separated string. The plugin is responsible for parsing and splitting this string.
+                </p>
+                <p>
+                  <strong className="text-[var(--text-color)]">What to generate:</strong> The compiler passes many files (including dependencies), but the plugin must only generate code for the files listed in the <code>file_to_generate</code> field of the request.
+                </p>
+                <p>
+                  <strong className="text-[var(--text-color)]">Required Features:</strong> In the <code>CodeGeneratorResponse</code>, you are heavily encouraged to explicitly declare your supported features. Setting <code>supported_features</code> along with <code>minimum_edition</code> and <code>maximum_edition</code> is essentially required, as users cannot compile modern Protobuf Editions using your plugin without them.
+                </p>
+              </div>
+            </CyberPanel>
+          </div>
+        </div>
+      ),
     },
     {
       id: "breaking-levels",
@@ -1146,6 +1183,7 @@ $ protoc --plugin=protoc-gen-custom=./my-plugin \\
           desc={topic.desc}
           example={topic.example}
           bgClass="bg-[var(--section-bg-alt)]/20"
+          fullWidthContent={topic.fullWidthContent}
         />
       ))}
 
