@@ -189,7 +189,7 @@ export const Introduction = ({
 
       <div className="space-y-12 mb-16">
         <div className="space-y-6">
-          <p className="text-xl text-[var(--text-color)] font-cyber">
+          <p className="text-xl text-[var(--text-color)] font-mono">
             <ExternalLinkText href="https://protobuf.dev/">
               Protocol Buffers
             </ExternalLinkText>{" "}

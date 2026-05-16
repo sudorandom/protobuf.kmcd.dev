@@ -15,10 +15,10 @@ export const Hero = ({ isAtTop }: { isAtTop: boolean }) => (
       transition={{ duration: 0.8 }}
       className="max-w-4xl z-10 text-center w-full flex flex-col items-center flex-1 justify-center"
     >
-      <h1 className="text-4xl sm:text-6xl md:text-8xl font-cyber font-black mb-6 tracking-tighter leading-none">
+      <h1 className="text-4xl sm:text-6xl md:text-8xl font-cyber font-black mb-6 tracking-tight leading-none">
         PROTOBUF
         <br />
-        <span className="cyber-text-gradient">VISUALIZED</span>
+        <span className="cyber-text-gradient tracking-normal">VISUALIZED</span>
       </h1>
 
       <p className="text-lg sm:text-xl text-[var(--text-dim)] max-w-2xl mx-auto mb-12 leading-relaxed">
