@@ -446,7 +446,7 @@ const TagCalculator = () => {
                 </div>
               ))}
             </div>
-            <div className="flex justify-between px-1 text-[7px] font-mono uppercase tracking-tighter opacity-70">
+            <div className="flex justify-between px-1 text-xs font-mono uppercase tracking-tighter opacity-70">
               <div className="text-[var(--cyber-neon-blue)]">
                 Field Number Bits
               </div>
@@ -473,10 +473,10 @@ const TagCalculator = () => {
               return (
                 <div key={byteIdx} className="flex-1 space-y-2">
                   <div className="flex justify-between items-center">
-                    <span className="text-[9px] font-mono text-[var(--text-dim)] uppercase opacity-60">
+                    <span className="text-xs font-mono text-[var(--text-dim)] uppercase opacity-60">
                       Byte {byteIdx}
                     </span>
-                    <span className="text-[9px] font-mono text-[var(--cyber-neon-green)] font-bold">
+                    <span className="text-xs font-mono text-[var(--cyber-neon-green)] font-bold">
                       0x{byte.toString(16).toUpperCase().padStart(2, "0")}
                     </span>
                   </div>
@@ -490,7 +490,7 @@ const TagCalculator = () => {
                       </div>
                     ))}
                   </div>
-                  <div className="flex justify-between text-[7px] font-mono opacity-50 uppercase tracking-tighter">
+                  <div className="flex justify-between text-xs font-mono opacity-50 uppercase tracking-tighter">
                     <span className="text-[var(--cyber-neon-pink)]">MSB</span>
                     <span>7-Bit Value Chunk</span>
                   </div>

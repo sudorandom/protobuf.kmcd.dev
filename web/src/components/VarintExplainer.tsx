@@ -151,7 +151,7 @@ const VarintExplainer = () => {
                       {binary.slice(1)}
                     </span>
                   </span>
-                  <span className="text-[10px] font-mono text-[var(--cyber-neon-pink)] uppercase">
+                  <span className="text-xs font-mono text-[var(--cyber-neon-pink)] uppercase">
                     0x{byte.toString(16).padStart(2, "0").toUpperCase()}
                   </span>
                 </div>

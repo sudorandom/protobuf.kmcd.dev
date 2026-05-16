@@ -333,20 +333,6 @@ export const SizeComparison = ({
                             className="h-full bg-[var(--cyber-neon-yellow)] opacity-25"
                           />
                         </div>
-                        {gzipStats.json >= stats.jsonSize &&
-                          stats.jsonSize > 0 && (
-                            <motion.div
-                              initial={{ opacity: 0, y: 5 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              className="mt-2 flex items-start gap-2 p-2 bg-[var(--cyber-neon-yellow)]/5 border border-[var(--cyber-neon-yellow)]/20 rounded"
-                            >
-                              <AlertTriangle className="w-3 h-3 text-[var(--cyber-neon-yellow)] mt-0.5 shrink-0" />
-                              <p className="text-[10px] text-[var(--cyber-neon-yellow)]/80 leading-tight">
-                                For extremely small payloads, the gzip header
-                                and metadata can be larger than the raw text!
-                              </p>
-                            </motion.div>
-                          )}
                       </div>
                     )}
                   </div>
