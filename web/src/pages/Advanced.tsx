@@ -101,27 +101,17 @@ export const AdvancedProtobuf = () => {
     {
       id: "imports",
       icon: FileCode,
-      title: "Imports & Well-Known Types",
+      title: "Imports",
       subtitle: "03a_DEPENDENCIES",
       panelTitle: "DEPENDENCY_SCHEMA",
       desc: (
         <div className="space-y-4">
           <p>
             You can use definitions from other .proto files using the{" "}
-            <code>import</code> statement. However, this is where many
-            developers encounter the "Include Path Nightmare."
+            <code>import</code> statement. However, managing these paths
+            correctly is one of the most common points of friction in Protobuf
+            development.
           </p>
-          <div className="space-y-2">
-            <p className="text-sm font-bold uppercase text-[var(--cyber-neon-green)]">
-              Well-Known Types (WKTs)
-            </p>
-            <p>
-              Google provides a set of "Well-Known Types"—standardized schemas
-              for common concepts like timestamps, durations, and dynamic
-              values. These are built into every Protobuf compiler and should be
-              preferred over custom implementations to ensure interoperability.
-            </p>
-          </div>
           <TechnicalNuance title="Import Resolution">
             <p className="leading-relaxed">
               The standard <code>protoc</code> compiler requires you to manually
@@ -138,23 +128,70 @@ export const AdvancedProtobuf = () => {
             </p>
           </TechnicalNuance>
           <p>
+            To avoid these issues, always import using the fully qualified path
+            from the root of your project or your <code>--proto_path</code>.
+          </p>
+          <p>
             <ExternalLinkText href="https://buf.build/">Buf</ExternalLinkText>{" "}
             eliminates this by using a <code>buf.yaml</code> to define your
-            deterministic module root. It handles imports gracefully and allows
-            for remote dependencies (similar to NPM/Cargo).
+            deterministic module root. It handles{" "}
+            <ExternalLinkText href="https://buf.build/docs/reference/protobuf-files-and-packages/">
+              imports and paths
+            </ExternalLinkText>{" "}
+            gracefully and allows for remote dependencies (similar to
+            NPM/Cargo).
           </p>
         </div>
       ),
-      example: `edition = "2023";
+      children: (
+        <div className="space-y-4">
+          <CyberPanel title="COMMON/V1/USER.PROTO" className="h-auto">
+            <div className="p-2">
+              <SyntaxHighlighter
+                language="proto"
+                code={`edition = "2023";
+package common.v1;
 
-// Standard Google imports
-import "google/protobuf/timestamp.proto";
-import "google/protobuf/duration.proto";
+message User {
+  string id = 1;
+  string name = 2;
+}`}
+                wrap={true}
+              />
+            </div>
+          </CyberPanel>
+          <CyberPanel title="AUTH/V1/SERVICE.PROTO" className="h-auto">
+            <div className="p-2">
+              <SyntaxHighlighter
+                language="proto"
+                code={`edition = "2023";
+package auth.v1;
 
-message Event {
-  google.protobuf.Timestamp start_time = 1;
-  google.protobuf.Duration length = 2;
-}`,
+import "common/v1/user.proto";
+
+message LoginResponse {
+  common.v1.User user = 1;
+  string session_token = 2;
+}`}
+                wrap={true}
+              />
+            </div>
+          </CyberPanel>
+          <CyberPanel title="TERMINAL" className="h-auto">
+            <div className="p-2">
+              <SyntaxHighlighter
+                language="bash"
+                code={`# Set the root as the import path (-I .)
+# This forces imports to use fully qualified paths
+protoc -I . \\
+  --go_out=. \\
+  auth/v1/service.proto`}
+                wrap={true}
+              />
+            </div>
+          </CyberPanel>
+        </div>
+      ),
     },
     {
       id: "any",
@@ -165,8 +202,8 @@ message Event {
       desc: (
         <div className="space-y-4">
           <p>
-            Sometimes you need to pass dynamic data where the exact schema isn't
-            known at compile time.
+            The <code>Any</code> type allows you to include messages where the
+            schema isn't known at compile time.
           </p>
           <p>
             <code>google.protobuf.Any</code> embeds an arbitrary serialized
@@ -356,9 +393,9 @@ $ buf breaking --against .git#branch=main
       desc: (
         <div className="space-y-4">
           <p>
-            Linting ensures your schemas are consistent, readable, and follow
-            industry best practices. This is vital in large organizations where
-            hundreds of developers might be defining messages.
+            Linting ensures schemas are consistent and follow industry
+            standards, which is especially important when many developers are
+            contributing to a shared codebase.
           </p>
           <p>
             Tools like{" "}
@@ -393,14 +430,13 @@ $ buf lint
             <ExternalLinkText href="https://protobuf.dev/programming-guides/editions/">
               Protobuf Editions
             </ExternalLinkText>{" "}
-            is the modern evolution of the language, unifying{" "}
-            <code>proto2</code> and <code>proto3</code> into a single, flexible
-            syntax.
+            unifies <code>proto2</code> and <code>proto3</code>, allowing
+            features to be toggled individually rather than through major syntax
+            version upgrades.
           </p>
           <p>
-            Instead of massive, breaking syntax upgrades, Editions allows
-            features to be toggled individually. This allows for smooth
-            migrations and fine-grained control over behaviors:
+            Editions allows for smooth migrations and fine-grained control over
+            behaviors:
           </p>
           <ul className="space-y-2 text-sm">
             <li className="flex gap-2">
@@ -449,11 +485,10 @@ message User {
       desc: (
         <div className="space-y-4">
           <p>
-            Protobuf isn't just for data; it also defines how services
-            communicate. Using the <code>service</code> keyword, you can define
-            RPC (Remote Procedure Call) interfaces that frameworks like{" "}
-            <strong>gRPC</strong> or <strong>Connect</strong> use to generate
-            client and server code.
+            The <code>service</code> keyword is used to define RPC (Remote
+            Procedure Call) interfaces. Frameworks like <strong>gRPC</strong> or{" "}
+            <strong>Connect</strong> use these definitions to generate client
+            and server code.
           </p>
           <p>Services support four types of communication:</p>
           <ul className="space-y-2 text-sm">
@@ -532,8 +567,8 @@ message User {
           </div>
           <p className="text-sm italic text-[var(--text-dim)]">
             Editions 2023 allows you to mix and match behaviors or globally
-            enforce one, finally resolving the "presence" debate that divided
-            Proto2 and Proto3.
+            enforce one, providing a unified approach to field presence that
+            works across versions.
           </p>
         </div>
       ),
@@ -560,8 +595,8 @@ message LegacyProfile {
   const roadmapItems = [
     {
       id: "imports",
-      title: "Well-Known Types",
-      desc: "Standard schemas for Any, JSON, and common structures.",
+      title: "Imports",
+      desc: "Managing dependencies and resolving import paths.",
       color: "green",
     },
     {
@@ -621,10 +656,9 @@ message LegacyProfile {
 
           <div className="mb-16 max-w-4xl space-y-6 mx-auto text-center">
             <p className="text-lg text-[var(--text-dim)] leading-relaxed">
-              Beyond basic messages and fields, Protobuf offers advanced
-              features for complex systems. These tools allow for deep
-              integration, metadata enrichment, and long-term evolutionary
-              safety.
+              Protobuf offers features for managing complex systems, including
+              deep integration, metadata enrichment, and long-term schema
+              evolution.
             </p>
             <div className="pt-8 text-left">
               <RoadmapGrid items={roadmapItems} cols="lg:grid-cols-4" />
@@ -643,6 +677,7 @@ message LegacyProfile {
           panelTitle={topic.panelTitle}
           desc={topic.desc}
           example={topic.example}
+          children={topic.children}
         />
       ))}
     </>
@@ -1222,6 +1257,7 @@ extend google.protobuf.MethodOptions {
           example={topic.example}
           bgClass="bg-[var(--section-bg-alt)]/20"
           fullWidthContent={topic.fullWidthContent}
+          children={topic.children}
         />
       ))}
 
@@ -1234,13 +1270,12 @@ extend google.protobuf.MethodOptions {
         desc={
           <div className="space-y-4">
             <p>
-              Because Protobuf identifies data on the wire using field numbers
-              rather than names, the concept of "deleting" a field requires
-              careful handling. If a schema has ever been used in
-              production—where older clients or databases might still hold data
-              serialized with a specific field number—you cannot simply remove
-              the field and let its number be reused. Instead, you must manage
-              its lifecycle:
+              Protobuf identifies data on the wire using field numbers rather
+              than names, so deleting a field requires careful handling. If a
+              schema has been used in production, older clients or databases may
+              still hold data serialized with those field numbers. You cannot
+              simply remove a field and reuse its number without risking
+              collisions. Instead, you must manage its lifecycle:
             </p>
             <ol className="list-decimal pl-4 space-y-2 text-sm">
               <li>

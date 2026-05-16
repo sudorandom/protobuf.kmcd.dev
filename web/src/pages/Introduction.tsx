@@ -193,24 +193,16 @@ export const Introduction = ({
             <ExternalLinkText href="https://protobuf.dev/">
               Protocol Buffers
             </ExternalLinkText>{" "}
-            (Protobuf) is a schema-driven, binary serialization format.
+            (Protobuf) is a binary serialization format built on schemas.
           </p>
           <p className="text-[var(--text-color)] leading-relaxed">
             Developed by{" "}
             <ExternalLinkText href="https://google.com">
               Google
             </ExternalLinkText>{" "}
-            as a more efficient alternative to text-based formats, it provides a
-            language-neutral and platform-neutral way to structure and exchange
-            data. Think{" "}
-            <ExternalLinkText href="https://developer.mozilla.org/en-US/docs/Web/XML/XML_introduction">
-              XML
-            </ExternalLinkText>{" "}
-            or{" "}
-            <ExternalLinkText href="https://www.json.org/">
-              JSON
-            </ExternalLinkText>
-            , but with a focus on machine performance and strict contracts.
+            for efficient data exchange, it provides a language-neutral way to
+            structure information that is smaller and faster than text-based
+            formats like JSON or XML.
           </p>
         </div>
 

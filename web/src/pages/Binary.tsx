@@ -1255,8 +1255,8 @@ const BinaryPage = ({
           <div className="mb-16 max-w-4xl space-y-6 mx-auto text-center">
             <p className="text-lg text-[var(--text-dim)] leading-relaxed">
               To understand how Protobuf achieves its performance, we must look
-              at the raw bytes. On this page, we will journey through the
-              physical layer of the specification:
+              at the raw bytes. On this page, we explore the physical layer of
+              the specification:
             </p>
 
             <RoadmapGrid items={roadmapItems} />

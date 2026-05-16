@@ -97,8 +97,8 @@ export const Conclusion = () => (
             Congratulations!
           </h2>
           <p className="text-[var(--text-dim)] text-xl leading-relaxed">
-            You've dissected the raw binary stream, mastered the data contracts,
-            and unlocked the true power of a schema-first architecture.
+            From writing your first schema to decoding raw binary and wiring up
+            custom plugins, you are ready to start building with Protobuf.
           </p>
         </div>
 

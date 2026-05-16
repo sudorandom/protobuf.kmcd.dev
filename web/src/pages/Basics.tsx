@@ -75,7 +75,7 @@ export const SchemaDrivenAPIs = () => {
     {
       id: "types",
       title: "Type Reference",
-      desc: "Comprehensive list of scalars and well-known types.",
+      desc: "Reference for all scalar and well-known types.",
     },
   ];
 
@@ -91,10 +91,10 @@ export const SchemaDrivenAPIs = () => {
 
         <div className="mb-16 max-w-4xl space-y-6 mx-auto text-center">
           <p className="text-lg text-[var(--text-dim)] leading-relaxed">
-            The foundation of Protobuf is the Schema. Unlike JSON, which is
-            often undefined and loose, Protobuf requires you to define your data
-            structures upfront. This leads to a Contract-First development
-            workflow that ensures consistency across every part of your system.
+            Protobuf is built on schemas. Unlike JSON, which is flexible and
+            often undefined, Protobuf requires explicit data structures. This
+            contract-first approach ensures consistency across your entire
+            system.
           </p>
           <div className="pt-8 text-left">
             <RoadmapGrid items={roadmapItems} cols="lg:grid-cols-4" />
