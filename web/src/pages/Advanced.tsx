@@ -554,7 +554,7 @@ message LegacyProfile {
     },
   ];
 
-  const roadmapItems: RoadmapItem[] = [
+  const roadmapItems = [
     {
       id: "imports",
       title: "Well-Known Types",
