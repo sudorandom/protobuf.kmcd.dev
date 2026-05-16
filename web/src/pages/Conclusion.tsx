@@ -98,7 +98,11 @@ export const Conclusion = () => (
           </h2>
           <p className="text-[var(--text-dim)] text-xl leading-relaxed">
             From writing your first schema to decoding raw binary and wiring up
-            custom plugins, you are ready to start building with Protobuf.
+            custom plugins, you are ready to start building with{" "}
+            <span className="text-[var(--cyber-neon-blue)] font-cyber font-bold tracking-wider">
+              Protobuf
+            </span>
+            .
           </p>
         </div>
 
