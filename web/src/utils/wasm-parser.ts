@@ -43,15 +43,15 @@ export async function initWasm() {
   wasmPromise = (async () => {
     if (typeof window === "undefined") {
       // Node.js environment (for tests)
-      const fs = await import("node:fs");
-      const path = await import("node:path");
-      const { TextEncoder, TextDecoder } = await import("node:util");
+      const fs = await import(/* @vite-ignore */ "node:fs");
+      const path = await import(/* @vite-ignore */ "node:path");
+      const { TextEncoder, TextDecoder } = await import(/* @vite-ignore */ "node:util");
 
       global.TextEncoder = TextEncoder;
       // @ts-expect-error global.TextDecoder is not defined in all environments
       global.TextDecoder = TextDecoder;
 
-      const crypto = await import("node:crypto");
+      const crypto = await import(/* @vite-ignore */ "node:crypto");
       Object.defineProperty(global, "crypto", {
         value: crypto.webcrypto,
         configurable: true,
@@ -67,7 +67,7 @@ export async function initWasm() {
       const wasmExecCode = fs.readFileSync(wasmExecPath, "utf8");
 
       // Execute wasm_exec.js in global context
-      const vm = await import("node:vm");
+      const vm = await import(/* @vite-ignore */ "node:vm");
       const context = {
         global,
         process,
@@ -96,7 +96,7 @@ export async function initWasm() {
         wasmBuffer[0] === 0x1f &&
         wasmBuffer[1] === 0x8b
       ) {
-        const zlib = await import("node:zlib");
+        const zlib = await import(/* @vite-ignore */ "node:zlib");
         wasmBuffer = zlib.gunzipSync(wasmBuffer);
       }
 

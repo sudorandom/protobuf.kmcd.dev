@@ -1,6 +1,7 @@
-import { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, Suspense } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Navigate, Route, Routes, useLocation, Link } from "react-router-dom";
+import { CyberSpinner } from "./components/CyberSpinner";
 import {
   Cpu,
   ChevronRight,
@@ -20,13 +21,13 @@ import { INITIAL_PROTO } from "./utils/constants";
 
 // Pages
 import Hero from "./pages/Hero";
-import Introduction from "./pages/Introduction";
-import Basics from "./pages/Basics";
-import Advanced from "./pages/Advanced";
-import Efficiency from "./pages/Efficiency";
-import Binary from "./pages/Binary";
-import Ecosystem from "./pages/Ecosystem";
-import Conclusion from "./pages/Conclusion";
+const Introduction = React.lazy(() => import("./pages/Introduction"));
+const Basics = React.lazy(() => import("./pages/Basics"));
+const Advanced = React.lazy(() => import("./pages/Advanced"));
+const Efficiency = React.lazy(() => import("./pages/Efficiency"));
+const Binary = React.lazy(() => import("./pages/Binary"));
+const Ecosystem = React.lazy(() => import("./pages/Ecosystem"));
+const Conclusion = React.lazy(() => import("./pages/Conclusion"));
 
 interface NavItemDef {
   id: string;
@@ -376,40 +377,42 @@ function App() {
       </AnimatePresence>
 
       <main id="main-content">
-        <Routes>
-          <Route path="/" element={<Hero isAtTop={isAtTop} />} />
-          <Route
-            path="/intro"
-            element={<Introduction messageSchema={messageSchema} fds={fds} />}
-          />
-          <Route path="/basics" element={<Basics />} />
-          <Route path="/advanced" element={<Advanced />} />
-          <Route
-            path="/efficiency"
-            element={
-              <Efficiency
-                messageSchema={messageSchema}
-                fileDescriptorSet={fds}
-                protoSource={protoSource}
-                setProtoSource={setProtoSource}
-              />
-            }
-          />
-          <Route
-            path="/binary"
-            element={
-              <Binary
-                messageSchema={messageSchema}
-                fds={fds}
-                protoSource={protoSource}
-                setProtoSource={setProtoSource}
-              />
-            }
-          />
-          <Route path="/ecosystem" element={<Ecosystem />} />
-          <Route path="/conclusion" element={<Conclusion />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+        <Suspense fallback={<CyberSpinner />}>
+          <Routes>
+            <Route path="/" element={<Hero isAtTop={isAtTop} />} />
+            <Route
+              path="/intro"
+              element={<Introduction messageSchema={messageSchema} fds={fds} />}
+            />
+            <Route path="/basics" element={<Basics />} />
+            <Route path="/advanced" element={<Advanced />} />
+            <Route
+              path="/efficiency"
+              element={
+                <Efficiency
+                  messageSchema={messageSchema}
+                  fileDescriptorSet={fds}
+                  protoSource={protoSource}
+                  setProtoSource={setProtoSource}
+                />
+              }
+            />
+            <Route
+              path="/binary"
+              element={
+                <Binary
+                  messageSchema={messageSchema}
+                  fds={fds}
+                  protoSource={protoSource}
+                  setProtoSource={setProtoSource}
+                />
+              }
+            />
+            <Route path="/ecosystem" element={<Ecosystem />} />
+            <Route path="/conclusion" element={<Conclusion />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </Suspense>
         {location.pathname !== "/" && (
           <div className="max-w-7xl mx-auto px-4 sm:px-8 py-12 flex justify-between items-center border-t border-[var(--border-light)]">
             {prevNav ? (
