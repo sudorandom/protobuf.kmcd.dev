@@ -464,9 +464,39 @@ function App() {
         )}
       </main>
 
-      {location.pathname !== "/" && (
-        <footer className="py-12 border-t border-[var(--border-light)] px-4 sm:px-8 flex flex-col items-center gap-4 bg-[var(--bg-color)]">
-          <div className="flex gap-8">
+      <footer className="py-12 border-t border-[var(--border-light)] px-4 sm:px-8 flex flex-col items-center gap-4 bg-[var(--bg-color)]">
+        <div className="flex gap-8">
+          <a
+            href="https://kmcd.dev"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[var(--text-dim)] hover:text-[var(--cyber-neon-blue)] transition-colors"
+            aria-label="KMCD.DEV"
+          >
+            <Fingerprint className="w-5 h-5" />
+          </a>
+          <a
+            href="https://github.com/sudorandom/protobuf.kmcd.dev"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[var(--text-dim)] hover:text-[var(--cyber-neon-pink)] transition-colors"
+            aria-label="GitHub Repository"
+          >
+            <Code2 className="w-5 h-5" />
+          </a>
+          <a
+            href="https://protobuf.dev/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[var(--text-dim)] hover:text-[var(--cyber-neon-green)] transition-colors"
+            aria-label="Protobuf Documentation"
+          >
+            <Database className="w-5 h-5" />
+          </a>
+        </div>
+        <p className="text-xs font-mono text-[var(--text-dim)] uppercase tracking-[0.2em] flex flex-wrap justify-center gap-x-4 gap-y-2">
+          <span>
+            Created by{" "}
             <a
               href="https://kmcd.dev"
               target="_blank"
@@ -474,32 +504,23 @@ function App() {
               className="text-[var(--text-dim)] hover:text-[var(--cyber-neon-blue)] transition-colors"
               aria-label="KMCD.DEV"
             >
-              <Fingerprint className="w-5 h-5" />
+              Kevin McDonald
             </a>
+          </span>
+          <span className="hidden sm:inline opacity-30">|</span>
+          <span>
+            Hosted by{" "}
             <a
-              href="https://github.com/sudorandom/protobuf.kmcd.dev"
+              href="https://pages.github.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[var(--text-dim)] hover:text-[var(--cyber-neon-pink)] transition-colors"
-              aria-label="GitHub Repository"
+              className="text-[var(--text-dim)] hover:text-[var(--cyber-neon-blue)] transition-colors"
             >
-              <Code2 className="w-5 h-5" />
+              GitHub Pages
             </a>
-            <a
-              href="https://protobuf.dev/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[var(--text-dim)] hover:text-[var(--cyber-neon-green)] transition-colors"
-              aria-label="Protobuf Documentation"
-            >
-              <Database className="w-5 h-5" />
-            </a>
-          </div>
-          <p className="text-xs font-mono text-[var(--text-dim)] uppercase tracking-[0.2em]">
-            Created by KMCD.DEV
-          </p>
-        </footer>
-      )}
+          </span>
+        </p>
+      </footer>
     </div>
   );
 }
