@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { trackEvent } from "../utils/analytics";
 import { ArrowRight, Info } from "lucide-react";
 import { CyberPanel } from "./shared/Common";
 
@@ -86,6 +87,9 @@ const VarintExplainer: React.FC = () => {
             onChange={(e) => {
               setInputValue(e.target.value || "0");
             }}
+            onBlur={() =>
+              trackEvent("varint_explainer_interact", { value: inputValue })
+            }
             className="bg-[var(--section-bg-dark)] border border-[var(--cyber-neon-blue)]/30 rounded p-4 font-cyber text-2xl text-[var(--cyber-neon-blue)] focus:outline-none focus:border-[var(--cyber-neon-blue)] w-full"
           />
         </div>

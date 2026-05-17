@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from "react";
+import { trackEvent } from "../utils/analytics";
 import { motion } from "framer-motion";
 import {
   Binary,
@@ -984,7 +985,10 @@ export const BinaryMatrix = ({
           </div>
 
           <button
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => {
+              trackEvent("open_schema_editor");
+              setIsModalOpen(true);
+            }}
             className="text-sm font-cyber font-bold text-[var(--cyber-neon-blue)] hover:text-[var(--cyber-neon-blue)]/80 transition-colors uppercase flex items-center gap-1 group"
             aria-label="EDIT SCHEMA - Edit Protobuf Schema"
           >

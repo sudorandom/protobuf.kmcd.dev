@@ -1,4 +1,5 @@
 import { useState, useMemo, useCallback, useEffect } from "react";
+import { trackEvent } from "../utils/analytics";
 import {
   HelpCircle,
   Settings,
@@ -896,14 +897,24 @@ message DescriptorProto {
                     {localFds && (
                       <>
                         <button
-                          onClick={downloadBinary}
+                          onClick={() => {
+                            trackEvent("advanced_page_download", {
+                              type: "binary",
+                            });
+                            downloadBinary();
+                          }}
                           className="px-2 py-0.5 text-sm font-mono rounded border border-[var(--cyber-neon-blue)]/50 text-[var(--cyber-neon-blue)] bg-[var(--cyber-neon-blue)]/10 hover:bg-[var(--cyber-neon-blue)]/20 transition-all uppercase flex items-center gap-1"
                           aria-label="SAVE_PB - Save as binary protocol buffer"
                         >
                           <Download className="w-3 h-3" /> SAVE_PB
                         </button>
                         <button
-                          onClick={downloadJson}
+                          onClick={() => {
+                            trackEvent("advanced_page_download", {
+                              type: "json",
+                            });
+                            downloadJson();
+                          }}
                           className="px-2 py-0.5 text-sm font-mono rounded border border-[var(--cyber-neon-pink)]/50 text-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/10 hover:bg-[var(--cyber-neon-pink)]/20 transition-all uppercase flex items-center gap-1"
                           aria-label="SAVE_JSON - Save as JSON"
                         >
@@ -1627,7 +1638,10 @@ export const ValidationLab = () => {
                     Test Data (JSON)
                   </h3>
                   <button
-                    onClick={() => setIsModalOpen(true)}
+                    onClick={() => {
+                      trackEvent("open_schema_editor");
+                      setIsModalOpen(true);
+                    }}
                     className="text-sm font-cyber font-bold text-[var(--cyber-neon-blue)] hover:text-[var(--cyber-neon-blue)]/80 transition-colors uppercase flex items-center gap-1 group"
                     aria-label="EDIT SCHEMA - Open validation schema editor"
                   >
@@ -1645,7 +1659,12 @@ export const ValidationLab = () => {
                 ).map((key) => (
                   <button
                     key={key}
-                    onClick={() => handleExampleChange(key)}
+                    onClick={() => {
+                      trackEvent("advanced_page_example_change", {
+                        example: key,
+                      });
+                      handleExampleChange(key);
+                    }}
                     className={`px-3 py-1 text-sm font-mono border transition-all rounded ${
                       activeExample === key
                         ? "bg-[var(--cyber-neon-blue)]/20 border-[var(--cyber-neon-blue)] text-[var(--cyber-neon-blue)]"
@@ -1658,6 +1677,7 @@ export const ValidationLab = () => {
                 ))}
                 <button
                   onClick={async () => {
+                    trackEvent("advanced_page_generate_fake");
                     if (!rootMessageName || !localFds) return;
                     try {
                       const fakeJson = await generateFake(

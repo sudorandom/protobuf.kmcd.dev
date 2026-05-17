@@ -8,6 +8,7 @@ import { convertToProtoscope, generateFake } from "../utils/wasm-parser";
 import { createDynamicRegistry } from "../utils/dynamic-registry";
 import { Modal } from "./shared/Modal";
 import { INITIAL_PROTO } from "../utils/initial-proto";
+import { trackEvent } from "../utils/analytics";
 
 interface ProtoscopeLabProps {
   protoSource: string;
@@ -125,6 +126,7 @@ export const ProtoscopeLab: React.FC<ProtoscopeLabProps> = ({
   const handleGenerateFake = async () => {
     if (!localFds || !rootMessageName) return;
     setIsGenerating(true);
+    trackEvent("generate_fake_data_clicked", { messageType: rootMessageName });
     try {
       const fakeData = await generateFake(rootMessageName, localFds);
       setJsonInput(fakeData);
@@ -173,7 +175,10 @@ export const ProtoscopeLab: React.FC<ProtoscopeLabProps> = ({
                 Payload Input
               </h3>
               <button
-                onClick={() => setIsModalOpen(true)}
+                onClick={() => {
+                  trackEvent("open_schema_editor");
+                  setIsModalOpen(true);
+                }}
                 className="text-sm font-cyber font-bold text-[var(--cyber-neon-blue)] hover:text-[var(--cyber-neon-blue)]/80 transition-colors uppercase flex items-center gap-1 group"
                 aria-label="Open Protobuf schema editor"
               >
@@ -281,6 +286,7 @@ export const ProtoscopeLab: React.FC<ProtoscopeLabProps> = ({
             setLocalFds(result.fds);
           }}
           onSave={async (s, result) => {
+            trackEvent("schema_editor_saved", { messageType: rootMessageName });
             setProtoSource(s);
             if (rootMessageName && result) {
               try {

@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { trackEvent } from "../utils/analytics";
 import { Link } from "react-router-dom";
 import {
   FileCode,
@@ -271,7 +272,12 @@ export const Introduction = ({
                     .map((face) => (
                       <button
                         key={face.id}
-                        onClick={() => setActiveFace(face.id)}
+                        onClick={() => {
+                          trackEvent("introduction_page_face_click", {
+                            face: face.id,
+                          });
+                          setActiveFace(face.id);
+                        }}
                         className={`w-full flex items-center gap-4 p-4 rounded-lg border transition-all text-left group ${
                           activeFace === face.id
                             ? "bg-[var(--cyber-neon-blue)]/10 border-[var(--cyber-neon-blue)] text-[var(--cyber-neon-blue)]"
@@ -298,7 +304,12 @@ export const Introduction = ({
                     .map((face) => (
                       <button
                         key={face.id}
-                        onClick={() => setActiveFace(face.id)}
+                        onClick={() => {
+                          trackEvent("introduction_page_face_click", {
+                            face: face.id,
+                          });
+                          setActiveFace(face.id);
+                        }}
                         className={`w-full flex items-center gap-4 p-4 rounded-lg border transition-all text-left group ${
                           activeFace === face.id
                             ? "bg-[var(--cyber-neon-blue)]/10 border-[var(--cyber-neon-blue)] text-[var(--cyber-neon-blue)]"

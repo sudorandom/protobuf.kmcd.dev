@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect, useCallback } from "react";
+import { trackEvent } from "../utils/analytics";
 import { motion } from "framer-motion";
 import {
   Zap,
@@ -250,7 +251,10 @@ export const SizeComparison = ({
                   Payload Input
                 </h2>
                 <button
-                  onClick={() => setIsModalOpen(true)}
+                  onClick={() => {
+                    trackEvent("open_schema_editor");
+                    setIsModalOpen(true);
+                  }}
                   className="text-sm font-cyber font-bold text-[var(--cyber-neon-blue)] hover:text-[var(--cyber-neon-blue)]/80 transition-colors uppercase flex items-center gap-1 group"
                   aria-label="EDIT SCHEMA - Edit Protobuf Schema"
                 >
@@ -266,7 +270,12 @@ export const SizeComparison = ({
               ).map((key) => (
                 <button
                   key={key}
-                  onClick={() => handleExampleChange(key)}
+                  onClick={() => {
+                    trackEvent("efficiency_page_example_change", {
+                      example: key,
+                    });
+                    handleExampleChange(key);
+                  }}
                   className={`px-3 py-1 text-sm font-mono border transition-all rounded ${
                     activeExample === key
                       ? "bg-[var(--cyber-neon-blue)]/20 border-[var(--cyber-neon-blue)] text-[var(--cyber-neon-blue)]"
@@ -278,7 +287,10 @@ export const SizeComparison = ({
                 </button>
               ))}
               <button
-                onClick={generateFauxData}
+                onClick={() => {
+                  trackEvent("efficiency_page_generate_fake");
+                  generateFauxData();
+                }}
                 disabled={!localMessageSchema || isGenerating}
                 className="px-2 py-1 text-sm font-cyber font-bold border border-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/10 text-[var(--cyber-neon-pink)] hover:bg-[var(--cyber-neon-pink)]/20 transition-all flex items-center gap-1.5 disabled:opacity-30 disabled:cursor-not-allowed rounded uppercase tracking-wider"
                 aria-label="RANDOMIZE - Generate Random Data"
