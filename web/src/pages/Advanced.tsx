@@ -1878,11 +1878,11 @@ const LimitsAndConstraints = () => (
               </h3>
               <p className="text-[var(--text-dim)] leading-relaxed text-sm">
                 The absolute maximum size of a serialized protobuf message is{" "}
-                <strong className="text-[var(--cyber-neon-pink)]">2 GiB</strong>.
-                This is a hard architectural limit because the protocol relies on
-                32-bit signed integers to encode byte lengths and offsets. If a
-                payload exceeds this size, standard parsers will throw an overflow
-                error and refuse to read it.
+                <strong className="text-[var(--cyber-neon-pink)]">2 GiB</strong>
+                . This is a hard architectural limit because the protocol relies
+                on 32-bit signed integers to encode byte lengths and offsets. If
+                a payload exceeds this size, standard parsers will throw an
+                overflow error and refuse to read it.
               </p>
             </div>
 
@@ -1917,12 +1917,14 @@ const LimitsAndConstraints = () => (
                   Full Graph Parsing
                 </h3>
                 <p className="text-[var(--text-dim)] leading-relaxed text-sm">
-                  Protobuf is fundamentally designed around the expectation that you
-                  will load the <strong>entire message into memory at once</strong>.
+                  Protobuf is fundamentally designed around the expectation that
+                  you will load the{" "}
+                  <strong>entire message into memory at once</strong>.
                 </p>
                 <p className="text-[var(--text-dim)] leading-relaxed text-sm border-l-2 border-[var(--cyber-neon-yellow)] pl-4">
-                  When you deserialize a payload, the parser reads the entire binary
-                  stream and instantiates a <strong>complete object graph</strong>.
+                  When you deserialize a payload, the parser reads the entire
+                  binary stream and instantiates a{" "}
+                  <strong>complete object graph</strong>.
                 </p>
               </div>
 
@@ -1934,11 +1936,12 @@ const LimitsAndConstraints = () => (
                       In-Memory Expansion
                     </p>
                     <p className="text-sm text-[var(--text-dim)] leading-relaxed">
-                      As with most serialization formats, the resulting in-memory
-                      representation is significantly larger than the serialized
-                      binary. Pointers, object overhead, and data structure padding
-                      can cause memory usage to be <strong>several times</strong> the
-                      size of the original payload.
+                      As with most serialization formats, the resulting
+                      in-memory representation is significantly larger than the
+                      serialized binary. Pointers, object overhead, and data
+                      structure padding can cause memory usage to be{" "}
+                      <strong>several times</strong> the size of the original
+                      payload.
                     </p>
                   </div>
                 </div>

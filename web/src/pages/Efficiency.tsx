@@ -207,11 +207,18 @@ export const SizeComparison = ({
           Efficiency
         </SectionTitle>
 
-        <div className="mb-16 max-w-4xl space-y-6 mx-auto text-center">
-          <p className="text-lg text-[var(--text-dim)] leading-relaxed">
-            How much space you save with Protobuf depends on your data. Large
-            strings will always take up space, but numeric data and sparse
-            messages see the biggest reductions compared to JSON.
+        <div className="mb-16 max-w-4xl space-y-6 mx-auto text-center text-lg text-[var(--text-dim)] leading-relaxed">
+          <p>
+            Protobuf is designed to be the high-performance backbone of
+            distributed systems. It provides a dense binary format optimized for
+            minimal wire size and lightning-fast parsing, while maintaining the
+            flexibility to evolve schemas over time without breaking existing
+            clients.
+          </p>
+          <p>
+            How much space you actually save depends on your data. While large
+            strings will always take up space, numeric data and sparse messages
+            see the biggest reductions compared to JSON.
           </p>
         </div>
 
