@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Zap, Terminal, Database, Settings2, ExternalLink } from "lucide-react";
-import { fromJson, toBinary, type DescMessage } from "@bufbuild/protobuf";
+import { fromJson, toBinary, type FileRegistry } from "@bufbuild/protobuf";
 import { CyberPanel, TechnicalNuance } from "./shared/Common";
 import { JsonEditor } from "./shared/JsonEditor";
 import { InteractiveSchemaEditor } from "./shared/InteractiveSchemaEditor";
 import { convertToProtoscope, generateFake } from "../utils/wasm-parser";
+import { createDynamicRegistry } from "../utils/dynamic-registry";
 import { Modal } from "./shared/Modal";
 import { INITIAL_PROTO } from "../utils/initial-proto";
 
 interface ProtoscopeLabProps {
-  messageSchema: DescMessage | null;
-  fds: Uint8Array | null;
   protoSource: string;
   setProtoSource: (s: string) => void;
 }
@@ -31,8 +30,6 @@ const DEFAULT_EXAMPLE = {
 };
 
 export const ProtoscopeLab: React.FC<ProtoscopeLabProps> = ({
-  messageSchema,
-  fds,
   protoSource,
   setProtoSource,
 }) => {
@@ -44,18 +41,74 @@ export const ProtoscopeLab: React.FC<ProtoscopeLabProps> = ({
   const [isGenerating, setIsGenerating] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // --- Local schema state ---
+  const [localRegistry, setLocalRegistry] = useState<FileRegistry | null>(null);
+  const [localFds, setLocalFds] = useState<Uint8Array | null>(null);
+  const [rootMessageName, setRootMessageName] = useState<string | null>(null);
+
+  useEffect(() => {
+    let active = true;
+    const timer = setTimeout(async () => {
+      try {
+        const result = await createDynamicRegistry(protoSource);
+        if (active) {
+          if (result.kind === "success") {
+            setLocalRegistry(result.registry);
+            setLocalFds(result.fullFileDescriptorSet);
+
+            const messages = result.messageTypes;
+            let newSelection: string | null = null;
+            if (messages.length > 0) {
+              if (rootMessageName && messages.includes(rootMessageName)) {
+                newSelection = rootMessageName;
+              } else if (messages.includes("demo.v1.User")) {
+                newSelection = "demo.v1.User";
+              } else {
+                newSelection = messages[0];
+              }
+            }
+            setRootMessageName(newSelection);
+          } else {
+            setLocalRegistry(null);
+            setLocalFds(null);
+            setRootMessageName(null);
+          }
+        }
+      } catch (e) {
+        console.error("Protoscope Lab schema compilation failed:", e);
+        if (active) {
+          setLocalRegistry(null);
+          setLocalFds(null);
+          setRootMessageName(null);
+        }
+      }
+    }, 500);
+
+    return () => {
+      active = false;
+      clearTimeout(timer);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [protoSource]);
+
+  const localMessageSchema = useMemo(() => {
+    if (!localRegistry || !rootMessageName) return null;
+    return localRegistry.getMessage(rootMessageName);
+  }, [localRegistry, rootMessageName]);
+  // ---
+
   useEffect(() => {
     const updateProtoscope = async () => {
-      if (!messageSchema) {
+      if (!localMessageSchema) {
         setProtoscopeOutput("");
         return;
       }
       try {
         const obj = JSON.parse(jsonInput);
-        const user = fromJson(messageSchema, obj, {
+        const msg = fromJson(localMessageSchema, obj, {
           ignoreUnknownFields: true,
         });
-        const binary = toBinary(messageSchema, user);
+        const binary = toBinary(localMessageSchema, msg);
         const output = await convertToProtoscope(binary);
         setProtoscopeOutput(output);
         setError(null);
@@ -67,13 +120,13 @@ export const ProtoscopeLab: React.FC<ProtoscopeLabProps> = ({
 
     const timer = setTimeout(updateProtoscope, 300);
     return () => clearTimeout(timer);
-  }, [jsonInput, messageSchema]);
+  }, [jsonInput, localMessageSchema]);
 
   const handleGenerateFake = async () => {
-    if (!fds || !messageSchema) return;
+    if (!localFds || !rootMessageName) return;
     setIsGenerating(true);
     try {
-      const fakeData = await generateFake(messageSchema.typeName, fds);
+      const fakeData = await generateFake(rootMessageName, localFds);
       setJsonInput(fakeData);
     } catch (e) {
       console.error(e);
@@ -133,7 +186,7 @@ export const ProtoscopeLab: React.FC<ProtoscopeLabProps> = ({
           <div className="flex flex-wrap gap-2">
             <button
               onClick={handleGenerateFake}
-              disabled={isGenerating || !fds}
+              disabled={isGenerating || !localFds}
               className="px-2 py-1 text-sm font-cyber font-bold border border-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/10 text-[var(--cyber-neon-pink)] hover:bg-[var(--cyber-neon-pink)]/20 transition-all flex items-center gap-1.5 disabled:opacity-30 disabled:cursor-not-allowed rounded uppercase tracking-wider"
               aria-label="Generate random JSON data from schema"
             >
@@ -221,22 +274,23 @@ export const ProtoscopeLab: React.FC<ProtoscopeLabProps> = ({
         <InteractiveSchemaEditor
           initialValue={protoSource}
           defaultValue={INITIAL_PROTO}
+          showRootMessageSelector={true}
+          onRootMessageChange={setRootMessageName}
+          onCompileSuccess={(result) => {
+            setLocalRegistry(result.registry);
+            setLocalFds(result.fds);
+          }}
           onSave={async (s, result) => {
             setProtoSource(s);
-            if (result) {
-              const schema =
-                result.registry.getMessage("demo.v1.User") ||
-                result.registry.getFile("input.proto")?.messages[0];
-              if (schema) {
-                try {
-                  const fakeData = await generateFake(
-                    schema.typeName,
-                    result.fds,
-                  );
-                  setJsonInput(fakeData);
-                } catch (e) {
-                  console.error("Failed to generate faux data after save:", e);
-                }
+            if (rootMessageName && result) {
+              try {
+                const fakeData = await generateFake(
+                  rootMessageName,
+                  result.fds,
+                );
+                setJsonInput(fakeData);
+              } catch (e) {
+                console.error("Failed to generate faux data after save:", e);
               }
             }
             setIsModalOpen(false);

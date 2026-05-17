@@ -819,7 +819,7 @@ export const DescriptorsAndReflection = () => {
             </div>
             <div className="flex flex-col h-full">
               <CyberPanel title="DESCRIPTOR.PROTO (SNIPPET)" className="h-full">
-                <div className="p-4 overflow-auto h-full">
+                <div className="p-4 overflow-auto h-full bg-[var(--overlay-bg)] rounded-lg border border-[var(--border-light)]">
                   <SyntaxHighlighter
                     language="proto"
                     code={`// The schema that describes a schema
@@ -1475,6 +1475,7 @@ export const ValidationLab = () => {
   const [localProtoSource, setLocalProtoSource] = useState(VALIDATION_PROTO);
   const [localRegistry, setLocalRegistry] = useState<FileRegistry | null>(null);
   const [localFds, setLocalFds] = useState<Uint8Array | null>(null);
+  const [rootMessageName, setRootMessageName] = useState<string | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -1484,16 +1485,32 @@ export const ValidationLab = () => {
         if (active) {
           if (result.kind === "success") {
             setLocalRegistry(result.registry);
-            setLocalFds(result.fileDescriptorSet);
+            setLocalFds(result.fullFileDescriptorSet);
+
+            const messages = result.messageTypes;
+
+            let newSelection: string | null = null;
+            if (messages.length > 0) {
+              if (rootMessageName && messages.includes(rootMessageName)) {
+                newSelection = rootMessageName;
+              } else if (messages.includes("demo.v1.User")) {
+                newSelection = "demo.v1.User";
+              } else {
+                newSelection = messages[0];
+              }
+            }
+            setRootMessageName(newSelection);
           } else {
             setLocalRegistry(null);
             setLocalFds(null);
+            setRootMessageName(null);
           }
         }
       } catch {
         if (active) {
           setLocalRegistry(null);
           setLocalFds(null);
+          setRootMessageName(null);
         }
       }
     }, 500);
@@ -1502,16 +1519,14 @@ export const ValidationLab = () => {
       active = false;
       clearTimeout(timer);
     };
+    // We intentionally only want this to run when the schema source changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localProtoSource]);
 
   const localMessageSchema = useMemo(() => {
-    if (!localRegistry) return null;
-    return (
-      localRegistry.getMessage("demo.v1.User") ||
-      localRegistry.getFile("input.proto")?.messages[0] ||
-      null
-    );
-  }, [localRegistry]);
+    if (!localRegistry || !rootMessageName) return null;
+    return localRegistry.getMessage(rootMessageName) || null;
+  }, [localRegistry, rootMessageName]);
 
   const [activeExample, setActiveExample] = useState<
     keyof typeof VALIDATION_EXAMPLES | null
@@ -1643,10 +1658,10 @@ export const ValidationLab = () => {
                 ))}
                 <button
                   onClick={async () => {
-                    if (!localMessageSchema || !localFds) return;
+                    if (!rootMessageName || !localFds) return;
                     try {
                       const fakeJson = await generateFake(
-                        localMessageSchema.typeName,
+                        rootMessageName,
                         localFds,
                       );
                       setJsonInput(fakeJson);
@@ -1655,7 +1670,7 @@ export const ValidationLab = () => {
                       console.error("Failed to generate faux data:", e);
                     }
                   }}
-                  disabled={!localMessageSchema || !localFds}
+                  disabled={!rootMessageName || !localFds}
                   className="px-2 py-1 text-sm font-cyber font-bold border border-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/10 text-[var(--cyber-neon-pink)] hover:bg-[var(--cyber-neon-pink)]/20 transition-all flex items-center gap-1.5 disabled:opacity-30 disabled:cursor-not-allowed rounded uppercase tracking-wider"
                   aria-label="Generate random JSON data for validation"
                 >
@@ -1669,15 +1684,6 @@ export const ValidationLab = () => {
                 className="flex-1 min-h-[400px] flex flex-col"
               >
                 <div className="flex-1 relative">
-                  {validationResults.error &&
-                    validationResults.error !== "NO_SCHEMA" && (
-                      <div
-                        className="absolute top-0 left-0 right-0 p-2 bg-[var(--text-error)]/10 border-b border-[var(--text-error)]/30 text-[var(--text-error)] text-sm font-mono z-30 break-words line-clamp-2"
-                        title={validationResults.error}
-                      >
-                        {validationResults.error}
-                      </div>
-                    )}
                   <JsonEditor
                     value={jsonInput}
                     onChange={setJsonInput}
@@ -1701,7 +1707,8 @@ export const ValidationLab = () => {
                 className="flex-1 min-h-[400px] flex flex-col"
               >
                 <div className="flex-1 py-4 px-2 overflow-y-auto space-y-4 custom-scrollbar">
-                  {validationResults.error ? (
+                  {validationResults.error &&
+                  validationResults.error !== "NO_SCHEMA" ? (
                     <div className="p-4 bg-[var(--text-error)]/10 border border-[var(--text-error)]/30 text-[var(--text-error)] text-sm font-mono">
                       SCHEMA_MISMATCH: {validationResults.error}
                     </div>
@@ -1768,26 +1775,23 @@ export const ValidationLab = () => {
               <InteractiveSchemaEditor
                 initialValue={localProtoSource}
                 defaultValue={VALIDATION_PROTO}
+                showRootMessageSelector={true}
+                onRootMessageChange={setRootMessageName}
                 onSave={async (s, result) => {
                   setLocalProtoSource(s);
-                  if (result) {
-                    const schema =
-                      result.registry.getMessage("demo.v1.User") ||
-                      result.registry.getFile("input.proto")?.messages[0];
-                    if (schema) {
-                      try {
-                        const fakeJson = await generateFake(
-                          schema.typeName,
-                          result.fds,
-                        );
-                        setJsonInput(fakeJson);
-                        setActiveExample(null);
-                      } catch (e) {
-                        console.error(
-                          "Failed to generate faux data after save:",
-                          e,
-                        );
-                      }
+                  if (result && rootMessageName) {
+                    try {
+                      const fakeJson = await generateFake(
+                        rootMessageName,
+                        result.fds,
+                      );
+                      setJsonInput(fakeJson);
+                      setActiveExample(null);
+                    } catch (e) {
+                      console.error(
+                        "Failed to generate faux data after save:",
+                        e,
+                      );
                     }
                   }
                   setIsModalOpen(false);

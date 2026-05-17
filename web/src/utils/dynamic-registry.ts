@@ -48,8 +48,9 @@ export type RegistryResult =
   | {
       kind: "success";
       registry: FileRegistry;
-      fileDescriptorSet: Uint8Array;
+      fullFileDescriptorSet: Uint8Array;
       userFileDescriptorSet: Uint8Array;
+      messageTypes: string[];
     }
   | { kind: "error"; errors: CompilationError[] };
 
@@ -92,10 +93,10 @@ export async function createDynamicRegistry(
 
   // Create a full binary FileDescriptorSet including standard files.
   // This is needed for WASM functions like generateFakeData which need to resolve imports.
-  const fullFds = create(FileDescriptorSetSchema, {
+  const fullFdsObj = create(FileDescriptorSetSchema, {
     file: allFiles,
   });
-  const fileDescriptorSet = toBinary(FileDescriptorSetSchema, fullFds);
+  const fullFileDescriptorSet = toBinary(FileDescriptorSetSchema, fullFdsObj);
 
   const file = registry.getFile("input.proto");
   if (!file) {
@@ -123,10 +124,20 @@ export async function createDynamicRegistry(
   const targetPackage = file.proto.package;
 
   // Filter to only include the files that were actually in the input AND match the target package
-  const userFds = create(FileDescriptorSetSchema, {
-    file: fds.file.filter((f) => f.package === targetPackage),
+  const userFiles = fds.file.filter((f) => f.package === targetPackage);
+  const userFdsObj = create(FileDescriptorSetSchema, {
+    file: userFiles,
   });
-  const userFileDescriptorSet = toBinary(FileDescriptorSetSchema, userFds);
+  const userFileDescriptorSet = toBinary(FileDescriptorSetSchema, userFdsObj);
+
+  const messageTypes = userFiles
+    .flatMap((f) =>
+      f.messageType.map((m) => {
+        const pkg = f.package ? `${f.package}.` : "";
+        return `${pkg}${m.name}`;
+      }),
+    )
+    .sort();
 
   console.log(
     "createDynamicRegistry: Registry created successfully with package:",
@@ -135,7 +146,8 @@ export async function createDynamicRegistry(
   return {
     kind: "success",
     registry,
-    fileDescriptorSet,
+    fullFileDescriptorSet,
     userFileDescriptorSet,
+    messageTypes,
   };
 }

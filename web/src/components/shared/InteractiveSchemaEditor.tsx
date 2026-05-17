@@ -27,6 +27,8 @@ interface InteractiveSchemaEditorProps {
     registry: FileRegistry;
   }) => void;
   title?: string;
+  showRootMessageSelector?: boolean;
+  onRootMessageChange?: (messageName: string | null) => void;
 }
 
 export const InteractiveSchemaEditor: React.FC<
@@ -39,6 +41,8 @@ export const InteractiveSchemaEditor: React.FC<
   onCancel,
   onCompileSuccess,
   title,
+  showRootMessageSelector = false,
+  onRootMessageChange,
 }) => {
   const [localValue, setLocalValue] = useState(initialValue ?? "");
   const [prevInitialValue, setPrevInitialValue] = useState(initialValue);
@@ -50,11 +54,18 @@ export const InteractiveSchemaEditor: React.FC<
     registry: FileRegistry;
   } | null>(null);
 
+  const [availableMessages, setAvailableMessages] = useState<string[]>([]);
+  const [selectedMessage, setSelectedMessage] = useState<string | null>(null);
+
   // Sync internal state if initialValue changes externally
   if (initialValue !== prevInitialValue) {
     setLocalValue(initialValue ?? "");
     setPrevInitialValue(initialValue);
   }
+
+  useEffect(() => {
+    onRootMessageChange?.(selectedMessage);
+  }, [selectedMessage, onRootMessageChange]);
 
   useEffect(() => {
     let isMounted = true;
@@ -66,14 +77,37 @@ export const InteractiveSchemaEditor: React.FC<
           if (result.kind === "success") {
             setLocalErrors([]);
             const validData = {
-              fds: result.fileDescriptorSet,
+              fds: result.fullFileDescriptorSet,
               userFds: result.userFileDescriptorSet,
               registry: result.registry,
             };
             setLastValidResult(validData);
             onCompileSuccess?.(validData);
+
+            const messages = result.messageTypes;
+            setAvailableMessages(messages);
+
+            // Logic to select a message after compilation
+            let newSelection: string | null = null;
+            if (messages.length > 0) {
+              // If the previously selected message still exists, keep it.
+              if (selectedMessage && messages.includes(selectedMessage)) {
+                newSelection = selectedMessage;
+              }
+              // If not, try to find a common default.
+              else if (messages.includes("demo.v1.User")) {
+                newSelection = "demo.v1.User";
+              }
+              // Otherwise, just pick the first one.
+              else {
+                newSelection = messages[0];
+              }
+            }
+            setSelectedMessage(newSelection);
           } else {
             setLocalErrors(result.errors);
+            setAvailableMessages([]);
+            setSelectedMessage(null);
           }
         }
       } catch (e) {
@@ -89,6 +123,8 @@ export const InteractiveSchemaEditor: React.FC<
       isMounted = false;
       clearTimeout(timer);
     };
+    // We intentionally only want this to run when the schema code changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localValue, onCompileSuccess]);
 
   const handleSave = useCallback(() => {
@@ -105,7 +141,7 @@ export const InteractiveSchemaEditor: React.FC<
   const editorContent = (
     <div className="flex flex-col h-full gap-4">
       {/* Editor Area */}
-      <div className="flex-1 relative min-h-[300px] bg-[var(--overlay-bg)] rounded-lg border border-[var(--border-light)] overflow-hidden">
+      <div className="flex-1 relative min-h-[300px] overflow-hidden">
         <SchemaEditor
           value={localValue}
           onChange={setLocalValue}
@@ -114,7 +150,7 @@ export const InteractiveSchemaEditor: React.FC<
 
         {/* Validation Status Overlay */}
         <div
-          className="absolute top-2 right-2 flex items-center gap-2 pointer-events-none"
+          className="absolute top-2 right-8 flex items-center gap-2 pointer-events-none"
           aria-live="polite"
           aria-atomic="true"
         >
@@ -159,15 +195,40 @@ export const InteractiveSchemaEditor: React.FC<
       )}
 
       {/* Footer Actions */}
-      <div className="flex items-center justify-between pt-4 border-t border-[var(--border-light)] shrink-0">
-        <button
-          onClick={handleReset}
-          className="flex items-center gap-2 px-4 py-2 text-sm font-cyber font-bold text-[var(--text-dim)] hover:text-[var(--text-color)] transition-colors uppercase tracking-widest"
-          aria-label="Reset schema to default values"
-        >
-          <RotateCcw className="w-3.5 h-3.5" />
-          Reset
-        </button>
+      <div className="flex items-center justify-between pt-4 border-t border-[var(--border-light)] shrink-0 flex-wrap gap-4">
+        <div className="flex items-center gap-4">
+          <button
+            onClick={handleReset}
+            className="flex items-center gap-2 px-4 py-2 text-sm font-cyber font-bold text-[var(--text-dim)] hover:text-[var(--text-color)] transition-colors uppercase tracking-widest"
+            aria-label="Reset schema to default values"
+          >
+            <RotateCcw className="w-3.5 h-3.5" />
+            Reset
+          </button>
+        </div>
+
+        {showRootMessageSelector && availableMessages.length > 1 && (
+          <div className="relative">
+            <label
+              htmlFor="root-message-selector"
+              className="text-xs font-mono text-[var(--text-dim)] absolute -top-4 left-1"
+            >
+              Root Message
+            </label>
+            <select
+              id="root-message-selector"
+              value={selectedMessage || ""}
+              onChange={(e) => setSelectedMessage(e.target.value)}
+              className="bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-md px-3 py-1.5 font-mono text-sm text-[var(--text-color)] focus:outline-none focus:border-[var(--cyber-neon-blue)] focus:ring-1 focus:ring-[var(--cyber-neon-blue)] min-w-[200px]"
+            >
+              {availableMessages.map((name) => (
+                <option key={name} value={name}>
+                  {name}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
 
         <div className="flex items-center gap-3">
           {onCancel && (

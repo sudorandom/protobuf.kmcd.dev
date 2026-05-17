@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   Binary,
@@ -9,8 +9,9 @@ import {
   Hash,
   MousePointer2,
   ChevronRight,
+  Settings2,
 } from "lucide-react";
-import { fromJson, toBinary, type DescMessage } from "@bufbuild/protobuf";
+import { fromJson, toBinary, type FileRegistry } from "@bufbuild/protobuf";
 import {
   Section,
   SectionTitle,
@@ -19,6 +20,9 @@ import {
   ExternalLinkText,
 } from "../components/shared/Common";
 import { JsonEditor } from "../components/shared/JsonEditor";
+import { Modal } from "../components/shared/Modal";
+import { InteractiveSchemaEditor } from "../components/shared/InteractiveSchemaEditor";
+import { createDynamicRegistry } from "../utils/dynamic-registry";
 import VarintExplainer from "../components/VarintExplainer";
 import { MemoryLayoutVisualization } from "../components/MemoryLayoutVisualization";
 import { BitShiftingVisualization } from "../components/BitShiftingVisualization";
@@ -26,6 +30,7 @@ import { BitwiseMergeVisualization } from "../components/BitwiseMergeVisualizati
 import MultiFieldEncoding from "../components/MultiFieldEncoding";
 import { decodeBinary, type DecodedSegment } from "../utils/decoder";
 import { SIZE_EXAMPLES } from "../utils/constants";
+import { INITIAL_PROTO } from "../utils/initial-proto";
 import { generateFake, convertToProtoscope } from "../utils/wasm-parser";
 import { ProtoscopeLab } from "../components/ProtoscopeLab";
 
@@ -374,7 +379,7 @@ const TagCalculator = () => {
               01. Bit Shift (field &lt;&lt; 3)
             </h4>
             <div className="text-xs font-mono text-[var(--text-dim)] bg-[var(--section-bg-dark)] px-2 py-0.5 rounded border border-[var(--border-light)]">
-              {field} &lt;&lt; 3 = {field << 3}
+              {field} {"<<"} 3 = {field << 3}
             </div>
           </div>
           <div className="space-y-2">
@@ -781,11 +786,11 @@ const BinaryBasics = () => (
 );
 
 export const BinaryMatrix = ({
-  messageSchema,
-  fds,
+  protoSource,
+  setProtoSource,
 }: {
-  messageSchema: DescMessage | null;
-  fds: Uint8Array | null;
+  protoSource: string;
+  setProtoSource: (s: string) => void;
 }) => {
   const [activeExample, setActiveExample] = useState<
     keyof typeof SIZE_EXAMPLES | null
@@ -799,21 +804,81 @@ export const BinaryMatrix = ({
   const [isGenerating, setIsGenerating] = useState(false);
   const [viewMode, setViewMode] = useState<"hex" | "scope">("hex");
   const [protoscopeOutput, setProtoscopeOutput] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // --- Local schema state ---
+  const [localRegistry, setLocalRegistry] = useState<FileRegistry | null>(null);
+  const [localFds, setLocalFds] = useState<Uint8Array | null>(null);
+  const [rootMessageName, setRootMessageName] = useState<string | null>(null);
+
+  useEffect(() => {
+    let active = true;
+    const timer = setTimeout(async () => {
+      try {
+        const result = await createDynamicRegistry(protoSource);
+        if (active) {
+          if (result.kind === "success") {
+            setLocalRegistry(result.registry);
+            setLocalFds(result.fullFileDescriptorSet);
+
+            const messages = result.messageTypes;
+
+            let newSelection: string | null = null;
+            if (messages.length > 0) {
+              if (rootMessageName && messages.includes(rootMessageName)) {
+                newSelection = rootMessageName;
+              } else if (messages.includes("demo.v1.User")) {
+                newSelection = "demo.v1.User";
+              } else {
+                newSelection = messages[0];
+              }
+            }
+            setRootMessageName(newSelection);
+          } else {
+            setLocalRegistry(null);
+            setLocalFds(null);
+            setRootMessageName(null);
+          }
+        }
+      } catch (e) {
+        console.error("Binary Explorer schema compilation failed:", e);
+        if (active) {
+          setLocalRegistry(null);
+          setLocalFds(null);
+          setRootMessageName(null);
+        }
+      }
+    }, 500);
+
+    return () => {
+      active = false;
+      clearTimeout(timer);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [protoSource]);
+
+  const localMessageSchema = useMemo(() => {
+    if (!localRegistry || !rootMessageName) return null;
+    return localRegistry.getMessage(rootMessageName);
+  }, [localRegistry, rootMessageName]);
+  // ---
 
   const stats = useMemo(() => {
-    if (!messageSchema)
+    if (!localMessageSchema)
       return { binary: new Uint8Array(), segments: [], error: "NO_SCHEMA" };
     try {
       const obj = JSON.parse(jsonInput);
-      const user = fromJson(messageSchema, obj, { ignoreUnknownFields: true });
-      const binary = toBinary(messageSchema, user);
-      const segments = decodeBinary(binary, messageSchema);
+      const user = fromJson(localMessageSchema, obj, {
+        ignoreUnknownFields: true,
+      });
+      const binary = toBinary(localMessageSchema, user);
+      const segments = decodeBinary(binary, localMessageSchema);
       return { binary, segments, error: null };
     } catch (e: unknown) {
       const error = e instanceof Error ? e.message : String(e);
       return { binary: new Uint8Array(), segments: [], error };
     }
-  }, [jsonInput, messageSchema]);
+  }, [jsonInput, localMessageSchema]);
 
   React.useEffect(() => {
     if (stats.binary.length > 0) {
@@ -831,10 +896,10 @@ export const BinaryMatrix = ({
   };
 
   const handleGenerateFake = async () => {
-    if (!fds || !messageSchema) return;
+    if (!rootMessageName || !localFds) return;
     setIsGenerating(true);
     try {
-      const fakeData = await generateFake(messageSchema.typeName, fds);
+      const fakeData = await generateFake(rootMessageName, localFds);
       setJsonInput(fakeData);
       setActiveExample(null);
       setSelectedSegmentIdx(0);
@@ -885,7 +950,7 @@ export const BinaryMatrix = ({
         </div>
 
         <div className="flex flex-wrap gap-4 items-center justify-between mb-8">
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 items-center">
             {(
               Object.keys(SIZE_EXAMPLES) as Array<keyof typeof SIZE_EXAMPLES>
             ).map((key) => (
@@ -902,17 +967,29 @@ export const BinaryMatrix = ({
                 {key}
               </button>
             ))}
+
+            <div className="w-px h-6 bg-[var(--border-light)] mx-2 hidden sm:block" />
+
+            <button
+              onClick={handleGenerateFake}
+              disabled={isGenerating || !localFds}
+              className="px-4 py-1.5 text-sm font-cyber font-bold border border-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)] text-[var(--neon-contrast-text)] hover:bg-[var(--cyber-neon-pink)]/90 transition-all flex items-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed rounded-md shadow-[0_0_15px_rgba(255,0,255,0.4)]"
+              aria-label="Generate Random Data"
+            >
+              <Zap
+                className={`w-3.5 h-3.5 ${isGenerating ? "animate-spin" : ""}`}
+              />
+              {isGenerating ? "GENERATING..." : "RANDOMIZE"}
+            </button>
           </div>
+
           <button
-            onClick={handleGenerateFake}
-            disabled={isGenerating || !fds}
-            className="px-4 py-1.5 text-sm font-cyber font-bold border border-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)] text-[var(--neon-contrast-text)] hover:bg-[var(--cyber-neon-pink)]/90 transition-all flex items-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed rounded-md shadow-[0_0_15px_rgba(255,0,255,0.4)]"
-            aria-label="Generate Random Data"
+            onClick={() => setIsModalOpen(true)}
+            className="text-sm font-cyber font-bold text-[var(--cyber-neon-blue)] hover:text-[var(--cyber-neon-blue)]/80 transition-colors uppercase flex items-center gap-1 group"
+            aria-label="Edit Protobuf Schema"
           >
-            <Zap
-              className={`w-3.5 h-3.5 ${isGenerating ? "animate-spin" : ""}`}
-            />
-            {isGenerating ? "GENERATING..." : "RANDOMIZE"}
+            <Settings2 className="w-3 h-3 group-hover:rotate-45 transition-transform" />
+            Edit Schema
           </button>
         </div>
 
@@ -1178,18 +1255,49 @@ export const BinaryMatrix = ({
           </div>
         </div>
       </div>
+
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="Schema Definition (.proto)"
+      >
+        <InteractiveSchemaEditor
+          initialValue={protoSource}
+          defaultValue={INITIAL_PROTO}
+          showRootMessageSelector={true}
+          onRootMessageChange={setRootMessageName}
+          onCompileSuccess={(result) => {
+            setLocalRegistry(result.registry);
+            setLocalFds(result.fds);
+          }}
+          onSave={async (s, result) => {
+            setProtoSource(s);
+            if (rootMessageName && result) {
+              try {
+                const fakeJson = await generateFake(
+                  rootMessageName,
+                  result.fds,
+                );
+                setJsonInput(fakeJson);
+                setActiveExample(null);
+                setSelectedSegmentIdx(0);
+              } catch (e) {
+                console.error("Failed to generate faux data after save:", e);
+              }
+            }
+            setIsModalOpen(false);
+          }}
+          onCancel={() => setIsModalOpen(false)}
+        />
+      </Modal>
     </Section>
   );
 };
 
 const BinaryPage = ({
-  messageSchema,
-  fds,
   protoSource,
   setProtoSource,
 }: {
-  messageSchema: DescMessage | null;
-  fds: Uint8Array | null;
   protoSource: string;
   setProtoSource: (s: string) => void;
 }) => {
@@ -1374,7 +1482,7 @@ const BinaryPage = ({
       </Section>
 
       {/* 3. The Explorer Matrix */}
-      <BinaryMatrix messageSchema={messageSchema} fds={fds} />
+      <BinaryMatrix protoSource={protoSource} setProtoSource={setProtoSource} />
 
       {/* 4. Protoscope Section */}
       <Section
@@ -1498,8 +1606,6 @@ const BinaryPage = ({
           </div>
 
           <ProtoscopeLab
-            messageSchema={messageSchema}
-            fds={fds}
             protoSource={protoSource}
             setProtoSource={setProtoSource}
           />

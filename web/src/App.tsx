@@ -327,7 +327,7 @@ function App() {
         if (active) {
           if (result.kind === "success") {
             setRegistry(result.registry);
-            setFds(result.fileDescriptorSet);
+            setFds(result.fullFileDescriptorSet);
             setError(null);
           } else {
             setRegistry(null);
@@ -643,24 +643,20 @@ function App() {
               path="/efficiency"
               element={
                 <Efficiency
-                  messageSchema={messageSchema}
-                  fileDescriptorSet={fds}
                   protoSource={protoSource}
                   setProtoSource={setProtoSource}
                 />
               }
-            />
+            />{" "}
             <Route
               path="/binary"
               element={
                 <Binary
-                  messageSchema={messageSchema}
-                  fds={fds}
                   protoSource={protoSource}
                   setProtoSource={setProtoSource}
                 />
               }
-            />
+            />{" "}
             <Route path="/ecosystem" element={<Ecosystem />} />
             <Route path="/conclusion" element={<Conclusion />} />
             <Route path="*" element={<Navigate to="/" replace />} />

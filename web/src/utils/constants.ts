@@ -3,6 +3,7 @@ export const VALIDATION_PROTO = `edition = "2023";
 package demo.v1;
 
 import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
 
 message User {
   string id = 1 [(buf.validate.field).string.uuid = true];
@@ -25,6 +26,11 @@ message Date {
   int32 year = 1 [(buf.validate.field).int32 = {gte: 1900, lte: 2100}];
   int32 month = 2 [(buf.validate.field).int32 = {gte: 1, lte: 12}];
   int32 day = 3 [(buf.validate.field).int32 = {gte: 1, lte: 31}];
+}
+
+message LoginEvent {
+    string user_id = 1 [(buf.validate.field).string.uuid = true];
+    google.protobuf.Timestamp event_time = 2 [(buf.validate.field).required = true];
 }`;
 
 export const DESCRIPTOR_PROTO = `edition = "2023";

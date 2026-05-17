@@ -15,7 +15,7 @@ import {
   fromJson,
   toBinary,
   toJsonString,
-  type DescMessage,
+  type FileRegistry,
 } from "@bufbuild/protobuf";
 import {
   Section,
@@ -26,6 +26,7 @@ import {
 import { JsonEditor } from "../components/shared/JsonEditor";
 import { Modal } from "../components/shared/Modal";
 import { InteractiveSchemaEditor } from "../components/shared/InteractiveSchemaEditor";
+import { createDynamicRegistry } from "../utils/dynamic-registry";
 import { decodeBinary } from "../utils/decoder";
 import { generateFake } from "../utils/wasm-parser";
 import { SIZE_EXAMPLES } from "../utils/constants";
@@ -47,13 +48,9 @@ async function getGzipSize(data: string | Uint8Array): Promise<number> {
 }
 
 export const SizeComparison = ({
-  messageSchema,
-  fileDescriptorSet,
   protoSource,
   setProtoSource,
 }: {
-  messageSchema: DescMessage | null;
-  fileDescriptorSet: Uint8Array | null;
   protoSource: string;
   setProtoSource: (s: string) => void;
 }) => {
@@ -67,21 +64,73 @@ export const SizeComparison = ({
   const [gzipStats, setGzipStats] = useState({ json: 0, pb: 0 });
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const [localRegistry, setLocalRegistry] = useState<FileRegistry | null>(null);
+  const [localFds, setLocalFds] = useState<Uint8Array | null>(null);
+  const [rootMessageName, setRootMessageName] = useState<string | null>(null);
+
+  useEffect(() => {
+    let active = true;
+    const timer = setTimeout(async () => {
+      try {
+        const result = await createDynamicRegistry(protoSource);
+        if (active) {
+          if (result.kind === "success") {
+            setLocalRegistry(result.registry);
+            setLocalFds(result.fullFileDescriptorSet);
+
+            const messages = result.messageTypes;
+
+            let newSelection: string | null = null;
+            if (messages.length > 0) {
+              if (rootMessageName && messages.includes(rootMessageName)) {
+                newSelection = rootMessageName;
+              } else if (messages.includes("demo.v1.User")) {
+                newSelection = "demo.v1.User";
+              } else {
+                newSelection = messages[0];
+              }
+            }
+            setRootMessageName(newSelection);
+          } else {
+            setLocalRegistry(null);
+            setLocalFds(null);
+            setRootMessageName(null);
+          }
+        }
+      } catch (e) {
+        console.error("Efficiency schema compilation failed:", e);
+        if (active) {
+          setLocalRegistry(null);
+          setLocalFds(null);
+          setRootMessageName(null);
+        }
+      }
+    }, 500);
+
+    return () => {
+      active = false;
+      clearTimeout(timer);
+    };
+    // We intentionally only want this to run when the schema source changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [protoSource]);
+
+  const localMessageSchema = useMemo(() => {
+    if (!localRegistry || !rootMessageName) return null;
+    return localRegistry.getMessage(rootMessageName);
+  }, [localRegistry, rootMessageName]);
+
   const handleExampleChange = (key: keyof typeof SIZE_EXAMPLES) => {
     setActiveExample(key);
     setJsonInput(JSON.stringify(SIZE_EXAMPLES[key], null, 2));
   };
 
   const generateFauxData = useCallback(async () => {
-    if (!messageSchema || !fileDescriptorSet) return;
+    if (!rootMessageName || !localFds) return;
     setIsGenerating(true);
     try {
-      const maxDepth = Math.floor(Math.random() * 5) + 1;
-      const fakeJson = await generateFake(
-        messageSchema.typeName,
-        fileDescriptorSet,
-        maxDepth,
-      );
+      const maxDepth = Math.floor(Math.random() * 8) + 2;
+      const fakeJson = await generateFake(rootMessageName, localFds, maxDepth);
       setJsonInput(fakeJson);
       setActiveExample(null);
     } catch (e) {
@@ -89,10 +138,10 @@ export const SizeComparison = ({
     } finally {
       setIsGenerating(false);
     }
-  }, [messageSchema, fileDescriptorSet]);
+  }, [rootMessageName, localFds]);
 
   const stats = useMemo(() => {
-    if (!messageSchema)
+    if (!localMessageSchema)
       return {
         jsonSize: 0,
         pbSize: 0,
@@ -100,12 +149,15 @@ export const SizeComparison = ({
         error: "NO_SCHEMA",
         binary: new Uint8Array(),
         segments: [],
+        jsonStr: "",
       };
     try {
       const obj = JSON.parse(jsonInput);
-      const user = fromJson(messageSchema, obj, { ignoreUnknownFields: true });
-      const binary = toBinary(messageSchema, user);
-      const jsonStr = toJsonString(messageSchema, user);
+      const msg = fromJson(localMessageSchema, obj, {
+        ignoreUnknownFields: true,
+      });
+      const binary = toBinary(localMessageSchema, msg);
+      const jsonStr = toJsonString(localMessageSchema, msg);
 
       const jsonSize = new TextEncoder().encode(jsonStr).length;
       const pbSize = binary.length;
@@ -135,7 +187,7 @@ export const SizeComparison = ({
         jsonStr: "",
       };
     }
-  }, [jsonInput, messageSchema]);
+  }, [jsonInput, localMessageSchema]);
 
   useEffect(() => {
     if (stats.error || !stats.jsonStr || !stats.binary.length) return;
@@ -246,7 +298,7 @@ export const SizeComparison = ({
               ))}
               <button
                 onClick={generateFauxData}
-                disabled={!messageSchema || !fileDescriptorSet || isGenerating}
+                disabled={!localMessageSchema || isGenerating}
                 className="px-2 py-1 text-sm font-cyber font-bold border border-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/10 text-[var(--cyber-neon-pink)] hover:bg-[var(--cyber-neon-pink)]/20 transition-all flex items-center gap-1.5 disabled:opacity-30 disabled:cursor-not-allowed rounded uppercase tracking-wider"
                 aria-label="Generate Random Data"
               >
@@ -261,15 +313,15 @@ export const SizeComparison = ({
               title="DATA_INPUT (JSON)"
               className="flex-1 min-h-[400px] flex flex-col"
             >
+              {stats.error && stats.error !== "NO_SCHEMA" && (
+                <div
+                  className="p-2 bg-[var(--text-error)]/10 border-b border-[var(--text-error)]/30 text-[var(--text-error)] text-sm font-mono break-words"
+                  title={stats.error}
+                >
+                  {stats.error}
+                </div>
+              )}
               <div className="flex-1 relative">
-                {stats.error && stats.error !== "NO_SCHEMA" && (
-                  <div
-                    className="absolute top-0 left-0 right-0 p-2 bg-[var(--text-error)]/10 border-b border-[var(--text-error)]/30 text-[var(--text-error)] text-sm font-mono z-30 break-words line-clamp-2"
-                    title={stats.error}
-                  >
-                    {stats.error}
-                  </div>
-                )}
                 <JsonEditor
                   value={jsonInput}
                   onChange={setJsonInput}
@@ -398,7 +450,7 @@ export const SizeComparison = ({
                         %
                       </p>
                       <p className="text-sm font-mono text-[var(--text-dim)] uppercase tracking-widest">
-                        GZIPPED_PB vs JSON
+                        GZIPPED_PB vs GZIPPED_JSON
                       </p>
                     </div>
                   )}
@@ -482,26 +534,24 @@ export const SizeComparison = ({
           <InteractiveSchemaEditor
             initialValue={protoSource}
             defaultValue={INITIAL_PROTO}
+            showRootMessageSelector={true}
+            onRootMessageChange={setRootMessageName}
+            onCompileSuccess={(result) => {
+              setLocalRegistry(result.registry);
+              setLocalFds(result.fds);
+            }}
             onSave={async (s, result) => {
               setProtoSource(s);
-              if (result) {
-                const schema =
-                  result.registry.getMessage("demo.v1.User") ||
-                  result.registry.getFile("input.proto")?.messages[0];
-                if (schema) {
-                  try {
-                    const fakeJson = await generateFake(
-                      schema.typeName,
-                      result.fds,
-                    );
-                    setJsonInput(fakeJson);
-                    setActiveExample(null);
-                  } catch (e) {
-                    console.error(
-                      "Failed to generate faux data after save:",
-                      e,
-                    );
-                  }
+              if (rootMessageName && result) {
+                try {
+                  const fakeJson = await generateFake(
+                    rootMessageName,
+                    result.fds,
+                  );
+                  setJsonInput(fakeJson);
+                  setActiveExample(null);
+                } catch (e) {
+                  console.error("Failed to generate faux data after save:", e);
                 }
               }
               setIsModalOpen(false);
