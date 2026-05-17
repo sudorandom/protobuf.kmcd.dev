@@ -16,6 +16,7 @@ import {
   Download,
   Terminal,
   Settings2,
+  Info,
 } from "lucide-react";
 import {
   fromJson,
@@ -651,6 +652,12 @@ message LegacyProfile {
       title: "Validation Lab",
       desc: "Live playground for protovalidate business rules.",
       color: "yellow",
+    },
+    {
+      id: "limits",
+      title: "Size Limits",
+      desc: "Architectural constraints and memory behavior.",
+      color: "pink",
     },
   ];
 
@@ -1852,11 +1859,104 @@ export const ValidationLab = () => {
   );
 };
 
+const LimitsAndConstraints = () => (
+  <Section
+    id="limits"
+    className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]"
+  >
+    <div className="max-w-7xl mx-auto space-y-16">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+        <div className="space-y-8">
+          <SectionTitle icon={AlertTriangle} subtitle="03m_CONSTRAINTS">
+            Realistic Limits & Size
+          </SectionTitle>
+
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <h3 className="text-xl font-cyber font-bold text-[var(--cyber-neon-pink)] uppercase tracking-wider">
+                The Hard Limit
+              </h3>
+              <p className="text-[var(--text-dim)] leading-relaxed text-sm">
+                The absolute maximum size of a serialized protobuf message is{" "}
+                <strong className="text-[var(--cyber-neon-pink)]">2 GiB</strong>.
+                This is a hard architectural limit because the protocol relies on
+                32-bit signed integers to encode byte lengths and offsets. If a
+                payload exceeds this size, standard parsers will throw an overflow
+                error and refuse to read it.
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <h3 className="text-xl font-cyber font-bold text-[var(--cyber-neon-blue)] uppercase tracking-wider">
+                The Typical Size
+              </h3>
+              <p className="text-[var(--text-dim)] leading-relaxed text-sm">
+                Protobuf is optimized for small, fast payloads. The official
+                recommendation is to keep messages under a few megabytes. In
+                practice, the ideal size is typically{" "}
+                <strong className="text-[var(--cyber-neon-blue)]">
+                  under 1 MB
+                </strong>
+                .
+              </p>
+              <p className="text-[var(--text-dim)] leading-relaxed text-sm">
+                Once a message grows beyond 10 MB, the CPU and memory costs of
+                parsing become highly noticeable. For moving large datasets, the
+                standard pattern is to chunk the data into a{" "}
+                <strong>stream of smaller messages</strong>.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="space-y-6">
+          <CyberPanel title="MEMORY_BEHAVIOR" className="h-full">
+            <div className="p-6 space-y-6">
+              <div className="space-y-4">
+                <h3 className="text-lg font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">
+                  Full Graph Parsing
+                </h3>
+                <p className="text-[var(--text-dim)] leading-relaxed text-sm">
+                  Protobuf is fundamentally designed around the expectation that you
+                  will load the <strong>entire message into memory at once</strong>.
+                </p>
+                <p className="text-[var(--text-dim)] leading-relaxed text-sm border-l-2 border-[var(--cyber-neon-yellow)] pl-4">
+                  When you deserialize a payload, the parser reads the entire binary
+                  stream and instantiates a <strong>complete object graph</strong>.
+                </p>
+              </div>
+
+              <div className="p-4 bg-[var(--cyber-neon-blue)]/5 border border-[var(--cyber-neon-blue)]/20 rounded-lg">
+                <div className="flex gap-3 items-start">
+                  <Info className="w-5 h-5 text-[var(--cyber-neon-blue)] shrink-0 mt-0.5" />
+                  <div className="space-y-2">
+                    <p className="text-sm font-bold text-[var(--cyber-neon-blue)] uppercase">
+                      In-Memory Expansion
+                    </p>
+                    <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+                      As with most serialization formats, the resulting in-memory
+                      representation is significantly larger than the serialized
+                      binary. Pointers, object overhead, and data structure padding
+                      can cause memory usage to be <strong>several times</strong> the
+                      size of the original payload.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </CyberPanel>
+        </div>
+      </div>
+    </div>
+  </Section>
+);
+
 const Advanced = () => (
   <>
     <AdvancedProtobuf />
     <DescriptorsAndReflection />
     <SchemaEngineering />
+    <LimitsAndConstraints />
     <ValidationLab />
   </>
 );
