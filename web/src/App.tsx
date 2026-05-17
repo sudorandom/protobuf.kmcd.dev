@@ -110,9 +110,11 @@ const NavItem = ({
   onNavigate: () => void;
 }) => {
   const location = useLocation();
+  const normalizedPathname =
+    location.pathname === "/" ? "/" : location.pathname.replace(/\/$/, "");
   const isActive =
-    location.pathname === item.path ||
-    (location.pathname === "/" && item.path === "/");
+    normalizedPathname === item.path ||
+    (normalizedPathname === "/" && item.path === "/");
 
   return (
     <div className="flex flex-col">
@@ -154,10 +156,13 @@ function App() {
   const [registry, setRegistry] = useState<FileRegistry | null>(null);
   const [error, setError] = useState<string | null>(null);
   const location = useLocation();
+  const normalizedPathname =
+    location.pathname === "/" ? "/" : location.pathname.replace(/\/$/, "");
+
   const currentNavIndex = NAV_ITEMS.findIndex(
     (item) =>
-      item.path === location.pathname ||
-      (location.pathname === "/" && item.path === "/"),
+      item.path === normalizedPathname ||
+      (normalizedPathname === "/" && item.path === "/"),
   );
   const activeSection = NAV_ITEMS[currentNavIndex]?.id || "hero";
   const [currentVisibleSection, setCurrentVisibleSection] =
@@ -205,9 +210,9 @@ function App() {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setCurrentVisibleSection(activeSection);
     if (window.location.hash) {
-      history.replaceState(null, "", location.pathname);
+      history.replaceState(null, "", normalizedPathname);
     }
-  }, [location.pathname, activeSection]);
+  }, [normalizedPathname, activeSection]);
 
   useEffect(() => {
     const visibleSections = new Set<string>();
@@ -232,7 +237,10 @@ function App() {
           const newVisibleSection = sorted[0];
           setCurrentVisibleSection(newVisibleSection);
 
-          const currentPath = window.location.pathname;
+          const currentPath =
+            window.location.pathname === "/"
+              ? "/"
+              : window.location.pathname.replace(/\/$/, "");
 
           if (window.scrollY < 100) {
             history.replaceState(null, "", currentPath);

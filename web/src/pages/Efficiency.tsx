@@ -17,12 +17,7 @@ import {
   toJsonString,
   type FileRegistry,
 } from "@bufbuild/protobuf";
-import {
-  Section,
-  SectionTitle,
-  CyberPanel,
-  RoadmapGrid,
-} from "../components/shared/Common";
+import { Section, SectionTitle, CyberPanel } from "../components/shared/Common";
 import { JsonEditor } from "../components/shared/JsonEditor";
 import { Modal } from "../components/shared/Modal";
 import { InteractiveSchemaEditor } from "../components/shared/InteractiveSchemaEditor";
@@ -201,24 +196,6 @@ export const SizeComparison = ({
     fetchGzip();
   }, [stats.jsonStr, stats.binary, stats.error]);
 
-  const roadmapItems = [
-    {
-      id: "raw-payload-reduction",
-      title: "Raw Payload",
-      desc: "Massive reduction in baseline message size.",
-    },
-    {
-      id: "performance-in-practice",
-      title: "Real Performance",
-      desc: "How binary encoding translates to CPU and Latency wins.",
-    },
-    {
-      id: "compression-tradeoffs",
-      title: "Compression",
-      desc: "Protobuf vs. GZIP/Brotli efficiency levels.",
-    },
-  ];
-
   return (
     <Section
       id="efficiency"
@@ -235,9 +212,6 @@ export const SizeComparison = ({
             strings will always take up space, but numeric data and sparse
             messages see the biggest reductions compared to JSON.
           </p>
-          <div className="pt-8 text-left">
-            <RoadmapGrid items={roadmapItems} cols="lg:grid-cols-3" />
-          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 relative">
