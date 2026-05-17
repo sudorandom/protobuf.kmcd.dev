@@ -1,3 +1,13 @@
+export const APP_ROUTES = [
+  "intro",
+  "basics",
+  "advanced",
+  "efficiency",
+  "binary",
+  "ecosystem",
+  "conclusion",
+] as const;
+
 export const VALIDATION_PROTO = `edition = "2023";
 
 package demo.v1;

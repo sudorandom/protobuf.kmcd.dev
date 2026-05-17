@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "node scripts/generate-social-images.js && tsc -b && vite build",
-    "postbuild": "./scripts/generate-static-routes.sh",
+    "postbuild": "node scripts/post-build.js",
     "lint": "eslint .",
     "format": "prettier --write .",
     "preview": "vite preview"

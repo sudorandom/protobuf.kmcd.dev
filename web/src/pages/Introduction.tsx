@@ -418,42 +418,42 @@ export const Introduction = ({
             </div>
             <div className="flex flex-col gap-4">
               <div className="grid grid-cols-2 gap-2 w-full md:w-64">
-                <CyberPanel className="text-center p-2 text-sm hover:border-[var(--cyber-neon-blue)] transition-colors group">
+                <CyberPanel className="flex items-center justify-center p-2 text-sm hover:border-[var(--cyber-neon-blue)] transition-colors group text-center">
                   <ExternalLinkText href="https://protobuf.dev/getting-started/cpptutorial/">
                     C++
                   </ExternalLinkText>
                 </CyberPanel>
-                <CyberPanel className="text-center p-2 text-sm hover:border-[var(--cyber-neon-blue)] transition-colors group">
+                <CyberPanel className="flex items-center justify-center p-2 text-sm hover:border-[var(--cyber-neon-blue)] transition-colors group text-center">
                   <ExternalLinkText href="https://protobuf.dev/getting-started/csharptutorial/">
                     C#
                   </ExternalLinkText>
                 </CyberPanel>
-                <CyberPanel className="text-center p-2 text-sm hover:border-[var(--cyber-neon-blue)] transition-colors group">
+                <CyberPanel className="flex items-center justify-center p-2 text-sm hover:border-[var(--cyber-neon-blue)] transition-colors group text-center">
                   <ExternalLinkText href="https://protobuf.dev/reference/dart/dart-generated/">
                     Dart
                   </ExternalLinkText>
                 </CyberPanel>
-                <CyberPanel className="text-center p-2 text-sm hover:border-[var(--cyber-neon-blue)] transition-colors group">
+                <CyberPanel className="flex items-center justify-center p-2 text-sm hover:border-[var(--cyber-neon-blue)] transition-colors group text-center">
                   <ExternalLinkText href="https://protobuf.dev/getting-started/gotutorial/">
-                    Go Language Tutorial
+                    Go
                   </ExternalLinkText>
                 </CyberPanel>
-                <CyberPanel className="text-center p-2 text-sm hover:border-[var(--cyber-neon-blue)] transition-colors group">
+                <CyberPanel className="flex items-center justify-center p-2 text-sm hover:border-[var(--cyber-neon-blue)] transition-colors group text-center">
                   <ExternalLinkText href="https://protobuf.dev/getting-started/javatutorial/">
                     Java
                   </ExternalLinkText>
                 </CyberPanel>
-                <CyberPanel className="text-center p-2 text-sm hover:border-[var(--cyber-neon-blue)] transition-colors group">
+                <CyberPanel className="flex items-center justify-center p-2 text-sm hover:border-[var(--cyber-neon-blue)] transition-colors group text-center">
                   <ExternalLinkText href="https://protobuf.dev/reference/kotlin/kotlin-generated/">
                     Kotlin
                   </ExternalLinkText>
                 </CyberPanel>
-                <CyberPanel className="text-center p-2 text-sm hover:border-[var(--cyber-neon-blue)] transition-colors group">
+                <CyberPanel className="flex items-center justify-center p-2 text-sm hover:border-[var(--cyber-neon-blue)] transition-colors group text-center">
                   <ExternalLinkText href="https://protobuf.dev/getting-started/pythontutorial/">
                     Python
                   </ExternalLinkText>
                 </CyberPanel>
-                <CyberPanel className="text-center p-2 text-sm border-[var(--cyber-neon-green)]/30 bg-[var(--cyber-neon-green)]/5 hover:border-[var(--cyber-neon-green)] transition-colors group">
+                <CyberPanel className="flex items-center justify-center p-2 text-sm border-[var(--cyber-neon-green)]/30 bg-[var(--cyber-neon-green)]/5 hover:border-[var(--cyber-neon-green)] transition-colors group text-center">
                   <a
                     href="https://github.com/protocolbuffers/protobuf/blob/main/docs/third_party.md"
                     target="_blank"
