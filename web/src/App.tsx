@@ -20,7 +20,7 @@ import { type FileRegistry } from "@bufbuild/protobuf";
 import { INITIAL_PROTO } from "./utils/initial-proto";
 
 // Pages
-const Hero = React.lazy(() => import("./pages/Hero"));
+import Hero from "./pages/Hero";
 
 const PRELOAD_MAP: Record<string, () => Promise<any>> = {
   intro: () => import("./pages/Introduction"),
@@ -318,6 +318,8 @@ function App() {
   }, []);
 
   useEffect(() => {
+    if (location.pathname === "/") return;
+
     let active = true;
     const timer = setTimeout(async () => {
       try {
@@ -349,7 +351,7 @@ function App() {
       active = false;
       clearTimeout(timer);
     };
-  }, [protoSource]);
+  }, [protoSource, location.pathname]);
 
   const messageSchema = useMemo(() => {
     if (!registry) return null;
@@ -419,7 +421,7 @@ function App() {
                 onClick={() => setIsNavDropdownOpen(!isNavDropdownOpen)}
                 aria-expanded={isNavDropdownOpen}
                 aria-controls="nav-dropdown"
-                aria-label="Toggle navigation menu"
+                aria-label={`${SECTION_LABELS[activeSection] || "Welcome"} - Toggle navigation menu`}
                 className={`flex items-center justify-center gap-2 text-sm font-mono font-bold uppercase tracking-widest bg-[var(--overlay-bg)] px-4 py-1.5 rounded border transition-all min-w-[200px] text-center ${
                   isNavDropdownOpen
                     ? "border-[var(--cyber-neon-blue)] text-[var(--cyber-neon-blue)] shadow-[0_0_10px_rgba(0,243,255,0.1)]"
@@ -629,7 +631,10 @@ function App() {
         )}
       </AnimatePresence>
 
-      <main id="main-content">
+      <main
+        id="main-content"
+        className="min-h-[calc(100vh-64px)] flex flex-col"
+      >
         <Suspense fallback={<CyberSpinner />}>
           <Routes>
             <Route path="/" element={<Hero isAtTop={isAtTop} />} />
@@ -661,48 +666,48 @@ function App() {
             <Route path="/conclusion" element={<Conclusion />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
-        </Suspense>
-        {location.pathname !== "/" && (
-          <div className="max-w-7xl mx-auto px-4 sm:px-8 py-12 flex justify-between items-center border-t border-[var(--border-light)]">
-            {prevNav ? (
-              <Link
-                to={prevNav.path}
-                className="flex flex-col items-start gap-1 group transition-all"
-              >
-                <span className="text-sm font-mono text-[var(--text-dim)] uppercase tracking-[0.2em]">
-                  Previous
-                </span>
-                <div className="flex items-center gap-2 text-[var(--text-color)] group-hover:text-[var(--cyber-neon-blue)]">
-                  <ChevronLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-                  <span className="font-cyber font-bold text-sm tracking-wider uppercase">
-                    {prevNav.label}
+          {location.pathname !== "/" && (
+            <div className="mt-auto max-w-7xl mx-auto px-4 sm:px-8 py-12 flex justify-between items-center border-t border-[var(--border-light)] w-full">
+              {prevNav ? (
+                <Link
+                  to={prevNav.path}
+                  className="flex flex-col items-start gap-1 group transition-all"
+                >
+                  <span className="text-sm font-mono text-[var(--text-dim)] uppercase tracking-[0.2em]">
+                    Previous
                   </span>
-                </div>
-              </Link>
-            ) : (
-              <div />
-            )}
+                  <div className="flex items-center gap-2 text-[var(--text-color)] group-hover:text-[var(--cyber-neon-blue)]">
+                    <ChevronLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
+                    <span className="font-cyber font-bold text-sm tracking-wider uppercase">
+                      {prevNav.label}
+                    </span>
+                  </div>
+                </Link>
+              ) : (
+                <div />
+              )}
 
-            {nextNav ? (
-              <Link
-                to={nextNav.path}
-                className="flex flex-col items-end gap-1 group transition-all"
-              >
-                <span className="text-sm font-mono text-[var(--text-dim)] uppercase tracking-[0.2em]">
-                  Next
-                </span>
-                <div className="flex items-center gap-2 text-[var(--text-color)] group-hover:text-[var(--cyber-neon-blue)]">
-                  <span className="font-cyber font-bold text-sm tracking-wider uppercase">
-                    {nextNav.label}
+              {nextNav ? (
+                <Link
+                  to={nextNav.path}
+                  className="flex flex-col items-end gap-1 group transition-all"
+                >
+                  <span className="text-sm font-mono text-[var(--text-dim)] uppercase tracking-[0.2em]">
+                    Next
                   </span>
-                  <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </div>
-              </Link>
-            ) : (
-              <div />
-            )}
-          </div>
-        )}
+                  <div className="flex items-center gap-2 text-[var(--text-color)] group-hover:text-[var(--cyber-neon-blue)]">
+                    <span className="font-cyber font-bold text-sm tracking-wider uppercase">
+                      {nextNav.label}
+                    </span>
+                    <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </Link>
+              ) : (
+                <div />
+              )}
+            </div>
+          )}
+        </Suspense>
       </main>
 
       <footer className="py-12 border-t border-[var(--border-light)] px-4 sm:px-8 flex flex-col items-center gap-4 bg-[var(--bg-color)]">
@@ -743,7 +748,6 @@ function App() {
               target="_blank"
               rel="noopener noreferrer"
               className="text-[var(--text-dim)] hover:text-[var(--cyber-neon-blue)] transition-colors"
-              aria-label="KMCD.DEV"
             >
               Kevin McDonald
             </a>

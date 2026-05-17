@@ -21,7 +21,7 @@ import {
   Section,
   SectionTitle,
   CyberPanel,
-  ExternalLinkText,
+  RoadmapGrid,
 } from "../components/shared/Common";
 import { JsonEditor } from "../components/shared/JsonEditor";
 import { Modal } from "../components/shared/Modal";
@@ -201,6 +201,24 @@ export const SizeComparison = ({
     fetchGzip();
   }, [stats.jsonStr, stats.binary, stats.error]);
 
+  const roadmapItems = [
+    {
+      id: "raw-payload-reduction",
+      title: "Raw Payload",
+      desc: "Massive reduction in baseline message size.",
+    },
+    {
+      id: "performance-in-practice",
+      title: "Real Performance",
+      desc: "How binary encoding translates to CPU and Latency wins.",
+    },
+    {
+      id: "compression-tradeoffs",
+      title: "Compression",
+      desc: "Protobuf vs. GZIP/Brotli efficiency levels.",
+    },
+  ];
+
   return (
     <Section
       id="efficiency"
@@ -211,31 +229,20 @@ export const SizeComparison = ({
           Efficiency
         </SectionTitle>
 
-        <div className="mb-12 space-y-12 text-[var(--text-color)] leading-relaxed">
-          <div className="space-y-4 text-lg">
-            <p>
-              How much space you save with Protobuf depends on your data. Large
-              strings will always take up space, but numeric data and sparse
-              messages (those with many optional fields) see the biggest
-              reductions compared to JSON.
-            </p>
-            <p className="text-base text-[var(--text-dim)]">
-              Try a few different scenarios below: use the preset examples,{" "}
-              <span className="text-[var(--cyber-neon-pink)] font-bold uppercase">
-                randomize
-              </span>{" "}
-              (powered by{" "}
-              <ExternalLinkText href="https://fauxrpc.com">
-                <strong>FauxRPC</strong>
-              </ExternalLinkText>
-              ), or fill in your own.
-            </p>
+        <div className="mb-16 max-w-4xl space-y-6 mx-auto text-center">
+          <p className="text-lg text-[var(--text-dim)] leading-relaxed">
+            How much space you save with Protobuf depends on your data. Large
+            strings will always take up space, but numeric data and sparse
+            messages see the biggest reductions compared to JSON.
+          </p>
+          <div className="pt-8 text-left">
+            <RoadmapGrid items={roadmapItems} cols="lg:grid-cols-3" />
           </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 relative">
           {/* Global Interactive Sign for Large Screens */}
-          <div className="absolute -left-48 top-48 hidden 2xl:flex flex-col items-end gap-2 text-[var(--cyber-neon-pink)] pointer-events-none animate-pulse z-10 opacity-70">
+          <div className="absolute -left-48 top-48 hidden 2xl:flex flex-col items-end gap-2 text-[var(--cyber-neon-pink)] pointer-events-none z-10">
             <span className="font-cyber text-sm uppercase tracking-widest text-right">
               These Panels
               <br />
@@ -264,14 +271,14 @@ export const SizeComparison = ({
           <div className="space-y-4 flex flex-col">
             <div className="flex items-center justify-between h-8">
               <div className="flex items-center gap-4">
-                <h3 className="text-sm font-cyber font-bold text-[var(--text-color)] uppercase flex items-center gap-2 tracking-widest">
+                <h2 className="text-sm font-cyber font-bold text-[var(--text-color)] uppercase flex items-center gap-2 tracking-widest">
                   <Database className="w-4 h-4 text-[var(--cyber-neon-blue)]" />
                   Payload Input
-                </h3>
+                </h2>
                 <button
                   onClick={() => setIsModalOpen(true)}
                   className="text-sm font-cyber font-bold text-[var(--cyber-neon-blue)] hover:text-[var(--cyber-neon-blue)]/80 transition-colors uppercase flex items-center gap-1 group"
-                  aria-label="Edit Protobuf Schema"
+                  aria-label="EDIT SCHEMA - Edit Protobuf Schema"
                 >
                   <Settings2 className="w-3 h-3 group-hover:rotate-45 transition-transform" />
                   Edit Schema
@@ -300,7 +307,7 @@ export const SizeComparison = ({
                 onClick={generateFauxData}
                 disabled={!localMessageSchema || isGenerating}
                 className="px-2 py-1 text-sm font-cyber font-bold border border-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/10 text-[var(--cyber-neon-pink)] hover:bg-[var(--cyber-neon-pink)]/20 transition-all flex items-center gap-1.5 disabled:opacity-30 disabled:cursor-not-allowed rounded uppercase tracking-wider"
-                aria-label="Generate Random Data"
+                aria-label="RANDOMIZE - Generate Random Data"
               >
                 <Zap
                   className={`w-2.5 h-2.5 ${isGenerating ? "animate-spin" : ""}`}
@@ -343,15 +350,13 @@ export const SizeComparison = ({
                   Comparing standard minified{" "}
                   <span className="text-[var(--cyber-neon-yellow)]">JSON</span>{" "}
                   and gzipped{" "}
-                  <span className="text-[var(--cyber-neon-yellow)] opacity-60">
+                  <span className="text-[var(--cyber-neon-yellow)] ">
                     JSON.GZ
                   </span>{" "}
                   against raw Protobuf binary{" "}
                   <span className="text-[var(--cyber-neon-green)]">PB</span> and
                   gzipped{" "}
-                  <span className="text-[var(--cyber-neon-green)] opacity-60">
-                    PB.GZ
-                  </span>
+                  <span className="text-[var(--cyber-neon-green)] ">PB.GZ</span>
                   .
                 </div>
 
@@ -366,7 +371,7 @@ export const SizeComparison = ({
                     </div>
                     <div className="h-2 bg-[var(--border-light)] rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-[var(--cyber-neon-yellow)] opacity-40"
+                        className="h-full bg-[var(--cyber-neon-yellow)] "
                         style={{ width: "100%" }}
                       ></div>
                     </div>
@@ -425,7 +430,10 @@ export const SizeComparison = ({
                   </div>
                 </div>
 
-                <div className="pt-8 border-t border-[var(--border-light)] flex items-end justify-between">
+                <div
+                  className="pt-8 border-t border-[var(--border-light)] flex items-end justify-between"
+                  id="raw-payload-reduction"
+                >
                   <div>
                     <p className="text-5xl font-cyber font-bold text-[var(--cyber-neon-green)] shadow-glow">
                       -{stats.ratio}%
@@ -512,12 +520,12 @@ export const SizeComparison = ({
                 <item.icon className="w-5 h-5" />
               </div>
               <div className="space-y-1">
-                <h4
+                <h2
                   className="text-sm font-cyber font-bold uppercase tracking-widest"
                   style={{ color: item.color }}
                 >
                   {item.title}
-                </h4>
+                </h2>
                 <p className="text-sm text-[var(--text-dim)] leading-relaxed">
                   {item.desc}
                 </p>
@@ -560,11 +568,11 @@ export const SizeComparison = ({
           />
         </Modal>
 
-        <div className="mt-24 space-y-16">
+        <div className="mt-24 space-y-16" id="compression-tradeoffs">
           <div className="space-y-6">
-            <h3 className="text-xl sm:text-2xl md:text-3xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">
               Size vs. Compression
-            </h3>
+            </h2>
             <p className="text-[var(--text-dim)] leading-relaxed">
               While Protobuf provides a massive reduction in{" "}
               <span className="text-[var(--cyber-neon-green)] font-bold">
@@ -593,19 +601,19 @@ export const SizeComparison = ({
             </p>
           </div>
 
-          <div className="space-y-8">
+          <div className="space-y-8" id="performance-in-practice">
             <div className="flex items-center gap-3 text-[var(--cyber-neon-blue)]">
               <BarChart3 className="w-6 h-6" />
-              <h3 className="text-xl sm:text-2xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">
                 Performance in Practice
-              </h3>
+              </h2>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
               <div className="space-y-4">
-                <h4 className="text-sm font-cyber font-bold text-[var(--cyber-neon-pink)] uppercase tracking-widest">
+                <h3 className="text-sm font-cyber font-bold text-[var(--cyber-neon-pink)] uppercase tracking-widest">
                   Language Matters
-                </h4>
+                </h3>
                 <p className="text-sm text-[var(--text-dim)] leading-relaxed">
                   Protobuf performance is highly dependent on the language and
                   library implementation. In languages with native binary
@@ -623,9 +631,9 @@ export const SizeComparison = ({
               </div>
 
               <div className="space-y-4">
-                <h4 className="text-sm font-cyber font-bold text-[var(--cyber-neon-green)] uppercase tracking-widest">
+                <h3 className="text-sm font-cyber font-bold text-[var(--cyber-neon-green)] uppercase tracking-widest">
                   Data Type Sensitivity
-                </h4>
+                </h3>
                 <p className="text-sm text-[var(--text-dim)] leading-relaxed">
                   If your payload is 90% long strings (like blog posts),
                   Protobuf will only save you a few percentage points of space.
@@ -647,9 +655,9 @@ export const SizeComparison = ({
                 rel="noopener noreferrer"
                 className="group p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg hover:border-[var(--cyber-neon-blue)]/40 transition-all"
               >
-                <h5 className="font-cyber text-sm text-[var(--cyber-neon-blue)] mb-2 group-hover:underline">
+                <h4 className="font-cyber text-sm text-[var(--cyber-neon-blue)] mb-2 group-hover:underline">
                   Auth0 Engineering
-                </h5>
+                </h4>
                 <p className="text-sm text-[var(--text-dim)] leading-relaxed">
                   Classic deep dive comparing binary vs text overhead in
                   real-world API requests.
@@ -661,9 +669,9 @@ export const SizeComparison = ({
                 rel="noopener noreferrer"
                 className="group p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg hover:border-[var(--cyber-neon-pink)]/40 transition-all"
               >
-                <h5 className="font-cyber text-sm text-[var(--cyber-neon-pink)] mb-2 group-hover:underline">
+                <h4 className="font-cyber text-sm text-[var(--cyber-neon-pink)] mb-2 group-hover:underline">
                   Official gRPC Benchmarks
-                </h5>
+                </h4>
                 <p className="text-sm text-[var(--text-dim)] leading-relaxed">
                   Throughput and latency metrics for Protobuf-over-HTTP/2 across
                   various languages.
@@ -675,9 +683,9 @@ export const SizeComparison = ({
                 rel="noopener noreferrer"
                 className="group p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg hover:border-[var(--cyber-neon-green)]/40 transition-all"
               >
-                <h5 className="font-cyber text-sm text-[var(--cyber-neon-green)] mb-2 group-hover:underline">
+                <h4 className="font-cyber text-sm text-[var(--cyber-neon-green)] mb-2 group-hover:underline">
                   Atlassian Engineering
-                </h5>
+                </h4>
                 <p className="text-sm text-[var(--text-dim)] leading-relaxed">
                   A detailed case study on how Jira improved p99 latency by 20%
                   and reduced CPU usage by 75% using Protobuf.

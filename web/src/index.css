@@ -1,4 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap");
 @import "tailwindcss";
 
 :root {
@@ -9,7 +8,7 @@
   --text-color: #e2e8f0;
   --text-dim: #94a3b8;
   --cyber-neon-blue: #00f3ff;
-  --cyber-neon-pink: #ff00ff;
+  --cyber-neon-pink: #ff66ff;
   --cyber-neon-green: #00ff9f;
   --cyber-neon-yellow: #facc15;
   --cyber-neon-cyan: #00f3ff;

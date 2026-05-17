@@ -553,9 +553,9 @@ message User {
           </p>
           <div className="grid grid-cols-1 gap-4">
             <div className="p-3 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded">
-              <h5 className="text-[var(--cyber-neon-blue)] font-cyber text-sm uppercase mb-1">
+              <h3 className="text-[var(--cyber-neon-blue)] font-cyber text-sm uppercase mb-1">
                 Proto3 (Implicit)
-              </h5>
+              </h3>
               <p className="text-sm text-[var(--text-dim)]">
                 Scalar fields have implicit presence. If a value is{" "}
                 <code>0</code>, it's not sent on the wire, and the receiver sees{" "}
@@ -564,9 +564,9 @@ message User {
               </p>
             </div>
             <div className="p-3 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded">
-              <h5 className="text-[var(--cyber-neon-green)] font-cyber text-sm uppercase mb-1">
+              <h3 className="text-[var(--cyber-neon-green)] font-cyber text-sm uppercase mb-1">
                 Editions (Explicit)
-              </h5>
+              </h3>
               <p className="text-sm text-[var(--text-dim)]">
                 By setting <code>features.field_presence = EXPLICIT</code>,
                 presence is tracked for all fields. Receiving a zero means it
@@ -849,7 +849,7 @@ message DescriptorProto {
 
         <div className="pt-16 border-t border-[var(--border-light)] relative">
           {/* Global Interactive Sign for Large Screens */}
-          <div className="absolute -left-48 top-48 hidden 2xl:flex flex-col items-end gap-2 text-[var(--cyber-neon-pink)] pointer-events-none animate-pulse z-10 opacity-70">
+          <div className="absolute -left-48 top-48 hidden 2xl:flex flex-col items-end gap-2 text-[var(--cyber-neon-pink)] pointer-events-none z-10">
             <span className="font-cyber text-sm uppercase tracking-widest text-right">
               These Panels
               <br />
@@ -898,14 +898,14 @@ message DescriptorProto {
                         <button
                           onClick={downloadBinary}
                           className="px-2 py-0.5 text-sm font-mono rounded border border-[var(--cyber-neon-blue)]/50 text-[var(--cyber-neon-blue)] bg-[var(--cyber-neon-blue)]/10 hover:bg-[var(--cyber-neon-blue)]/20 transition-all uppercase flex items-center gap-1"
-                          aria-label="Save as binary protocol buffer"
+                          aria-label="SAVE_PB - Save as binary protocol buffer"
                         >
                           <Download className="w-3 h-3" /> SAVE_PB
                         </button>
                         <button
                           onClick={downloadJson}
                           className="px-2 py-0.5 text-sm font-mono rounded border border-[var(--cyber-neon-pink)]/50 text-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/10 hover:bg-[var(--cyber-neon-pink)]/20 transition-all uppercase flex items-center gap-1"
-                          aria-label="Save as JSON"
+                          aria-label="SAVE_JSON - Save as JSON"
                         >
                           <Download className="w-3 h-3" /> SAVE_JSON
                         </button>
@@ -927,7 +927,7 @@ message DescriptorProto {
                     ) : (
                       <div className="flex flex-col items-center justify-center h-full text-[var(--text-dim)] gap-4 py-20">
                         <Terminal className="w-12 h-12 opacity-20" />
-                        <p className="font-cyber text-sm uppercase tracking-widest opacity-40 text-center">
+                        <p className="font-cyber text-sm uppercase tracking-widest  text-center">
                           Correct compilation errors
                           <br />
                           to view descriptor
@@ -942,9 +942,9 @@ message DescriptorProto {
                           <Database className="w-4 h-4 text-[var(--cyber-neon-blue)]" />
                         </div>
                         <div className="space-y-1">
-                          <h5 className="text-sm font-cyber font-bold text-[var(--text-color)] uppercase tracking-wider">
+                          <h4 className="text-sm font-cyber font-bold text-[var(--text-color)] uppercase tracking-wider">
                             Reflection Ready
-                          </h5>
+                          </h4>
                           <p className="text-sm text-[var(--text-dim)] leading-relaxed uppercase">
                             This schema is now representable as a{" "}
                             <code>FileDescriptorSet</code> message, enabling
@@ -1593,7 +1593,7 @@ export const ValidationLab = () => {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch relative">
             {/* Global Interactive Sign for Large Screens */}
-            <div className="absolute -left-48 top-48 hidden 2xl:flex flex-col items-end gap-2 text-[var(--cyber-neon-pink)] pointer-events-none animate-pulse z-10 opacity-70">
+            <div className="absolute -left-48 top-48 hidden 2xl:flex flex-col items-end gap-2 text-[var(--cyber-neon-pink)] pointer-events-none z-10">
               <span className="font-cyber text-sm uppercase tracking-widest text-right">
                 These Panels
                 <br />
@@ -1629,7 +1629,7 @@ export const ValidationLab = () => {
                   <button
                     onClick={() => setIsModalOpen(true)}
                     className="text-sm font-cyber font-bold text-[var(--cyber-neon-blue)] hover:text-[var(--cyber-neon-blue)]/80 transition-colors uppercase flex items-center gap-1 group"
-                    aria-label="Open validation schema editor"
+                    aria-label="EDIT SCHEMA - Open validation schema editor"
                   >
                     <Settings2 className="w-3 h-3 group-hover:rotate-45 transition-transform" />
                     Edit Schema
@@ -1672,7 +1672,7 @@ export const ValidationLab = () => {
                   }}
                   disabled={!rootMessageName || !localFds}
                   className="px-2 py-1 text-sm font-cyber font-bold border border-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/10 text-[var(--cyber-neon-pink)] hover:bg-[var(--cyber-neon-pink)]/20 transition-all flex items-center gap-1.5 disabled:opacity-30 disabled:cursor-not-allowed rounded uppercase tracking-wider"
-                  aria-label="Generate random JSON data for validation"
+                  aria-label="RANDOMIZE - Generate random JSON data for validation"
                 >
                   <Zap className="w-2.5 h-2.5" />
                   Randomize
@@ -1746,7 +1746,7 @@ export const ValidationLab = () => {
                       )}
                     </div>
                   ) : (
-                    <div className="h-full flex flex-col items-center justify-center text-[var(--text-dim)] gap-4 opacity-40 py-20">
+                    <div className="h-full flex flex-col items-center justify-center text-[var(--text-dim)] gap-4  py-20">
                       <ShieldCheck className="w-10 h-10" />
                       <p className="font-cyber text-sm uppercase tracking-widest text-center">
                         Waiting for

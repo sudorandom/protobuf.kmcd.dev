@@ -240,21 +240,35 @@ export const ExternalLinkText = ({
 }: {
   href: string;
   children: React.ReactNode;
-}) => (
-  <a
-    href={href}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="text-[var(--cyber-neon-blue)] hover:underline inline-flex items-center gap-0.5 group"
-    aria-label={`${children} (opens in new tab)`}
-  >
-    {children}
-    <ExternalLink
-      className="w-2.5 h-2.5 opacity-60 group-hover:opacity-100 transition-opacity"
-      aria-hidden="true"
-    />
-  </a>
-);
+}) => {
+  const label = React.Children.toArray(children)
+    .map((child) => {
+      if (typeof child === "string" || typeof child === "number") return child;
+      if (React.isValidElement(child) && (child.props as any).children) {
+        return React.Children.toArray((child.props as any).children)
+          .filter((c) => typeof c === "string" || typeof c === "number")
+          .join("");
+      }
+      return "";
+    })
+    .join("");
+
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-[var(--cyber-neon-blue)] underline hover:text-[var(--cyber-neon-blue)]/80 inline-flex items-center gap-0.5 group transition-colors"
+      aria-label={`${label} (opens in new tab)`}
+    >
+      {children}
+      <ExternalLink
+        className="w-2.5 h-2.5 opacity-60 group-hover:opacity-100 transition-opacity"
+        aria-hidden="true"
+      />
+    </a>
+  );
+};
 
 export const SectionTitle = ({
   children,
@@ -364,11 +378,11 @@ export const RoadmapGrid = ({
               {(index + 1).toString().padStart(2, "0")}
             </div>
             <div>
-              <h4
+              <h2
                 className={`text-sm font-bold uppercase tracking-wider text-[var(--text-color)] transition-colors ${theme.hoverText}`}
               >
                 {item.title}
-              </h4>
+              </h2>
               <p className="text-sm text-[var(--text-dim)] mt-1">{item.desc}</p>
             </div>
           </a>

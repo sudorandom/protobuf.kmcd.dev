@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
-    "postbuild": "cp dist/index.html dist/404.html",
+    "build": "node scripts/generate-social-images.js && tsc -b && vite build",
+    "postbuild": "./scripts/generate-static-routes.sh",
     "lint": "eslint .",
     "format": "prettier --write .",
     "preview": "vite preview"
@@ -38,6 +38,7 @@
     "globals": "^17.5.0",
     "jsdom": "^29.1.1",
     "prettier": "^3.8.3",
+    "sharp": "^0.34.5",
     "tailwindcss": "^4.2.4",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.58.2",

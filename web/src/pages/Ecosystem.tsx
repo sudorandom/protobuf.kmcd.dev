@@ -111,9 +111,9 @@ export const VersionTimeline = () => {
                         {v.year}
                       </span>
                     </div>
-                    <h4 className="text-lg font-cyber font-bold text-[var(--text-color)] uppercase mb-2 group-hover:text-[var(--text-color)] transition-colors">
+                    <h2 className="text-lg font-cyber font-bold text-[var(--text-color)] uppercase mb-2 group-hover:text-[var(--text-color)] transition-colors">
                       {v.title}
-                    </h4>
+                    </h2>
                     <p className="text-sm text-[var(--text-dim)] leading-relaxed mb-4">
                       {v.desc}
                     </p>
@@ -205,9 +205,9 @@ export const PoweringTheIndustry = () => {
               key={p.name}
               className="p-6 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-xl hover:border-[var(--cyber-neon-blue)]/50 transition-all group"
             >
-              <h4 className="font-cyber font-bold text-[var(--cyber-neon-blue)] uppercase mb-2 tracking-wider">
+              <h2 className="font-cyber font-bold text-[var(--cyber-neon-blue)] uppercase mb-2 tracking-wider text-base">
                 {p.name}
-              </h4>
+              </h2>
               <p className="text-sm text-[var(--text-dim)] leading-relaxed mb-4">
                 {p.desc}
               </p>
@@ -436,9 +436,9 @@ export const CommunityResources = () => (
       </SectionTitle>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         <div className="space-y-4">
-          <h4 className="font-cyber font-bold text-[var(--cyber-neon-green)] uppercase text-sm tracking-widest">
+          <h3 className="font-cyber font-bold text-[var(--cyber-neon-green)] uppercase text-sm tracking-widest">
             Official Resources
-          </h4>
+          </h3>
           <ul className="space-y-3 text-sm">
             <li>
               <ExternalLinkText href="https://protobuf.dev/news/">
@@ -463,9 +463,9 @@ export const CommunityResources = () => (
           </ul>
         </div>
         <div className="space-y-4">
-          <h4 className="font-cyber font-bold text-[var(--cyber-neon-blue)] uppercase text-sm tracking-widest">
+          <h3 className="font-cyber font-bold text-[var(--cyber-neon-blue)] uppercase text-sm tracking-widest">
             Specifications
-          </h4>
+          </h3>
           <ul className="space-y-3 text-sm">
             <li>
               <ExternalLinkText href="https://protobuf.dev/programming-guides/encoding/">
@@ -490,9 +490,9 @@ export const CommunityResources = () => (
           </ul>
         </div>
         <div className="space-y-4">
-          <h4 className="font-cyber font-bold text-[var(--cyber-neon-pink)] uppercase text-sm tracking-widest">
+          <h3 className="font-cyber font-bold text-[var(--cyber-neon-pink)] uppercase text-sm tracking-widest">
             Support & Forums
-          </h4>
+          </h3>
           <ul className="space-y-3 text-sm">
             <li>
               <ExternalLinkText href="https://groups.google.com/g/protobuf">
@@ -512,9 +512,9 @@ export const CommunityResources = () => (
           </ul>
         </div>
         <div className="space-y-4">
-          <h4 className="font-cyber font-bold text-[var(--cyber-neon-yellow)] uppercase text-sm tracking-widest">
+          <h3 className="font-cyber font-bold text-[var(--cyber-neon-yellow)] uppercase text-sm tracking-widest">
             Slack & Chat
-          </h4>
+          </h3>
           <ul className="space-y-3 text-sm">
             <li>
               <ExternalLinkText href="https://invite.slack.golangbridge.org/">
@@ -548,9 +548,9 @@ export const AlternativesLandscape = () => (
           <div className="p-4 space-y-4">
             <div className="flex items-center gap-2 mb-4">
               <Braces className="w-5 h-5 text-[var(--cyber-neon-blue)]" />
-              <h4 className="font-cyber font-bold text-[var(--text-color)] uppercase text-sm">
+              <h3 className="font-cyber font-bold text-[var(--text-color)] uppercase text-sm">
                 JSON / XML
-              </h4>
+              </h3>
             </div>
             <p className="text-sm text-[var(--text-dim)] leading-relaxed">
               Ubiquitous, human-readable, and easy to debug. However, they lack
@@ -567,9 +567,9 @@ export const AlternativesLandscape = () => (
           <div className="p-4 space-y-4">
             <div className="flex items-center gap-2 mb-4">
               <Box className="w-5 h-5 text-[var(--cyber-neon-pink)]" />
-              <h4 className="font-cyber font-bold text-[var(--text-color)] uppercase text-sm">
+              <h3 className="font-cyber font-bold text-[var(--text-color)] uppercase text-sm">
                 MessagePack / CBOR
-              </h4>
+              </h3>
             </div>
             <p className="text-sm text-[var(--text-dim)] leading-relaxed">
               Binary formats that don't require a schema. Think "Binary JSON".
@@ -586,9 +586,9 @@ export const AlternativesLandscape = () => (
           <div className="p-4 space-y-4">
             <div className="flex items-center gap-2 mb-4">
               <Zap className="w-5 h-5 text-[var(--cyber-neon-green)]" />
-              <h4 className="font-cyber font-bold text-[var(--text-color)] uppercase text-sm">
+              <h3 className="font-cyber font-bold text-[var(--text-color)] uppercase text-sm">
                 FlatBuffers / Avro
-              </h4>
+              </h3>
             </div>
             <p className="text-sm text-[var(--text-dim)] leading-relaxed">
               FlatBuffers allows "zero-copy" access, meaning you can read data

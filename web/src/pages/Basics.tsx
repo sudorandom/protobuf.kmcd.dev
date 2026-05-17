@@ -128,9 +128,9 @@ export const SchemaDrivenAPIs = () => {
                 </CyberPanel>
               </div>
               <div className="space-y-6">
-                <h4 className="text-[var(--cyber-neon-green)] font-cyber font-bold text-sm tracking-widest uppercase">
+                <h3 className="text-[var(--cyber-neon-green)] font-cyber font-bold text-sm tracking-widest uppercase">
                   The Schema Definition
-                </h4>
+                </h3>
                 <div className="space-y-4 text-[var(--text-dim)] leading-relaxed">
                   <p>
                     In this <code>user.proto</code> file, we define a{" "}

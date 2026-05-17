@@ -7,6 +7,9 @@ web-format:
 web-dev: web-format
 	cd web && mise exec -- pnpm run dev
 
+web-serve: web-build
+	cd web && mise exec -- pnpm run preview
+
 web-build: web-format wasm-build
 	cd web && mise exec -- pnpm run build
 

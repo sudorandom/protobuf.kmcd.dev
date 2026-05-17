@@ -121,12 +121,8 @@ export async function initWasm() {
 
     let wasmResponse: Response;
 
-    // Even if the content type isn't set, we can check the body if we want to be sure,
-    // but pipeThrough(new DecompressionStream("gzip")) is generally what we want if we know it's gzipped.
-    // Since we control the build, we know it's gzipped.
-    // To be safe and support both gzipped and non-gzipped (e.g. during dev if not using just wasm-build),
-    // we can peek at the first few bytes.
-
+    // We check if the response is gzipped by looking at the magic number (0x1f 0x8b)
+    // This allows us to support both compressed and uncompressed files (useful for dev).
     const reader = response.body!.getReader();
     const { value, done } = await reader.read();
 

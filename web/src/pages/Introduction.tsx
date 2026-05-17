@@ -62,17 +62,31 @@ export const Introduction = ({
   }, [messageSchema]);
 
   useEffect(() => {
+    // Preload WASM after a short delay to not block the initial paint
+    const timer = setTimeout(() => {
+      import("../utils/wasm-parser").then(({ initWasm }) => initWasm());
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
     let active = true;
     const fetchExamples = async () => {
       if (!messageSchema || !fds || !dynamicExamples) return;
+      // Only fetch if we are on a face that needs WASM (txt or scope)
+      if (activeFace !== "txt" && activeFace !== "scope") return;
+
       try {
-        const [text, scope] = await Promise.all([
-          convertToPrototext(messageSchema.typeName, fds, dynamicExamples.json),
-          convertToProtoscope(dynamicExamples.binary),
-        ]);
-        if (active) {
-          setProtoTextExample(text.trim());
-          setProtoscopeExample(scope.trim());
+        if (activeFace === "txt" && !protoTextExample) {
+          const text = await convertToPrototext(
+            messageSchema.typeName,
+            fds,
+            dynamicExamples.json,
+          );
+          if (active) setProtoTextExample(text.trim());
+        } else if (activeFace === "scope" && !protoscopeExample) {
+          const scope = await convertToProtoscope(dynamicExamples.binary);
+          if (active) setProtoscopeExample(scope.trim());
         }
       } catch (e) {
         console.error("Failed to convert examples:", e);
@@ -82,7 +96,14 @@ export const Introduction = ({
     return () => {
       active = false;
     };
-  }, [messageSchema, fds, dynamicExamples]);
+  }, [
+    messageSchema,
+    fds,
+    dynamicExamples,
+    activeFace,
+    protoTextExample,
+    protoscopeExample,
+  ]);
 
   const faces = [
     {
@@ -207,9 +228,9 @@ export const Introduction = ({
         </div>
 
         <div className="p-8 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-xl">
-          <h3 className="text-[var(--cyber-neon-blue)] font-cyber uppercase text-sm tracking-widest mb-6">
+          <h2 className="text-[var(--cyber-neon-blue)] font-cyber uppercase text-sm tracking-widest mb-6">
             Why it matters:
-          </h3>
+          </h2>
           <ul className="grid grid-cols-1 md:grid-cols-3 gap-8 text-[var(--text-color)]">
             <li className="space-y-3">
               <div className="flex items-center gap-3">
@@ -251,9 +272,9 @@ export const Introduction = ({
       </div>
 
       <div className="mb-16 space-y-6">
-        <h3 className="text-2xl font-cyber font-bold text-[var(--text-color)] uppercase">
+        <h2 className="text-2xl font-cyber font-bold text-[var(--text-color)] uppercase">
           How it works
-        </h3>
+        </h2>
         <p className="text-[var(--text-dim)] leading-relaxed">
           Protobuf works by combining a pre-defined <strong>schema</strong> with
           your <strong>data</strong> to produce a compact binary payload. Unlike
@@ -305,9 +326,9 @@ export const Introduction = ({
               <div className="flex-1 space-y-8">
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <h3 className="text-2xl font-cyber font-bold text-[var(--text-color)] uppercase">
+                    <h2 className="text-2xl font-cyber font-bold text-[var(--text-color)] uppercase">
                       {current.title}
-                    </h3>
+                    </h2>
                     <div className="text-[var(--text-dim)] leading-relaxed text-sm max-w-3xl">
                       {current.desc}
                     </div>
@@ -354,9 +375,9 @@ export const Introduction = ({
 
       <div className="mt-24 pt-16 border-t border-[var(--border-light)]">
         <div className="flex flex-col items-center mb-12">
-          <h3 className="text-2xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight mb-2">
+          <h2 className="text-2xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight mb-2">
             The Compilation Pipeline
-          </h3>
+          </h2>
           <p className="text-[var(--text-dim)] text-center max-w-2xl">
             How your human-readable schema becomes high-performance code.
           </p>
@@ -414,7 +435,7 @@ export const Introduction = ({
                 </CyberPanel>
                 <CyberPanel className="text-center p-2 text-sm hover:border-[var(--cyber-neon-blue)] transition-colors group">
                   <ExternalLinkText href="https://protobuf.dev/getting-started/gotutorial/">
-                    Go
+                    Go Language Tutorial
                   </ExternalLinkText>
                 </CyberPanel>
                 <CyberPanel className="text-center p-2 text-sm hover:border-[var(--cyber-neon-blue)] transition-colors group">

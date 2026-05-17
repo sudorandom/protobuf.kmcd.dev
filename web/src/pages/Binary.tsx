@@ -44,21 +44,21 @@ const PacketDiagram = () => (
           <Hash className="w-3 h-3" /> Tag
         </div>
         <span className="font-bold">VARINT</span>
-        <span className="text-sm opacity-60">(Field # | Type)</span>
+        <span className="text-sm ">(Field # | Type)</span>
       </div>
       <div className="flex-[0.7] bg-[var(--cyber-neon-yellow)]/10 border border-[var(--cyber-neon-yellow)]/30 rounded flex flex-col items-center justify-center text-[var(--cyber-neon-yellow)] font-mono text-sm relative group px-2 text-center">
         <div className="absolute -top-6 left-0 text-sm uppercase text-[var(--text-dim)] font-bold tracking-widest flex items-center gap-1">
           <Zap className="w-3 h-3" /> Length
         </div>
         <span className="font-bold">VARINT</span>
-        <span className="text-sm opacity-60">N Bytes</span>
+        <span className="text-sm ">N Bytes</span>
       </div>
       <div className="flex-[2] bg-[var(--cyber-neon-green)]/10 border border-[var(--cyber-neon-green)]/30 rounded flex flex-col items-center justify-center text-[var(--cyber-neon-green)] font-mono text-sm relative group px-2 text-center">
         <div className="absolute -top-6 left-0 text-sm uppercase text-[var(--text-dim)] font-bold tracking-widest flex items-center gap-1">
           <Database className="w-3 h-3" /> Payload
         </div>
         <span className="font-bold">DATA</span>
-        <span className="text-sm opacity-60">Binary Bytes</span>
+        <span className="text-sm ">Binary Bytes</span>
       </div>
     </div>
     <div className="flex justify-between mt-8 px-2">
@@ -92,14 +92,14 @@ const FixedPacketDiagram = ({ size = "4 or 8 Bytes" }: { size?: string }) => (
           <Hash className="w-3 h-3" /> Tag
         </div>
         <span className="font-bold">VARINT</span>
-        <span className="text-sm opacity-60">(Field # | Type)</span>
+        <span className="text-sm ">(Field # | Type)</span>
       </div>
       <div className="flex-[2.7] bg-[var(--cyber-neon-green)]/10 border border-[var(--cyber-neon-green)]/30 rounded flex flex-col items-center justify-center text-[var(--cyber-neon-green)] font-mono text-sm relative group px-2 text-center">
         <div className="absolute -top-6 left-0 text-sm uppercase text-[var(--text-dim)] font-bold tracking-widest flex items-center gap-1">
           <Database className="w-3 h-3" /> Payload
         </div>
         <span className="font-bold">DATA</span>
-        <span className="text-sm opacity-60">{size}</span>
+        <span className="text-sm ">{size}</span>
       </div>
     </div>
     <div className="flex justify-between mt-8 px-2">
@@ -127,14 +127,14 @@ const VarintPacketDiagram = () => (
           <Hash className="w-3 h-3" /> Tag
         </div>
         <span className="font-bold">VARINT</span>
-        <span className="text-sm opacity-60">(Field # | Type)</span>
+        <span className="text-sm ">(Field # | Type)</span>
       </div>
       <div className="flex-[2.7] bg-[var(--cyber-neon-green)]/10 border border-[var(--cyber-neon-green)]/30 rounded flex flex-col items-center justify-center text-[var(--cyber-neon-green)] font-mono text-sm relative group px-2 text-center">
         <div className="absolute -top-6 left-0 text-sm uppercase text-[var(--text-dim)] font-bold tracking-widest flex items-center gap-1">
           <Database className="w-3 h-3" /> Payload
         </div>
         <span className="font-bold">VARINT</span>
-        <span className="text-sm opacity-60">1-10 Bytes</span>
+        <span className="text-sm ">1-10 Bytes</span>
       </div>
     </div>
     <div className="flex justify-between mt-8 px-2">
@@ -172,7 +172,7 @@ const ByteBreakdown = ({
         <span className="text-sm font-mono text-[var(--text-dim)] uppercase tracking-widest">
           {label}
         </span>
-        <span className="text-sm font-mono text-[var(--text-dim)] opacity-60 uppercase">
+        <span className="text-sm font-mono text-[var(--text-dim)]  uppercase">
           {bytes.length} {bytes.length === 1 ? "Byte" : "Bytes"}
         </span>
       </div>
@@ -191,7 +191,7 @@ const ByteBreakdown = ({
           ))}
         </div>
         <div
-          className="flex flex-wrap gap-x-3 gap-y-1 font-mono text-sm opacity-70 break-all"
+          className="flex flex-wrap gap-x-3 gap-y-1 font-mono text-sm  break-all"
           style={{ color }}
         >
           {Array.from(bytes).map((b, i) => (
@@ -222,7 +222,7 @@ const TagSectionBreakdown = ({
         <span className="text-sm font-mono text-[var(--text-dim)] uppercase tracking-widest">
           Tag Section
         </span>
-        <span className="text-sm font-mono text-[var(--text-dim)] opacity-60 uppercase">
+        <span className="text-sm font-mono text-[var(--text-dim)]  uppercase">
           {bytes.length} {bytes.length === 1 ? "Byte" : "Bytes"}
         </span>
       </div>
@@ -238,7 +238,7 @@ const TagSectionBreakdown = ({
                   {byte.toString(16).padStart(2, "0").toUpperCase()}
                 </span>
                 {bytes.length > 1 && (
-                  <span className="text-sm font-mono text-[var(--text-dim)] uppercase opacity-60">
+                  <span className="text-sm font-mono text-[var(--text-dim)] uppercase ">
                     Byte {i}
                   </span>
                 )}
@@ -283,7 +283,7 @@ const TagSectionBreakdown = ({
                         {bit}
                       </div>
                       <div
-                        className="text-sm font-mono mt-1 opacity-60 overflow-hidden"
+                        className="text-sm font-mono mt-1  overflow-hidden"
                         style={{ color: bitColor }}
                       >
                         {label}
@@ -357,14 +357,14 @@ const TagCalculator = () => {
           <button
             onClick={() => setMode("small")}
             className={`px-3 py-1 text-sm font-mono rounded transition-all ${mode === "small" ? "bg-[var(--cyber-neon-blue)]/20 text-[var(--cyber-neon-blue)]" : "text-[var(--text-dim)] hover:text-[var(--text-color)]"}`}
-            aria-label="Show tag for field number 1"
+            aria-label="FIELD_1 - Show tag for field number 1"
           >
             FIELD_1
           </button>
           <button
             onClick={() => setMode("large")}
             className={`px-3 py-1 text-sm font-mono rounded transition-all ${mode === "large" ? "bg-[var(--cyber-neon-pink)]/20 text-[var(--cyber-neon-pink)]" : "text-[var(--text-dim)] hover:text-[var(--text-color)]"}`}
-            aria-label="Show tag for field number 16"
+            aria-label="FIELD_16 - Show tag for field number 16"
           >
             FIELD_16
           </button>
@@ -375,9 +375,9 @@ const TagCalculator = () => {
         {/* Step 1: Shift */}
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h4 className="text-xs font-cyber text-[var(--cyber-neon-blue)] uppercase tracking-widest">
+            <h3 className="text-xs font-cyber text-[var(--cyber-neon-blue)] uppercase tracking-widest">
               01. Bit Shift (field &lt;&lt; 3)
-            </h4>
+            </h3>
             <div className="text-xs font-mono text-[var(--text-dim)] bg-[var(--section-bg-dark)] px-2 py-0.5 rounded border border-[var(--border-light)]">
               {field} {"<<"} 3 = {field << 3}
             </div>
@@ -394,7 +394,7 @@ const TagCalculator = () => {
               ))}
             </div>
             <div className="flex justify-center py-1">
-              <div className="text-[var(--cyber-neon-blue)] opacity-50 text-sm font-bold">
+              <div className="text-[var(--cyber-neon-blue)]  text-sm font-bold">
                 ↓
               </div>
             </div>
@@ -414,9 +414,9 @@ const TagCalculator = () => {
         {/* Step 2: Merge */}
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h4 className="text-xs font-cyber text-[var(--cyber-neon-yellow)] uppercase tracking-widest">
+            <h3 className="text-xs font-cyber text-[var(--cyber-neon-yellow)] uppercase tracking-widest">
               02. Bitwise OR (| wire_type)
-            </h4>
+            </h3>
             <div className="text-xs font-mono text-[var(--text-dim)] bg-[var(--section-bg-dark)] px-2 py-0.5 rounded border border-[var(--border-light)]">
               {field << 3} | {type} = {tagValue}
             </div>
@@ -432,7 +432,7 @@ const TagCalculator = () => {
                 </div>
               ))}
             </div>
-            <div className="flex justify-between px-1 text-xs font-mono uppercase tracking-tighter opacity-70">
+            <div className="flex justify-between px-1 text-xs font-mono uppercase tracking-tighter ">
               <div className="text-[var(--cyber-neon-blue)]">
                 Field Number Bits
               </div>
@@ -446,9 +446,9 @@ const TagCalculator = () => {
         {/* Step 3: Varint */}
         <div className="space-y-4 pt-6 border-t border-[var(--border-light)]">
           <div className="flex items-center justify-between">
-            <h4 className="text-xs font-cyber text-[var(--cyber-neon-green)] uppercase tracking-widest">
+            <h3 className="text-xs font-cyber text-[var(--cyber-neon-green)] uppercase tracking-widest">
               03. Varint Encoding (Little-Endian)
-            </h4>
+            </h3>
             <div className="text-xs font-mono text-[var(--text-dim)] bg-[var(--section-bg-dark)] px-2 py-0.5 rounded border border-[var(--border-light)]">
               {tagValue} → {varintBytes.length} Byte(s)
             </div>
@@ -459,7 +459,7 @@ const TagCalculator = () => {
               return (
                 <div key={byteIdx} className="flex-1 space-y-2">
                   <div className="flex justify-between items-center">
-                    <span className="text-xs font-mono text-[var(--text-dim)] uppercase opacity-60">
+                    <span className="text-xs font-mono text-[var(--text-dim)] uppercase ">
                       Byte {byteIdx}
                     </span>
                     <span className="text-xs font-mono text-[var(--cyber-neon-green)] font-bold">
@@ -476,7 +476,7 @@ const TagCalculator = () => {
                       </div>
                     ))}
                   </div>
-                  <div className="flex justify-between text-xs font-mono opacity-50 uppercase tracking-tighter">
+                  <div className="flex justify-between text-xs font-mono  uppercase tracking-tighter">
                     <span className="text-[var(--cyber-neon-pink)]">MSB</span>
                     <span>7-Bit Value Chunk</span>
                   </div>
@@ -546,12 +546,12 @@ const WireFormatBreakdown = () => {
             className="hover:border-[var(--cyber-neon-blue)]/50 transition-colors"
           >
             <div className="p-4 space-y-3">
-              <h4
+              <h3
                 className="font-cyber font-bold uppercase text-sm tracking-widest"
                 style={{ color: wt.color }}
               >
                 {wt.label}
-              </h4>
+              </h3>
               <p className="text-sm text-[var(--text-dim)] leading-relaxed min-h-[40px]">
                 {wt.desc}
               </p>
@@ -560,7 +560,7 @@ const WireFormatBreakdown = () => {
                   {wt.types.map((t) => (
                     <span
                       key={t}
-                      className="text-sm font-mono px-1.5 py-0.5 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded opacity-80"
+                      className="text-sm font-mono px-1.5 py-0.5 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded "
                     >
                       {t}
                     </span>
@@ -690,9 +690,9 @@ const BinaryBasics = () => (
 
         <div className="max-w-3xl mx-auto space-y-12">
           <div className="space-y-4">
-            <h4 className="text-sm font-cyber font-bold text-[var(--cyber-neon-blue)] uppercase tracking-widest">
+            <h3 className="text-sm font-cyber font-bold text-[var(--cyber-neon-blue)] uppercase tracking-widest">
               1. Base-128 Mechanics
-            </h4>
+            </h3>
             <p className="text-sm text-[var(--text-dim)] leading-relaxed">
               The Varint algorithm processes integers by dropping leading zeros.
               It looks at the least significant 7 bits, sets a continuation bit,
@@ -704,9 +704,9 @@ const BinaryBasics = () => (
             </p>
           </div>
           <div className="space-y-4">
-            <h4 className="text-sm font-cyber font-bold text-[var(--cyber-neon-green)] uppercase tracking-widest">
+            <h3 className="text-sm font-cyber font-bold text-[var(--cyber-neon-green)] uppercase tracking-widest">
               2. Hardware Synergy
-            </h4>
+            </h3>
             <p className="text-sm text-[var(--text-dim)] leading-relaxed">
               Google's data centers were built on x86 hardware, which is
               natively Little-Endian. Forcing servers to flip bytes into
@@ -717,9 +717,9 @@ const BinaryBasics = () => (
             </p>
           </div>
           <div className="space-y-4">
-            <h4 className="text-sm font-cyber font-bold text-[var(--cyber-neon-pink)] uppercase tracking-widest">
+            <h3 className="text-sm font-cyber font-bold text-[var(--cyber-neon-pink)] uppercase tracking-widest">
               3. Payload vs Transport
-            </h4>
+            </h3>
             <p className="text-sm text-[var(--text-dim)] leading-relaxed">
               It helps to draw a hard line between transport and payload. TCP/IP
               headers are Big-Endian so routers can read them, but Protobuf is
@@ -962,7 +962,7 @@ export const BinaryMatrix = ({
                     ? "bg-[var(--cyber-neon-blue)] border-[var(--cyber-neon-blue)] text-[var(--neon-contrast-text)] shadow-[0_0_10px_rgba(0,243,255,0.3)]"
                     : "bg-[var(--overlay-bg)] border-[var(--border-light)] text-[var(--text-dim)] hover:border-[var(--cyber-neon-blue)]/50 hover:text-[var(--text-color)]"
                 }`}
-                aria-label={`Load ${key} example`}
+                aria-label={`Load ${key} example data`}
               >
                 {key}
               </button>
@@ -974,7 +974,7 @@ export const BinaryMatrix = ({
               onClick={handleGenerateFake}
               disabled={isGenerating || !localFds}
               className="px-4 py-1.5 text-sm font-cyber font-bold border border-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)] text-[var(--neon-contrast-text)] hover:bg-[var(--cyber-neon-pink)]/90 transition-all flex items-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed rounded-md shadow-[0_0_15px_rgba(255,0,255,0.4)]"
-              aria-label="Generate Random Data"
+              aria-label="RANDOMIZE - Generate Random Data"
             >
               <Zap
                 className={`w-3.5 h-3.5 ${isGenerating ? "animate-spin" : ""}`}
@@ -986,7 +986,7 @@ export const BinaryMatrix = ({
           <button
             onClick={() => setIsModalOpen(true)}
             className="text-sm font-cyber font-bold text-[var(--cyber-neon-blue)] hover:text-[var(--cyber-neon-blue)]/80 transition-colors uppercase flex items-center gap-1 group"
-            aria-label="Edit Protobuf Schema"
+            aria-label="EDIT SCHEMA - Edit Protobuf Schema"
           >
             <Settings2 className="w-3 h-3 group-hover:rotate-45 transition-transform" />
             Edit Schema
@@ -995,7 +995,7 @@ export const BinaryMatrix = ({
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 relative">
           {/* Global Interactive Sign for Large Screens */}
-          <div className="absolute -left-48 top-48 hidden 2xl:flex flex-col items-end gap-2 text-[var(--cyber-neon-pink)] pointer-events-none animate-pulse z-10 opacity-70">
+          <div className="absolute -left-48 top-48 hidden 2xl:flex flex-col items-end gap-2 text-[var(--cyber-neon-pink)] pointer-events-none z-10">
             <span className="font-cyber text-sm uppercase tracking-widest text-right">
               These Panels
               <br />
@@ -1068,7 +1068,7 @@ export const BinaryMatrix = ({
                             key={i}
                             onClick={() => setSelectedSegmentIdx(i)}
                             className={`group relative grid grid-cols-[1rem_1fr_auto] items-center gap-4 p-2 rounded-lg border transition-all text-left ${isActive ? "bg-[var(--overlay-bg)] border-[var(--border-light)]" : "border-transparent hover:bg-[var(--overlay-bg)]/50"}`}
-                            aria-label={`Inspect segment ${i}${seg.fieldName ? `: ${seg.fieldName}` : ""}`}
+                            aria-label={`${seg.rawHex.join(" ")} ${seg.fieldName || "UNKNOWN"} - Click to inspect`}
                           >
                             <div className="flex justify-center">
                               {isActive && (
@@ -1110,7 +1110,7 @@ export const BinaryMatrix = ({
 
                             {seg.fieldName && (
                               <span
-                                className={`text-sm uppercase font-cyber tracking-widest opacity-60 flex-shrink-0 ${isActive ? "text-[var(--text-color)]" : "text-[var(--text-dim)]"}`}
+                                className={`text-sm uppercase font-cyber tracking-widest  flex-shrink-0 ${isActive ? "text-[var(--text-color)]" : "text-[var(--text-dim)]"}`}
                               >
                                 {seg.fieldName}
                               </span>
@@ -1245,7 +1245,7 @@ export const BinaryMatrix = ({
                 ) : (
                   <div className="h-full flex flex-col items-center justify-center text-[var(--text-dim)] gap-4 py-20">
                     <SearchCheck className="w-12 h-12 opacity-20" />
-                    <p className="font-cyber text-sm uppercase tracking-widest opacity-40">
+                    <p className="font-cyber text-sm uppercase tracking-widest ">
                       Select a segment to analyze
                     </p>
                   </div>
@@ -1420,9 +1420,9 @@ const BinaryPage = ({
 
               <div className="space-y-6">
                 <div className="p-6 bg-[var(--section-bg-dark)] border-l-4 border-[var(--cyber-neon-blue)] rounded-r-xl">
-                  <h4 className="text-sm font-bold text-[var(--cyber-neon-blue)] uppercase tracking-widest mb-2">
+                  <h3 className="text-sm font-bold text-[var(--cyber-neon-blue)] uppercase tracking-widest mb-2">
                     Tag Composition
-                  </h4>
+                  </h3>
                   <p className="text-sm text-[var(--text-dim)] leading-relaxed">
                     A tag is a single <strong>Varint</strong> that combines two
                     pieces of information:
@@ -1515,9 +1515,9 @@ const BinaryPage = ({
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
                 <div className="space-y-3">
-                  <h4 className="font-cyber font-bold text-sm text-[var(--cyber-neon-green)] uppercase tracking-widest">
+                  <h3 className="font-cyber font-bold text-sm text-[var(--cyber-neon-green)] uppercase tracking-widest">
                     Strengths
-                  </h4>
+                  </h3>
                   <ul className="space-y-2">
                     <li className="text-sm text-[var(--text-dim)] flex gap-2">
                       <span className="text-[var(--cyber-neon-green)]">+</span>
@@ -1540,9 +1540,9 @@ const BinaryPage = ({
                   </ul>
                 </div>
                 <div className="space-y-3">
-                  <h4 className="font-cyber font-bold text-sm text-[var(--cyber-neon-pink)] uppercase tracking-widest">
+                  <h3 className="font-cyber font-bold text-sm text-[var(--cyber-neon-pink)] uppercase tracking-widest">
                     Weaknesses
-                  </h4>
+                  </h3>
                   <ul className="space-y-2">
                     <li className="text-sm text-[var(--text-dim)] flex gap-2">
                       <span className="text-[var(--cyber-neon-pink)]">-</span>

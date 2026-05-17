@@ -10,9 +10,9 @@ export const NextSteps = () => (
   >
     <div className="max-w-4xl mx-auto text-center space-y-12">
       <div className="space-y-4">
-        <h3 className="text-3xl md:text-5xl font-cyber font-black text-[var(--text-color)] uppercase tracking-tighter">
+        <h2 className="text-3xl md:text-5xl font-cyber font-black text-[var(--text-color)] uppercase tracking-tighter">
           Ready to Build?
-        </h3>
+        </h2>
         <p className="text-[var(--text-dim)] text-lg">
           Protobuf is a deep ecosystem. Here is where to go next.
         </p>
@@ -25,9 +25,9 @@ export const NextSteps = () => (
           rel="noopener noreferrer"
           className="p-6 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-xl hover:border-[var(--cyber-neon-blue)] transition-all group"
         >
-          <h4 className="font-cyber font-bold text-[var(--cyber-neon-blue)] uppercase mb-2">
+          <h3 className="font-cyber font-bold text-[var(--cyber-neon-blue)] uppercase mb-2">
             Official Docs
-          </h4>
+          </h3>
           <p className="text-sm text-[var(--text-dim)]">
             The definitive source for language syntax, well-known types, and
             standard practices.
@@ -39,9 +39,9 @@ export const NextSteps = () => (
           rel="noopener noreferrer"
           className="p-6 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-xl hover:border-[var(--cyber-neon-pink)] transition-all group"
         >
-          <h4 className="font-cyber font-bold text-[var(--cyber-neon-pink)] uppercase mb-2">
+          <h3 className="font-cyber font-bold text-[var(--cyber-neon-pink)] uppercase mb-2">
             Buf.build
-          </h4>
+          </h3>
           <p className="text-sm text-[var(--text-dim)]">
             Modern tooling for Protobuf. Linting, breaking change detection, and
             dependency management.
@@ -53,9 +53,9 @@ export const NextSteps = () => (
           rel="noopener noreferrer"
           className="p-6 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-xl hover:border-[var(--cyber-neon-green)] transition-all group"
         >
-          <h4 className="font-cyber font-bold text-[var(--cyber-neon-green)] uppercase mb-2">
+          <h3 className="font-cyber font-bold text-[var(--cyber-neon-green)] uppercase mb-2">
             ConnectRPC
-          </h4>
+          </h3>
           <p className="text-sm text-[var(--text-dim)]">
             A better way to build gRPC-compatible APIs that work natively in the
             browser and mobile.
@@ -67,9 +67,9 @@ export const NextSteps = () => (
           rel="noopener noreferrer"
           className="p-6 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-xl hover:border-[var(--cyber-neon-yellow)] transition-all group"
         >
-          <h4 className="font-cyber font-bold text-[var(--cyber-neon-yellow)] uppercase mb-2">
+          <h3 className="font-cyber font-bold text-[var(--cyber-neon-yellow)] uppercase mb-2">
             GitHub Repo
-          </h4>
+          </h3>
           <p className="text-sm text-[var(--text-dim)]">
             Dive into the source code of the compilers and runtimes for every
             major language.

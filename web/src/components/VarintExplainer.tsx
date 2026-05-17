@@ -1,27 +1,30 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import { ArrowRight, Info } from "lucide-react";
+import { CyberPanel } from "./shared/Common";
 
-const parseBigIntSafe = (val: string) => {
-  try {
-    return BigInt(val);
-  } catch {
-    return 0n;
-  }
-};
-
-const VarintExplainer = () => {
+const VarintExplainer: React.FC = () => {
   const [inputValue, setInputValue] = useState("150");
 
-  const value = parseBigIntSafe(inputValue);
+  const value = (() => {
+    try {
+      return BigInt(inputValue);
+    } catch {
+      return 0n;
+    }
+  })();
 
   const varintBytes = (() => {
-    let n = value;
-    if (n === 0n) return [0];
     const bytes = [];
-    while (n >= 128n) {
-      bytes.push(Number((n & 0x7fn) | 0x80n));
-      n >>= 7n;
+    let temp = value;
+    if (temp === 0n) return [0];
+    while (temp > 0n) {
+      let byte = Number(temp & 0x7fn);
+      temp >>= 7n;
+      if (temp > 0n) {
+        byte |= 0x80;
+      }
+      bytes.push(byte);
     }
-    bytes.push(Number(n));
     return bytes;
   })();
 
@@ -42,7 +45,7 @@ const VarintExplainer = () => {
   return (
     <div className="grid grid-cols-1 gap-8 relative">
       {/* Global Interactive Sign for Large Screens */}
-      <div className="absolute -left-48 top-4 hidden 2xl:flex flex-col items-end gap-2 text-[var(--cyber-neon-pink)] pointer-events-none animate-pulse z-10 opacity-70">
+      <div className="absolute -left-48 top-4 hidden 2xl:flex flex-col items-end gap-2 text-[var(--cyber-neon-pink)] pointer-events-none z-10">
         <span className="font-cyber text-sm uppercase tracking-widest text-right">
           These Panels
           <br />
@@ -69,10 +72,14 @@ const VarintExplainer = () => {
 
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-mono text-[var(--text-dim)] uppercase tracking-widest">
+          <label
+            htmlFor="varint-input"
+            className="text-sm font-mono text-[var(--text-dim)] uppercase tracking-widest"
+          >
             Input Number
           </label>
           <input
+            id="varint-input"
             type="number"
             min="0"
             value={inputValue}
@@ -127,38 +134,110 @@ const VarintExplainer = () => {
           </div>
         </div>
 
-        <div className="p-4 bg-[var(--cyber-neon-pink)]/5 border border-[var(--cyber-neon-pink)]/20 rounded-lg flex flex-col gap-3">
-          <div className="flex items-center justify-between">
-            <span className="text-sm font-mono text-[var(--cyber-neon-pink)] uppercase tracking-widest">
-              Final Varint (Little-Endian)
-            </span>
-            <span className="text-sm font-mono text-[var(--cyber-neon-pink)]/90 bg-[var(--cyber-neon-pink)]/10 px-2 py-0.5 rounded">
-              {varintBytes.length * 8} BITS
-            </span>
-          </div>
-          <div className="flex flex-wrap gap-x-3 gap-y-2 font-mono text-lg md:text-xl">
-            {varintBytes.map((byte, i) => {
-              const binary = byte.toString(2).padStart(8, "0");
-              return (
-                <div key={i} className="flex flex-col items-center gap-1">
-                  <span className="inline-block whitespace-nowrap bg-[var(--section-bg-dark)] rounded border border-[var(--cyber-neon-pink)]/20 shadow-inner overflow-hidden flex">
-                    <span
-                      className={`px-1 py-0.5 ${binary[0] === "1" ? "text-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/10" : "text-[var(--text-dim)] bg-[var(--bg-color)]"}`}
-                    >
-                      {binary[0]}
-                    </span>
-                    <span className="px-1 py-0.5 text-[var(--cyber-neon-cyan)]">
-                      {binary.slice(1)}
-                    </span>
-                  </span>
-                  <span className="text-xs font-mono text-[var(--cyber-neon-pink)] uppercase">
-                    0x{byte.toString(16).padStart(2, "0").toUpperCase()}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
+        <div className="flex flex-col items-center py-4">
+          <ArrowRight className="w-8 h-8 text-[var(--cyber-neon-pink)] rotate-90" />
         </div>
+
+        <CyberPanel title="VARINT_ENCODING_STEPS">
+          <div className="p-4 space-y-8">
+            <div className="flex flex-col lg:flex-row gap-8">
+              <div className="flex-1 space-y-4">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-full bg-[var(--cyber-neon-pink)]/20 border border-[var(--cyber-neon-pink)]/40 flex items-center justify-center font-cyber text-[var(--cyber-neon-pink)]">
+                    1
+                  </div>
+                  <h3 className="font-cyber font-bold text-sm uppercase tracking-widest">
+                    Chunk Data
+                  </h3>
+                </div>
+                <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+                  Split the number into 7-bit groups. Standard bytes are 8 bits,
+                  but we reserve the top bit (MSB) as a "continuation bit".
+                </p>
+              </div>
+
+              <div className="flex-1 space-y-4">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-full bg-[var(--cyber-neon-green)]/20 border border-[var(--cyber-neon-green)]/40 flex items-center justify-center font-cyber text-[var(--cyber-neon-green)]">
+                    2
+                  </div>
+                  <h3 className="font-cyber font-bold text-sm uppercase tracking-widest">
+                    Add MSB Flag
+                  </h3>
+                </div>
+                <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+                  Set the MSB to <code>1</code> for all bytes except the last
+                  one. This tells the parser to keep reading the next byte.
+                </p>
+              </div>
+            </div>
+
+            <div className="pt-8 border-t border-[var(--border-light)]">
+              <div className="flex flex-wrap gap-6 justify-center">
+                {varintBytes.map((byte, i) => {
+                  const isLast = i === varintBytes.length - 1;
+                  const bits = byte.toString(2).padStart(8, "0").split("");
+                  return (
+                    <div key={i} className="flex flex-col items-center gap-3">
+                      <div className="flex flex-col items-center">
+                        <span className="text-xs font-mono text-[var(--text-dim)] uppercase mb-1">
+                          Byte {i}
+                        </span>
+                        <div className="flex gap-1">
+                          {bits.map((bit, bitIdx) => (
+                            <div
+                              key={bitIdx}
+                              className={`w-7 h-9 flex items-center justify-center font-mono border rounded-sm ${
+                                bitIdx === 0
+                                  ? isLast
+                                    ? "border-[var(--cyber-neon-green)]/30 text-[var(--cyber-neon-green)]"
+                                    : "border-[var(--cyber-neon-pink)] text-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/10 font-bold"
+                                  : "border-[var(--cyber-neon-blue)]/30 text-[var(--cyber-neon-blue)]"
+                              }`}
+                            >
+                              {bit}
+                            </div>
+                          ))}
+                        </div>
+                        <div className="flex justify-between w-full mt-1 px-1">
+                          <span
+                            className={`text-[10px] font-mono font-bold ${!isLast ? "text-[var(--cyber-neon-pink)]" : "text-[var(--text-dim)]"}`}
+                          >
+                            MSB
+                          </span>
+                          <span className="text-[10px] font-mono text-[var(--text-dim)]">
+                            DATA
+                          </span>
+                        </div>
+                      </div>
+                      <div className="text-sm font-mono text-[var(--cyber-neon-green)] bg-[var(--cyber-neon-green)]/10 px-2 py-0.5 rounded border border-[var(--cyber-neon-green)]/20">
+                        0x{byte.toString(16).toUpperCase().padStart(2, "0")}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="p-4 bg-[var(--cyber-neon-blue)]/5 border border-[var(--cyber-neon-blue)]/20 rounded-lg flex gap-4">
+              <div className="p-2 bg-[var(--cyber-neon-blue)]/20 rounded shrink-0 h-fit">
+                <Info className="w-5 h-5 text-[var(--cyber-neon-blue)]" />
+              </div>
+              <div className="space-y-2">
+                <h4 className="text-sm font-cyber font-bold text-[var(--cyber-neon-blue)] uppercase tracking-widest">
+                  Did you notice?
+                </h4>
+                <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+                  The bytes are stored in <strong>Little-Endian</strong> order.
+                  The least significant group of 7 bits is written first. For
+                  the number 150 (<code>10010110</code>), the first byte
+                  contains the lower 7 bits (<code>0010110</code>) plus the MSB
+                  continuation flag.
+                </p>
+              </div>
+            </div>
+          </div>
+        </CyberPanel>
       </div>
     </div>
   );
