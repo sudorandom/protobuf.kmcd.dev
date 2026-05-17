@@ -35,1158 +35,175 @@ message Date {
   int32 day = 3;
 }`,
   fds: `{
-  "file": [
+  "file":  [
     {
-      "name": "demo/v1/user.proto",
-      "package": "demo.v1",
-      "dependency": [
+      "name":  "demo/v1/user.proto",
+      "package":  "demo.v1",
+      "dependency":  [
         "buf/validate/validate.proto"
       ],
-      "messageType": [
+      "messageType":  [
         {
-          "name": "User",
-          "field": [
+          "name":  "User",
+          "field":  [
             {
-              "name": "id",
-              "number": 1,
-              "label": "LABEL_OPTIONAL",
-              "type": "TYPE_STRING",
-              "jsonName": "id",
-              "options": {}
+              "name":  "id",
+              "number":  1,
+              "label":  "LABEL_OPTIONAL",
+              "type":  "TYPE_STRING",
+              "jsonName":  "id",
+              "options":  {}
             },
             {
-              "name": "name",
-              "number": 2,
-              "label": "LABEL_OPTIONAL",
-              "type": "TYPE_STRING",
-              "jsonName": "name"
+              "name":  "name",
+              "number":  2,
+              "label":  "LABEL_OPTIONAL",
+              "type":  "TYPE_STRING",
+              "jsonName":  "name"
             },
             {
-              "name": "email",
-              "number": 3,
-              "label": "LABEL_OPTIONAL",
-              "type": "TYPE_STRING",
-              "jsonName": "email"
+              "name":  "email",
+              "number":  3,
+              "label":  "LABEL_OPTIONAL",
+              "type":  "TYPE_STRING",
+              "jsonName":  "email"
             },
             {
-              "name": "age",
-              "number": 4,
-              "label": "LABEL_OPTIONAL",
-              "type": "TYPE_UINT32",
-              "jsonName": "age",
-              "options": {}
+              "name":  "age",
+              "number":  4,
+              "label":  "LABEL_OPTIONAL",
+              "type":  "TYPE_UINT32",
+              "jsonName":  "age",
+              "options":  {}
             },
             {
-              "name": "height_cm",
-              "number": 5,
-              "label": "LABEL_OPTIONAL",
-              "type": "TYPE_FLOAT",
-              "jsonName": "heightCm"
+              "name":  "height_cm",
+              "number":  5,
+              "label":  "LABEL_OPTIONAL",
+              "type":  "TYPE_FLOAT",
+              "jsonName":  "heightCm"
             },
             {
-              "name": "weight_kg",
-              "number": 6,
-              "label": "LABEL_OPTIONAL",
-              "type": "TYPE_DOUBLE",
-              "jsonName": "weightKg"
+              "name":  "weight_kg",
+              "number":  6,
+              "label":  "LABEL_OPTIONAL",
+              "type":  "TYPE_DOUBLE",
+              "jsonName":  "weightKg"
             },
             {
-              "name": "role",
-              "number": 7,
-              "label": "LABEL_OPTIONAL",
-              "type": "TYPE_ENUM",
-              "typeName": ".demo.v1.User.Role",
-              "jsonName": "role"
+              "name":  "role",
+              "number":  7,
+              "label":  "LABEL_OPTIONAL",
+              "type":  "TYPE_ENUM",
+              "typeName":  ".demo.v1.User.Role",
+              "jsonName":  "role"
             },
             {
-              "name": "birth_date",
-              "number": 8,
-              "label": "LABEL_OPTIONAL",
-              "type": "TYPE_MESSAGE",
-              "typeName": ".demo.v1.Date",
-              "jsonName": "birthDate"
+              "name":  "birth_date",
+              "number":  8,
+              "label":  "LABEL_OPTIONAL",
+              "type":  "TYPE_MESSAGE",
+              "typeName":  ".demo.v1.Date",
+              "jsonName":  "birthDate"
             },
             {
-              "name": "manager",
-              "number": 9,
-              "label": "LABEL_OPTIONAL",
-              "type": "TYPE_MESSAGE",
-              "typeName": ".demo.v1.User",
-              "jsonName": "manager"
+              "name":  "manager",
+              "number":  9,
+              "label":  "LABEL_OPTIONAL",
+              "type":  "TYPE_MESSAGE",
+              "typeName":  ".demo.v1.User",
+              "jsonName":  "manager"
             }
           ],
-          "enumType": [
+          "enumType":  [
             {
-              "name": "Role",
-              "value": [
+              "name":  "Role",
+              "value":  [
                 {
-                  "name": "ROLE_UNSPECIFIED",
-                  "number": 0
+                  "name":  "ROLE_UNSPECIFIED",
+                  "number":  0
                 },
                 {
-                  "name": "ROLE_USER",
-                  "number": 1
+                  "name":  "ROLE_USER",
+                  "number":  1
                 },
                 {
-                  "name": "ROLE_ADMIN",
-                  "number": 2
+                  "name":  "ROLE_ADMIN",
+                  "number":  2
                 }
               ]
             }
           ]
         },
         {
-          "name": "Date",
-          "field": [
+          "name":  "Date",
+          "field":  [
             {
-              "name": "year",
-              "number": 1,
-              "label": "LABEL_OPTIONAL",
-              "type": "TYPE_INT32",
-              "jsonName": "year"
+              "name":  "year",
+              "number":  1,
+              "label":  "LABEL_OPTIONAL",
+              "type":  "TYPE_INT32",
+              "jsonName":  "year"
             },
             {
-              "name": "month",
-              "number": 2,
-              "label": "LABEL_OPTIONAL",
-              "type": "TYPE_INT32",
-              "jsonName": "month"
+              "name":  "month",
+              "number":  2,
+              "label":  "LABEL_OPTIONAL",
+              "type":  "TYPE_INT32",
+              "jsonName":  "month"
             },
             {
-              "name": "day",
-              "number": 3,
-              "label": "LABEL_OPTIONAL",
-              "type": "TYPE_INT32",
-              "jsonName": "day"
+              "name":  "day",
+              "number":  3,
+              "label":  "LABEL_OPTIONAL",
+              "type":  "TYPE_INT32",
+              "jsonName":  "day"
             }
           ]
         }
       ],
-      "sourceCodeInfo": {
-        "location": [
-          {
-            "span": [
-              0,
-              0,
-              31,
-              1
-            ]
-          },
-          {
-            "path": [
-              12
-            ],
-            "span": [
-              0,
-              0,
-              17
-            ]
-          },
-          {
-            "path": [
-              2
-            ],
-            "span": [
-              2,
-              0,
-              16
-            ]
-          },
-          {
-            "path": [
-              3,
-              0
-            ],
-            "span": [
-              4,
-              0,
-              37
-            ]
-          },
-          {
-            "path": [
-              4,
-              0
-            ],
-            "span": [
-              6,
-              0,
-              25,
-              1
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              1
-            ],
-            "span": [
-              6,
-              8,
-              12
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              2,
-              0,
-              5
-            ],
-            "span": [
-              7,
-              2,
-              8
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              2,
-              0
-            ],
-            "span": [
-              7,
-              2,
-              58
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              2,
-              0,
-              1
-            ],
-            "span": [
-              7,
-              9,
-              11
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              2,
-              0,
-              3
-            ],
-            "span": [
-              7,
-              14,
-              15
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              2,
-              0,
-              8
-            ],
-            "span": [
-              7,
-              16,
-              57
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              2,
-              0,
-              8,
-              1159,
-              14,
-              22
-            ],
-            "span": [
-              7,
-              17,
-              56
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              2,
-              1,
-              5
-            ],
-            "span": [
-              8,
-              2,
-              8
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              2,
-              1
-            ],
-            "span": [
-              8,
-              2,
-              18
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              2,
-              1,
-              1
-            ],
-            "span": [
-              8,
-              9,
-              13
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              2,
-              1,
-              3
-            ],
-            "span": [
-              8,
-              16,
-              17
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              2,
-              2,
-              5
-            ],
-            "span": [
-              9,
-              2,
-              8
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              2,
-              2
-            ],
-            "span": [
-              9,
-              2,
-              19
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              2,
-              2,
-              1
-            ],
-            "span": [
-              9,
-              9,
-              14
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              2,
-              2,
-              3
-            ],
-            "span": [
-              9,
-              17,
-              18
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              2,
-              3,
-              5
-            ],
-            "span": [
-              12,
-              2,
-              8
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              2,
-              3
-            ],
-            "span": [
-              12,
-              2,
-              56
-            ],
-            "leadingComments": " Numeric data for efficiency demo\n"
-          },
-          {
-            "path": [
-              4,
-              0,
-              2,
-              3,
-              1
-            ],
-            "span": [
-              12,
-              9,
-              12
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              2,
-              3,
-              3
-            ],
-            "span": [
-              12,
-              15,
-              16
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              2,
-              3,
-              8
-            ],
-            "span": [
-              12,
-              17,
-              55
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              2,
-              3,
-              8,
-              1159,
-              5,
-              2
-            ],
-            "span": [
-              12,
-              18,
-              54
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              2,
-              4,
-              5
-            ],
-            "span": [
-              13,
-              2,
-              7
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              2,
-              4
-            ],
-            "span": [
-              13,
-              2,
-              22
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              2,
-              4,
-              1
-            ],
-            "span": [
-              13,
-              8,
-              17
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              2,
-              4,
-              3
-            ],
-            "span": [
-              13,
-              20,
-              21
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              2,
-              5,
-              5
-            ],
-            "span": [
-              14,
-              2,
-              8
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              2,
-              5
-            ],
-            "span": [
-              14,
-              2,
-              23
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              2,
-              5,
-              1
-            ],
-            "span": [
-              14,
-              9,
-              18
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              2,
-              5,
-              3
-            ],
-            "span": [
-              14,
-              21,
-              22
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              2,
-              6,
-              6
-            ],
-            "span": [
-              16,
-              2,
-              6
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              2,
-              6
-            ],
-            "span": [
-              16,
-              2,
-              16
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              2,
-              6,
-              1
-            ],
-            "span": [
-              16,
-              7,
-              11
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              2,
-              6,
-              3
-            ],
-            "span": [
-              16,
-              14,
-              15
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              2,
-              7,
-              6
-            ],
-            "span": [
-              17,
-              2,
-              6
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              2,
-              7
-            ],
-            "span": [
-              17,
-              2,
-              22
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              2,
-              7,
-              1
-            ],
-            "span": [
-              17,
-              7,
-              17
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              2,
-              7,
-              3
-            ],
-            "span": [
-              17,
-              20,
-              21
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              2,
-              8,
-              6
-            ],
-            "span": [
-              18,
-              2,
-              6
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              2,
-              8
-            ],
-            "span": [
-              18,
-              2,
-              19
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              2,
-              8,
-              1
-            ],
-            "span": [
-              18,
-              7,
-              14
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              2,
-              8,
-              3
-            ],
-            "span": [
-              18,
-              17,
-              18
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              4,
-              0
-            ],
-            "span": [
-              20,
-              2,
-              24,
-              3
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              4,
-              0,
-              1
-            ],
-            "span": [
-              20,
-              7,
-              11
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              4,
-              0,
-              2,
-              0,
-              1
-            ],
-            "span": [
-              21,
-              4,
-              20
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              4,
-              0,
-              2,
-              0
-            ],
-            "span": [
-              21,
-              4,
-              25
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              4,
-              0,
-              2,
-              0,
-              2
-            ],
-            "span": [
-              21,
-              23,
-              24
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              4,
-              0,
-              2,
-              1,
-              1
-            ],
-            "span": [
-              22,
-              4,
-              13
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              4,
-              0,
-              2,
-              1
-            ],
-            "span": [
-              22,
-              4,
-              18
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              4,
-              0,
-              2,
-              1,
-              2
-            ],
-            "span": [
-              22,
-              16,
-              17
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              4,
-              0,
-              2,
-              2,
-              1
-            ],
-            "span": [
-              23,
-              4,
-              14
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              4,
-              0,
-              2,
-              2
-            ],
-            "span": [
-              23,
-              4,
-              19
-            ]
-          },
-          {
-            "path": [
-              4,
-              0,
-              4,
-              0,
-              2,
-              2,
-              2
-            ],
-            "span": [
-              23,
-              17,
-              18
-            ]
-          },
-          {
-            "path": [
-              4,
-              1
-            ],
-            "span": [
-              27,
-              0,
-              31,
-              1
-            ]
-          },
-          {
-            "path": [
-              4,
-              1,
-              1
-            ],
-            "span": [
-              27,
-              8,
-              12
-            ]
-          },
-          {
-            "path": [
-              4,
-              1,
-              2,
-              0,
-              5
-            ],
-            "span": [
-              28,
-              2,
-              7
-            ]
-          },
-          {
-            "path": [
-              4,
-              1,
-              2,
-              0
-            ],
-            "span": [
-              28,
-              2,
-              17
-            ]
-          },
-          {
-            "path": [
-              4,
-              1,
-              2,
-              0,
-              1
-            ],
-            "span": [
-              28,
-              8,
-              12
-            ]
-          },
-          {
-            "path": [
-              4,
-              1,
-              2,
-              0,
-              3
-            ],
-            "span": [
-              28,
-              15,
-              16
-            ]
-          },
-          {
-            "path": [
-              4,
-              1,
-              2,
-              1,
-              5
-            ],
-            "span": [
-              29,
-              2,
-              7
-            ]
-          },
-          {
-            "path": [
-              4,
-              1,
-              2,
-              1
-            ],
-            "span": [
-              29,
-              2,
-              18
-            ]
-          },
-          {
-            "path": [
-              4,
-              1,
-              2,
-              1,
-              1
-            ],
-            "span": [
-              29,
-              8,
-              13
-            ]
-          },
-          {
-            "path": [
-              4,
-              1,
-              2,
-              1,
-              3
-            ],
-            "span": [
-              29,
-              16,
-              17
-            ]
-          },
-          {
-            "path": [
-              4,
-              1,
-              2,
-              2,
-              5
-            ],
-            "span": [
-              30,
-              2,
-              7
-            ]
-          },
-          {
-            "path": [
-              4,
-              1,
-              2,
-              2
-            ],
-            "span": [
-              30,
-              2,
-              16
-            ]
-          },
-          {
-            "path": [
-              4,
-              1,
-              2,
-              2,
-              1
-            ],
-            "span": [
-              30,
-              8,
-              11
-            ]
-          },
-          {
-            "path": [
-              4,
-              1,
-              2,
-              2,
-              3
-            ],
-            "span": [
-              30,
-              14,
-              15
-            ]
-          }
-        ]
-      },
-      "syntax": "editions",
-      "edition": "EDITION_2023"
+      "syntax":  "editions",
+      "edition":  "EDITION_2023"
     }
   ]
 }`,
-  bin: "42 07 08 c8 0f 10 05 18 16 0a 24 35 35 30 65 38 34 30 30 2d 65 32 39 62 2d 34 31 64 34 2d 61 37 31 36 2d 34 34 36 36 35 35 34 34 30 30 30 30 12 10 48 69 72 6f 20 50 72 6f 74 61 67 6f 6e 69 73 74 1a 12 68 69 72 6f 40 6d 65 74 61 76 65 72 73 65 2e 63 6f 6d 20 18 2d 00 80 2f 43 31 cd cc cc cc cc 8c 51 40 38 02",
+  bin: "0a 24 35 35 30 65 38 34 30 30 2d 65 32 39 62 2d 34 31 64 34 2d 61 37 31 36 2d 34 34 36 36 35 35 34 34 30 30 30 30 12 10 48 69 72 6f 20 50 72 6f 74 61 67 6f 6e 69 73 74 1a 12 68 69 72 6f 40 6d 65 74 61 76 65 72 73 65 2e 63 6f 6d 20 18 2d 00 80 2f 43 31 cd cc cc cc cc 8c 51 40 38 02 42 07 08 c8 0f 10 05 18 16",
   json: `{
-  "id": "550e8400-e29b-41d4-a716-446655440000",
-  "name": "Hiro Protagonist",
-  "email": "hiro@metaverse.com",
-  "age": 24,
-  "heightCm": 175.5,
-  "weightKg": 70.2,
-  "role": "ROLE_ADMIN",
-  "birthDate": {
-    "year": 1992,
-    "month": 5,
-    "day": 22
+  "id":  "550e8400-e29b-41d4-a716-446655440000",
+  "name":  "Hiro Protagonist",
+  "email":  "hiro@metaverse.com",
+  "age":  24,
+  "heightCm":  175.5,
+  "weightKg":  70.2,
+  "role":  "ROLE_ADMIN",
+  "birthDate":  {
+    "year":  1992,
+    "month":  5,
+    "day":  22
   }
 }`,
-  txt: `id: "550e8400-e29b-41d4-a716-446655440000"
-name: "Hiro Protagonist"
-email: "hiro@metaverse.com"
-age: 24
-height_cm: 175.5
-weight_kg: 70.2
-role: ROLE_ADMIN
-birth_date: {
-  year: 1992
-  month: 5
-  day: 22
+  txt: `id:  "550e8400-e29b-41d4-a716-446655440000"
+name:  "Hiro Protagonist"
+email:  "hiro@metaverse.com"
+age:  24
+height_cm:  175.5
+weight_kg:  70.2
+role:  ROLE_ADMIN
+birth_date:  {
+  year:  1992
+  month:  5
+  day:  22
 }`,
-  scope: `8: {
-  1: 1992
-  2: 5
-  3: 22
-}
-1: {"550e8400-e29b-41d4-a716-446655440000"}
+  scope: `1: {"550e8400-e29b-41d4-a716-446655440000"}
 2: {"Hiro Protagonist"}
 3: {"hiro@metaverse.com"}
 4: 24
 5: 175.5i32   # 0x432f8000i32
 6: 70.2       # 0x40518ccccccccccdi64
-7: 2`,
+7: 2
+8: {
+  1: 1992
+  2: 5
+  3: 22
+}`
 };
