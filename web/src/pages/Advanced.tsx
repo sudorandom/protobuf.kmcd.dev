@@ -1317,7 +1317,7 @@ message Profile {
       ),
       children: (
         <div className="space-y-4">
-          <CyberPanel title="V1 (BEFORE)" className="h-auto">
+          <CyberPanel title="BEFORE" className="h-auto">
             <div className="p-2">
               <SyntaxHighlighter
                 language="proto"
@@ -1333,12 +1333,12 @@ message User {
               />
             </div>
           </CyberPanel>
-          <CyberPanel title="V2 (AFTER)" className="h-auto">
+          <CyberPanel title="AFTER" className="h-auto">
             <div className="p-2">
               <SyntaxHighlighter
                 language="proto"
                 code={`edition = "2023";
-package api.v2; // [PACKAGE] breakage
+package api.v1;
 
 message User {
   // [WIRE] breakage: type changed from string
