@@ -640,7 +640,7 @@ function App() {
             <Route path="/" element={<Hero isAtTop={isAtTop} />} />
             <Route
               path="/intro"
-              element={<Introduction messageSchema={messageSchema} fds={fds} />}
+              element={<Introduction messageSchema={messageSchema} />}
             />
             <Route path="/basics" element={<Basics />} />
             <Route path="/advanced" element={<Advanced />} />

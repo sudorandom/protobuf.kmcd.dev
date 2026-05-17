@@ -30,6 +30,9 @@ wasm-build:
 generate:
 	mise exec -- buf generate
 
+pre-compute:
+	cd examples-gen && go mod tidy && go run . > ../web/src/utils/static-examples.ts
+
 web-check: web-format wasm-build
 	cd web && mise exec -- pnpm run lint
 	cd web && mise exec -- pnpm run build

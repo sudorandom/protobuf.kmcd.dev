@@ -14,8 +14,9 @@ import {
   ArrowRight,
   Cpu,
   ExternalLink,
+  Code2,
 } from "lucide-react";
-import { fromJson, toBinary, type DescMessage } from "@bufbuild/protobuf";
+import { type DescMessage } from "@bufbuild/protobuf";
 import {
   Section,
   SectionTitle,
@@ -24,86 +25,23 @@ import {
   SyntaxHighlighter,
 } from "../components/shared/Common";
 import DecodingVisualization from "../components/DecodingVisualization";
-import { convertToPrototext, convertToProtoscope } from "../utils/wasm-parser";
-import { SIZE_EXAMPLES } from "../utils/constants";
-import { INITIAL_PROTO } from "../utils/initial-proto";
+import { STATIC_FACES } from "../utils/static-examples";
 
 export const Introduction = ({
   messageSchema,
-  fds,
 }: {
   messageSchema: DescMessage | null;
-  fds: Uint8Array | null;
 }) => {
   const [activeFace, setActiveFace] = useState("idl");
-  const [protoTextExample, setProtoTextExample] = useState<string | null>(null);
-  const [protoscopeExample, setProtoscopeExample] = useState<string | null>(
-    null,
-  );
+
+  const descriptorJson = STATIC_FACES.fds;
 
   const dynamicExamples = useMemo(() => {
-    if (!messageSchema) return null;
-    try {
-      const sample = SIZE_EXAMPLES.BASIC;
-      const user = fromJson(messageSchema, sample);
-      const binary = toBinary(messageSchema, user);
-
-      // Use standard JSON stringify for guaranteed consistent indentation in the UI
-      const json = JSON.stringify(sample, null, 2);
-
-      const hex = Array.from(binary)
-        .map((b) => b.toString(16).padStart(2, "0"))
-        .join(" ");
-
-      return { hex, json, binary };
-    } catch {
-      return null;
-    }
-  }, [messageSchema]);
-
-  useEffect(() => {
-    // Preload WASM after a short delay to not block the initial paint
-    const timer = setTimeout(() => {
-      import("../utils/wasm-parser").then(({ initWasm }) => initWasm());
-    }, 1000);
-    return () => clearTimeout(timer);
+    return {
+      hex: STATIC_FACES.bin,
+      json: STATIC_FACES.json,
+    };
   }, []);
-
-  useEffect(() => {
-    let active = true;
-    const fetchExamples = async () => {
-      if (!messageSchema || !fds || !dynamicExamples) return;
-      // Only fetch if we are on a face that needs WASM (txt or scope)
-      if (activeFace !== "txt" && activeFace !== "scope") return;
-
-      try {
-        if (activeFace === "txt" && !protoTextExample) {
-          const text = await convertToPrototext(
-            messageSchema.typeName,
-            fds,
-            dynamicExamples.json,
-          );
-          if (active) setProtoTextExample(text.trim());
-        } else if (activeFace === "scope" && !protoscopeExample) {
-          const scope = await convertToProtoscope(dynamicExamples.binary);
-          if (active) setProtoscopeExample(scope.trim());
-        }
-      } catch (e) {
-        console.error("Failed to convert examples:", e);
-      }
-    };
-    fetchExamples();
-    return () => {
-      active = false;
-    };
-  }, [
-    messageSchema,
-    fds,
-    dynamicExamples,
-    activeFace,
-    protoTextExample,
-    protoscopeExample,
-  ]);
 
   const faces = [
     {
@@ -112,7 +50,8 @@ export const Introduction = ({
       icon: FileCode,
       title: "The Schema (.proto)",
       desc: "The source of truth. Defines the structure using the Interface Definition Language (IDL).",
-      code: INITIAL_PROTO.split("\n")
+      code: STATIC_FACES.idl
+        .split("\n")
         .filter(
           (l: string) =>
             !l.includes("import") &&
@@ -123,6 +62,26 @@ export const Introduction = ({
         .join("\n")
         .trim(),
       language: "proto" as const,
+      category: "definition",
+      panelTitle: "SOURCE_IDL",
+    },
+    {
+      id: "fds",
+      label: "Descriptor",
+      icon: Code2,
+      title: "The Binary Descriptor",
+      desc: (
+        <>
+          The machine-readable version of the schema. This binary message (shown
+          here as JSON) describes every type, field, and option in your{" "}
+          <code>.proto</code> file, allowing for runtime reflection and dynamic
+          tooling.
+        </>
+      ),
+      code: descriptorJson,
+      language: "json" as const,
+      category: "definition",
+      panelTitle: "COMPILED_DESCRIPTOR",
     },
     {
       id: "bin",
@@ -130,10 +89,10 @@ export const Introduction = ({
       icon: Binary,
       title: "Binary Encoding",
       desc: "What actually travels over the wire. Compact, extremely fast to parse, and machine-optimized.",
-      code:
-        dynamicExamples?.hex ||
-        "0a 24 35 35 30 65 38 34 30 30 2d 65 32 39 62 2d 34 31 64 34 2d 61 37 31 36 2d 34 34 36 36 35 35 34 34 30 30 30 30 12 10 48 69 72 6f 20 50 72 6f 74 61 67 6f 6e 69 73 74 20 18 18",
+      code: dynamicExamples.hex,
       language: null,
+      category: "representation",
+      panelTitle: "WIRE_FORMAT_HEX",
     },
     {
       id: "json",
@@ -151,10 +110,10 @@ export const Introduction = ({
           </p>
         </div>
       ),
-      code:
-        dynamicExamples?.json ||
-        '{\n  "id": "550e8400-e2...",\n  "name": "Hiro Protagonist",\n  "age": 24\n}',
+      code: dynamicExamples.json,
       language: "json" as const,
+      category: "representation",
+      panelTitle: "JSON_REPRESENTATION",
     },
     {
       id: "txt",
@@ -172,10 +131,10 @@ export const Introduction = ({
           supported representation that humans can easily read and write.
         </>
       ),
-      code:
-        protoTextExample ||
-        'id: "550e8400-e29b-41d4-a716..."\nname: "Hiro Protagonist"\nage: 24',
+      code: STATIC_FACES.txt,
       language: null,
+      category: "representation",
+      panelTitle: "TEXT_FORMAT",
     },
     {
       id: "scope",
@@ -193,10 +152,10 @@ export const Introduction = ({
           binary data through heuristic guesses.
         </>
       ),
-      code:
-        protoscopeExample ||
-        '1: "550e8400-e29b-41d4-a716-446655440000"\n2: "Hiro Protagonist"\n3: 24',
+      code: STATIC_FACES.scope,
       language: null,
+      category: "representation",
+      panelTitle: "PROTOSCOPE_DIAGNOSTIC",
     },
   ];
 
@@ -289,41 +248,77 @@ export const Introduction = ({
         <CyberPanel title="THE_MANY_FACES_OF_PROTO">
           <div className="p-6 space-y-8">
             <p className="text-sm text-[var(--text-dim)] leading-relaxed">
-              "Protobuf" is often used as a catch-all term, but it actually
-              refers to an entire ecosystem of specifications. Here is how a
-              single{" "}
+              "Protobuf" refers to both an{" "}
+              <strong>Interface Definition Language (IDL)</strong> and a
+              high-performance <strong>Wire Format</strong>. While the
+              machine-optimized binary encoding is the primary target, the
+              ecosystem also defines standardized mappings for human-readable
+              representations and diagnostic tools. Explore how a single{" "}
               <code className="text-[var(--cyber-neon-blue)]">
                 {messageSchema?.name || "User"}
               </code>{" "}
-              message looks in each format:
+              message can be represented across these different specifications:
             </p>
-
             <div className="flex flex-col lg:flex-row gap-12 min-h-[350px]">
               {/* Left Nav */}
-              <div className="w-full lg:w-64 flex flex-col gap-2">
-                {faces.map((face) => (
-                  <button
-                    key={face.id}
-                    onClick={() => setActiveFace(face.id)}
-                    className={`flex items-center gap-4 p-4 rounded-lg border transition-all text-left group ${
-                      activeFace === face.id
-                        ? "bg-[var(--cyber-neon-blue)]/10 border-[var(--cyber-neon-blue)] text-[var(--cyber-neon-blue)]"
-                        : "bg-[var(--overlay-bg)] border-[var(--border-light)] text-[var(--text-dim)] hover:border-[var(--cyber-neon-blue)]/50 hover:text-[var(--text-color)]"
-                    }`}
-                    aria-label={`View ${face.label} representation`}
-                  >
-                    <face.icon
-                      className={`w-5 h-5 ${activeFace === face.id ? "text-[var(--cyber-neon-blue)]" : "text-[var(--text-dim)] group-hover:text-[var(--text-dim)]"}`}
-                    />
-                    <span className="font-cyber font-bold text-sm tracking-widest uppercase">
-                      {face.label}
-                    </span>
-                  </button>
-                ))}
+              <div className="w-full lg:w-64 flex flex-col gap-6">
+                <div className="space-y-2">
+                  <div className="text-[10px] font-mono text-[var(--text-dim)] uppercase tracking-[0.2em] px-4">
+                    Definition
+                  </div>
+                  {faces
+                    .filter((f) => f.category === "definition")
+                    .map((face) => (
+                      <button
+                        key={face.id}
+                        onClick={() => setActiveFace(face.id)}
+                        className={`w-full flex items-center gap-4 p-4 rounded-lg border transition-all text-left group ${
+                          activeFace === face.id
+                            ? "bg-[var(--cyber-neon-blue)]/10 border-[var(--cyber-neon-blue)] text-[var(--cyber-neon-blue)]"
+                            : "bg-[var(--overlay-bg)] border-[var(--border-light)] text-[var(--text-dim)] hover:border-[var(--cyber-neon-blue)]/50 hover:text-[var(--text-color)]"
+                        }`}
+                        aria-label={`View ${face.label} representation`}
+                      >
+                        <face.icon
+                          className={`w-5 h-5 ${activeFace === face.id ? "text-[var(--cyber-neon-blue)]" : "text-[var(--text-dim)] group-hover:text-[var(--text-dim)]"}`}
+                        />
+                        <span className="font-cyber font-bold text-sm tracking-widest uppercase">
+                          {face.label}
+                        </span>
+                      </button>
+                    ))}
+                </div>
+
+                <div className="space-y-2">
+                  <div className="text-[10px] font-mono text-[var(--text-dim)] uppercase tracking-[0.2em] px-4">
+                    Representations
+                  </div>
+                  {faces
+                    .filter((f) => f.category === "representation")
+                    .map((face) => (
+                      <button
+                        key={face.id}
+                        onClick={() => setActiveFace(face.id)}
+                        className={`w-full flex items-center gap-4 p-4 rounded-lg border transition-all text-left group ${
+                          activeFace === face.id
+                            ? "bg-[var(--cyber-neon-blue)]/10 border-[var(--cyber-neon-blue)] text-[var(--cyber-neon-blue)]"
+                            : "bg-[var(--overlay-bg)] border-[var(--border-light)] text-[var(--text-dim)] hover:border-[var(--cyber-neon-blue)]/50 hover:text-[var(--text-color)]"
+                        }`}
+                        aria-label={`View ${face.label} representation`}
+                      >
+                        <face.icon
+                          className={`w-5 h-5 ${activeFace === face.id ? "text-[var(--cyber-neon-blue)]" : "text-[var(--text-dim)] group-hover:text-[var(--text-dim)]"}`}
+                        />
+                        <span className="font-cyber font-bold text-sm tracking-widest uppercase">
+                          {face.label}
+                        </span>
+                      </button>
+                    ))}
+                </div>
               </div>
 
               {/* Content Area */}
-              <div className="flex-1 space-y-8">
+              <div className="flex-1 space-y-8 min-w-0">
                 <div className="space-y-4">
                   <div className="space-y-2">
                     <h2 className="text-2xl font-cyber font-bold text-[var(--text-color)] uppercase">
@@ -334,8 +329,11 @@ export const Introduction = ({
                     </div>
                   </div>
                 </div>
-                <CyberPanel title="ENCODED_OUTPUT">
-                  <div className="p-4 h-auto min-h-[150px] overflow-auto">
+                <CyberPanel
+                  title={current.panelTitle}
+                  className="max-w-full overflow-hidden"
+                >
+                  <div className="p-4 h-[400px] overflow-auto custom-scrollbar">
                     {current.language ? (
                       <SyntaxHighlighter
                         language={current.language}
