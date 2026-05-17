@@ -152,7 +152,6 @@ function App() {
   const [isNavDropdownOpen, setIsNavDropdownOpen] = useState(false);
   const [protoSource, setProtoSource] = useState(INITIAL_PROTO);
   const [registry, setRegistry] = useState<FileRegistry | null>(null);
-  const [fds, setFds] = useState<Uint8Array | null>(null);
   const [error, setError] = useState<string | null>(null);
   const location = useLocation();
   const currentNavIndex = NAV_ITEMS.findIndex(
@@ -329,11 +328,9 @@ function App() {
         if (active) {
           if (result.kind === "success") {
             setRegistry(result.registry);
-            setFds(result.fullFileDescriptorSet);
             setError(null);
           } else {
             setRegistry(null);
-            setFds(null);
             setError(null);
           }
         }
@@ -341,7 +338,6 @@ function App() {
         if (active) {
           const message = e instanceof Error ? e.message : String(e);
           setRegistry(null);
-          setFds(null);
           setError(message);
         }
       }
