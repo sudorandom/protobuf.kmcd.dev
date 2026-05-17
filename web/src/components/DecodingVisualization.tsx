@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { RefreshCcw } from "lucide-react";
 
 export const DecodingVisualization = () => {
   const [restartKey, setRestartKey] = useState(0);
@@ -9,11 +8,7 @@ export const DecodingVisualization = () => {
     <div
       className="w-full max-w-4xl mx-auto my-12 overflow-hidden flex flex-col items-center group cursor-pointer -mx-4 sm:mx-auto w-[calc(100%+2rem)] sm:w-full px-0 sm:px-4"
       onClick={() => setRestartKey((prev) => prev + 1)}
-      title="Click to restart animation"
     >
-      <div className="mb-2 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2 text-[var(--cyber-neon-blue)] font-cyber text-xs uppercase tracking-widest">
-        <RefreshCcw className="w-3 h-3" /> Click to Restart
-      </div>
       <svg
         key={restartKey}
         viewBox="0 0 800 440"

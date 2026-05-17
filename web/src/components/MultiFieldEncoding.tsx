@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { RefreshCcw } from "lucide-react";
 
 export const MultiFieldEncoding = () => {
   const [restartKey, setRestartKey] = useState(0);
@@ -36,11 +35,7 @@ export const MultiFieldEncoding = () => {
     <div
       className="w-full max-w-5xl mx-auto my-16 overflow-hidden flex flex-col items-center gap-2 group cursor-pointer"
       onClick={() => setRestartKey((prev) => prev + 1)}
-      title="Click to restart animation"
     >
-      <div className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2 text-[var(--cyber-neon-blue)] font-cyber text-xs uppercase tracking-widest">
-        <RefreshCcw className="w-3 h-3" /> Click to Restart
-      </div>
       <div className="w-full flex justify-center bg-[var(--section-bg-dark)]/30 rounded-2xl border border-[var(--border-light)] p-8">
         <svg
           key={restartKey}
