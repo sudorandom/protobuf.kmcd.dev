@@ -660,7 +660,7 @@ message LegacyProfile {
         className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]"
       >
         <div className="max-w-7xl mx-auto">
-          <SectionTitle icon={HelpCircle} subtitle="03_OVERVIEW">
+          <SectionTitle icon={HelpCircle} subtitle="03_OVERVIEW" asH1={true}>
             Advanced
           </SectionTitle>
 

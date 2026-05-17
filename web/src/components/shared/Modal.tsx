@@ -26,6 +26,18 @@ export const Modal: React.FC<ModalProps> = ({
     };
   }, [isOpen]);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        onClose();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
+
+  const titleId = React.useId();
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -36,8 +48,12 @@ export const Modal: React.FC<ModalProps> = ({
             exit={{ opacity: 0 }}
             onClick={onClose}
             className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[150]"
+            aria-hidden="true"
           />
           <motion.div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={titleId}
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -46,10 +62,16 @@ export const Modal: React.FC<ModalProps> = ({
           >
             <div className="h-[64px] flex items-center justify-between px-6 border-b border-[var(--border-light)] bg-[var(--bg-color)]/50 backdrop-blur-md shrink-0">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-[var(--cyber-neon-blue)]/10 rounded border border-[var(--cyber-neon-blue)]/30 flex items-center justify-center">
+                <div
+                  className="w-8 h-8 bg-[var(--cyber-neon-blue)]/10 rounded border border-[var(--cyber-neon-blue)]/30 flex items-center justify-center"
+                  aria-hidden="true"
+                >
                   <Cpu className="w-4 h-4 text-[var(--cyber-neon-blue)]" />
                 </div>
-                <span className="font-cyber font-bold text-[var(--cyber-neon-blue)] text-sm tracking-[0.2em] uppercase">
+                <span
+                  id={titleId}
+                  className="font-cyber font-bold text-[var(--cyber-neon-blue)] text-sm tracking-[0.2em] uppercase"
+                >
                   {title}
                 </span>
               </div>
@@ -58,7 +80,7 @@ export const Modal: React.FC<ModalProps> = ({
                 className="p-2 text-[var(--text-dim)] hover:text-[var(--text-color)] hover:bg-[var(--overlay-bg)] rounded-lg transition-all"
                 aria-label="Close modal"
               >
-                <X className="w-6 h-6" />
+                <X className="w-6 h-6" aria-hidden="true" />
               </button>
             </div>
             <div className="flex-1 overflow-hidden p-6 bg-[var(--bg-color)]">

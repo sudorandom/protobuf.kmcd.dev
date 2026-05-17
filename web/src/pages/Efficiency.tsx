@@ -155,7 +155,7 @@ export const SizeComparison = ({
       className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]"
     >
       <div className="max-w-7xl mx-auto">
-        <SectionTitle icon={Zap} subtitle="04_PERFORMANCE">
+        <SectionTitle icon={Zap} subtitle="04_PERFORMANCE" asH1={true}>
           Efficiency
         </SectionTitle>
 

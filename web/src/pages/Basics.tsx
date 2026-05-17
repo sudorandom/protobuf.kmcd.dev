@@ -85,7 +85,7 @@ export const SchemaDrivenAPIs = () => {
       className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]"
     >
       <div className="max-w-7xl mx-auto">
-        <SectionTitle icon={FileCode} subtitle="02a_ARCHITECTURE">
+        <SectionTitle icon={FileCode} subtitle="02a_ARCHITECTURE" asH1={true}>
           Basics
         </SectionTitle>
 
@@ -101,7 +101,7 @@ export const SchemaDrivenAPIs = () => {
           </div>
         </div>
 
-        <div
+        <section
           id="generating-code"
           className="mt-24 space-y-12 border-t border-[var(--border-light)] pt-16"
         >
@@ -248,7 +248,7 @@ export const SchemaDrivenAPIs = () => {
               into your specific build system.
             </TechnicalNuance>
           </div>
-        </div>
+        </section>
       </div>
     </Section>
   );

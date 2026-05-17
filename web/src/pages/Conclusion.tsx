@@ -93,9 +93,9 @@ export const Conclusion = () => (
         className="max-w-3xl text-center space-y-12"
       >
         <div className="space-y-4">
-          <h2 className="text-4xl md:text-6xl font-cyber font-black text-[var(--text-color)] uppercase italic tracking-tighter">
+          <h1 className="text-4xl md:text-6xl font-cyber font-black text-[var(--text-color)] uppercase italic tracking-tighter">
             Congratulations!
-          </h2>
+          </h1>
           <p className="text-[var(--text-dim)] text-xl leading-relaxed">
             From writing your first schema to decoding raw binary and wiring up
             custom plugins, you are ready to start building with{" "}

@@ -10,8 +10,14 @@ export const TechnicalNuance = ({
   children: React.ReactNode;
   title?: string;
 }) => (
-  <div className="bg-[var(--cyber-neon-blue)]/10 border border-[var(--cyber-neon-blue)]/30 rounded-lg p-4 flex gap-4 items-start animate-in fade-in slide-in-from-top-1">
-    <div className="p-2 bg-[var(--cyber-neon-blue)]/20 rounded-md">
+  <div
+    className="bg-[var(--cyber-neon-blue)]/10 border border-[var(--cyber-neon-blue)]/30 rounded-lg p-4 flex gap-4 items-start animate-in fade-in slide-in-from-top-1"
+    role="note"
+  >
+    <div
+      className="p-2 bg-[var(--cyber-neon-blue)]/20 rounded-md"
+      aria-hidden="true"
+    >
       <Info className="w-5 h-5 text-[var(--cyber-neon-blue)]" />
     </div>
     <div className="space-y-1">
@@ -54,8 +60,15 @@ export const HexViewer = ({
   }
 
   return (
-    <div className="font-mono text-sm text-[var(--text-dim)] bg-[var(--section-bg-dark)] p-4 rounded border border-[var(--border-light)] space-y-1 max-h-64 overflow-y-auto custom-scrollbar">
-      <div className="grid grid-cols-[60px_max-content_1fr] gap-8 pb-2 border-b border-[var(--border-light)] opacity-80 mb-2">
+    <div
+      className="font-mono text-sm text-[var(--text-dim)] bg-[var(--section-bg-dark)] p-4 rounded border border-[var(--border-light)] space-y-1 max-h-64 overflow-y-auto custom-scrollbar"
+      role="region"
+      aria-label="Hexadecimal view of data"
+    >
+      <div
+        className="grid grid-cols-[60px_max-content_1fr] gap-8 pb-2 border-b border-[var(--border-light)] opacity-80 mb-2"
+        aria-hidden="true"
+      >
         <span>OFFSET</span>
         <span>HEX</span>
         <span>ASCII</span>
@@ -215,6 +228,8 @@ export const SyntaxHighlighter = ({
     <pre
       className={`font-mono text-sm leading-6 m-0 ${wrap ? "whitespace-pre-wrap break-words" : "whitespace-pre"}`}
       dangerouslySetInnerHTML={{ __html: highlight(code) }}
+      role="region"
+      aria-label={`${language || "Code"} snippet`}
     />
   );
 };
@@ -231,9 +246,13 @@ export const ExternalLinkText = ({
     target="_blank"
     rel="noopener noreferrer"
     className="text-[var(--cyber-neon-blue)] hover:underline inline-flex items-center gap-0.5 group"
+    aria-label={`${children} (opens in new tab)`}
   >
     {children}
-    <ExternalLink className="w-2.5 h-2.5 opacity-60 group-hover:opacity-100 transition-opacity" />
+    <ExternalLink
+      className="w-2.5 h-2.5 opacity-60 group-hover:opacity-100 transition-opacity"
+      aria-hidden="true"
+    />
   </a>
 );
 
@@ -241,27 +260,37 @@ export const SectionTitle = ({
   children,
   icon: Icon,
   subtitle,
+  asH1 = false,
 }: {
   children: React.ReactNode;
   icon: React.ElementType;
   subtitle?: string;
+  asH1?: boolean;
 }) => {
   const sectionId = React.useContext(SectionIdContext);
+  const HeadingTag = asH1 ? "h1" : "h2";
   return (
     <div className="flex flex-col mb-12">
       <div className="flex items-center gap-3 md:gap-4 mb-2">
-        <div className="p-2 bg-[var(--cyber-neon-blue)]/10 rounded-lg border border-[var(--cyber-neon-blue)]/20 shrink-0">
+        <div
+          className="p-2 bg-[var(--cyber-neon-blue)]/10 rounded-lg border border-[var(--cyber-neon-blue)]/20 shrink-0"
+          aria-hidden="true"
+        >
           <Icon className="w-5 h-5 md:w-6 md:h-6 text-[var(--cyber-neon-blue)]" />
         </div>
-        <h2 className="text-xl sm:text-2xl md:text-3xl font-cyber font-bold tracking-wider text-[var(--text-color)] uppercase break-words min-w-0 relative group/title">
+        <HeadingTag className="text-xl sm:text-2xl md:text-3xl font-cyber font-bold tracking-wider text-[var(--text-color)] uppercase break-words min-w-0 relative group/title">
           <a
             href={sectionId ? `#${sectionId}` : "#"}
             className="hover:text-[var(--cyber-neon-blue)] transition-colors"
+            aria-label={`Link to section: ${children}`}
           >
             {children}
-            <LinkIcon className="w-4 h-4 inline-block ml-2 opacity-0 group-hover/title:opacity-80 transition-opacity" />
+            <LinkIcon
+              className="w-4 h-4 inline-block ml-2 opacity-0 group-hover/title:opacity-80 transition-opacity"
+              aria-hidden="true"
+            />
           </a>
-        </h2>
+        </HeadingTag>
       </div>
       {subtitle && (
         <p className="text-[var(--text-dim)] font-mono text-sm md:text-sm uppercase tracking-widest ml-11 md:ml-14">
@@ -316,6 +345,7 @@ export const RoadmapGrid = ({
   return (
     <div
       className={`grid grid-cols-1 md:grid-cols-2 ${cols} gap-8 pt-8 text-left`}
+      role="list"
     >
       {items.map((item, index) => {
         const theme = themes[index % numCols];
@@ -324,9 +354,12 @@ export const RoadmapGrid = ({
             key={item.id}
             href={`#${item.id}`}
             className="group/item hover:bg-white/5 p-2 -m-2 rounded-lg transition-all flex gap-3 items-center"
+            role="listitem"
+            aria-label={`Jump to: ${item.title}. ${item.desc}`}
           >
             <div
               className={`w-8 h-8 rounded border flex items-center justify-center shrink-0 font-mono text-sm transition-colors ${theme.bg} ${theme.border} ${theme.text} ${theme.hoverBorder}`}
+              aria-hidden="true"
             >
               {(index + 1).toString().padStart(2, "0")}
             </div>
@@ -360,7 +393,10 @@ export const CyberPanel = ({
     {title && (
       <div className="flex flex-wrap items-center justify-between mb-4 border-b border-[var(--cyber-neon-blue)]/20 pb-2 gap-2">
         <div className="flex items-center gap-2">
-          <Terminal className="w-4 h-4 text-[var(--cyber-neon-blue)] shrink-0" />
+          <Terminal
+            className="w-4 h-4 text-[var(--cyber-neon-blue)] shrink-0"
+            aria-hidden="true"
+          />
           <span className="text-sm sm:text-sm font-mono text-[var(--cyber-neon-blue)] uppercase tracking-tighter">
             {title}
           </span>

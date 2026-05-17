@@ -4,7 +4,11 @@ import { motion } from "framer-motion";
 
 export const CyberSpinner: React.FC = () => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-[50vh] w-full gap-4">
+    <div
+      className="flex flex-col items-center justify-center min-h-[50vh] w-full gap-4"
+      role="status"
+      aria-label="Loading"
+    >
       <div className="relative flex items-center justify-center w-16 h-16">
         <motion.div
           animate={{ rotate: 360 }}

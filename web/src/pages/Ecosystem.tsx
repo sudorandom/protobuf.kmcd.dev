@@ -61,7 +61,7 @@ export const VersionTimeline = () => {
       className="py-24 px-4 sm:px-8 bg-[var(--section-bg-dark)] border-t border-[var(--border-light)]"
     >
       <div className="max-w-7xl mx-auto">
-        <SectionTitle icon={GitBranch} subtitle="06_HISTORY">
+        <SectionTitle icon={GitBranch} subtitle="06_HISTORY" asH1={true}>
           Major Versions
         </SectionTitle>
 

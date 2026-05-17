@@ -113,7 +113,11 @@ export const InteractiveSchemaEditor: React.FC<
         />
 
         {/* Validation Status Overlay */}
-        <div className="absolute top-2 right-2 flex items-center gap-2 pointer-events-none">
+        <div
+          className="absolute top-2 right-2 flex items-center gap-2 pointer-events-none"
+          aria-live="polite"
+          aria-atomic="true"
+        >
           {isValidating && (
             <div className="flex items-center gap-2 bg-[var(--bg-color)]/80 backdrop-blur-sm px-2 py-1 rounded border border-[var(--cyber-neon-blue)]/30">
               <div className="w-1.5 h-1.5 bg-[var(--cyber-neon-blue)] rounded-full animate-pulse" />
@@ -135,7 +139,11 @@ export const InteractiveSchemaEditor: React.FC<
 
       {/* Error Log */}
       {localErrors.length > 0 && (
-        <div className="space-y-1 max-h-24 overflow-y-auto pr-2 custom-scrollbar">
+        <div
+          className="space-y-1 max-h-24 overflow-y-auto pr-2 custom-scrollbar"
+          role="alert"
+          aria-label="Schema compilation errors"
+        >
           {localErrors.map((err, i) => (
             <div
               key={i}

@@ -40,6 +40,7 @@ export const JsonEditor = ({
           })
         }
         spellCheck={false}
+        aria-label="JSON Editor"
       />
     </div>
   );

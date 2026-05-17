@@ -1229,7 +1229,7 @@ const BinaryPage = ({
         className="py-24 px-4 sm:px-8 bg-[var(--bg-color)]"
       >
         <div className="max-w-7xl mx-auto">
-          <SectionTitle icon={Binary} subtitle="05_WIRE_FORMAT">
+          <SectionTitle icon={Binary} subtitle="05_WIRE_FORMAT" asH1={true}>
             Digging into the binary
           </SectionTitle>
 

@@ -183,7 +183,7 @@ export const Introduction = ({
 
   return (
     <Section id="intro" className="py-24 px-4 sm:px-8 max-w-7xl mx-auto">
-      <SectionTitle icon={Database} subtitle="01_DEFINITION">
+      <SectionTitle icon={Database} subtitle="01_DEFINITION" asH1={true}>
         What is Protobuf?
       </SectionTitle>
 

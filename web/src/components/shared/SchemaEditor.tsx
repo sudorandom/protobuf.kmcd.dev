@@ -69,6 +69,8 @@ export const SchemaEditor = ({
           })
         }
         spellCheck={false}
+        aria-label="Protobuf Schema Editor"
+        aria-invalid={errors.length > 0}
       />
     </div>
   );
