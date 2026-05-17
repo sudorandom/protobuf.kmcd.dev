@@ -1,6 +1,9 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
+import { RefreshCcw } from "lucide-react";
 
 export const BitShiftingVisualization = () => {
+  const [restartKey, setRestartKey] = useState(0);
   const BIT_WIDTH = 40;
   const BIT_HEIGHT = 45;
   const GAP = 4;
@@ -13,8 +16,16 @@ export const BitShiftingVisualization = () => {
   const shiftEndTime = 0.55;
 
   return (
-    <div className="w-full max-w-4xl mx-auto my-4 overflow-hidden flex flex-col items-center gap-8">
+    <div
+      className="w-full max-w-4xl mx-auto my-4 overflow-hidden flex flex-col items-center gap-2 group cursor-pointer"
+      onClick={() => setRestartKey((prev) => prev + 1)}
+      title="Click to restart animation"
+    >
+      <div className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2 text-[var(--cyber-neon-blue)] font-cyber text-xs uppercase tracking-widest">
+        <RefreshCcw className="w-3 h-3" /> Click to Restart
+      </div>
       <svg
+        key={restartKey}
         viewBox="0 0 600 220"
         className="w-full h-auto max-w-2xl font-mono"
         style={{ color: "var(--text-color)" }}
