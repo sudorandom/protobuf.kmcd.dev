@@ -316,15 +316,14 @@ export const ProtobufBasics = () => {
             language, agrees on its structure.
           </p>
           <p>
-            Crucially,{" "}
+            One of the best features of Protobuf is that it's{" "}
             <ExternalLinkText href="https://protobuf.dev/programming-guides/proto3/#updating">
-              Protobuf is designed to be evolvable
+              designed to be evolvable
             </ExternalLinkText>
-            . You can add new fields to these messages without breaking existing
-            code, allowing servers and clients to upgrade at their own pace.
-            This sounds like a simple thing, but it is an important feature for
-            binary-based formats to have and many binary formats do not support
-            this level of forward/backward compatibility.
+            . You can add new fields to messages without breaking existing code,
+            which lets servers and clients upgrade at their own pace. This is a
+            big deal for a binary format. Many other formats don't support this
+            level of compatibility out of the box.
           </p>
         </div>
       ),
@@ -349,10 +348,10 @@ message SearchRequest {
             name.
           </p>
           <p>
-            Because Protobuf is strictly typed, it eliminates an entire class of
-            runtime errors common in dynamically typed formats like JSON. If a
-            client expects an integer, they will never accidentally receive a
-            string.
+            Since Protobuf is strictly typed, it catches many of the data-type
+            errors that would otherwise only show up at runtime with formats
+            like JSON. If a client expects an integer, they will never
+            accidentally receive a string.
           </p>
           <p>
             While names are used in your code for readability, they are{" "}
@@ -844,9 +843,9 @@ export const TypeSystem = () => {
                 Guidelines for Integers
               </h3>
               <p className="text-[var(--text-dim)] text-sm max-w-3xl">
-                Choosing the right integer type is critical for both wire
-                efficiency and language compatibility. Follow these industry
-                best practices.
+                Choosing the right integer type is important for both message
+                size and language compatibility; here are some general
+                guidelines.
               </p>
             </div>
 

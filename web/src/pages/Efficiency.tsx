@@ -162,10 +162,10 @@ export const SizeComparison = ({
         <div className="mb-12 space-y-12 text-[var(--text-color)] leading-relaxed">
           <div className="space-y-4 text-lg">
             <p>
-              The message size savings you can expect from Protobuf highly
-              depend on your data. Large strings will always take space, but
-              numeric data and sparse messages (many optional fields) see
-              massive reductions compared to JSON.
+              How much space you save with Protobuf depends on your data. Large
+              strings will always take up space, but numeric data and sparse
+              messages (those with many optional fields) see the biggest
+              reductions compared to JSON.
             </p>
             <p className="text-base text-[var(--text-dim)]">
               Try a few different scenarios below: use the preset examples,{" "}
@@ -547,7 +547,7 @@ export const SizeComparison = ({
             <div className="flex items-center gap-3 text-[var(--cyber-neon-blue)]">
               <BarChart3 className="w-6 h-6" />
               <h3 className="text-xl sm:text-2xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">
-                The Benchmark Landscape
+                Performance in Practice
               </h3>
             </div>
 

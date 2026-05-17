@@ -72,9 +72,8 @@ export const VersionTimeline = () => {
             layer for modern distributed systems worldwide.
           </p>
           <p className="text-[var(--text-dim)] leading-relaxed">
-            While the core philosophy of schema-first binary serialization has
-            remained constant, the language has adapted to meet the needs of a
-            diverse engineering landscape.
+            While the core philosophy has remained constant, the language has
+            evolved to support more platforms and complex engineering needs.
           </p>
         </div>
 
@@ -275,7 +274,7 @@ export const Toolbox = () => {
     },
     {
       name: "protoc-gen-jsonschema",
-      desc: "Generates JSON Schema definitions from your Protobuf messages, enabling seamless integration with JSON-based validation tools.",
+      desc: "Generates JSON Schema definitions from your Protobuf messages, so you can use them with JSON-based validation tools.",
       url: "https://github.com/bufbuild/protoschema-plugins",
     },
     {
@@ -594,7 +593,7 @@ export const AlternativesLandscape = () => (
             <p className="text-sm text-[var(--text-dim)] leading-relaxed">
               FlatBuffers allows "zero-copy" access, meaning you can read data
               without parsing it at all. Avro is widely used in Big Data
-              (Hadoop/Kafka) for its robust schema evolution.
+              (Hadoop/Kafka) for its flexible schema evolution.
             </p>
             <div className="text-sm font-mono text-[var(--cyber-neon-green)] uppercase">
               Best For: Games, Real-time Stream Processing

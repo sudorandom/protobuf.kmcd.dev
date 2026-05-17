@@ -1142,6 +1142,29 @@ message User {
             PII), and <strong>service-level access control</strong> (e.g.,
             defining required roles for RBAC).
           </p>
+          <p>
+            These annotations are preserved in the binary descriptors, which
+            makes them accessible to anything that processes your schema. This
+            includes <strong>protoc plugins</strong> that generate custom code,
+            systems that <strong>configure themselves during startup</strong>,
+            or dynamic tools that{" "}
+            <strong>load and inspect schemas on demand</strong> via reflection.
+          </p>
+          <TechnicalNuance title="The Evolution of Extensions">
+            <p>
+              Before Editions, you <strong>had</strong> to use{" "}
+              <code>proto2</code> syntax to define custom extensions; this was
+              true even if the rest of your project used <code>proto3</code>.
+              This requirement made extensions feel "alien" and niche to many
+              developers.
+            </p>
+            <p>
+              <strong>Protobuf Editions</strong> finally unifies this by
+              supporting the <code>extend</code> keyword natively. You can now
+              extend descriptor messages to hold custom options directly within
+              the modern workflow.
+            </p>
+          </TechnicalNuance>
           <div className="space-y-3">
             <p className="text-sm font-bold uppercase text-[var(--cyber-neon-blue)] tracking-widest">
               Available Scopes
@@ -1171,9 +1194,9 @@ message User {
             </p>
           </div>
           <p>
-            For a deep dive, see the{" "}
-            <ExternalLinkText href="https://protobuf.dev/programming-guides/proto2/#customoptions">
-              Custom Options Guide
+            For more information, see the{" "}
+            <ExternalLinkText href="https://protobuf.dev/programming-guides/editions/#custom-options">
+              Editions Custom Options Guide
             </ExternalLinkText>
             .
           </p>
@@ -1193,19 +1216,49 @@ message User {
           </TechnicalNuance>
         </div>
       ),
-      example: `// options.proto
-syntax = "proto2";
+      example: "",
+      children: (
+        <div className="space-y-4">
+          <CyberPanel title="OPTIONS.PROTO (DEFINITION)" className="h-auto">
+            <div className="p-2">
+              <SyntaxHighlighter
+                language="proto"
+                code={`edition = "2023";
 import "google/protobuf/descriptor.proto";
 
 extend google.protobuf.FieldOptions {
-  // Use a unique number from your range
-  optional bool is_pii = 50001;
+  bool is_pii = 50001;
 }
 
 extend google.protobuf.MethodOptions {
-  // Example: Required role for RBAC
-  optional string required_role = 50002;
-}`,
+  string required_role = 50002;
+}`}
+                wrap={true}
+              />
+            </div>
+          </CyberPanel>
+          <CyberPanel title="SERVICE.PROTO (USAGE)" className="h-auto">
+            <div className="p-2">
+              <SyntaxHighlighter
+                language="proto"
+                code={`edition = "2023";
+import "options.proto";
+
+service UserService {
+  rpc GetSensitiveData(GetRequest) returns (GetResponse) {
+    option (required_role) = "ADMIN";
+  }
+}
+
+message Profile {
+  string ssn = 1 [(is_pii) = true];
+}`}
+                wrap={true}
+              />
+            </div>
+          </CyberPanel>
+        </div>
+      ),
     },
     {
       id: "breaking-levels",
@@ -1220,14 +1273,14 @@ extend google.protobuf.MethodOptions {
             <ExternalLinkText href="https://buf.build/docs/breaking/">
               Buf
             </ExternalLinkText>{" "}
-            categorize breaking changes into four distinct levels of severity:
+            categorize breaking changes into four distinct levels of severity.
           </p>
           <ul className="list-disc pl-4 space-y-2 text-sm">
             <li>
-              <strong>WIRE:</strong> The most severe level. Changing a field
-              number or using an incompatible type (e.g., <code>string</code> to{" "}
-              <code>int32</code>). This causes catastrophic data corruption
-              during serialization. <em>Never do this.</em>
+              <strong>WIRE:</strong> The most severe level. This includes
+              changing a field number or using an incompatible type (e.g.,{" "}
+              <code>string</code> to <code>int32</code>). This causes data
+              corruption during serialization; you should never do this.
             </li>
             <li>
               <strong>WIRE_JSON:</strong> Breakage in JSON representation.
@@ -1243,23 +1296,55 @@ extend google.protobuf.MethodOptions {
               fail until they update their types.
             </li>
             <li>
-              <strong>FILE:</strong> The strictest level. Ensures source code
-              compatibility down to the individual file level. Moving a message
-              to another file might break code generation that relies on
+              <strong>FILE:</strong> The strictest level. This ensures source
+              code compatibility down to the individual file level. Moving a
+              message to another file might break code generation that relies on
               specific file imports.
             </li>
           </ul>
         </div>
       ),
-      example: `message Event {
-  // Safe on wire, breaks JSON clients
-  // unless you use json_name:
-  string user_id = 1 [json_name="uid"];
+      children: (
+        <div className="space-y-4">
+          <CyberPanel title="V1 (BEFORE)" className="h-auto">
+            <div className="p-2">
+              <SyntaxHighlighter
+                language="proto"
+                code={`edition = "2023";
+package api.v1;
 
-  // Wire compatible, breaks builds
-  // (from int32 to int64)
-  int64 count = 2;
-}`,
+message User {
+  string id = 1;
+  int32 age = 2;
+  string display_name = 3;
+}`}
+                wrap={true}
+              />
+            </div>
+          </CyberPanel>
+          <CyberPanel title="V2 (AFTER)" className="h-auto">
+            <div className="p-2">
+              <SyntaxHighlighter
+                language="proto"
+                code={`edition = "2023";
+package api.v2; // [PACKAGE] breakage
+
+message User {
+  // [WIRE] breakage: type changed from string
+  int32 id = 1; 
+
+  // [PACKAGE] breakage: source code type change
+  int64 age = 2;
+
+  // [WIRE_JSON] breakage: JSON key changed
+  string full_name = 3; 
+}`}
+                wrap={true}
+              />
+            </div>
+          </CyberPanel>
+        </div>
+      ),
     },
   ];
 
@@ -1731,7 +1816,7 @@ export const ValidationLab = () => {
           </div>
           <div className="p-4 bg-[var(--cyber-neon-cyan)]/5 border border-[var(--cyber-neon-cyan)]/20 rounded-lg text-sm flex flex-col justify-center hover:bg-[var(--cyber-neon-cyan)]/10 transition-colors group/dive">
             <span className="text-sm font-cyber font-bold text-[var(--cyber-neon-cyan)] uppercase mb-2 tracking-widest">
-              Dive Deeper
+              Learn More
             </span>
             <ExternalLinkText href="https://protovalidate.com/playground/">
               Official protovalidate Playground

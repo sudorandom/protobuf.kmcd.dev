@@ -80,9 +80,6 @@ const PacketDiagram = ({
         </span>
       </div>
     </div>
-    <div className="text-sm font-mono text-[var(--text-dim)] uppercase text-center mt-4 italic border-t border-[var(--border-light)] pt-4">
-      Anatomy of a {title}
-    </div>
   </div>
 );
 
@@ -124,9 +121,6 @@ const FixedPacketDiagram = ({
         </span>
       </div>
     </div>
-    <div className="text-sm font-mono text-[var(--text-dim)] uppercase text-center mt-4 italic border-t border-[var(--border-light)] pt-4">
-      Anatomy of a {title}
-    </div>
   </div>
 );
 
@@ -161,9 +155,6 @@ const VarintPacketDiagram = () => (
           1-10 Bytes
         </span>
       </div>
-    </div>
-    <div className="text-sm font-mono text-[var(--text-dim)] uppercase text-center mt-4 italic border-t border-[var(--border-light)] pt-4">
-      Anatomy of a Varint Field (Wire Type 0)
     </div>
   </div>
 );
@@ -1253,10 +1244,9 @@ const BinaryPage = ({
           </SectionTitle>
 
           <div className="mb-16 max-w-4xl space-y-6 mx-auto text-center">
-            <p className="text-lg text-[var(--text-dim)] leading-relaxed">
-              To understand how Protobuf achieves its performance, we must look
-              at the raw bytes. On this page, we explore the physical layer of
-              the specification:
+            <p className="text-[var(--text-dim)] leading-relaxed">
+              To see how Protobuf gets its performance, we need to look at the
+              raw bytes; this is the physical layer of the specification.
             </p>
 
             <RoadmapGrid items={roadmapItems} />
