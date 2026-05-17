@@ -73,7 +73,7 @@ export const SIZE_EXAMPLES = {
     role: 2,
     birthDate: { year: 1992, month: 5, day: 22 },
   },
-  "LARGE PAYLOAD": {
+  LARGE: {
     id: "user-ceo",
     name: "CEO",
     email: "ceo@megacorp.com",

@@ -123,6 +123,24 @@ export const ProtoscopeLab: React.FC<ProtoscopeLabProps> = ({
     return () => clearTimeout(timer);
   }, [jsonInput, localMessageSchema]);
 
+  const PRESET_PAYLOADS = {
+    minimal: {
+      id: "550e8400-e29b-41d4-a716-446655440000",
+    },
+    basic: {
+      id: "550e8400-e29b-41d4-a716-446655440000",
+      name: "Hiro Protagonist",
+      email: "hiro@metaverse.com",
+      role: 2,
+    },
+    large: DEFAULT_EXAMPLE,
+  };
+
+  const applyPreset = (preset: keyof typeof PRESET_PAYLOADS) => {
+    trackEvent("apply_preset_payload", { preset });
+    setJsonInput(JSON.stringify(PRESET_PAYLOADS[preset], null, 2));
+  };
+
   const handleGenerateFake = async () => {
     if (!localFds || !rootMessageName) return;
     setIsGenerating(true);
@@ -189,6 +207,28 @@ export const ProtoscopeLab: React.FC<ProtoscopeLabProps> = ({
           </div>
 
           <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => applyPreset("minimal")}
+              className="px-2 py-1 text-sm font-cyber font-bold border border-[var(--cyber-neon-blue)]/30 text-[var(--cyber-neon-blue)] hover:bg-[var(--cyber-neon-blue)]/10 transition-all rounded uppercase tracking-wider"
+              aria-label="Load minimal payload"
+            >
+              Minimal
+            </button>
+            <button
+              onClick={() => applyPreset("basic")}
+              className="px-2 py-1 text-sm font-cyber font-bold border border-[var(--cyber-neon-blue)]/30 text-[var(--cyber-neon-blue)] hover:bg-[var(--cyber-neon-blue)]/10 transition-all rounded uppercase tracking-wider"
+              aria-label="Load basic payload"
+            >
+              Basic
+            </button>
+            <button
+              onClick={() => applyPreset("large")}
+              className="px-2 py-1 text-sm font-cyber font-bold border border-[var(--cyber-neon-blue)]/30 text-[var(--cyber-neon-blue)] hover:bg-[var(--cyber-neon-blue)]/10 transition-all rounded uppercase tracking-wider"
+              aria-label="Load large payload"
+            >
+              Large
+            </button>
+            <div className="w-[1px] h-6 bg-[var(--border-light)] mx-1" />
             <button
               onClick={handleGenerateFake}
               disabled={isGenerating || !localFds}
