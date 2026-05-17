@@ -34,9 +34,9 @@ export const Hero = ({ isAtTop }: { isAtTop: boolean }) => (
     >
       <Link
         to="/intro"
-        className="relative flex items-center justify-center group text-[var(--cyber-neon-blue)] hover:text-[var(--cyber-neon-blue)]/80 transition-colors w-max"
+        className="relative flex items-center justify-center group text-[var(--cyber-neon-blue)] hover:text-[var(--cyber-neon-blue)]/80 transition-colors w-max before:content-[''] before:absolute before:-inset-12 before:cursor-pointer"
       >
-        <span className="font-cyber font-bold tracking-widest sm:tracking-[0.2em] text-lg sm:text-xl uppercase whitespace-nowrap">
+        <span className="relative z-10 font-cyber font-bold tracking-widest sm:tracking-[0.2em] text-lg sm:text-xl uppercase whitespace-nowrap">
           Get Started
         </span>
         <ChevronsRight className="absolute left-full ml-3 w-6 h-6 sm:w-8 sm:h-8 group-hover:translate-x-2 transition-transform" />

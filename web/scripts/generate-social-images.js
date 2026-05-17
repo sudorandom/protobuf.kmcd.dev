@@ -15,9 +15,7 @@ async function generateImages() {
     },
     {
       input: "src/assets/hero-social.svg",
-      outputs: [
-        { name: "hero-social.png", width: 1200, height: 630 },
-      ],
+      outputs: [{ name: "hero-social.png", width: 1200, height: 630 }],
     },
   ];
 
