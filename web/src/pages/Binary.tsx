@@ -31,11 +31,7 @@ import { ProtoscopeLab } from "../components/ProtoscopeLab";
 
 // --- Static Envelope Diagrams ---
 
-const PacketDiagram = ({
-  title = "Length-Delimited Field (Wire Type 2)",
-}: {
-  title?: string;
-}) => (
+const PacketDiagram = () => (
   <div className="w-full max-w-2xl mx-auto my-12">
     <div className="flex items-stretch gap-1 h-20">
       <div className="flex-1 bg-[var(--cyber-neon-blue)]/10 border border-[var(--cyber-neon-blue)]/30 rounded flex flex-col items-center justify-center text-[var(--cyber-neon-blue)] font-mono text-sm relative group px-2 text-center">
@@ -83,13 +79,7 @@ const PacketDiagram = ({
   </div>
 );
 
-const FixedPacketDiagram = ({
-  title = "Fixed-Size Field (Wire Type 1 or 5)",
-  size = "4 or 8 Bytes",
-}: {
-  title?: string;
-  size?: string;
-}) => (
+const FixedPacketDiagram = ({ size = "4 or 8 Bytes" }: { size?: string }) => (
   <div className="w-full max-w-2xl mx-auto my-12">
     <div className="flex items-stretch gap-1 h-20">
       <div className="flex-1 bg-[var(--cyber-neon-blue)]/10 border border-[var(--cyber-neon-blue)]/30 rounded flex flex-col items-center justify-center text-[var(--cyber-neon-blue)] font-mono text-sm relative group px-2 text-center">
