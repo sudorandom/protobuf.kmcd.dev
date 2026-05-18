@@ -942,27 +942,47 @@ export const TypeSystem = () => {
 
             <div className="space-y-8">
               <CyberPanel title="JSON_MAPPING_RULES">
-                <div className="p-4 space-y-4 text-sm overflow-x-auto">
-                  <table className="w-full text-left border-collapse">
+                <div className="p-4 space-y-4 text-sm">
+                  <table className="w-full text-left border-collapse block lg:table">
                     <caption className="sr-only">
                       Protobuf to JSON Type Mapping Rules
                     </caption>
-                    <thead>
-                      <tr className="border-b border-[var(--border-light)] font-mono text-sm text-[var(--text-dim)] uppercase">
-                        <th className="py-2 pr-4 min-w-[200px]">
+                    <thead className="hidden lg:table-header-group">
+                      <tr className="border-b border-[var(--border-light)] font-mono text-sm text-[var(--text-dim)] uppercase bg-[var(--border-light)]/5">
+                        <th className="py-3 px-4 min-w-[160px] font-bold tracking-wider text-[var(--text-color)]">
                           Protobuf Type
                         </th>
-                        <th className="py-2 pr-4 min-w-[150px]">
+                        <th className="py-3 px-4 min-w-[120px] font-bold tracking-wider text-[var(--text-color)]">
                           JSON Type(s)
                         </th>
-                        <th className="py-2 pr-4 min-w-[200px]">
+                        <th className="py-3 px-4 min-w-[180px] font-bold tracking-wider text-[var(--text-color)]">
                           JSON Value Example
                         </th>
-                        <th className="py-2 min-w-[250px]">Notes</th>
+                        <th className="py-3 px-4 min-w-[200px] font-bold tracking-wider text-[var(--text-color)]">
+                          Notes
+                        </th>
                       </tr>
                     </thead>
-                    <tbody className="align-top">
+                    <tbody className="align-top block lg:table-row-group">
                       {[
+                        {
+                          pb: "message",
+                          json: "Object",
+                          ex: '{"userName": "hiro"}',
+                          note: "Serialized as a JSON object. Field names are mapped to lowerCamelCase by default, or the json_name option if set.",
+                        },
+                        {
+                          pb: "repeated",
+                          json: "Array",
+                          ex: '["a", "b"]',
+                          note: "Serialized as a JSON array.",
+                        },
+                        {
+                          pb: "map<K, V>",
+                          json: "Object",
+                          ex: '{"k": "v"}',
+                          note: "Serialized as a JSON object.",
+                        },
                         {
                           pb: "int32, float, double",
                           json: "Number",
@@ -990,7 +1010,7 @@ export const TypeSystem = () => {
                         {
                           pb: "bytes",
                           json: "String",
-                          ex: '"YWJjMTIz"',
+                          ex: '"NDI="',
                           note: "Base64 encoded string.",
                         },
                         {
@@ -1006,48 +1026,68 @@ export const TypeSystem = () => {
                           note: "Seconds with up to 9 fractional digits.",
                         },
                         {
-                          pb: "google.protobuf.Empty",
-                          json: "Object",
-                          ex: "{}",
-                          note: "An empty JSON object.",
+                          pb: "google.protobuf.FieldMask",
+                          json: "String",
+                          ex: '"f.a,f.b"',
+                          note: "Comma-separated paths as a single string.",
                         },
                         {
                           pb: "google.protobuf.Struct",
                           json: "Object",
-                          ex: '{"foo": "bar", "baz": 123}',
+                          ex: '{"foo": "bar"}',
                           note: "Standard representation for a generic JSON object.",
                         },
                         {
                           pb: "google.protobuf.Value",
                           json: "Any",
-                          ex: '{"foo": "bar"}',
-                          note: "Can be any valid JSON value.",
+                          ex: '"foo" or 123',
+                          note: "Can be any valid JSON value (null, number, string, boolean, struct, or list).",
                         },
                         {
-                          pb: "google.protobuf.Method",
-                          json: "String",
-                          ex: '"/demo.v1.UserService/GetUser"',
-                          note: "String representation of the method.",
+                          pb: "google.protobuf.NullValue",
+                          json: "null",
+                          ex: "null",
+                          note: "The JSON null value.",
                         },
-                      ].map((row) => (
+                        {
+                          pb: "google.protobuf.Empty",
+                          json: "Object",
+                          ex: "{}",
+                          note: "An empty JSON object.",
+                        },
+                      ].map((row, idx) => (
                         <tr
                           key={row.pb}
-                          className="border-b border-[var(--border-light)]/50 last:border-0"
+                          className={`border-b border-[var(--border-light)]/50 last:border-0 block lg:table-row py-6 lg:py-0 ${
+                            idx % 2 === 0 ? "bg-white/[0.02]" : ""
+                          }`}
                         >
-                          <td className="py-3 pr-4">
+                          <td className="py-1 lg:py-4 px-4 block lg:table-cell">
+                            <span className="lg:hidden text-[10px] font-mono text-[var(--cyber-neon-blue)]/70 font-bold uppercase block mb-1 tracking-tight">
+                              Protobuf Type
+                            </span>
                             <code className="text-[var(--cyber-neon-blue)] bg-[var(--cyber-neon-blue)]/5 px-1 py-0.5 rounded break-words">
                               {row.pb}
                             </code>
                           </td>
-                          <td className="py-3 pr-4 font-mono text-sm text-[var(--cyber-neon-pink)]">
+                          <td className="py-1 lg:py-4 px-4 font-mono text-sm text-[var(--cyber-neon-pink)] block lg:table-cell">
+                            <span className="lg:hidden text-[10px] font-mono text-[var(--cyber-neon-blue)]/70 font-bold uppercase block mb-1 tracking-tight">
+                              JSON Type
+                            </span>
                             {row.json}
                           </td>
-                          <td className="py-3 pr-4">
+                          <td className="py-1 lg:py-4 px-4 block lg:table-cell">
+                            <span className="lg:hidden text-[10px] font-mono text-[var(--cyber-neon-blue)]/70 font-bold uppercase block mb-1 tracking-tight">
+                              Example
+                            </span>
                             <code className="text-[var(--cyber-neon-green)] bg-[var(--cyber-neon-green)]/5 px-1 py-0.5 rounded break-all">
                               {row.ex}
                             </code>
                           </td>
-                          <td className="py-3 text-[var(--text-dim)] text-sm">
+                          <td className="py-1 lg:py-4 px-4 text-[var(--text-dim)] text-sm block lg:table-cell">
+                            <span className="lg:hidden text-[10px] font-mono text-[var(--cyber-neon-blue)]/70 font-bold uppercase block mb-1 tracking-tight">
+                              Note
+                            </span>
                             {row.note}
                           </td>
                         </tr>
