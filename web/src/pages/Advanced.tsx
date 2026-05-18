@@ -17,6 +17,8 @@ import {
   Terminal,
   Settings2,
   Info,
+  Scale,
+  ShieldAlert,
 } from "lucide-react";
 import {
   fromJson,
@@ -397,44 +399,10 @@ $ buf breaking --against .git#branch=main
 //   field "3" deleted.`,
     },
     {
-      id: "linting",
-      icon: SearchCheck,
-      title: "Linting",
-      subtitle: "03e_STANDARDS_CLI",
-      panelTitle: "CLI_LINT_CHECK",
-      desc: (
-        <div className="space-y-4">
-          <p>
-            Linting ensures schemas are consistent and follow industry
-            standards, which is especially important when many developers are
-            contributing to a shared codebase.
-          </p>
-          <p>
-            Tools like{" "}
-            <ExternalLinkText href="https://buf.build/">Buf</ExternalLinkText>{" "}
-            and{" "}
-            <ExternalLinkText href="https://github.com/yoheimuta/protolint">
-              protolint
-            </ExternalLinkText>{" "}
-            enforce rules such as snake_case field names, PascalCase message
-            names, and documentation requirements.
-          </p>
-        </div>
-      ),
-      example: `// Run linter
-$ buf lint
-
-// Output:
-// user.proto:5:1: Field name "userID" should be
-//   lower_snake_case, such as "user_id".
-// user.proto:8:1: Message "user" should be
-//   PascalCase, such as "User".`,
-    },
-    {
       id: "editions",
       icon: Code2,
       title: "Editions",
-      subtitle: "03f_FUTURE",
+      subtitle: "03e_FUTURE",
       panelTitle: "EDITION_CONFIG",
       desc: (
         <div className="space-y-4">
@@ -492,7 +460,7 @@ message User {
       id: "services",
       icon: Zap,
       title: "Services",
-      subtitle: "03g_NETWORKING",
+      subtitle: "03f_NETWORKING",
       panelTitle: "SERVICE_DEFINITION",
       desc: (
         <div className="space-y-4">
@@ -539,69 +507,6 @@ message User {
   rpc Chat(stream Message) returns (stream Message);
 }`,
     },
-    {
-      id: "presence",
-      icon: HelpCircle,
-      title: "Field Presence",
-      subtitle: "03h_OPTIONALITY",
-      panelTitle: "PRESENCE_COMPARISON",
-      desc: (
-        <div className="space-y-4">
-          <p>
-            Field presence defines whether a receiver can distinguish between a
-            field that was <strong>never set</strong> and one that was set to
-            its <strong>default value</strong> (like <code>0</code> or{" "}
-            <code>""</code>).
-          </p>
-          <div className="grid grid-cols-1 gap-4">
-            <div className="p-3 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded">
-              <h3 className="text-[var(--cyber-neon-blue)] font-cyber text-sm uppercase mb-1">
-                Proto3 (Implicit)
-              </h3>
-              <p className="text-sm text-[var(--text-dim)]">
-                Scalar fields have implicit presence. If a value is{" "}
-                <code>0</code>, it's not sent on the wire, and the receiver sees{" "}
-                <code>0</code>. You can't tell if it was missing or explicitly
-                zero.
-              </p>
-            </div>
-            <div className="p-3 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded">
-              <h3 className="text-[var(--cyber-neon-green)] font-cyber text-sm uppercase mb-1">
-                Editions (Explicit)
-              </h3>
-              <p className="text-sm text-[var(--text-dim)]">
-                By setting <code>features.field_presence = EXPLICIT</code>,
-                presence is tracked for all fields. Receiving a zero means it
-                was explicitly sent. If missing, the generated code provides{" "}
-                <code>has_field()</code> checks.
-              </p>
-            </div>
-          </div>
-          <p className="text-sm italic text-[var(--text-dim)]">
-            Editions 2023 allows you to mix and match behaviors or globally
-            enforce one, providing a unified approach to field presence that
-            works across versions.
-          </p>
-        </div>
-      ),
-      example: `// Edition with Explicit Presence
-edition = "2023";
-
-message Profile {
-  // Globally set explicit presence
-  option features.field_presence = EXPLICIT;
-
-  int32 views = 1; // has_views() is available
-  string bio = 2;  // has_bio() is available
-}
-
-// Proto3 (Implicit)
-syntax = "proto3";
-
-message LegacyProfile {
-  int32 views = 1; // No "has" check for scalars
-}`,
-    },
   ];
 
   const roadmapItems = [
@@ -625,9 +530,15 @@ message LegacyProfile {
     },
     {
       id: "presence",
-      title: "Field Presence",
-      desc: "Understanding implicit vs explicit field set tracking.",
-      color: "pink",
+      title: "Presence",
+      desc: "Distinguishing between default values and missing data.",
+      color: "blue",
+    },
+    {
+      id: "required-fields",
+      title: "Required Fields",
+      desc: "Handling 'required' fields and business rules in an evolvable way.",
+      color: "green",
     },
     {
       id: "reflection",
@@ -826,8 +737,11 @@ export const DescriptorsAndReflection = () => {
               </div>
             </div>
             <div className="flex flex-col h-full">
-              <CyberPanel title="DESCRIPTOR.PROTO (SNIPPET)" className="h-full">
-                <div className="p-4 overflow-auto h-full bg-[var(--overlay-bg)] rounded-lg border border-[var(--border-light)]">
+              <CyberPanel
+                title="DESCRIPTOR.PROTO (SNIPPET)"
+                className="h-full flex flex-col"
+              >
+                <div className="p-4 overflow-auto flex-1 bg-[var(--overlay-bg)] rounded-lg border border-[var(--border-light)]">
                   <SyntaxHighlighter
                     language="proto"
                     code={`// The schema that describes a schema
@@ -856,6 +770,10 @@ message DescriptorProto {
         </div>
 
         <div className="pt-16 border-t border-[var(--border-light)] relative">
+          <p className="mb-8 text-[var(--text-dim)] text-sm leading-relaxed max-w-4xl">
+            Try editing the schema below to see how the generated{" "}
+            <code>FileDescriptorSet</code> changes in real-time.
+          </p>
           {/* Global Interactive Sign for Large Screens */}
           <div className="absolute -left-48 top-48 hidden 2xl:flex flex-col items-end gap-2 text-[var(--cyber-neon-pink)] pointer-events-none z-10">
             <span className="font-cyber text-sm uppercase tracking-widest text-right">
@@ -1596,16 +1514,19 @@ export const ValidationLab = () => {
               The Source of Truth
             </h3>
             <p className="text-[var(--text-dim)] leading-relaxed text-sm">
-              Protobuf goes beyond simple types. With{" "}
+              Protobuf goes beyond simple types. By using{" "}
+              <strong>extensions</strong>, you can augment your schema with rich
+              metadata. A powerful example is{" "}
               <ExternalLinkText href="https://protovalidate.com/">
                 <strong>protovalidate</strong>
               </ExternalLinkText>
-              , you can embed complex business rules directly into your schema
-              using{" "}
+              , which allows you to embed complex business rules directly into
+              your schema using{" "}
               <ExternalLinkText href="https://cel.dev/">
                 <strong>CEL</strong>
               </ExternalLinkText>
-              .
+              . Try modifying the JSON data below or clicking the example
+              buttons to see the validation rules in action.
             </p>
           </div>
 
@@ -1954,11 +1875,214 @@ const LimitsAndConstraints = () => (
   </Section>
 );
 
+const FieldPresence = () => (
+  <Section
+    id="presence"
+    className="py-24 px-4 sm:px-8 bg-[var(--section-bg-dark)] border-t border-[var(--border-light)]"
+  >
+    <div className="max-w-7xl mx-auto">
+      <SectionTitle icon={HelpCircle} subtitle="03n_OPTIONALITY">
+        Field Presence
+      </SectionTitle>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+        <div className="space-y-8">
+          <div className="space-y-4">
+            <h3 className="text-xl font-cyber font-bold text-[var(--text-color)] uppercase">
+              Implicit vs. Explicit
+            </h3>
+            <p className="text-[var(--text-dim)] leading-relaxed">
+              Field presence determines whether a receiver can distinguish
+              between a field that was <strong>never set</strong> and one that
+              was set to its <strong>default value</strong> (like <code>0</code>{" "}
+              or <code>""</code>).
+            </p>
+          </div>
+
+          <div className="space-y-6">
+            <div className="p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg space-y-3">
+              <h4 className="text-sm font-cyber font-bold text-[var(--cyber-neon-blue)] uppercase tracking-widest">
+                The Historical Context
+              </h4>
+              <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+                In <strong>proto2</strong>, all fields were explicit. In{" "}
+                <strong>proto3</strong>, the <code>optional</code> keyword was
+                initially removed for scalar fields to simplify the wire format
+                and generated code. This meant all scalars had{" "}
+                <strong>implicit presence</strong>: if you didn't send a value,
+                the receiver saw the default.
+              </p>
+            </div>
+
+            <div className="p-4 bg-[var(--cyber-neon-green)]/10 border border-[var(--cyber-neon-green)]/30 rounded-lg space-y-3">
+              <h4 className="text-sm font-cyber font-bold text-[var(--cyber-neon-green)] uppercase tracking-widest">
+                The Modern Solution
+              </h4>
+              <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+                Due to widespread demand, the <code>optional</code> keyword was
+                re-introduced in later versions of proto3 (v3.15+). Today,{" "}
+                <strong>Protobuf Editions</strong> provides the most robust
+                solution by allowing you to globally or locally toggle{" "}
+                <code>field_presence</code> between <code>IMPLICIT</code> and{" "}
+                <code>EXPLICIT</code>.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <CyberPanel title="PRESENCE_COMPARISON" className="h-full">
+          <div className="p-4 space-y-6">
+            <div className="space-y-4">
+              <h4 className="text-xs font-mono text-[var(--cyber-neon-pink)] uppercase tracking-tighter">
+                File-Level Default
+              </h4>
+              <SyntaxHighlighter
+                language="proto"
+                code={`edition = "2023";
+// Set EXPLICIT presence for the entire file
+option features.field_presence = EXPLICIT;
+
+message Profile {
+  string bio = 1;   // Explicit (tracked)
+  int32 views = 2; // Explicit (tracked)
+}`}
+              />
+            </div>
+            <div className="space-y-4 border-t border-[var(--border-light)] pt-6">
+              <h4 className="text-xs font-mono text-[var(--text-dim)] uppercase tracking-tighter">
+                Field-Level Overrides
+              </h4>
+              <SyntaxHighlighter
+                language="proto"
+                code={`message LegacyData {
+  // Override to IMPLICIT for specific fields
+  int32 raw_id = 1 [features.field_presence = IMPLICIT];
+  
+  // Follows file-level default (EXPLICIT)
+  string note = 2;
+}`}
+              />
+            </div>
+          </div>
+        </CyberPanel>      </div>
+    </div>
+  </Section>
+);
+
+const RequiredFields = () => (
+  <Section
+    id="required-fields"
+    className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]"
+  >
+    <div className="max-w-7xl mx-auto">
+      <SectionTitle icon={ShieldCheck} subtitle="03o_STRICTNESS">
+        Required Fields
+      </SectionTitle>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+        <div className="space-y-8">
+          <div className="space-y-4">
+            <h3 className="text-xl font-cyber font-bold text-[var(--text-color)] uppercase">
+              The Evolution of Required
+            </h3>
+            <p className="text-[var(--text-dim)] leading-relaxed">
+              The <code>required</code> keyword was famously removed in proto3.
+              This was a deliberate architectural decision to ensure that
+              schemas could evolve safely without breaking backward
+              compatibility.
+            </p>
+          </div>
+
+          <div className="p-4 bg-[var(--cyber-neon-yellow)]/10 border border-[var(--cyber-neon-yellow)]/30 rounded-lg space-y-3">
+            <h4 className="text-sm font-cyber font-bold text-[var(--cyber-neon-yellow)] uppercase tracking-widest">
+              Why was it removed?
+            </h4>
+            <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+              If a field is marked <code>required</code>, it must be present in
+              every message. If you later decide to stop sending that field,
+              every older client in the world will crash when they try to decode
+              the new message. Required fields are{" "}
+              <ExternalLinkText href="https://stackoverflow.com/questions/31801257/why-required-and-optional-is-removed-in-protocol-buffers-3">
+                considered
+              </ExternalLinkText>{" "}
+              <ExternalLinkText href="https://capnproto.org/faq.html#how-do-i-make-a-field-required-like-in-protocol-buffers">
+                harmful
+              </ExternalLinkText>{" "}
+              for long-term schema evolution.
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            <h4 className="text-sm font-cyber font-bold text-[var(--text-color)] uppercase tracking-widest">
+              Modern Best Practices
+            </h4>
+            <ul className="space-y-4 text-sm text-[var(--text-dim)]">
+              <li className="flex gap-3">
+                <CheckCircle2 className="w-5 h-5 text-[var(--cyber-neon-green)] shrink-0" />
+                <p>
+                  <strong>Application Validation:</strong> Use generated getters
+                  that return zero values if the field is missing (e.g., Go's{" "}
+                  <code>GetField()</code>) and perform null checks in your
+                  business logic.
+                </p>
+              </li>
+              <li className="flex gap-3">
+                <CheckCircle2 className="w-5 h-5 text-[var(--cyber-neon-green)] shrink-0" />
+                <p>
+                  <strong>Metadata Validation:</strong> Use extensions like{" "}
+                  <code>protovalidate</code> to declare constraints (including{" "}
+                  <code>required</code>) in the IDL without breaking wire
+                  compatibility.
+                </p>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="space-y-6">
+          <CyberPanel title="METADATA_VALIDATION" className="h-auto">
+            <div className="p-4 space-y-4">
+              <SyntaxHighlighter
+                language="proto"
+                code={`import "buf/validate/validate.proto";
+
+message CreateUserRequest {
+  // Required at the validation layer
+  // but optional at the wire layer.
+  string email = 1 [
+    (buf.validate.field).string.email = true,
+    (buf.validate.field).required = true
+  ];
+}`}
+              />
+            </div>
+          </CyberPanel>
+
+          <CyberPanel title="APPLICATION_VALIDATION (Go)" className="h-auto">
+            <div className="p-4 space-y-2">
+              <SyntaxHighlighter
+                language="go"
+                code={`// Safe access even if req is nil
+email := req.GetEmail()
+if email == "" {
+    return status.Error(InvalidArgument, "email is required")
+}`}
+              />
+            </div>
+          </CyberPanel>
+        </div>
+      </div>
+    </div>
+  </Section>
+);
+
 const Advanced = () => (
   <>
     <AdvancedProtobuf />
     <DescriptorsAndReflection />
     <SchemaEngineering />
+    <FieldPresence />
+    <RequiredFields />
     <LimitsAndConstraints />
     <ValidationLab />
   </>

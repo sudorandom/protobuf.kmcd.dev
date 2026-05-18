@@ -352,7 +352,7 @@ const TagCalculator = () => {
 
   return (
     <CyberPanel
-      title="TAG_BIT_STRUCTURE"
+      title="TAG_STRUCTURE"
       headerExtra={
         <div className="flex bg-[var(--overlay-bg)] p-1 rounded border border-[var(--border-light)]">
           <button
@@ -373,6 +373,13 @@ const TagCalculator = () => {
       }
     >
       <div className="p-6 space-y-10">
+        <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+          This visualization shows how <strong>Field Number {field}</strong> and{" "}
+          <strong>Wire Type {type} (Varint)</strong> are combined into a single
+          tag value of <strong>{tagValue}</strong>, which is then encoded as a
+          Base-128 Varint.
+        </p>
+
         {/* Step 1: Shift */}
         <div className="space-y-4">
           <div className="flex items-center justify-between">
@@ -920,6 +927,10 @@ export const BinaryMatrix = ({
             <strong>Tag</strong> of the first field, uses it to determine how
             many bytes to read, and then repeats the process for the next field
             until the end of the stream is reached.
+          </p>
+          <p className="text-[var(--text-dim)] text-sm leading-relaxed max-w-4xl">
+            Try modifying the JSON data below or clicking the example buttons to
+            see how the binary stream changes in real-time.
           </p>
           <MultiFieldEncoding />
         </div>
@@ -1582,6 +1593,11 @@ const BinaryPage = ({
               </CyberPanel>
             </div>
           </div>
+
+          <p className="mb-8 text-[var(--text-dim)] text-sm leading-relaxed max-w-4xl">
+            Try modifying the JSON data below or clicking the example buttons to
+            see how the Protoscope output changes in real-time.
+          </p>
 
           <ProtoscopeLab
             protoSource={protoSource}

@@ -220,6 +220,10 @@ export const SizeComparison = ({
             strings will always take up space, numeric data and sparse messages
             see the biggest reductions compared to JSON.
           </p>
+          <p className="pt-8 text-sm">
+            Try modifying the JSON data below or clicking the example buttons to
+            see how the wire size changes in real-time.
+          </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 relative">

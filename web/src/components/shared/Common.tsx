@@ -106,7 +106,7 @@ export const SyntaxHighlighter = ({
   wrap = false,
 }: {
   code: string;
-  language: "proto" | "json" | "yaml" | "bash" | "typescript" | null;
+  language: "proto" | "json" | "yaml" | "bash" | "typescript" | "go" | null;
   wrap?: boolean;
 }) => {
   const highlight = (text: string) => {
@@ -169,6 +169,23 @@ export const SyntaxHighlighter = ({
         /= (\d+)/g,
         (_, p1) =>
           "= " + push(`<span class="text-[var(--text-color)]">${p1}</span>`),
+      );
+    } else if (language === "go") {
+      output = output.replace(/\/\/.*$/gm, (match) =>
+        push(`<span class="text-[var(--text-dim)]">${match}</span>`),
+      );
+      output = output.replace(/"([^"]+)"/g, (match) =>
+        push(`<span class="text-[var(--cyber-neon-green)]">${match}</span>`),
+      );
+      output = output.replace(
+        /\b(package|import|func|type|struct|interface|return|if|else|switch|case|default|for|range|go|chan|defer|map|var|const)\b/g,
+        (match) =>
+          push(`<span class="text-[var(--cyber-neon-pink)]">${match}</span>`),
+      );
+      output = output.replace(
+        /\b(string|uint32|int32|uint64|int64|bool|float32|float64|byte|error)\b/g,
+        (match) =>
+          push(`<span class="text-[var(--cyber-neon-blue)]">${match}</span>`),
       );
     } else if (language === "typescript") {
       output = output.replace(/\/\/.*$/gm, (match) =>
