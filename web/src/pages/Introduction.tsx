@@ -367,9 +367,10 @@ export const Introduction = ({
                       investigating how machines actually make sense of this
                       chaos in the{" "}
                       <Link
-                        to="/binary"
+                        to="/binary/"
                         className="text-[var(--cyber-neon-pink)] hover:underline"
                       >
+                        {" "}
                         <strong>Binary</strong>
                       </Link>{" "}
                       section later on.

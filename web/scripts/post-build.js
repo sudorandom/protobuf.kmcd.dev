@@ -52,7 +52,7 @@ async function run() {
   </url>
 ${APP_ROUTES.map(
   (route) => `  <url>
-    <loc>${BASE_URL}/${route}</loc>
+    <loc>${BASE_URL}/${route}/</loc>
     <lastmod>${today}</lastmod>
     <priority>0.8</priority>
   </url>`,

@@ -694,8 +694,8 @@ const BinaryBasics = () => (
             The decision boils down to two key factors. First, the{" "}
             <strong>Varint algorithm</strong> naturally processes integers by
             stripping the least significant bits first. Sticking to
-            Little-Endian allows encoding and decoding in a single
-            loop without extra buffering.
+            Little-Endian allows encoding and decoding in a single loop without
+            extra buffering.
           </p>
           <p>
             Second, most modern hardware (including x86 and ARM) is natively{" "}

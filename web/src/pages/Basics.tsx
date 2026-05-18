@@ -944,6 +944,9 @@ export const TypeSystem = () => {
               <CyberPanel title="JSON_MAPPING_RULES">
                 <div className="p-4 space-y-4 text-sm overflow-x-auto">
                   <table className="w-full text-left border-collapse">
+                    <caption className="sr-only">
+                      Protobuf to JSON Type Mapping Rules
+                    </caption>
                     <thead>
                       <tr className="border-b border-[var(--border-light)] font-mono text-sm text-[var(--text-dim)] uppercase">
                         <th className="py-2 pr-4 min-w-[200px]">

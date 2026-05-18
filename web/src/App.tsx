@@ -48,13 +48,13 @@ interface NavItemDef {
 
 const NAV_ITEMS: NavItemDef[] = [
   { id: "hero", label: "HOME", path: "/" },
-  { id: "intro", label: "INTRO", path: "/intro" },
-  { id: "basics", label: "BASICS", path: "/basics" },
-  { id: "advanced", label: "ADVANCED", path: "/advanced" },
-  { id: "efficiency", label: "EFFICIENCY", path: "/efficiency" },
-  { id: "binary", label: "BINARY", path: "/binary" },
-  { id: "ecosystem", label: "ECOSYSTEM", path: "/ecosystem" },
-  { id: "conclusion", label: "CONCLUSION", path: "/conclusion" },
+  { id: "intro", label: "INTRO", path: "/intro/" },
+  { id: "basics", label: "BASICS", path: "/basics/" },
+  { id: "advanced", label: "ADVANCED", path: "/advanced/" },
+  { id: "efficiency", label: "EFFICIENCY", path: "/efficiency/" },
+  { id: "binary", label: "BINARY", path: "/binary/" },
+  { id: "ecosystem", label: "ECOSYSTEM", path: "/ecosystem/" },
+  { id: "conclusion", label: "CONCLUSION", path: "/conclusion/" },
 ];
 
 const SECTION_LABELS: Record<string, string> = {
@@ -111,7 +111,11 @@ const NavItem = ({
 }) => {
   const location = useLocation();
   const normalizedPathname =
-    location.pathname === "/" ? "/" : location.pathname.replace(/\/$/, "");
+    location.pathname === "/"
+      ? "/"
+      : location.pathname.endsWith("/")
+        ? location.pathname
+        : `${location.pathname}/`;
   const isActive =
     normalizedPathname === item.path ||
     (normalizedPathname === "/" && item.path === "/");
@@ -157,7 +161,11 @@ function App() {
   const [error, setError] = useState<string | null>(null);
   const location = useLocation();
   const normalizedPathname =
-    location.pathname === "/" ? "/" : location.pathname.replace(/\/$/, "");
+    location.pathname === "/"
+      ? "/"
+      : location.pathname.endsWith("/")
+        ? location.pathname
+        : `${location.pathname}/`;
 
   const currentNavIndex = NAV_ITEMS.findIndex(
     (item) =>
@@ -240,7 +248,9 @@ function App() {
           const currentPath =
             window.location.pathname === "/"
               ? "/"
-              : window.location.pathname.replace(/\/$/, "");
+              : window.location.pathname.endsWith("/")
+                ? window.location.pathname
+                : `${window.location.pathname}/`;
 
           if (window.scrollY < 100) {
             history.replaceState(null, "", currentPath);
@@ -643,13 +653,13 @@ function App() {
           <Routes>
             <Route path="/" element={<Hero isAtTop={isAtTop} />} />
             <Route
-              path="/intro"
+              path="/intro/"
               element={<Introduction messageSchema={messageSchema} />}
             />
-            <Route path="/basics" element={<Basics />} />
-            <Route path="/advanced" element={<Advanced />} />
+            <Route path="/basics/" element={<Basics />} />
+            <Route path="/advanced/" element={<Advanced />} />
             <Route
-              path="/efficiency"
+              path="/efficiency/"
               element={
                 <Efficiency
                   protoSource={protoSource}
@@ -658,7 +668,7 @@ function App() {
               }
             />{" "}
             <Route
-              path="/binary"
+              path="/binary/"
               element={
                 <Binary
                   protoSource={protoSource}
@@ -666,8 +676,8 @@ function App() {
                 />
               }
             />{" "}
-            <Route path="/ecosystem" element={<Ecosystem />} />
-            <Route path="/conclusion" element={<Conclusion />} />
+            <Route path="/ecosystem/" element={<Ecosystem />} />
+            <Route path="/conclusion/" element={<Conclusion />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
           {location.pathname !== "/" && (

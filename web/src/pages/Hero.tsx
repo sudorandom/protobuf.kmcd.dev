@@ -33,7 +33,7 @@ export const Hero = ({ isAtTop }: { isAtTop: boolean }) => (
       transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
     >
       <Link
-        to="/intro"
+        to="/intro/"
         className="relative flex items-center justify-center group text-[var(--cyber-neon-blue)] hover:text-[var(--cyber-neon-blue)]/80 transition-colors w-max before:content-[''] before:absolute before:-inset-12 before:cursor-pointer"
       >
         <span className="relative z-10 font-cyber font-bold tracking-widest sm:tracking-[0.2em] text-lg sm:text-xl uppercase whitespace-nowrap">
