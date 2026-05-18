@@ -1964,6 +1964,7 @@ message Profile {
   // Follows file-level default (EXPLICIT)
   string note = 2;
 }`}
+                wrap={true}
               />
             </div>
           </div>
@@ -2071,6 +2072,7 @@ email := req.GetEmail()
 if email == "" {
     return status.Error(InvalidArgument, "email is required")
 }`}
+                wrap={true}
               />
             </div>
           </CyberPanel>

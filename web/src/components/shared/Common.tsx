@@ -243,7 +243,7 @@ export const SyntaxHighlighter = ({
 
   return (
     <pre
-      className={`font-mono text-sm leading-6 m-0 ${wrap ? "whitespace-pre-wrap break-words" : "whitespace-pre"}`}
+      className={`font-mono text-sm leading-6 m-0 custom-scrollbar ${wrap ? "whitespace-pre-wrap break-words" : "whitespace-pre overflow-x-auto"}`}
       dangerouslySetInnerHTML={{ __html: highlight(code) }}
       role="region"
       aria-label={`${language || "Code"} snippet`}
