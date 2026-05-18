@@ -10,15 +10,12 @@ import {
   Database,
   Package,
   Code2,
-  SearchCheck,
   Zap,
   CheckCircle2,
   Download,
   Terminal,
   Settings2,
   Info,
-  Scale,
-  ShieldAlert,
 } from "lucide-react";
 import {
   fromJson,
@@ -441,6 +438,13 @@ $ buf breaking --against .git#branch=main
               </span>
             </li>
           </ul>
+          <p>
+            This shift represents a fundamental change in the Protobuf
+            lifecycle. By decoupling features from syntax versions, Editions
+            provides a path for the ecosystem to evolve more rapidly. This
+            approach allows new features to be introduced as optional behaviors
+            without the disruption of a global "proto4" release.
+          </p>
         </div>
       ),
       example: `edition = "2023";
@@ -1929,7 +1933,6 @@ const FieldPresence = () => (
             </div>
           </div>
         </div>
-
         <CyberPanel title="PRESENCE_COMPARISON" className="h-full">
           <div className="p-4 space-y-6">
             <div className="space-y-4">
@@ -1964,7 +1967,8 @@ message Profile {
               />
             </div>
           </div>
-        </CyberPanel>      </div>
+        </CyberPanel>{" "}
+      </div>
     </div>
   </Section>
 );
