@@ -730,7 +730,15 @@ export const TypeSystem = () => {
         },
         {
           name: "google.protobuf.Timestamp",
-          desc: "A point in time, independent of timezone. Maps to RFC 3339 in JSON.",
+          desc: (
+            <>
+              A point in time, independent of timezone. Maps to{" "}
+              <ExternalLinkText href="https://datatracker.ietf.org/doc/html/rfc3339">
+                RFC 3339
+              </ExternalLinkText>{" "}
+              in JSON.
+            </>
+          ),
           url: "https://protobuf.dev/reference/protobuf/google.protobuf/#timestamp",
         },
         {
@@ -1017,7 +1025,14 @@ export const TypeSystem = () => {
                           pb: "google.protobuf.Timestamp",
                           json: "String",
                           ex: '"2023-10-01T12:00:00Z"',
-                          note: "RFC 3339 formatted timestamp string.",
+                          note: (
+                            <>
+                              <ExternalLinkText href="https://datatracker.ietf.org/doc/html/rfc3339">
+                                RFC 3339
+                              </ExternalLinkText>{" "}
+                              formatted timestamp string.
+                            </>
+                          ),
                         },
                         {
                           pb: "google.protobuf.Duration",
