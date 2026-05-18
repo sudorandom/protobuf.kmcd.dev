@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Plus, Minus } from "lucide-react";
 import { trackEvent } from "../utils/analytics";
 import { CyberPanel } from "./shared/Common";
 
@@ -13,6 +14,11 @@ export const ZigZagExplainer = () => {
       return 0n;
     }
   })();
+
+  const handleAdjust = (delta: bigint) => {
+    const newValue = rawValue + delta;
+    setInputValue(newValue.toString());
+  };
 
   const toZigZag = (n: bigint) => {
     return (n << 1n) ^ (n >> 63n);
@@ -29,22 +35,40 @@ export const ZigZagExplainer = () => {
         >
           Signed Input
         </label>
-        <input
-          id="zigzag-input"
-          type="text"
-          inputMode="numeric"
-          value={inputValue}
-          onChange={(e) => {
-            const val = e.target.value;
-            if (val === "" || val === "-" || /^-?\d+$/.test(val)) {
-              setInputValue(val);
+        <div className="flex gap-2">
+          <input
+            id="zigzag-input"
+            type="text"
+            inputMode="numeric"
+            value={inputValue}
+            onChange={(e) => {
+              const val = e.target.value;
+              if (val === "" || val === "-" || /^-?\d+$/.test(val)) {
+                setInputValue(val);
+              }
+            }}
+            onBlur={() =>
+              trackEvent("zigzag_explainer_interact", { value: inputValue })
             }
-          }}
-          onBlur={() =>
-            trackEvent("zigzag_explainer_interact", { value: inputValue })
-          }
-          className="bg-[var(--section-bg-dark)] border border-[var(--cyber-neon-pink)]/30 rounded p-4 font-cyber text-2xl text-[var(--cyber-neon-pink)] focus:outline-none focus:border-[var(--cyber-neon-pink)] w-full"
-        />
+            className="bg-[var(--section-bg-dark)] border border-[var(--cyber-neon-pink)]/30 rounded p-4 font-cyber text-2xl text-[var(--cyber-neon-pink)] focus:outline-none focus:border-[var(--cyber-neon-pink)] flex-1 min-w-0"
+          />
+          <div className="flex gap-2 shrink-0">
+            <button
+              onClick={() => handleAdjust(-1n)}
+              className="p-4 bg-[var(--overlay-bg)] border border-[var(--cyber-neon-pink)]/30 rounded text-[var(--cyber-neon-pink)] hover:bg-[var(--cyber-neon-pink)]/10 transition-colors"
+              aria-label="Decrement value"
+            >
+              <Minus className="w-6 h-6" />
+            </button>
+            <button
+              onClick={() => handleAdjust(1n)}
+              className="p-4 bg-[var(--overlay-bg)] border border-[var(--cyber-neon-pink)]/30 rounded text-[var(--cyber-neon-pink)] hover:bg-[var(--cyber-neon-pink)]/10 transition-colors"
+              aria-label="Increment value"
+            >
+              <Plus className="w-6 h-6" />
+            </button>
+          </div>
+        </div>
       </div>
 
       <CyberPanel title="ZIGZAG_TRANSFORMATION">

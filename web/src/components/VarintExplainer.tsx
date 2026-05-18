@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Plus, Minus } from "lucide-react";
 import { trackEvent } from "../utils/analytics";
 import { CyberPanel } from "./shared/Common";
 
@@ -154,6 +155,12 @@ const VarintExplainer: React.FC = () => {
     }
   })();
 
+  const handleAdjust = (delta: bigint) => {
+    const newValue = value + delta;
+    if (newValue < 0n) return;
+    setInputValue(newValue.toString());
+  };
+
   const partitionedBinary = (() => {
     if (value === 0n) return "0000000";
     const str = value.toString(2);
@@ -197,22 +204,40 @@ const VarintExplainer: React.FC = () => {
           >
             Input Number
           </label>
-          <input
-            id="varint-input"
-            type="text"
-            inputMode="numeric"
-            value={inputValue}
-            onChange={(e) => {
-              const val = e.target.value;
-              if (val === "" || val === "-" || /^-?\d+$/.test(val)) {
-                setInputValue(val);
+          <div className="flex gap-2">
+            <input
+              id="varint-input"
+              type="text"
+              inputMode="numeric"
+              value={inputValue}
+              onChange={(e) => {
+                const val = e.target.value;
+                if (val === "" || val === "-" || /^-?\d+$/.test(val)) {
+                  setInputValue(val);
+                }
+              }}
+              onBlur={() =>
+                trackEvent("varint_explainer_interact", { value: inputValue })
               }
-            }}
-            onBlur={() =>
-              trackEvent("varint_explainer_interact", { value: inputValue })
-            }
-            className="bg-[var(--section-bg-dark)] border border-[var(--cyber-neon-blue)]/30 rounded p-4 font-cyber text-2xl text-[var(--cyber-neon-blue)] focus:outline-none focus:border-[var(--cyber-neon-blue)] w-full"
-          />
+              className="bg-[var(--section-bg-dark)] border border-[var(--cyber-neon-blue)]/30 rounded p-4 font-cyber text-2xl text-[var(--cyber-neon-blue)] focus:outline-none focus:border-[var(--cyber-neon-blue)] flex-1 min-w-0"
+            />
+            <div className="flex gap-2 shrink-0">
+              <button
+                onClick={() => handleAdjust(-1n)}
+                className="p-4 bg-[var(--overlay-bg)] border border-[var(--cyber-neon-blue)]/30 rounded text-[var(--cyber-neon-blue)] hover:bg-[var(--cyber-neon-blue)]/10 transition-colors"
+                aria-label="Decrement value"
+              >
+                <Minus className="w-6 h-6" />
+              </button>
+              <button
+                onClick={() => handleAdjust(1n)}
+                className="p-4 bg-[var(--overlay-bg)] border border-[var(--cyber-neon-blue)]/30 rounded text-[var(--cyber-neon-blue)] hover:bg-[var(--cyber-neon-blue)]/10 transition-colors"
+                aria-label="Increment value"
+              >
+                <Plus className="w-6 h-6" />
+              </button>
+            </div>
+          </div>
         </div>
 
         <CyberPanel title="VARINT_ENCODING_STEPS">
