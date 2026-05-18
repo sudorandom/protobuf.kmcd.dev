@@ -1,4 +1,9 @@
-import { type DescMessage, ScalarType } from "@bufbuild/protobuf";
+import {
+  type DescMessage,
+  ScalarType,
+  fromBinary,
+  toJson,
+} from "@bufbuild/protobuf";
 
 export enum WireType {
   Varint = 0,
@@ -108,7 +113,12 @@ export function decodeBinary(
         value = new TextDecoder().decode(data);
         fieldTypeLabel = "string";
       } else if (field?.fieldKind === "message") {
-        value = `Message: ${field.message.name}`;
+        try {
+          const decodedObj = fromBinary(field.message, data);
+          value = JSON.stringify(toJson(field.message, decodedObj), null, 2);
+        } catch {
+          value = `Message: ${field.message.name}`;
+        }
         fieldTypeLabel = "message";
       } else {
         value = length;

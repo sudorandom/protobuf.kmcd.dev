@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { trackEvent } from "../utils/analytics";
+import { motion } from "framer-motion";
 import {
   Binary,
   Layers,
@@ -7,6 +8,7 @@ import {
   Zap,
   Database,
   Hash,
+  MousePointer2,
   ChevronRight,
   Settings2,
 } from "lucide-react";
@@ -156,6 +158,167 @@ const VarintPacketDiagram = () => (
     </div>
   </div>
 );
+
+// --- Sub-components for Binary Matrix ---
+
+const ByteBreakdown = ({
+  label,
+  bytes,
+  color,
+}: {
+  label: string;
+  bytes: Uint8Array;
+  color: string;
+}) => {
+  if (!bytes || bytes.length === 0) return null;
+  return (
+    <div className="space-y-2">
+      <div className="flex items-center justify-between">
+        <span className="text-sm font-mono text-[var(--text-dim)] uppercase tracking-widest">
+          {label}
+        </span>
+        <span className="text-sm font-mono text-[var(--text-dim)]  uppercase">
+          {bytes.length} {bytes.length === 1 ? "Byte" : "Bytes"}
+        </span>
+      </div>
+      <div className="flex flex-col gap-2 p-3 bg-[var(--section-bg-dark)]/50 border border-[var(--border-light)] rounded">
+        <div
+          className="flex flex-wrap gap-2 font-mono text-sm"
+          style={{ color }}
+        >
+          {Array.from(bytes).map((b, i) => (
+            <span
+              key={i}
+              className="px-1.5 py-0.5 bg-[var(--overlay-bg)] rounded border border-[var(--border-light)]"
+            >
+              {b.toString(16).padStart(2, "0").toUpperCase()}
+            </span>
+          ))}
+        </div>
+        <div
+          className="flex flex-wrap gap-x-3 gap-y-1 font-mono text-sm  break-all"
+          style={{ color }}
+        >
+          {Array.from(bytes).map((b, i) => (
+            <span key={i} className="whitespace-nowrap">
+              {b.toString(2).padStart(8, "0")}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const TagSectionBreakdown = ({
+  bytes,
+  fieldNumber,
+  wireType,
+}: {
+  bytes: Uint8Array;
+  fieldNumber: number;
+  wireType: number;
+}) => {
+  if (!bytes || bytes.length === 0) return null;
+
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center justify-between">
+        <span className="text-sm font-mono text-[var(--text-dim)] uppercase tracking-widest">
+          Tag Section
+        </span>
+        <span className="text-sm font-mono text-[var(--text-dim)]  uppercase">
+          {bytes.length} {bytes.length === 1 ? "Byte" : "Bytes"}
+        </span>
+      </div>
+
+      <div className="flex flex-col gap-3 p-3 bg-[var(--section-bg-dark)]/50 border border-[var(--border-light)] rounded">
+        {Array.from(bytes).map((byte, i) => {
+          const bits = byte.toString(2).padStart(8, "0").split("");
+
+          return (
+            <div key={i} className="space-y-2">
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-mono text-[var(--cyber-neon-blue)] bg-[var(--cyber-neon-blue)]/10 px-1.5 py-0.5 rounded border border-[var(--cyber-neon-blue)]/20">
+                  {byte.toString(16).padStart(2, "0").toUpperCase()}
+                </span>
+                {bytes.length > 1 && (
+                  <span className="text-sm font-mono text-[var(--text-dim)] uppercase ">
+                    Byte {i}
+                  </span>
+                )}
+              </div>
+
+              <div className="flex gap-1">
+                {bits.map((bit, bitIdx) => {
+                  const actualBitIdx = 7 - bitIdx;
+                  let bitColor: string;
+                  let label: string;
+                  const isMsb = actualBitIdx === 7;
+
+                  if (isMsb) {
+                    bitColor = "var(--cyber-neon-pink)";
+                    label = "MSB";
+                  } else if (i === 0) {
+                    if (actualBitIdx <= 2) {
+                      bitColor = "var(--cyber-neon-yellow)";
+                      label = "TYPE";
+                    } else {
+                      bitColor = "var(--cyber-neon-blue)";
+                      label = "NUM";
+                    }
+                  } else {
+                    bitColor = "var(--cyber-neon-blue)";
+                    label = "NUM";
+                  }
+
+                  return (
+                    <div
+                      key={bitIdx}
+                      className="flex flex-col items-center flex-1 min-w-0"
+                    >
+                      <div
+                        className="w-full h-6 flex items-center justify-center font-mono text-sm border border-transparent transition-all"
+                        style={{
+                          backgroundColor: `color-mix(in srgb, ${bitColor}, transparent 90%)`,
+                          borderColor: `color-mix(in srgb, ${bitColor}, transparent 70%)`,
+                          color: bitColor,
+                        }}
+                      >
+                        {bit}
+                      </div>
+                      <div
+                        className="text-sm font-mono mt-1  overflow-hidden"
+                        style={{ color: bitColor }}
+                      >
+                        {label}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
+
+        <div className="grid grid-cols-2 gap-4 mt-1 pt-3 border-t border-[var(--border-light)]/30">
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-[var(--cyber-neon-blue)]" />
+            <span className="text-sm font-mono text-[var(--text-dim)] uppercase tracking-tighter">
+              Field #{fieldNumber}
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-[var(--cyber-neon-yellow)]" />
+            <span className="text-sm font-mono text-[var(--text-dim)] uppercase tracking-tighter">
+              Wire Type {wireType}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const TagCalculator = () => {
   const [mode, setMode] = useState<"small" | "large">("small");
@@ -732,6 +895,9 @@ export const BinaryMatrix = ({
       setIsGenerating(false);
     }
   };
+
+  const selectedSegment =
+    selectedSegmentIdx !== null ? stats.segments[selectedSegmentIdx] : null;
 
   const getSegmentColor = (seg: DecodedSegment) => {
     switch (seg.wireType) {

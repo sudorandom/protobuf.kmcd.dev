@@ -146,7 +146,9 @@ const VarintExplainer: React.FC = () => {
 
   const value = (() => {
     try {
-      return BigInt(inputValue);
+      if (inputValue === "" || inputValue === "-") return 0n;
+      // We cap it at 64-bit unsigned for visualization
+      return BigInt.asUintN(64, BigInt(inputValue));
     } catch {
       return 0n;
     }
@@ -197,11 +199,14 @@ const VarintExplainer: React.FC = () => {
           </label>
           <input
             id="varint-input"
-            type="number"
-            min="0"
+            type="text"
+            inputMode="numeric"
             value={inputValue}
             onChange={(e) => {
-              setInputValue(e.target.value || "0");
+              const val = e.target.value;
+              if (val === "" || val === "-" || /^-?\d+$/.test(val)) {
+                setInputValue(val);
+              }
             }}
             onBlur={() =>
               trackEvent("varint_explainer_interact", { value: inputValue })
@@ -240,8 +245,7 @@ const VarintExplainer: React.FC = () => {
                 <p className="text-sm text-[var(--text-dim)] leading-relaxed">
                   The groups are written in <strong>Little-Endian</strong> order
                   (least significant group first). Set the MSB to <code>1</code>{" "}
-                  for all bytes except the last one. This tells the parser to
-                  keep reading the next byte.
+                  for all bytes except the last one.
                 </p>
               </div>
             </div>
