@@ -890,13 +890,13 @@ export const BinaryMatrix = ({
 
   const getSegmentColor = (seg: DecodedSegment) => {
     switch (seg.wireType) {
-      case 0:
+      case 0: // Varint
         return "var(--cyber-neon-green)";
-      case 1:
-        return "var(--cyber-neon-blue)";
-      case 2:
+      case 1: // Fixed64
         return "var(--cyber-neon-pink)";
-      case 5:
+      case 2: // Length-delimited
+        return "var(--cyber-neon-pink)";
+      case 5: // Fixed32
         return "var(--cyber-neon-yellow)";
       default:
         return "var(--text-dim)";
