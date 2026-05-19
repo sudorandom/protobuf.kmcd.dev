@@ -579,7 +579,10 @@ const BinaryBasics = () => (
           A left shift (<code>&lt;&lt;</code>) moves every bit in a number a
           specific number of places to the left. The vacated spots on the right
           are filled with zeroes. This is mathematically equivalent to
-          multiplying by <code>2^n</code>.
+          multiplying by <code>2ⁿ</code>. It works exactly like our base-10
+          system: just as adding a zero to the end of a number multiplies it by{" "}
+          <code>10¹</code>, shifting bits to the left in base-2 multiplies the
+          value by powers of 2.
         </p>
       </div>
       <div className="max-w-3xl mx-auto space-y-6">
@@ -587,7 +590,9 @@ const BinaryBasics = () => (
           <BitShiftingVisualization />
         </CyberPanel>
         <div className="bg-[var(--section-bg-dark)] border border-[var(--border-light)] rounded-lg p-4">
-          <SyntaxHighlighter language="bash" code="00000001 << 3 = 00001000" />
+          <SyntaxHighlighter language="bash" code={`  00000001
+      << 3
+= 00001000`} />
         </div>
       </div>
     </div>
@@ -617,7 +622,9 @@ const BinaryBasics = () => (
         <div className="bg-[var(--section-bg-dark)] border border-[var(--border-light)] rounded-lg p-4">
           <SyntaxHighlighter
             language="bash"
-            code="00011000 | 00001010 = 00011010"
+            code={`   00011000
+ | 00001010
+ = 00011010`}
           />
         </div>
       </div>
