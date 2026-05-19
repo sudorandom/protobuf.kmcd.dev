@@ -71,37 +71,6 @@ export const MemoryLayoutVisualization = () => {
         className="w-full h-auto max-w-full font-mono"
         style={{ color: "var(--text-color)" }}
       >
-        <defs>
-          <marker
-            id="arrowhead-blue"
-            markerWidth="10"
-            markerHeight="7"
-            refX="9"
-            refY="3.5"
-            orient="auto"
-          >
-            <polygon
-              points="0 0, 10 3.5, 0 7"
-              fill="var(--cyber-neon-blue)"
-              opacity="0.8"
-            />
-          </marker>
-          <marker
-            id="arrowhead-green"
-            markerWidth="10"
-            markerHeight="7"
-            refX="9"
-            refY="3.5"
-            orient="auto"
-          >
-            <polygon
-              points="0 0, 10 3.5, 0 7"
-              fill="var(--cyber-neon-green)"
-              opacity="0.8"
-            />
-          </marker>
-        </defs>
-
         {/* Step 1: Logical Value */}
         <g transform="translate(50, 40)">
           <motion.g
@@ -181,7 +150,6 @@ export const MemoryLayoutVisualization = () => {
                 stroke="var(--cyber-neon-blue)"
                 strokeWidth="3"
                 strokeDasharray="4,4"
-                markerEnd="url(#arrowhead-blue)"
                 initial={{ pathLength: 0, opacity: 0 }}
                 whileInView={{ pathLength: 1, opacity: 0.6 }}
                 viewport={{ once: true }}
@@ -209,7 +177,6 @@ export const MemoryLayoutVisualization = () => {
                 stroke="var(--cyber-neon-green)"
                 strokeWidth="2"
                 strokeDasharray="4,4"
-                markerEnd="url(#arrowhead-green)"
                 initial={{ pathLength: 0, opacity: 0 }}
                 whileInView={{ pathLength: 1, opacity: 0.5 }}
                 viewport={{ once: true }}

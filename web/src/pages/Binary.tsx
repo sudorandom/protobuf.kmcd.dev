@@ -579,10 +579,7 @@ const BinaryBasics = () => (
           <BitShiftingVisualization />
         </CyberPanel>
         <div className="bg-[var(--section-bg-dark)] border border-[var(--border-light)] rounded-lg p-4">
-          <SyntaxHighlighter
-            language="bash"
-            code="00000001 << 3 = 00001000"
-          />
+          <SyntaxHighlighter language="bash" code="00000001 << 3 = 00001000" />
         </div>
       </div>
     </div>

@@ -73,7 +73,7 @@ export function decodeBinary(
     let data: Uint8Array;
     let value: bigint | number | string;
     let lengthBytes: Uint8Array | undefined;
-    let fieldTypeLabel = "";
+    let fieldTypeLabel: string;
 
     if (wireType === WireType.Varint) {
       const { value: v, bytes: vBytes } = readVarint();
@@ -222,7 +222,8 @@ export function decodeBinary(
             fieldTypeLabel = field.fieldKind;
           }
         } else {
-          const availableTags = schema?.fields.map((f) => f.number).join(",") || "none";
+          const availableTags =
+            schema?.fields.map((f) => f.number).join(",") || "none";
           fieldTypeLabel = `unknown (tag:${fieldNo}, message:${schema?.name || "none"}, fields:[${availableTags}])`;
         }
       }
