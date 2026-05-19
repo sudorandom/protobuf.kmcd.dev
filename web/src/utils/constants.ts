@@ -17,12 +17,12 @@ import "google/protobuf/timestamp.proto";
 
 message User {
   string id = 1 [(buf.validate.field).string.uuid = true];
-  string name = 2 [(buf.validate.field).string.min_len = 1];
+  string name = 2 [(buf.validate.field).string.min_len = 2, (buf.validate.field).string.max_len = 50];
   string email = 3 [(buf.validate.field).string.email = true];
   
-  uint32 age = 4 [(buf.validate.field).uint32.lt = 150];
+  uint32 age = 4 [(buf.validate.field).uint32 = { gte: 18, lt: 120 }];
   
-  Role role = 7;
+  Role role = 7 [(buf.validate.field).enum.defined_only = true];
   Date birth_date = 8;
 
   enum Role {
@@ -33,9 +33,9 @@ message User {
 }
 
 message Date {
-  int32 year = 1 [(buf.validate.field).int32 = {gte: 1900, lte: 2100}];
-  int32 month = 2 [(buf.validate.field).int32 = {gte: 1, lte: 12}];
-  int32 day = 3 [(buf.validate.field).int32 = {gte: 1, lte: 31}];
+  int32 year = 1 [(buf.validate.field).int32 = { gte: 1900, lte: 2100 }];
+  int32 month = 2 [(buf.validate.field).int32 = { gte: 1, lte: 12 }];
+  int32 day = 3 [(buf.validate.field).int32 = { gte: 1, lte: 31 }];
 }
 
 message LoginEvent {
@@ -74,7 +74,7 @@ export const SIZE_EXAMPLES = {
     birthDate: { year: 1992, month: 5, day: 22 },
   },
   LARGE: {
-    id: "user-ceo",
+    id: "550e8400-e29b-41d4-a716-446655440001",
     name: "CEO",
     email: "ceo@megacorp.com",
     age: 65,
@@ -83,7 +83,7 @@ export const SIZE_EXAMPLES = {
     role: 2,
     birthDate: { year: 1959, month: 1, day: 1 },
     manager: {
-      id: "user-vp",
+      id: "550e8400-e29b-41d4-a716-446655440002",
       name: "VP of Engineering",
       email: "vp@megacorp.com",
       age: 50,
@@ -92,7 +92,7 @@ export const SIZE_EXAMPLES = {
       role: 2,
       birthDate: { year: 1974, month: 2, day: 2 },
       manager: {
-        id: "user-director",
+        id: "550e8400-e29b-41d4-a716-446655440003",
         name: "Director of Engineering",
         email: "director@megacorp.com",
         age: 40,
@@ -101,7 +101,7 @@ export const SIZE_EXAMPLES = {
         role: 2,
         birthDate: { year: 1984, month: 3, day: 3 },
         manager: {
-          id: "user-manager",
+          id: "550e8400-e29b-41d4-a716-446655440004",
           name: "Engineering Manager",
           email: "em@megacorp.com",
           age: 35,
@@ -110,7 +110,7 @@ export const SIZE_EXAMPLES = {
           role: 2,
           birthDate: { year: 1989, month: 4, day: 4 },
           manager: {
-            id: "user-ic",
+            id: "550e8400-e29b-41d4-a716-446655440005",
             name: "Software Engineer",
             email: "swe@megacorp.com",
             age: 28,
@@ -127,7 +127,7 @@ export const SIZE_EXAMPLES = {
     id: "550e8400-e29b-41d4-a716-446655440000",
     name: "Recursive Node",
     email: "node@cluster.local",
-    age: 1,
+    age: 18,
     role: 0,
   },
 };
