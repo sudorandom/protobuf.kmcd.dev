@@ -1069,7 +1069,7 @@ message User {
     {
       id: "annotations",
       icon: Combine,
-      title: "Custom Extensions",
+      title: "Custom Options",
       subtitle: "03i_ANNOTATIONS",
       panelTitle: "CUSTOM_ANNOTATIONS",
       desc: (

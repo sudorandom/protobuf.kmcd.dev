@@ -51,7 +51,7 @@ export const BitShiftingVisualization = () => {
             fontSize="10"
             className="font-cyber font-bold uppercase tracking-widest"
           >
-            Bit Shifting Field #1
+            Bit Shifting A Value
           </text>
         </g>
 

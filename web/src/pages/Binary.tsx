@@ -49,7 +49,7 @@ const PacketDiagram = () => (
         <span className="font-bold">VARINT</span>
         <span className="text-sm ">(Field # | Type)</span>
       </div>
-      <div className="flex-[0.7] bg-[var(--cyber-neon-yellow)]/10 border border-[var(--cyber-neon-yellow)]/30 rounded flex flex-col items-center justify-center text-[var(--cyber-neon-yellow)] font-mono text-sm relative group px-2 text-center">
+      <div className="flex-1 bg-[var(--cyber-neon-yellow)]/10 border border-[var(--cyber-neon-yellow)]/30 rounded flex flex-col items-center justify-center text-[var(--cyber-neon-yellow)] font-mono text-sm relative group px-2 text-center">
         <div className="absolute -top-6 left-0 text-sm uppercase text-[var(--text-dim)] font-bold tracking-widest flex items-center gap-1">
           <Zap className="w-3 h-3" /> Length
         </div>
@@ -64,20 +64,20 @@ const PacketDiagram = () => (
         <span className="text-sm ">Binary Bytes</span>
       </div>
     </div>
-    <div className="flex justify-between mt-8 px-2">
-      <div className="flex flex-col items-center gap-1">
+    <div className="flex gap-1 mt-8">
+      <div className="flex-1 flex flex-col items-center gap-1">
         <div className="w-px h-4 bg-[var(--border-light)]" />
         <span className="text-sm font-mono text-[var(--text-dim)] uppercase">
           1-5 Bytes
         </span>
       </div>
-      <div className="flex flex-col items-center gap-1">
+      <div className="flex-1 flex flex-col items-center gap-1">
         <div className="w-px h-4 bg-[var(--border-light)]" />
         <span className="text-sm font-mono text-[var(--text-dim)] uppercase">
           1-5 Bytes
         </span>
       </div>
-      <div className="flex flex-col items-center gap-1">
+      <div className="flex-[2] flex flex-col items-center gap-1">
         <div className="w-px h-4 bg-[var(--border-light)]" />
         <span className="text-sm font-mono text-[var(--text-dim)] uppercase">
           N Bytes
@@ -140,14 +140,14 @@ const VarintPacketDiagram = () => (
         <span className="text-sm ">1-10 Bytes</span>
       </div>
     </div>
-    <div className="flex justify-between mt-8 px-2">
-      <div className="flex flex-col items-center gap-1">
+    <div className="flex gap-1 mt-8">
+      <div className="flex-1 flex flex-col items-center gap-1">
         <div className="w-px h-4 bg-[var(--border-light)]" />
         <span className="text-sm font-mono text-[var(--text-dim)] uppercase">
           1-5 Bytes
         </span>
       </div>
-      <div className="flex flex-col items-center gap-1">
+      <div className="flex-[2.7] flex flex-col items-center gap-1">
         <div className="w-px h-4 bg-[var(--border-light)]" />
         <span className="text-sm font-mono text-[var(--text-dim)] uppercase">
           1-10 Bytes
@@ -358,6 +358,7 @@ const WireFormatBreakdown = () => {
   const wireTypes = [
     {
       type: 0,
+      bits: "000",
       label: "Varint",
       desc: "Most numeric types. Variable length allows small numbers to take very little space.",
       types: ["int32", "int64", "uint32", "uint64", "bool", "enum"],
@@ -365,6 +366,7 @@ const WireFormatBreakdown = () => {
     },
     {
       type: 1,
+      bits: "001",
       label: "I64",
       desc: "Fixed 64-bit values. Used when values are frequently large or need exact precision.",
       types: ["fixed64", "sfixed64", "double"],
@@ -372,6 +374,7 @@ const WireFormatBreakdown = () => {
     },
     {
       type: 2,
+      bits: "010",
       label: "LEN",
       desc: "Length-delimited blobs. Includes a length prefix followed by the payload data.",
       types: ["string", "bytes", "message", "repeated"],
@@ -379,6 +382,7 @@ const WireFormatBreakdown = () => {
     },
     {
       type: 5,
+      bits: "101",
       label: "I32",
       desc: "Fixed 32-bit values. Efficient for common hardware types.",
       types: ["fixed32", "sfixed32", "float"],
@@ -395,12 +399,17 @@ const WireFormatBreakdown = () => {
             className="hover:border-[var(--cyber-neon-blue)]/50 transition-colors"
           >
             <div className="p-4 space-y-3">
-              <h3
-                className="font-cyber font-bold uppercase text-sm tracking-widest"
-                style={{ color: wt.color }}
-              >
-                {wt.label}
-              </h3>
+              <div className="flex items-baseline justify-between mb-1">
+                <h3
+                  className="font-cyber font-bold uppercase text-sm tracking-widest"
+                  style={{ color: wt.color }}
+                >
+                  {wt.label}
+                </h3>
+                <span className="text-xs font-mono text-[var(--text-dim)] uppercase tracking-tight">
+                  Type {wt.type} ({wt.bits})
+                </span>
+              </div>
               <p className="text-sm text-[var(--text-dim)] leading-relaxed min-h-[40px]">
                 {wt.desc}
               </p>
@@ -424,22 +433,6 @@ const WireFormatBreakdown = () => {
       <div className="space-y-16">
         <div className="space-y-6">
           <div className="max-w-4xl">
-            <h3 className="text-[var(--cyber-neon-pink)] font-cyber uppercase text-sm font-bold tracking-[0.2em] mb-4">
-              Length-Delimited (Wire Type 2)
-            </h3>
-            <p className="text-sm text-[var(--text-dim)] leading-relaxed">
-              Strings, bytes, and nested messages use{" "}
-              <strong>Length-Delimited</strong> encoding. These fields include
-              an explicit length byte (encoded as a varint) immediately after
-              the tag, telling the decoder exactly how many subsequent bytes
-              belong to this field.
-            </p>
-          </div>
-          <PacketDiagram />
-        </div>
-
-        <div className="pt-12 border-t border-[var(--border-light)]/30 space-y-6">
-          <div className="max-w-4xl">
             <h3 className="text-[var(--cyber-neon-green)] font-cyber uppercase text-sm font-bold tracking-[0.2em] mb-4">
               Varint Fields (Wire Type 0)
             </h3>
@@ -451,6 +444,15 @@ const WireFormatBreakdown = () => {
             </p>
           </div>
           <VarintPacketDiagram />
+          <div className="max-w-2xl mx-auto p-4 bg-[var(--section-bg-dark)] border border-[var(--border-light)] rounded-lg">
+            <span className="text-xs font-cyber font-bold text-[var(--text-dim)] uppercase tracking-widest block mb-2">
+              Protoscope Representation
+            </span>
+            <SyntaxHighlighter
+              language="proto"
+              code={`1: 150  // Field 1 (Varint) with value 150`}
+            />
+          </div>
         </div>
 
         <div className="pt-12 border-t border-[var(--border-light)]/30 space-y-6">
@@ -466,6 +468,40 @@ const WireFormatBreakdown = () => {
             </p>
           </div>
           <FixedPacketDiagram />
+          <div className="max-w-2xl mx-auto p-4 bg-[var(--section-bg-dark)] border border-[var(--border-light)] rounded-lg">
+            <span className="text-xs font-cyber font-bold text-[var(--text-dim)] uppercase tracking-widest block mb-2">
+              Protoscope Representation
+            </span>
+            <SyntaxHighlighter
+              language="proto"
+              code={`2: 0x40490fdb  // Field 2 (32-bit floating point)`}
+            />
+          </div>
+        </div>
+
+        <div className="pt-12 border-t border-[var(--border-light)]/30 space-y-6">
+          <div className="max-w-4xl">
+            <h3 className="text-[var(--cyber-neon-pink)] font-cyber uppercase text-sm font-bold tracking-[0.2em] mb-4">
+              Length-Delimited (Wire Type 2)
+            </h3>
+            <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+              Strings, bytes, and nested messages use{" "}
+              <strong>Length-Delimited</strong> encoding. These fields include
+              an explicit length byte (encoded as a varint) immediately after
+              the tag, telling the decoder exactly how many subsequent bytes
+              belong to this field.
+            </p>
+          </div>
+          <PacketDiagram />
+          <div className="max-w-2xl mx-auto p-4 bg-[var(--section-bg-dark)] border border-[var(--border-light)] rounded-lg">
+            <span className="text-xs font-cyber font-bold text-[var(--text-dim)] uppercase tracking-widest block mb-2">
+              Protoscope Representation
+            </span>
+            <SyntaxHighlighter
+              language="proto"
+              code={`3: {"Alice"}  // Field 3 (Length-delimited string)`}
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -501,12 +537,13 @@ const BinaryBasics = () => (
         </h3>
         <p className="text-lg text-[var(--text-dim)] leading-relaxed">
           Endianness refers to the order in which bytes are arranged in computer
-          memory. Protobuf standardizes on <strong>Little-Endian</strong> for
-          all fixed-size numeric types and <strong>Base-128 Varints</strong>.
+          memory. Systems generally use either <strong>Big-Endian</strong> (most
+          significant byte first) or <strong>Little-Endian</strong> (least
+          significant byte first).
         </p>
         <p className="text-sm text-[var(--text-dim)] leading-relaxed max-w-2xl mx-auto">
           In Little-Endian systems, the "least significant byte" (the one with
-          the smallest numerical weight) is stored first.
+          the smallest numerical weight) is stored first in the sequence.
         </p>
       </div>
       <div className="max-w-4xl mx-auto">
@@ -514,45 +551,16 @@ const BinaryBasics = () => (
           <MemoryLayoutVisualization />
           <div className="mt-4 p-4 bg-[var(--overlay-bg)] rounded-lg border border-[var(--border-light)] text-center max-w-2xl mx-auto">
             <p className="text-sm text-[var(--text-dim)] leading-relaxed">
-              Protobuf stores the{" "}
+              When storing a multi-byte integer, a Little-Endian layout places
+              the{" "}
               <strong className="text-[var(--cyber-neon-green)]">
                 Least Significant Byte (Low Weight)
               </strong>{" "}
-              at the first memory address. This is why the green part appears to
-              come "before" the blue part in the raw binary stream.
+              at the lowest memory address. This is why the green part appears
+              to come "before" the blue part in raw binary streams.
             </p>
           </div>
         </CyberPanel>
-      </div>
-
-      <div className="mt-16 max-w-3xl mx-auto space-y-8">
-        <div className="text-center space-y-4">
-          <h3 className="text-3xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">
-            Why Little Endian?
-          </h3>
-          <p className="text-lg text-[var(--text-dim)] leading-relaxed">
-            Standardizing on Little-Endian instead of traditional Big-Endian
-            "Network Order" is a deliberate optimization for performance and
-            hardware alignment.
-          </p>
-        </div>
-
-        <div className="space-y-6 text-[var(--text-dim)] leading-relaxed text-sm">
-          <p>
-            The decision boils down to two key factors. First, the{" "}
-            <strong>Varint algorithm</strong> naturally processes integers by
-            stripping the least significant bits first. Sticking to
-            Little-Endian allows encoding and decoding in a single loop without
-            extra buffering.
-          </p>
-          <p>
-            Second, most modern hardware (including x86 and ARM) is natively{" "}
-            <strong>Little-Endian</strong>. Forcing CPUs to flip bytes just to
-            satisfy historical network conventions wastes cycles. By aligning
-            the format with the hardware, Protobuf's foundations are optimized
-            for speed.
-          </p>
-        </div>
       </div>
     </div>
 
@@ -564,8 +572,8 @@ const BinaryBasics = () => (
         </h3>
         <p className="text-lg text-[var(--text-dim)] leading-relaxed">
           Bitwise shifting is the primary tool for <strong>Bit Packing</strong>.
-          In Protobuf, we frequently shift field numbers to the left to "make
-          room" for the wire type metadata.
+          It allows us to manipulate individual bits within a byte, moving them
+          to "make room" for other data.
         </p>
         <p className="text-sm text-[var(--text-dim)] leading-relaxed max-w-2xl mx-auto">
           A left shift (<code>&lt;&lt;</code>) moves every bit in a number a
@@ -1088,38 +1096,43 @@ const BinaryPage = ({
 }) => {
   const roadmapItems = [
     {
-      id: "binary-intro",
-      title: "Binary Primitives",
+      id: "binary-basics",
+      title: "Binary 101",
       desc: "Foundational concepts like Endianness and Bit Shifting.",
     },
     {
       id: "varints",
-      title: "Varints",
+      title: "Base-128 Varints",
       desc: "Variable-length integers for efficient packing.",
     },
     {
+      id: "zigzag",
+      title: "ZigZag",
+      desc: "How signed integers are compressed.",
+    },
+    {
       id: "binary-tag",
-      title: "The Tag System",
+      title: "The Field Tag",
       desc: "How field numbers and wire types are packed.",
     },
     {
       id: "wire-types",
       title: "Wire Types",
-      desc: "Envelopes and efficient repeated fields.",
+      desc: "Envelopes, packed fields, and sub-messages.",
     },
     {
-      id: "zigzag",
-      title: "ZigZag Encoding",
-      desc: "How signed integers are compressed.",
+      id: "advanced-types",
+      title: "Map Encoding",
+      desc: "How compound types are represented.",
     },
     {
       id: "presence",
-      title: "Presence & Defaults",
+      title: "Presence",
       desc: "Why empty fields take zero bytes.",
     },
     {
       id: "matrix",
-      title: "Stream Explorer",
+      title: "Binary Explorer",
       desc: "Live inspection and disassembly.",
     },
   ];
@@ -1141,6 +1154,12 @@ const BinaryPage = ({
               To see how Protobuf gets its performance, we need to look at the
               raw bytes; this is the physical layer of the specification.
             </p>
+            <p className="text-[var(--text-dim)] leading-relaxed">
+              Throughout this guide, we'll use <strong>Protoscope</strong>, a
+              specialized human-readable language that visualizes binary
+              Protobuf streams. It's an excellent tool for bridging the gap
+              between raw hexadecimal bytes and structured data.
+            </p>
 
             <RoadmapGrid items={roadmapItems} />
 
@@ -1156,13 +1175,19 @@ const BinaryPage = ({
               </p>
             </div>
           </div>
+        </div>
+      </Section>
 
-          <div className="pt-24 mt-24 border-t border-[var(--border-light)]/30">
-            <SectionTitle icon={Zap} subtitle="05_BASICS">
-              Foundations: Binary 101
-            </SectionTitle>
-            <BinaryBasics />
-          </div>
+      {/* 1.1 Binary Basics */}
+      <Section
+        id="binary-basics"
+        className="py-24 px-4 sm:px-8 bg-[var(--bg-color)] border-t border-[var(--border-light)]/30"
+      >
+        <div className="max-w-7xl mx-auto">
+          <SectionTitle icon={Zap} subtitle="05_BASICS">
+            Binary 101
+          </SectionTitle>
+          <BinaryBasics />
         </div>
       </Section>
 
@@ -1172,10 +1197,8 @@ const BinaryPage = ({
         className="py-24 px-4 sm:px-8 bg-[var(--bg-color)] border-t border-[var(--border-light)]/30"
       >
         <div className="max-w-7xl mx-auto space-y-16">
+          <SectionTitle icon={Binary}>Base-128 Varints</SectionTitle>
           <div className="max-w-4xl mx-auto text-center space-y-6">
-            <h3 className="text-4xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">
-              Base-128 Varint Encoding
-            </h3>
             <p className="text-xl text-[var(--text-dim)] leading-relaxed">
               Varints are the fundamental building block of Protobuf efficiency,
               allowing integers to occupy only as many bytes as necessary.
@@ -1207,17 +1230,58 @@ const BinaryPage = ({
         </div>
       </Section>
 
+      {/* 1.3 ZigZag Encoding */}
+      <Section
+        id="zigzag"
+        className="py-24 px-4 sm:px-8 bg-[var(--section-bg-dark)] border-t border-[var(--border-light)]/30"
+      >
+        <div className="max-w-7xl mx-auto space-y-16">
+          <SectionTitle icon={Zap}>ZigZag</SectionTitle>
+          <div className="max-w-4xl mx-auto text-center space-y-6 mt-8">
+            <p className="text-xl text-[var(--text-dim)] leading-relaxed">
+              Standard Varints are great for positive numbers, but they are
+              highly inefficient for negative ones. ZigZag encoding fixes this.
+            </p>
+          </div>
+
+          <div className="max-w-4xl mx-auto">
+            <ZigZagExplainer />
+          </div>
+
+          <div className="max-w-3xl mx-auto text-[var(--text-dim)] leading-relaxed space-y-4 text-left bg-[var(--section-bg-dark)] p-8 rounded-xl border border-[var(--border-light)]">
+            <p>
+              In traditional <strong>Two's Complement</strong> encoding, the
+              sign of a number is stored in the{" "}
+              <strong>Most Significant Bit (MSB)</strong>. Because Varints strip
+              leading zeros, a negative number (which has a leading{" "}
+              <code>1</code> in the MSB) is forced to act like a very large
+              unsigned integer, requiring all 10 bytes of a 64-bit varint just
+              to represent <code>-1</code>.
+            </p>
+            <p>
+              <strong>ZigZag</strong> encoding solves this by moving the sign
+              bit to the <strong>Least Significant Bit (LSB)</strong>. It maps
+              positive numbers to even integers (<code>n &lt;&lt; 1</code>) and
+              negative numbers to odd integers.
+            </p>
+            <p>
+              By pushing the sign bit to the bottom and stripping the empty
+              leading zeroes, Protobuf ensures that small negative numbers take
+              just as little space as small positive numbers.
+            </p>
+          </div>
+        </div>
+      </Section>
+
       {/* 1.5 The Tag Specification */}
       <Section
         id="binary-tag"
         className="py-24 px-4 sm:px-8 bg-[var(--bg-color)] border-t border-[var(--border-light)]/30"
       >
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+          <SectionTitle icon={Hash}>The Field Tag</SectionTitle>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start mt-8">
             <div className="lg:col-span-6 space-y-8">
-              <h3 className="text-3xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">
-                The Field Tag
-              </h3>
               <p className="text-lg text-[var(--text-dim)] leading-relaxed">
                 Every field in a Protobuf message is prefixed by a{" "}
                 <strong>Tag</strong>. This tag is the only reason the decoder
@@ -1274,7 +1338,7 @@ const BinaryPage = ({
       >
         <div className="max-w-7xl mx-auto">
           <SectionTitle icon={Layers} subtitle="05a_STRUCTURE">
-            Wire Types & Envelopes
+            Wire Types
           </SectionTitle>
           <div className="mb-16 max-w-3xl">
             <p className="text-[var(--text-dim)] leading-relaxed">
@@ -1309,10 +1373,8 @@ const BinaryPage = ({
         className="py-24 px-4 sm:px-8 bg-[var(--bg-color)] border-b border-[var(--border-light)]/30"
       >
         <div className="max-w-7xl mx-auto">
-          <div className="max-w-3xl mx-auto text-center space-y-8">
-            <h3 className="text-3xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">
-              Map Encoding
-            </h3>
+          <SectionTitle icon={Layers}>Map Encoding</SectionTitle>
+          <div className="max-w-3xl mx-auto text-center space-y-8 mt-8">
             <p className="text-lg text-[var(--text-dim)] leading-relaxed">
               Maps are not a native wire-level primitive. Instead, they are
               syntactic sugar for a <strong>repeated message</strong>.
@@ -1338,51 +1400,13 @@ const BinaryPage = ({
         </div>
       </Section>
 
-      {/* 1.3 ZigZag Encoding */}
-      <Section
-        id="zigzag"
-        className="py-24 px-4 sm:px-8 bg-[var(--section-bg-dark)] border-t border-[var(--border-light)]/30"
-      >
-        <div className="max-w-7xl mx-auto space-y-16">
-          <div className="max-w-4xl mx-auto text-center space-y-6">
-            <h3 className="text-4xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">
-              Signed Integers: ZigZag
-            </h3>
-            <p className="text-xl text-[var(--text-dim)] leading-relaxed">
-              Standard Varints are great for positive numbers, but they are
-              highly inefficient for negative ones. ZigZag encoding fixes this.
-            </p>
-          </div>
-
-          <div className="max-w-4xl mx-auto">
-            <ZigZagExplainer />
-          </div>
-
-          <div className="max-w-3xl mx-auto text-[var(--text-dim)] leading-relaxed space-y-4 text-center">
-            <p>
-              Without ZigZag, a negative number like <code>-1</code> would be
-              treated as a very large unsigned integer, requiring all 10 bytes
-              of a 64-bit varint.
-            </p>
-            <p>
-              By mapping signed integers to positive ones before encoding,
-              Protobuf ensures that small negative numbers take just as little
-              space as small positive numbers.
-            </p>
-          </div>
-        </div>
-      </Section>
-
-      {/* 1.7 Presence & Defaults */}
       <Section
         id="presence"
         className="py-24 px-4 sm:px-8 bg-[var(--section-bg-dark)] border-t border-[var(--border-light)]/30"
       >
         <div className="max-w-7xl mx-auto space-y-16">
+          <SectionTitle icon={Database}>Presence</SectionTitle>
           <div className="max-w-4xl mx-auto text-center space-y-6">
-            <h3 className="text-4xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">
-              Presence & Default Values
-            </h3>
             <p className="text-xl text-[var(--text-dim)] leading-relaxed">
               One of the biggest space savers in Protobuf is the omission of
               default values.
@@ -1406,6 +1430,18 @@ const BinaryPage = ({
               wrapped in a way that ensures they are written to the wire even if
               their value is the default, allowing for <code>has_field()</code>{" "}
               checks.
+            </p>
+            <p className="p-4 bg-[var(--section-bg-dark)] border border-[var(--cyber-neon-blue)]/30 rounded mt-4 text-sm">
+              <strong className="text-[var(--cyber-neon-blue)] uppercase tracking-widest font-cyber">
+                Note on Editions:
+              </strong>{" "}
+              With the introduction of <strong>Protobuf Editions</strong>, the
+              strict boundaries between Proto2 and Proto3 behavior have been
+              removed. You can now explicitly configure whether fields use
+              implicit or explicit presence via features like{" "}
+              <code>features.field_presence = EXPLICIT;</code>, giving you
+              granular control over serialization size versus field state
+              tracking.
             </p>
           </div>
         </div>
@@ -1547,6 +1583,25 @@ const BinaryPage = ({
             protoSource={protoscopeProto}
             setProtoSource={setProtoscopeProto}
           />
+
+          <div className="mt-24 pt-16 border-t border-[var(--border-light)]/30 text-center max-w-3xl mx-auto space-y-6">
+            <h3 className="text-2xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">
+              End of Transmission
+            </h3>
+            <p className="text-lg text-[var(--text-dim)] leading-relaxed">
+              This concludes our dive into the binary format. You should now
+              have a solid intuition for how Protobuf packs data into raw bytes,
+              how varints work, and how the tag system structures the stream.
+            </p>
+            <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+              For exhaustive details, edge cases, and the formal specification,
+              always refer to the{" "}
+              <ExternalLinkText href="https://protobuf.dev/programming-guides/encoding/">
+                official Protobuf Encoding Guide
+              </ExternalLinkText>
+              .
+            </p>
+          </div>
         </div>
       </Section>
     </>

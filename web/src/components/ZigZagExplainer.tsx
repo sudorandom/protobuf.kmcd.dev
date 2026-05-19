@@ -24,7 +24,21 @@ export const ZigZagExplainer = () => {
     return (n << 1n) ^ (n >> 63n);
   };
 
+  const getVarintBytes = (n: bigint) => {
+    let u64 = BigInt.asUintN(64, n);
+    const bytes: number[] = [];
+    if (u64 === 0n) return [0];
+    while (u64 >= 128n) {
+      bytes.push(Number((u64 & 127n) | 128n));
+      u64 >>= 7n;
+    }
+    bytes.push(Number(u64));
+    return bytes;
+  };
+
   const zzValue = toZigZag(rawValue);
+  const standardBytes = getVarintBytes(rawValue);
+  const zigzagBytes = getVarintBytes(zzValue);
 
   return (
     <div className="flex flex-col gap-8">
@@ -78,7 +92,7 @@ export const ZigZagExplainer = () => {
               <span className="text-xs font-mono text-[var(--text-dim)] uppercase">
                 Original Signed
               </span>
-              <div className="text-4xl font-cyber font-bold text-[var(--text-color)]">
+              <div className="text-4xl font-cyber font-bold text-[var(--text-color)] break-all max-w-[200px] text-center">
                 {rawValue.toString()}
               </div>
             </div>
@@ -96,32 +110,82 @@ export const ZigZagExplainer = () => {
               <span className="text-xs font-mono text-[var(--text-dim)] uppercase">
                 Encoded Unsigned
               </span>
-              <div className="text-4xl font-cyber font-bold text-[var(--cyber-neon-pink)]">
+              <div className="text-4xl font-cyber font-bold text-[var(--cyber-neon-pink)] break-all max-w-[200px] text-center">
                 {zzValue.toString()}
               </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-6 border-t border-[var(--border-light)]">
+          <div className="flex flex-col gap-8 pt-6 border-t border-[var(--border-light)]">
             <div className="space-y-3">
-              <h4 className="text-sm font-cyber font-bold text-[var(--text-color)] uppercase tracking-widest">
-                The Problem
-              </h4>
-              <p className="text-sm text-[var(--text-dim)] leading-relaxed">
-                Standard varints treat negative numbers as very large 64-bit
-                unsigned integers. This means `-1` would normally take 10 bytes
-                on the wire.
-              </p>
+              <div className="flex justify-between items-end mb-2">
+                <h4 className="text-sm font-cyber font-bold text-[var(--cyber-neon-blue)] uppercase tracking-widest">
+                  Standard Varint (Two's Complement)
+                </h4>
+                <span className="text-xs font-mono text-[var(--cyber-neon-blue)] bg-[var(--cyber-neon-blue)]/10 px-2 py-0.5 rounded border border-[var(--cyber-neon-blue)]/30 font-bold">
+                  {standardBytes.length} Byte(s)
+                </span>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {standardBytes.map((b, i) => (
+                  <div
+                    key={i}
+                    className="flex gap-0.5 p-1.5 rounded bg-[var(--cyber-neon-blue)]/5 border border-[var(--cyber-neon-blue)]/30"
+                  >
+                    {b
+                      .toString(2)
+                      .padStart(8, "0")
+                      .split("")
+                      .map((bit, j) => (
+                        <span
+                          key={j}
+                          className={`font-mono text-sm sm:text-base ${j === 0 ? "text-[var(--cyber-neon-pink)]" : "text-[var(--cyber-neon-blue)]"} ${bit === "1" ? "font-bold" : "opacity-30"}`}
+                        >
+                          {bit}
+                        </span>
+                      ))}
+                  </div>
+                ))}
+              </div>
             </div>
+
             <div className="space-y-3">
-              <h4 className="text-sm font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">
-                The Solution
-              </h4>
-              <p className="text-sm text-[var(--text-dim)] leading-relaxed">
-                ZigZag maps signed numbers to small positive numbers. Even
-                numbers are positive (`0, 2, 4...`), and odd numbers are
-                negative (`1, 3, 5...`).
-              </p>
+              <div className="flex justify-between items-end mb-2">
+                <h4 className="text-sm font-cyber font-bold text-[var(--cyber-neon-green)] uppercase tracking-widest">
+                  ZigZag Varint
+                </h4>
+                <span className="text-xs font-mono text-[var(--cyber-neon-green)] bg-[var(--cyber-neon-green)]/10 px-2 py-0.5 rounded border border-[var(--cyber-neon-green)]/30 font-bold">
+                  {zigzagBytes.length} Byte(s)
+                </span>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {zigzagBytes.map((b, i) => (
+                  <div
+                    key={i}
+                    className="flex gap-0.5 p-1.5 rounded bg-[var(--cyber-neon-green)]/5 border border-[var(--cyber-neon-green)]/30"
+                  >
+                    {b
+                      .toString(2)
+                      .padStart(8, "0")
+                      .split("")
+                      .map((bit, j) => (
+                        <span
+                          key={j}
+                          className={`font-mono text-sm sm:text-base ${j === 0 ? "text-[var(--cyber-neon-pink)]" : "text-[var(--cyber-neon-green)]"} ${bit === "1" ? "font-bold" : "opacity-30"}`}
+                        >
+                          {bit}
+                        </span>
+                      ))}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex justify-between px-1 text-[10px] sm:text-xs font-mono uppercase tracking-tighter">
+              <span className="text-[var(--cyber-neon-pink)]">
+                MSB (Continuation Bit)
+              </span>
+              <span className="text-[var(--text-dim)]">7-Bit Payload</span>
             </div>
           </div>
         </div>
