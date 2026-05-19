@@ -1143,6 +1143,18 @@ const BinaryPage = ({
             </p>
 
             <RoadmapGrid items={roadmapItems} />
+
+            <div className="max-w-3xl mx-auto pt-4">
+              <p className="text-sm text-[var(--text-dim)] leading-relaxed italic">
+                This guide should help explain how the protobuf encoding works,
+                but if you have questions about edge cases or specifics that we
+                don't cover, refer to the{" "}
+                <ExternalLinkText href="https://protobuf.dev/programming-guides/encoding/">
+                  official encoding guide
+                </ExternalLinkText>
+                .
+              </p>
+            </div>
           </div>
 
           <div className="pt-24 mt-24 border-t border-[var(--border-light)]/30">
