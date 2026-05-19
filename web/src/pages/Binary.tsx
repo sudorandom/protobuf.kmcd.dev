@@ -578,6 +578,12 @@ const BinaryBasics = () => (
         <CyberPanel title="LEFT_SHIFT_LOGIC (<< 3)">
           <BitShiftingVisualization />
         </CyberPanel>
+        <div className="bg-[var(--section-bg-dark)] border border-[var(--border-light)] rounded-lg p-4">
+          <SyntaxHighlighter
+            language="bash"
+            code="00000001 << 3 = 00001000"
+          />
+        </div>
       </div>
     </div>
 
@@ -603,6 +609,12 @@ const BinaryBasics = () => (
         <CyberPanel title="BITWISE_MERGE_LOGIC">
           <BitwiseMergeVisualization />
         </CyberPanel>
+        <div className="bg-[var(--section-bg-dark)] border border-[var(--border-light)] rounded-lg p-4">
+          <SyntaxHighlighter
+            language="bash"
+            code="00011000 | 00001010 = 00011010"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -1067,11 +1079,15 @@ export const BinaryMatrix = ({
 };
 
 const BinaryPage = ({
-  protoSource,
-  setProtoSource,
+  explorerProto,
+  setExplorerProto,
+  protoscopeProto,
+  setProtoscopeProto,
 }: {
-  protoSource: string;
-  setProtoSource: (s: string) => void;
+  explorerProto: string;
+  setExplorerProto: (s: string) => void;
+  protoscopeProto: string;
+  setProtoscopeProto: (s: string) => void;
 }) => {
   const roadmapItems = [
     {
@@ -1387,7 +1403,10 @@ const BinaryPage = ({
       </Section>
 
       {/* 3. The Explorer Matrix */}
-      <BinaryMatrix protoSource={protoSource} setProtoSource={setProtoSource} />
+      <BinaryMatrix
+        protoSource={explorerProto}
+        setProtoSource={setExplorerProto}
+      />
 
       {/* 4. Protoscope Section */}
       <Section
@@ -1516,8 +1535,8 @@ const BinaryPage = ({
           </p>
 
           <ProtoscopeLab
-            protoSource={protoSource}
-            setProtoSource={setProtoSource}
+            protoSource={protoscopeProto}
+            setProtoSource={setProtoscopeProto}
           />
         </div>
       </Section>

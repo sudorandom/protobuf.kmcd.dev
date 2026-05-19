@@ -157,6 +157,8 @@ function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isNavDropdownOpen, setIsNavDropdownOpen] = useState(false);
   const [protoSource, setProtoSource] = useState(INITIAL_PROTO);
+  const [explorerProto, setExplorerProto] = useState(INITIAL_PROTO);
+  const [protoscopeProto, setProtoscopeProto] = useState(INITIAL_PROTO);
   const [registry, setRegistry] = useState<FileRegistry | null>(null);
   const [error, setError] = useState<string | null>(null);
   const location = useLocation();
@@ -671,8 +673,10 @@ function App() {
               path="/binary/"
               element={
                 <Binary
-                  protoSource={protoSource}
-                  setProtoSource={setProtoSource}
+                  explorerProto={explorerProto}
+                  setExplorerProto={setExplorerProto}
+                  protoscopeProto={protoscopeProto}
+                  setProtoscopeProto={setProtoscopeProto}
                 />
               }
             />{" "}

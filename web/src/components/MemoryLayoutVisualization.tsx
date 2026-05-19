@@ -83,7 +83,7 @@ export const MemoryLayoutVisualization = () => {
             <polygon
               points="0 0, 10 3.5, 0 7"
               fill="var(--cyber-neon-blue)"
-              opacity="0.4"
+              opacity="0.8"
             />
           </marker>
           <marker
@@ -97,7 +97,7 @@ export const MemoryLayoutVisualization = () => {
             <polygon
               points="0 0, 10 3.5, 0 7"
               fill="var(--cyber-neon-green)"
-              opacity="0.4"
+              opacity="0.8"
             />
           </marker>
         </defs>
@@ -179,11 +179,11 @@ export const MemoryLayoutVisualization = () => {
                 d={`M ${startX} ${startY} C ${startX} ${startY + 60}, ${endX} ${endY - 60}, ${endX} ${endY}`}
                 fill="none"
                 stroke="var(--cyber-neon-blue)"
-                strokeWidth="1"
+                strokeWidth="3"
                 strokeDasharray="4,4"
                 markerEnd="url(#arrowhead-blue)"
                 initial={{ pathLength: 0, opacity: 0 }}
-                whileInView={{ pathLength: 1, opacity: 0.2 }}
+                whileInView={{ pathLength: 1, opacity: 0.6 }}
                 viewport={{ once: true }}
                 transition={{ duration: 1, delay: 0.8 + i * 0.05 }}
               />
@@ -207,11 +207,11 @@ export const MemoryLayoutVisualization = () => {
                 d={`M ${startX} ${startY} C ${startX} ${startY + 60}, ${endX} ${endY - 60}, ${endX} ${endY}`}
                 fill="none"
                 stroke="var(--cyber-neon-green)"
-                strokeWidth="1"
+                strokeWidth="2"
                 strokeDasharray="4,4"
                 markerEnd="url(#arrowhead-green)"
                 initial={{ pathLength: 0, opacity: 0 }}
-                whileInView={{ pathLength: 1, opacity: 0.2 }}
+                whileInView={{ pathLength: 1, opacity: 0.5 }}
                 viewport={{ once: true }}
                 transition={{ duration: 1, delay: 0.8 + i * 0.05 }}
               />

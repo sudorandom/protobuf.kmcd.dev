@@ -66,6 +66,8 @@ export function decodeBinary(
     const tagBytesArray = res.bytes;
     const fieldNo = Number(tagValue >> 3n);
     const wireType = Number(tagValue & 0x07n);
+
+    // Robust field lookup: check fields and extensions
     const field = schema?.fields.find((f) => f.number === fieldNo);
 
     let data: Uint8Array;
@@ -101,12 +103,14 @@ export function decodeBinary(
           (ev) => BigInt(ev.number) === v,
         );
         if (enumValue) value = `${enumValue.name} (${v})`;
+      } else {
+        fieldTypeLabel = field ? "varint" : "unknown (varint)";
       }
     } else if (wireType === WireType.LengthDelimited) {
       const { value: length, bytes: lBytes } = readVarint();
       lengthBytes = new Uint8Array(lBytes);
       const lengthNum = Number(length);
-      data = binary.slice(offset, offset + lengthNum);
+      data = binary.subarray(offset, offset + lengthNum);
       offset += lengthNum;
 
       if (field?.fieldKind === "scalar" && field.scalar === ScalarType.STRING) {
@@ -120,15 +124,110 @@ export function decodeBinary(
           value = `Message: ${field.message.name}`;
         }
         fieldTypeLabel = "message";
+      } else if (
+        field?.fieldKind === "list" &&
+        field.listKind === "scalar" &&
+        wireType === WireType.LengthDelimited
+      ) {
+        // Packed repeated scalar (Protobuf v2 uses fieldKind: "list" and listKind: "scalar")
+        const results: (bigint | number | string)[] = [];
+        let pOffset = 0;
+        const pData = data;
+        const scalar = field.scalar;
+
+        while (pOffset < pData.length) {
+          if (
+            scalar === ScalarType.INT32 ||
+            scalar === ScalarType.INT64 ||
+            scalar === ScalarType.UINT32 ||
+            scalar === ScalarType.UINT64 ||
+            scalar === ScalarType.BOOL ||
+            scalar === ScalarType.SINT32 ||
+            scalar === ScalarType.SINT64
+          ) {
+            // Varint types
+            let v = 0n;
+            let shift = 0n;
+            let found = false;
+            while (pOffset < pData.length) {
+              const b = pData[pOffset++];
+              v |= BigInt(b & 0x7f) << shift;
+              if (!(b & 0x80)) {
+                found = true;
+                break;
+              }
+              shift += 7n;
+            }
+            if (!found) break;
+
+            if (scalar === ScalarType.SINT32 || scalar === ScalarType.SINT64) {
+              results.push(decodeZigZag(v).toString());
+            } else if (scalar === ScalarType.BOOL) {
+              results.push(v !== 0n ? "true" : "false");
+            } else if (scalar === ScalarType.INT32) {
+              results.push(Number(BigInt.asIntN(32, v)));
+            } else {
+              results.push(v.toString());
+            }
+          } else if (
+            scalar === ScalarType.FIXED64 ||
+            scalar === ScalarType.SFIXED64 ||
+            scalar === ScalarType.DOUBLE
+          ) {
+            if (pOffset + 8 <= pData.length) {
+              const view = new DataView(
+                pData.buffer,
+                pData.byteOffset + pOffset,
+                8,
+              );
+              if (scalar === ScalarType.DOUBLE)
+                results.push(view.getFloat64(0, true));
+              else if (scalar === ScalarType.SFIXED64)
+                results.push(view.getBigInt64(0, true).toString());
+              else results.push(view.getBigUint64(0, true).toString());
+              pOffset += 8;
+            } else break;
+          } else if (
+            scalar === ScalarType.FIXED32 ||
+            scalar === ScalarType.SFIXED32 ||
+            scalar === ScalarType.FLOAT
+          ) {
+            if (pOffset + 4 <= pData.length) {
+              const view = new DataView(
+                pData.buffer,
+                pData.byteOffset + pOffset,
+                4,
+              );
+              if (scalar === ScalarType.FLOAT)
+                results.push(view.getFloat32(0, true));
+              else if (scalar === ScalarType.SFIXED32)
+                results.push(view.getInt32(0, true));
+              else results.push(view.getUint32(0, true));
+              pOffset += 4;
+            } else break;
+          } else {
+            break;
+          }
+        }
+        value = `[${results.join(", ")}]`;
+        fieldTypeLabel = `packed ${ScalarType[scalar].toLowerCase()}`;
       } else {
-        value = length;
-        fieldTypeLabel =
-          field?.fieldKind === "scalar"
-            ? ScalarType[field.scalar].toLowerCase()
-            : "bytes";
+        value = lengthNum;
+        if (field) {
+          if (field.fieldKind === "scalar") {
+            fieldTypeLabel = ScalarType[field.scalar].toLowerCase();
+          } else if (field.fieldKind === "list") {
+            fieldTypeLabel = `repeated ${field.listKind === "scalar" ? ScalarType[field.scalar].toLowerCase() : field.listKind}`;
+          } else {
+            fieldTypeLabel = field.fieldKind;
+          }
+        } else {
+          const availableTags = schema?.fields.map((f) => f.number).join(",") || "none";
+          fieldTypeLabel = `unknown (tag:${fieldNo}, message:${schema?.name || "none"}, fields:[${availableTags}])`;
+        }
       }
     } else if (wireType === WireType.Fixed64) {
-      data = binary.slice(offset, offset + 8);
+      data = binary.subarray(offset, offset + 8);
       offset += 8;
       const view = new DataView(data.buffer, data.byteOffset, data.byteLength);
       if (field?.fieldKind === "scalar" && field.scalar === ScalarType.DOUBLE) {
@@ -148,7 +247,7 @@ export function decodeBinary(
             : "fixed64";
       }
     } else if (wireType === WireType.Fixed32) {
-      data = binary.slice(offset, offset + 4);
+      data = binary.subarray(offset, offset + 4);
       offset += 4;
       const view = new DataView(data.buffer, data.byteOffset, data.byteLength);
       if (field?.fieldKind === "scalar" && field.scalar === ScalarType.FLOAT) {
