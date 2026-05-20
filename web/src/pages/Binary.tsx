@@ -18,6 +18,7 @@ import {
   CyberPanel,
   ExternalLinkText,
   SyntaxHighlighter,
+  CyberButton,
 } from "../components/shared/Common";
 import { JsonEditor } from "../components/shared/JsonEditor";
 import { Modal } from "../components/shared/Modal";
@@ -590,9 +591,12 @@ const BinaryBasics = () => (
           <BitShiftingVisualization />
         </CyberPanel>
         <div className="bg-[var(--section-bg-dark)] border border-[var(--border-light)] rounded-lg p-4">
-          <SyntaxHighlighter language="bash" code={`  00000001
+          <SyntaxHighlighter
+            language="bash"
+            code={`  00000001
       << 3
-= 00001000`} />
+= 00001000`}
+          />
         </div>
       </div>
     </div>
@@ -803,33 +807,28 @@ export const BinaryMatrix = ({
             {(
               Object.keys(SIZE_EXAMPLES) as Array<keyof typeof SIZE_EXAMPLES>
             ).map((key) => (
-              <button
+              <CyberButton
                 key={key}
                 onClick={() => handleExampleChange(key)}
-                className={`px-3 py-1 text-sm font-cyber font-bold border transition-all rounded-md ${
-                  activeExample === key
-                    ? "bg-[var(--cyber-neon-blue)] border-[var(--cyber-neon-blue)] text-[var(--neon-contrast-text)] shadow-[0_0_10px_rgba(0,243,255,0.3)]"
-                    : "bg-[var(--overlay-bg)] border-[var(--border-light)] text-[var(--text-dim)] hover:border-[var(--cyber-neon-blue)]/50 hover:text-[var(--text-color)]"
-                }`}
-                aria-label={`Load ${key} example data`}
+                active={activeExample === key}
+                ariaLabel={`Load ${key} example data`}
               >
                 {key}
-              </button>
+              </CyberButton>
             ))}
 
             <div className="w-px h-6 bg-[var(--border-light)] mx-2 hidden sm:block" />
 
-            <button
+            <CyberButton
               onClick={handleGenerateFake}
               disabled={isGenerating || !localFds}
-              className="px-4 py-1.5 text-sm font-cyber font-bold border border-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)] text-[var(--neon-contrast-text)] hover:bg-[var(--cyber-neon-pink)]/90 transition-all flex items-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed rounded-md shadow-[0_0_15px_rgba(255,0,255,0.4)]"
-              aria-label="RANDOMIZE - Generate Random Data"
+              variant="pink"
+              icon={Zap}
+              className={isGenerating ? "animate-pulse" : ""}
+              ariaLabel="RANDOMIZE - Generate Random Data"
             >
-              <Zap
-                className={`w-3.5 h-3.5 ${isGenerating ? "animate-spin" : ""}`}
-              />
               {isGenerating ? "GENERATING..." : "RANDOMIZE"}
-            </button>
+            </CyberButton>
           </div>
 
           <button

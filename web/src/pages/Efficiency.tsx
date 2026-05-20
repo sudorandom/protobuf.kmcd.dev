@@ -18,7 +18,12 @@ import {
   toJsonString,
   type FileRegistry,
 } from "@bufbuild/protobuf";
-import { Section, SectionTitle, CyberPanel } from "../components/shared/Common";
+import {
+  Section,
+  SectionTitle,
+  CyberPanel,
+  CyberButton,
+} from "../components/shared/Common";
 import { JsonEditor } from "../components/shared/JsonEditor";
 import { Modal } from "../components/shared/Modal";
 import { InteractiveSchemaEditor } from "../components/shared/InteractiveSchemaEditor";
@@ -279,7 +284,7 @@ export const SizeComparison = ({
               {(
                 Object.keys(SIZE_EXAMPLES) as Array<keyof typeof SIZE_EXAMPLES>
               ).map((key) => (
-                <button
+                <CyberButton
                   key={key}
                   onClick={() => {
                     trackEvent("efficiency_page_example_change", {
@@ -287,30 +292,25 @@ export const SizeComparison = ({
                     });
                     handleExampleChange(key);
                   }}
-                  className={`px-3 py-1 text-sm font-mono border transition-all rounded ${
-                    activeExample === key
-                      ? "bg-[var(--cyber-neon-blue)]/20 border-[var(--cyber-neon-blue)] text-[var(--cyber-neon-blue)]"
-                      : "bg-[var(--overlay-bg)] border-[var(--border-light)] text-[var(--text-dim)] hover:border-[var(--cyber-neon-blue)]/50 hover:text-[var(--text-color)]"
-                  }`}
-                  aria-label={`Load ${key} example data`}
+                  active={activeExample === key}
+                  ariaLabel={`Load ${key} example data`}
                 >
                   {key}
-                </button>
+                </CyberButton>
               ))}
-              <button
+              <CyberButton
                 onClick={() => {
                   trackEvent("efficiency_page_generate_fake");
                   generateFauxData();
                 }}
                 disabled={!localMessageSchema || isGenerating}
-                className="px-2 py-1 text-sm font-cyber font-bold border border-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/10 text-[var(--cyber-neon-pink)] hover:bg-[var(--cyber-neon-pink)]/20 transition-all flex items-center gap-1.5 disabled:opacity-30 disabled:cursor-not-allowed rounded uppercase tracking-wider"
-                aria-label="RANDOMIZE - Generate Random Data"
+                variant="pink"
+                icon={Zap}
+                className={isGenerating ? "animate-pulse" : ""}
+                ariaLabel="RANDOMIZE - Generate Random Data"
               >
-                <Zap
-                  className={`w-2.5 h-2.5 ${isGenerating ? "animate-spin" : ""}`}
-                />
-                Randomize
-              </button>
+                {isGenerating ? "GENERATING..." : "RANDOMIZE"}
+              </CyberButton>
             </div>
 
             <CyberPanel

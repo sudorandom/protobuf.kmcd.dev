@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Zap, Terminal, Database, Settings2, ExternalLink } from "lucide-react";
 import { fromJson, toBinary, type FileRegistry } from "@bufbuild/protobuf";
-import { CyberPanel, TechnicalNuance } from "./shared/Common";
+import { CyberPanel, TechnicalNuance, CyberButton } from "./shared/Common";
 import { JsonEditor } from "./shared/JsonEditor";
 import { InteractiveSchemaEditor } from "./shared/InteractiveSchemaEditor";
 import { convertToProtoscope, generateFake } from "../utils/wasm-parser";
@@ -207,39 +207,35 @@ export const ProtoscopeLab: React.FC<ProtoscopeLabProps> = ({
           </div>
 
           <div className="flex flex-wrap gap-2">
-            <button
+            <CyberButton
               onClick={() => applyPreset("minimal")}
-              className="px-2 py-1 text-sm font-cyber font-bold border border-[var(--cyber-neon-blue)]/30 text-[var(--cyber-neon-blue)] hover:bg-[var(--cyber-neon-blue)]/10 transition-all rounded uppercase tracking-wider"
-              aria-label="Load minimal payload"
+              ariaLabel="Load minimal payload"
             >
               Minimal
-            </button>
-            <button
+            </CyberButton>
+            <CyberButton
               onClick={() => applyPreset("basic")}
-              className="px-2 py-1 text-sm font-cyber font-bold border border-[var(--cyber-neon-blue)]/30 text-[var(--cyber-neon-blue)] hover:bg-[var(--cyber-neon-blue)]/10 transition-all rounded uppercase tracking-wider"
-              aria-label="Load basic payload"
+              ariaLabel="Load basic payload"
             >
               Basic
-            </button>
-            <button
+            </CyberButton>
+            <CyberButton
               onClick={() => applyPreset("large")}
-              className="px-2 py-1 text-sm font-cyber font-bold border border-[var(--cyber-neon-blue)]/30 text-[var(--cyber-neon-blue)] hover:bg-[var(--cyber-neon-blue)]/10 transition-all rounded uppercase tracking-wider"
-              aria-label="Load large payload"
+              ariaLabel="Load large payload"
             >
               Large
-            </button>
+            </CyberButton>
             <div className="w-[1px] h-6 bg-[var(--border-light)] mx-1" />
-            <button
+            <CyberButton
               onClick={handleGenerateFake}
               disabled={isGenerating || !localFds}
-              className="px-2 py-1 text-sm font-cyber font-bold border border-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/10 text-[var(--cyber-neon-pink)] hover:bg-[var(--cyber-neon-pink)]/20 transition-all flex items-center gap-1.5 disabled:opacity-30 disabled:cursor-not-allowed rounded uppercase tracking-wider"
-              aria-label="Generate random JSON data from schema"
+              variant="pink"
+              icon={Zap}
+              className={isGenerating ? "animate-pulse" : ""}
+              ariaLabel="Generate random JSON data from schema"
             >
-              <Zap
-                className={`w-2.5 h-2.5 ${isGenerating ? "animate-spin" : ""}`}
-              />
               Randomize
-            </button>
+            </CyberButton>
           </div>
 
           <CyberPanel

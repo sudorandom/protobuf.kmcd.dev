@@ -33,6 +33,7 @@ import {
   SyntaxHighlighter,
   TechnicalNuance,
   RoadmapGrid,
+  CyberButton,
 } from "../components/shared/Common";
 import { JsonEditor } from "../components/shared/JsonEditor";
 import { Modal } from "../components/shared/Modal";
@@ -1589,7 +1590,7 @@ export const ValidationLab = () => {
                     keyof typeof VALIDATION_EXAMPLES
                   >
                 ).map((key) => (
-                  <button
+                  <CyberButton
                     key={key}
                     onClick={() => {
                       trackEvent("advanced_page_example_change", {
@@ -1597,17 +1598,13 @@ export const ValidationLab = () => {
                       });
                       handleExampleChange(key);
                     }}
-                    className={`px-3 py-1 text-sm font-mono border transition-all rounded ${
-                      activeExample === key
-                        ? "bg-[var(--cyber-neon-blue)]/20 border-[var(--cyber-neon-blue)] text-[var(--cyber-neon-blue)]"
-                        : "bg-[var(--overlay-bg)] border-[var(--border-light)] text-[var(--text-dim)] hover:border-[var(--cyber-neon-blue)]/50 hover:text-[var(--text-color)]"
-                    }`}
-                    aria-label={`Load validation example: ${key}`}
+                    active={activeExample === key}
+                    ariaLabel={`Load validation example: ${key}`}
                   >
                     {key}
-                  </button>
+                  </CyberButton>
                 ))}
-                <button
+                <CyberButton
                   onClick={async () => {
                     trackEvent("advanced_page_generate_fake");
                     if (!rootMessageName || !localFds) return;
@@ -1623,12 +1620,12 @@ export const ValidationLab = () => {
                     }
                   }}
                   disabled={!rootMessageName || !localFds}
-                  className="px-2 py-1 text-sm font-cyber font-bold border border-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/10 text-[var(--cyber-neon-pink)] hover:bg-[var(--cyber-neon-pink)]/20 transition-all flex items-center gap-1.5 disabled:opacity-30 disabled:cursor-not-allowed rounded uppercase tracking-wider"
-                  aria-label="RANDOMIZE - Generate random JSON data for validation"
+                  variant="pink"
+                  icon={Zap}
+                  ariaLabel="RANDOMIZE - Generate random JSON data for validation"
                 >
-                  <Zap className="w-2.5 h-2.5" />
                   Randomize
-                </button>
+                </CyberButton>
               </div>
 
               <CyberPanel

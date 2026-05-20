@@ -438,3 +438,58 @@ export const CyberPanel = ({
     {children}
   </div>
 );
+
+export const CyberButton = ({
+  children,
+  onClick,
+  variant = "blue",
+  active = false,
+  disabled = false,
+  className = "",
+  icon: Icon,
+  size = "md",
+  ariaLabel,
+}: {
+  children: React.ReactNode;
+  onClick?: (e: React.MouseEvent) => void;
+  variant?: "blue" | "pink";
+  active?: boolean;
+  disabled?: boolean;
+  className?: string;
+  icon?: React.ElementType;
+  size?: "sm" | "md";
+  ariaLabel?: string;
+}) => {
+  const baseStyles =
+    "font-cyber font-bold border transition-all disabled:opacity-30 disabled:cursor-not-allowed uppercase tracking-wider flex items-center justify-center gap-2 rounded select-none";
+
+  const sizeStyles = size === "sm" ? "px-2 py-1 text-xs" : "px-3 py-1 text-sm";
+
+  const variantStyles = {
+    blue: active
+      ? "bg-[var(--cyber-neon-blue)] border-[var(--cyber-neon-blue)] text-[var(--neon-contrast-text)] shadow-[0_0_10px_rgba(0,243,255,0.3)]"
+      : "bg-[var(--overlay-bg)] border-[var(--border-light)] text-[var(--text-dim)] hover:border-[var(--cyber-neon-blue)]/50 hover:text-[var(--text-color)]",
+    pink:
+      active || variant === "pink"
+        ? "bg-[var(--cyber-neon-pink)] border-[var(--cyber-neon-pink)] text-[var(--neon-contrast-text)] shadow-[0_0_15px_rgba(255,102,255,0.4)]"
+        : "bg-[var(--cyber-neon-pink)]/10 border-[var(--cyber-neon-pink)] text-[var(--cyber-neon-pink)] hover:bg-[var(--cyber-neon-pink)]/20",
+  };
+
+  // Special case for pink variant which is often used for "Randomize" (primary action)
+  const finalVariantStyle =
+    variant === "pink" && !active
+      ? "bg-[var(--cyber-neon-pink)] border-[var(--cyber-neon-pink)] text-[var(--neon-contrast-text)] shadow-[0_0_15px_rgba(255,102,255,0.4)] hover:opacity-90"
+      : variantStyles[variant];
+
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      className={`${baseStyles} ${sizeStyles} ${finalVariantStyle} ${className}`}
+      aria-label={ariaLabel}
+    >
+      {Icon && <Icon className={size === "sm" ? "w-3 h-3" : "w-3.5 h-3.5"} />}
+      {children}
+    </button>
+  );
+};
