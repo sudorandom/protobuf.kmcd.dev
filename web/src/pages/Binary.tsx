@@ -1475,7 +1475,10 @@ const BinaryPage = ({
                 The Wire-Level Language
               </h3>
               <p className="text-lg text-[var(--text-dim)] leading-relaxed">
-                <strong>Protoscope</strong> is a specialized tool and
+                <ExternalLinkText href="https://github.com/protocolbuffers/protoscope">
+                  <strong>Protoscope</strong>
+                </ExternalLinkText>{" "}
+                is a specialized tool and
                 human-editable language designed for inspecting, debugging, and
                 manually constructing Protocol Buffers wire format data.
               </p>
