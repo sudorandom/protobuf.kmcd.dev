@@ -209,7 +209,7 @@ export const SyntaxHighlighter = ({
     } else if (language === "bash") {
       output = output.replace(/^(\$|#)/gm, (match) =>
         push(
-          `<span class="text-[var(--cyber-neon-pink)] opacity-50 font-bold">${match}</span>`,
+          `<span class="text-[var(--cyber-neon-pink)] opacity-80 font-bold">${match}</span>`,
         ),
       );
       output = output.replace(/#.*$/gm, (match) =>

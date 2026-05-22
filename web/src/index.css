@@ -5,8 +5,8 @@
   --bg-color: #050505;
   --panel-bg: rgba(13, 13, 18, 0.8);
   --card-bg: rgba(21, 21, 28, 0.6);
-  --text-color: #e2e8f0;
-  --text-dim: #94a3b8;
+  --text-color: #f8fafc;
+  --text-dim: #cbd5e1;
   --cyber-neon-blue: #00f3ff;
   --cyber-neon-pink: #ff66ff;
   --cyber-neon-green: #00ff9f;
@@ -23,7 +23,7 @@
   --glow-color: rgba(0, 243, 255, 0.03);
   --warning-bg: rgba(234, 179, 8, 0.1);
   --warning-border: rgba(234, 179, 8, 0.2);
-  --warning-text: rgba(254, 240, 138, 0.8);
+  --warning-text: #fef08a;
   --neon-contrast-text: #000000;
 }
 

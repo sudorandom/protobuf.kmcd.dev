@@ -285,7 +285,7 @@ export const ProtoscopeLab: React.FC<ProtoscopeLabProps> = ({
                     {protoscopeOutput}
                   </pre>
                 ) : (
-                  <div className="h-full flex flex-col items-center justify-center text-[var(--text-dim)] gap-4 opacity-40 py-20">
+                  <div className="h-full flex flex-col items-center justify-center text-[var(--text-dim)] gap-4 opacity-70 py-20">
                     <Terminal className="w-10 h-10" />
                     <p className="font-cyber text-sm uppercase tracking-widest text-center">
                       Correct input to

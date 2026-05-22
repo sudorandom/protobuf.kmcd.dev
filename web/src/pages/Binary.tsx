@@ -1478,9 +1478,9 @@ const BinaryPage = ({
                 <ExternalLinkText href="https://github.com/protocolbuffers/protoscope">
                   <strong>Protoscope</strong>
                 </ExternalLinkText>{" "}
-                is a specialized tool and
-                human-editable language designed for inspecting, debugging, and
-                manually constructing Protocol Buffers wire format data.
+                is a specialized tool and human-editable language designed for
+                inspecting, debugging, and manually constructing Protocol
+                Buffers wire format data.
               </p>
               <p className="text-[var(--text-dim)] leading-relaxed">
                 Standard tools like <code>protoc</code> require a{" "}

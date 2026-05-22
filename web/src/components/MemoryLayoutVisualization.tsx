@@ -49,9 +49,9 @@ export const MemoryLayoutVisualization = () => {
             x={x + BIT_WIDTH / 2}
             y={startY + BIT_HEIGHT + 15}
             textAnchor="middle"
-            fill="var(--text-color)"
+            fill="var(--text-dim)"
             fontSize="10"
-            className="font-mono opacity-60"
+            className="font-mono"
           >
             2^{powerOffset - i}
           </text>
@@ -92,9 +92,9 @@ export const MemoryLayoutVisualization = () => {
               x="700"
               y="0"
               textAnchor="end"
-              fill="var(--text-color)"
+              fill="var(--text-dim)"
               fontSize="12"
-              className="font-mono uppercase opacity-70"
+              className="font-mono uppercase"
             >
               Binary representation
             </text>
@@ -103,9 +103,9 @@ export const MemoryLayoutVisualization = () => {
               <text
                 x="0"
                 y="-10"
-                fill="var(--text-color)"
+                fill="var(--text-dim)"
                 fontSize="12"
-                className="font-mono uppercase opacity-70"
+                className="font-mono uppercase"
               >
                 High Byte (Most Sig)
               </text>
@@ -117,9 +117,9 @@ export const MemoryLayoutVisualization = () => {
                 <text
                   x="0"
                   y="-10"
-                  fill="var(--text-color)"
+                  fill="var(--text-dim)"
                   fontSize="12"
-                  className="font-mono uppercase opacity-70"
+                  className="font-mono uppercase"
                 >
                   Low Byte (Least Sig)
                 </text>
@@ -207,9 +207,9 @@ export const MemoryLayoutVisualization = () => {
               x="700"
               y="0"
               textAnchor="end"
-              fill="var(--text-color)"
+              fill="var(--text-dim)"
               fontSize="12"
-              className="font-mono uppercase opacity-70"
+              className="font-mono uppercase"
             >
               Low address first
             </text>
@@ -218,9 +218,9 @@ export const MemoryLayoutVisualization = () => {
               <text
                 x="0"
                 y="-10"
-                fill="var(--text-color)"
+                fill="var(--text-dim)"
                 fontSize="12"
-                className="font-mono uppercase opacity-70"
+                className="font-mono uppercase"
               >
                 Low Byte (Stored First)
               </text>
@@ -232,9 +232,9 @@ export const MemoryLayoutVisualization = () => {
                 <text
                   x="0"
                   y="-10"
-                  fill="var(--text-color)"
+                  fill="var(--text-dim)"
                   fontSize="12"
-                  className="font-mono uppercase opacity-70"
+                  className="font-mono uppercase"
                 >
                   High Byte (Stored Second)
                 </text>
