@@ -38,19 +38,23 @@ const VarintHTMLDiagram = ({
                 <span className="text-xs font-mono text-[var(--text-dim)] uppercase">
                   Group {groupIndex}
                 </span>
-                <div className="flex gap-1">
+                <div
+                  className="flex gap-0.5 p-1.5 rounded border"
+                  style={{
+                    borderColor: `color-mix(in srgb, ${color}, transparent 70%)`,
+                    backgroundColor: `color-mix(in srgb, ${color}, transparent 95%)`,
+                  }}
+                >
                   {groupStr.split("").map((bit, bitIdx) => (
-                    <div
+                    <span
                       key={bitIdx}
-                      className="w-7 h-9 flex items-center justify-center font-mono border rounded-sm font-bold"
+                      className={`font-mono text-sm sm:text-base ${bit === "1" ? "font-bold" : "opacity-30"}`}
                       style={{
                         color: color,
-                        borderColor: `color-mix(in srgb, ${color}, transparent 70%)`,
-                        backgroundColor: `color-mix(in srgb, ${color}, transparent 90%)`,
                       }}
                     >
                       {bit}
-                    </div>
+                    </span>
                   ))}
                 </div>
               </div>
@@ -87,7 +91,13 @@ const VarintHTMLDiagram = ({
                   <span className="text-xs font-mono text-[var(--text-dim)] uppercase mb-1">
                     Byte {j}
                   </span>
-                  <div className="flex gap-1">
+                  <div
+                    className="flex gap-0.5 p-1.5 rounded border"
+                    style={{
+                      borderColor: `color-mix(in srgb, ${color}, transparent 70%)`,
+                      backgroundColor: `color-mix(in srgb, ${color}, transparent 95%)`,
+                    }}
+                  >
                     {byteStr.split("").map((bit, bitIdx) => {
                       const isMsbBit = bitIdx === 0;
                       const bitColor = isMsbBit
@@ -97,25 +107,15 @@ const VarintHTMLDiagram = ({
                         : color;
 
                       return (
-                        <div
+                        <span
                           key={bitIdx}
-                          className="w-7 h-9 flex items-center justify-center font-mono border rounded-sm font-bold"
+                          className={`font-mono text-sm sm:text-base ${bit === "1" ? "font-bold" : "opacity-30"}`}
                           style={{
                             color: bitColor,
-                            borderColor: isMsbBit
-                              ? isLast
-                                ? "var(--border-light)"
-                                : "var(--cyber-neon-pink)"
-                              : `color-mix(in srgb, ${color}, transparent 70%)`,
-                            backgroundColor: isMsbBit
-                              ? isLast
-                                ? "transparent"
-                                : "color-mix(in srgb, var(--cyber-neon-pink), transparent 90%)"
-                              : `color-mix(in srgb, ${color}, transparent 90%)`,
                           }}
                         >
                           {bit}
-                        </div>
+                        </span>
                       );
                     })}
                   </div>

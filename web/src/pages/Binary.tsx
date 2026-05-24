@@ -1275,6 +1275,14 @@ const BinaryPage = ({
               leading zeroes, Protobuf ensures that small negative numbers take
               just as little space as small positive numbers.
             </p>
+            <p>
+              This is named <strong>ZigZag</strong> because the mapping zig-zags
+              back and forth between positive and negative integers as you count
+              up the encoded values: <code>0</code> maps to <code>0</code>,{" "}
+              <code>-1</code> to <code>1</code>, <code>1</code> to{" "}
+              <code>2</code>, <code>-2</code> to <code>3</code>, <code>2</code>{" "}
+              to <code>4</code>, and so on.
+            </p>
           </div>
         </div>
       </Section>
