@@ -145,10 +145,29 @@ const VarintHTMLDiagram = ({
 const VarintExplainer: React.FC = () => {
   const [inputValue, setInputValue] = useState("150");
 
-  const value = (() => {
+  const rawValue = (() => {
     try {
       if (inputValue === "" || inputValue === "-") return 0n;
-      // We cap it at 64-bit unsigned for visualization
+      return BigInt(inputValue);
+    } catch {
+      return 0n;
+    }
+  })();
+
+  const isOverflow = (() => {
+    if (inputValue === "") return false;
+    try {
+      const val = BigInt(inputValue);
+      return val < 0n || val > 18446744073709551615n;
+    } catch {
+      return true;
+    }
+  })();
+
+  const value = (() => {
+    try {
+      if (inputValue === "") return 0n;
+      // We cap it at 64-bit unsigned for visualization fallback
       return BigInt.asUintN(64, BigInt(inputValue));
     } catch {
       return 0n;
@@ -156,8 +175,8 @@ const VarintExplainer: React.FC = () => {
   })();
 
   const handleAdjust = (delta: bigint) => {
-    const newValue = value + delta;
-    if (newValue < 0n) return;
+    const newValue = rawValue + delta;
+    if (newValue < 0n || newValue > 18446744073709551615n) return;
     setInputValue(newValue.toString());
   };
 
@@ -212,72 +231,105 @@ const VarintExplainer: React.FC = () => {
               value={inputValue}
               onChange={(e) => {
                 const val = e.target.value;
-                if (val === "" || val === "-" || /^-?\d+$/.test(val)) {
-                  setInputValue(val);
+                const sanitized = val.replace(/[,_ .]/g, "");
+                if (sanitized === "" || /^\d+$/.test(sanitized)) {
+                  setInputValue(sanitized);
                 }
               }}
               onBlur={() =>
                 trackEvent("varint_explainer_interact", { value: inputValue })
               }
-              className="bg-[var(--section-bg-dark)] border border-[var(--cyber-neon-blue)]/30 rounded p-4 font-cyber text-2xl text-[var(--cyber-neon-blue)] focus:outline-none focus:border-[var(--cyber-neon-blue)] flex-1 min-w-0"
+              className={`bg-[var(--section-bg-dark)] border rounded p-4 font-cyber text-2xl focus:outline-none flex-1 min-w-0 transition-colors ${
+                isOverflow
+                  ? "border-[var(--cyber-neon-pink)] text-[var(--cyber-neon-pink)] focus:border-[var(--cyber-neon-pink)]"
+                  : "border-[var(--cyber-neon-blue)]/30 text-[var(--cyber-neon-blue)] focus:border-[var(--cyber-neon-blue)]"
+              }`}
             />
             <div className="flex gap-2 shrink-0">
               <button
                 onClick={() => handleAdjust(-1n)}
-                className="p-4 bg-[var(--overlay-bg)] border border-[var(--cyber-neon-blue)]/30 rounded text-[var(--cyber-neon-blue)] hover:bg-[var(--cyber-neon-blue)]/10 transition-colors"
+                className={`p-4 bg-[var(--overlay-bg)] border rounded transition-colors ${
+                  isOverflow
+                    ? "border-[var(--cyber-neon-pink)]/30 text-[var(--cyber-neon-pink)] hover:bg-[var(--cyber-neon-pink)]/10"
+                    : "border-[var(--cyber-neon-blue)]/30 text-[var(--cyber-neon-blue)] hover:bg-[var(--cyber-neon-blue)]/10"
+                }`}
                 aria-label="Decrement value"
               >
                 <Minus className="w-6 h-6" />
               </button>
               <button
                 onClick={() => handleAdjust(1n)}
-                className="p-4 bg-[var(--overlay-bg)] border border-[var(--cyber-neon-blue)]/30 rounded text-[var(--cyber-neon-blue)] hover:bg-[var(--cyber-neon-blue)]/10 transition-colors"
+                className={`p-4 bg-[var(--overlay-bg)] border rounded transition-colors ${
+                  isOverflow
+                    ? "border-[var(--cyber-neon-pink)]/30 text-[var(--cyber-neon-pink)] hover:bg-[var(--cyber-neon-pink)]/10"
+                    : "border-[var(--cyber-neon-blue)]/30 text-[var(--cyber-neon-blue)] hover:bg-[var(--cyber-neon-blue)]/10"
+                }`}
                 aria-label="Increment value"
               >
                 <Plus className="w-6 h-6" />
               </button>
             </div>
           </div>
+          {isOverflow && (
+            <p className="text-xs text-[var(--cyber-neon-pink)] font-mono uppercase mt-1">
+              ⚠️ Value overflows 64-bit unsigned range
+            </p>
+          )}
         </div>
 
         <CyberPanel title="VARINT_ENCODING_STEPS">
           <div className="p-4 space-y-8">
-            <div className="flex flex-col lg:flex-row gap-8">
-              <div className="flex-1 space-y-4">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-[var(--cyber-neon-pink)]/20 border border-[var(--cyber-neon-pink)]/40 flex items-center justify-center font-cyber text-[var(--cyber-neon-pink)]">
-                    1
-                  </div>
-                  <h3 className="font-cyber font-bold text-sm uppercase tracking-widest">
-                    Chunk Data
-                  </h3>
-                </div>
-                <p className="text-sm text-[var(--text-dim)] leading-relaxed">
-                  Split the number into 7-bit groups. Standard bytes are 8 bits,
-                  but we reserve the top bit (MSB) as a "continuation bit".
+            {isOverflow ? (
+              <div className="flex flex-col items-center justify-center py-12 text-center space-y-4">
+                <span className="text-4xl">⚠️</span>
+                <h3 className="font-cyber font-bold text-[var(--cyber-neon-pink)] uppercase tracking-wider">
+                  Value Overflow
+                </h3>
+                <p className="text-sm text-[var(--text-dim)] max-w-md leading-relaxed">
+                  The input value is outside the allowed range for an unsigned 64-bit Base-128 varint. Please enter a value between <code>0</code> and <code>18,446,744,073,709,551,615</code>.
                 </p>
               </div>
-
-              <div className="flex-1 space-y-4">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-[var(--cyber-neon-green)]/20 border border-[var(--cyber-neon-green)]/40 flex items-center justify-center font-cyber text-[var(--cyber-neon-green)]">
-                    2
+            ) : (
+              <>
+                <div className="flex flex-col lg:flex-row gap-8">
+                  <div className="flex-1 space-y-4">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-full bg-[var(--cyber-neon-pink)]/20 border border-[var(--cyber-neon-pink)]/40 flex items-center justify-center font-cyber text-[var(--cyber-neon-pink)]">
+                        1
+                      </div>
+                      <h3 className="font-cyber font-bold text-sm uppercase tracking-widest">
+                        Chunk Data
+                      </h3>
+                    </div>
+                    <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+                      Split the number into 7-bit groups. Standard bytes are 8
+                      bits, but we reserve the top bit (MSB) as a "continuation
+                      bit".
+                    </p>
                   </div>
-                  <h3 className="font-cyber font-bold text-sm uppercase tracking-widest">
-                    Reverse & Add MSB Flag
-                  </h3>
-                </div>
-                <p className="text-sm text-[var(--text-dim)] leading-relaxed">
-                  The groups are written in <strong>Little-Endian</strong> order
-                  (least significant group first). Set the MSB to <code>1</code>{" "}
-                  for all bytes except the last one.
-                </p>
-              </div>
-            </div>
 
-            <div className="pt-8 border-t border-[var(--border-light)]">
-              <VarintHTMLDiagram partitionedBinary={partitionedBinary} />
-            </div>
+                  <div className="flex-1 space-y-4">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-full bg-[var(--cyber-neon-green)]/20 border border-[var(--cyber-neon-green)]/40 flex items-center justify-center font-cyber text-[var(--cyber-neon-green)]">
+                        2
+                      </div>
+                      <h3 className="font-cyber font-bold text-sm uppercase tracking-widest">
+                        Reverse & Add MSB Flag
+                      </h3>
+                    </div>
+                    <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+                      The groups are written in <strong>Little-Endian</strong>{" "}
+                      order (least significant group first). Set the MSB to{" "}
+                      <code>1</code> for all bytes except the last one.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="pt-8 border-t border-[var(--border-light)]">
+                  <VarintHTMLDiagram partitionedBinary={partitionedBinary} />
+                </div>
+              </>
+            )}
           </div>
         </CyberPanel>
       </div>

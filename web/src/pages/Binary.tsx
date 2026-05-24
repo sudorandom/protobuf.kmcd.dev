@@ -590,7 +590,7 @@ const BinaryBasics = () => (
         <CyberPanel title="LEFT_SHIFT_LOGIC (<< 3)">
           <BitShiftingVisualization />
         </CyberPanel>
-        <div className="bg-[var(--section-bg-dark)] border border-[var(--border-light)] rounded-lg p-4">
+        <div className="w-full max-w-sm mx-auto bg-[var(--section-bg-dark)] border border-[var(--border-light)] rounded-lg p-4">
           <SyntaxHighlighter
             language="bash"
             code={`  00000001
@@ -598,6 +598,9 @@ const BinaryBasics = () => (
 = 00001000`}
           />
         </div>
+        <p className="text-sm text-[var(--text-dim)] leading-relaxed text-center max-w-2xl mx-auto">
+          Bit shifting is a foundational operation for data serialization, compression, and networking. By shifting bits to the left or right, we can align values to specific boundaries, pack multiple small numbers side-by-side, or perform extremely fast multiplication and division.
+        </p>
       </div>
     </div>
 
@@ -623,7 +626,7 @@ const BinaryBasics = () => (
         <CyberPanel title="BITWISE_MERGE_LOGIC">
           <BitwiseMergeVisualization />
         </CyberPanel>
-        <div className="bg-[var(--section-bg-dark)] border border-[var(--border-light)] rounded-lg p-4">
+        <div className="w-full max-w-sm mx-auto bg-[var(--section-bg-dark)] border border-[var(--border-light)] rounded-lg p-4">
           <SyntaxHighlighter
             language="bash"
             code={`   00011000
@@ -631,6 +634,9 @@ const BinaryBasics = () => (
  = 00011010`}
           />
         </div>
+        <p className="text-sm text-[var(--text-dim)] leading-relaxed text-center max-w-2xl mx-auto">
+          The bitwise OR operation is commonly used to combine separate bitfields, configuration options, or flags into a single composite integer. As long as the individual values are shifted to occupy non-overlapping bit ranges, they can be merged together safely without corrupting one another.
+        </p>
       </div>
     </div>
   </div>
