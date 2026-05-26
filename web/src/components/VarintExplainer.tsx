@@ -3,141 +3,124 @@ import { Plus, Minus } from "lucide-react";
 import { trackEvent } from "../utils/analytics";
 import { CyberPanel } from "./shared/Common";
 
-const VarintHTMLDiagram = ({
-  partitionedBinary,
+const VarintStep1Diagram = ({
+  groups7Bit,
+  colors,
 }: {
-  partitionedBinary: string;
+  groups7Bit: string[];
+  colors: string[];
 }) => {
-  const groups7Bit = partitionedBinary.match(/.{1,7}/g) || [];
   const N = groups7Bit.length;
-
-  const COLORS = [
-    "var(--cyber-neon-pink)",
-    "var(--cyber-neon-blue)",
-    "var(--cyber-neon-green)",
-    "var(--cyber-neon-yellow)",
-    "var(--cyber-neon-cyan)",
-  ];
-
   return (
-    <div className="w-full flex flex-col items-center gap-12 pt-4 pb-8">
-      {/* Step 1: 7-Bit Groups */}
-      <div className="w-full space-y-6">
-        <h4 className="text-sm font-cyber font-bold text-[var(--text-dim)] uppercase tracking-widest text-center">
-          Step 1: 7-Bit Groups
-        </h4>
-        <div className="flex flex-wrap justify-center gap-x-8 gap-y-6">
-          {groups7Bit.map((groupStr, i) => {
-            const groupIndex = N - 1 - i;
-            const color = COLORS[groupIndex % COLORS.length];
-            return (
-              <div
-                key={`group-${i}`}
-                className="flex flex-col items-center gap-3"
-              >
-                <span className="text-xs font-mono text-[var(--text-dim)] uppercase">
-                  Group {groupIndex}
-                </span>
-                <div
-                  className="flex gap-0.5 p-1.5 rounded border"
+    <div className="flex flex-wrap gap-x-6 gap-y-4 justify-center lg:justify-start">
+      {groups7Bit.map((groupStr, i) => {
+        const groupIndex = N - 1 - i;
+        const color = colors[groupIndex % colors.length];
+        return (
+          <div key={`group-${i}`} className="flex flex-col items-center gap-2">
+            <span className="text-[10px] font-mono text-[var(--text-dim)] uppercase">
+              Group {groupIndex}
+            </span>
+            <div
+              className="flex gap-0.5 p-1.5 rounded border"
+              style={{
+                borderColor: `color-mix(in srgb, ${color}, transparent 70%)`,
+                backgroundColor: `color-mix(in srgb, ${color}, transparent 95%)`,
+              }}
+            >
+              {groupStr.split("").map((bit, bitIdx) => (
+                <span
+                  key={bitIdx}
+                  className={`font-mono text-sm sm:text-base ${bit === "1" ? "font-bold" : "opacity-30"}`}
                   style={{
-                    borderColor: `color-mix(in srgb, ${color}, transparent 70%)`,
-                    backgroundColor: `color-mix(in srgb, ${color}, transparent 95%)`,
+                    color: color,
                   }}
                 >
-                  {groupStr.split("").map((bit, bitIdx) => (
+                  {bit}
+                </span>
+              ))}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+const VarintStep2Diagram = ({
+  groups7Bit,
+  colors,
+}: {
+  groups7Bit: string[];
+  colors: string[];
+}) => {
+  const N = groups7Bit.length;
+  return (
+    <div className="flex flex-wrap gap-x-6 gap-y-4 justify-center lg:justify-start">
+      {groups7Bit.map((_, j) => {
+        const i = N - 1 - j;
+        const groupStr = groups7Bit[i];
+        const isLast = j === N - 1;
+        const msb = isLast ? "0" : "1";
+        const byteStr = msb + groupStr;
+        const groupIndex = N - 1 - i; // equals j
+        const color = colors[groupIndex % colors.length];
+
+        const byteVal = parseInt(byteStr, 2);
+        const hexStr =
+          "0x" + byteVal.toString(16).toUpperCase().padStart(2, "0");
+
+        return (
+          <div key={`byte-${j}`} className="flex flex-col items-center gap-2">
+            <div className="flex flex-col items-center">
+              <span className="text-[10px] font-mono text-[var(--text-dim)] uppercase mb-1">
+                Byte {j}
+              </span>
+              <div
+                className="flex gap-0.5 p-1.5 rounded border"
+                style={{
+                  borderColor: `color-mix(in srgb, ${color}, transparent 70%)`,
+                  backgroundColor: `color-mix(in srgb, ${color}, transparent 95%)`,
+                }}
+              >
+                {byteStr.split("").map((bit, bitIdx) => {
+                  const isMsbBit = bitIdx === 0;
+                  const bitColor = isMsbBit
+                    ? isLast
+                      ? "var(--text-dim)"
+                      : "var(--cyber-neon-pink)"
+                    : color;
+
+                  return (
                     <span
                       key={bitIdx}
                       className={`font-mono text-sm sm:text-base ${bit === "1" ? "font-bold" : "opacity-30"}`}
                       style={{
-                        color: color,
+                        color: bitColor,
                       }}
                     >
                       {bit}
                     </span>
-                  ))}
-                </div>
+                  );
+                })}
               </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Step 2: Little-Endian & MSB Flags */}
-      <div className="w-full space-y-6">
-        <h4 className="text-sm font-cyber font-bold text-[var(--text-dim)] uppercase tracking-widest text-center">
-          Step 2: Little-Endian & MSB Flags
-        </h4>
-        <div className="flex flex-wrap justify-center gap-x-8 gap-y-6">
-          {groups7Bit.map((_, j) => {
-            const i = N - 1 - j;
-            const groupStr = groups7Bit[i];
-            const isLast = j === N - 1;
-            const msb = isLast ? "0" : "1";
-            const byteStr = msb + groupStr;
-            const groupIndex = N - 1 - i; // equals j
-            const color = COLORS[groupIndex % COLORS.length];
-
-            const byteVal = parseInt(byteStr, 2);
-            const hexStr =
-              "0x" + byteVal.toString(16).toUpperCase().padStart(2, "0");
-
-            return (
-              <div
-                key={`byte-${j}`}
-                className="flex flex-col items-center gap-3"
-              >
-                <div className="flex flex-col items-center">
-                  <span className="text-xs font-mono text-[var(--text-dim)] uppercase mb-1">
-                    Byte {j}
-                  </span>
-                  <div
-                    className="flex gap-0.5 p-1.5 rounded border"
-                    style={{
-                      borderColor: `color-mix(in srgb, ${color}, transparent 70%)`,
-                      backgroundColor: `color-mix(in srgb, ${color}, transparent 95%)`,
-                    }}
-                  >
-                    {byteStr.split("").map((bit, bitIdx) => {
-                      const isMsbBit = bitIdx === 0;
-                      const bitColor = isMsbBit
-                        ? isLast
-                          ? "var(--text-dim)"
-                          : "var(--cyber-neon-pink)"
-                        : color;
-
-                      return (
-                        <span
-                          key={bitIdx}
-                          className={`font-mono text-sm sm:text-base ${bit === "1" ? "font-bold" : "opacity-30"}`}
-                          style={{
-                            color: bitColor,
-                          }}
-                        >
-                          {bit}
-                        </span>
-                      );
-                    })}
-                  </div>
-                  <div className="flex justify-between w-full mt-1 px-1">
-                    <span
-                      className={`text-[10px] font-mono font-bold ${!isLast ? "text-[var(--cyber-neon-pink)]" : "text-[var(--text-dim)]"}`}
-                    >
-                      MSB
-                    </span>
-                    <span className="text-[10px] font-mono text-[var(--text-dim)]">
-                      DATA
-                    </span>
-                  </div>
-                </div>
-                <div className="text-sm font-mono text-[var(--cyber-neon-green)] bg-[var(--cyber-neon-green)]/10 px-2 py-0.5 rounded border border-[var(--cyber-neon-green)]/20">
-                  {hexStr}
-                </div>
+              <div className="flex justify-between w-full mt-1 px-1">
+                <span
+                  className={`text-[9px] font-mono font-bold ${!isLast ? "text-[var(--cyber-neon-pink)]" : "text-[var(--text-dim)]"}`}
+                >
+                  MSB
+                </span>
+                <span className="text-[9px] font-mono text-[var(--text-dim)]">
+                  DATA
+                </span>
               </div>
-            );
-          })}
-        </div>
-      </div>
+            </div>
+            <div className="text-xs font-mono text-[var(--cyber-neon-green)] bg-[var(--cyber-neon-green)]/10 px-2 py-0.5 rounded border border-[var(--cyber-neon-green)]/20 mt-1">
+              {hexStr}
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 };
@@ -186,6 +169,16 @@ const VarintExplainer: React.FC = () => {
     const pad = (7 - (str.length % 7)) % 7;
     return "0".repeat(pad) + str;
   })();
+
+  const groups7Bit = partitionedBinary.match(/.{1,7}/g) || [];
+
+  const COLORS = [
+    "var(--cyber-neon-pink)",
+    "var(--cyber-neon-blue)",
+    "var(--cyber-neon-green)",
+    "var(--cyber-neon-yellow)",
+    "var(--cyber-neon-cyan)",
+  ];
 
   return (
     <div className="grid grid-cols-1 gap-8 relative">
@@ -286,15 +279,18 @@ const VarintExplainer: React.FC = () => {
                   Value Overflow
                 </h3>
                 <p className="text-sm text-[var(--text-dim)] max-w-md leading-relaxed">
-                  The input value is outside the allowed range for an unsigned 64-bit Base-128 varint. Please enter a value between <code>0</code> and <code>18,446,744,073,709,551,615</code>.
+                  The input value is outside the allowed range for an unsigned
+                  64-bit Base-128 varint. Please enter a value between{" "}
+                  <code>0</code> and <code>18,446,744,073,709,551,615</code>.
                 </p>
               </div>
             ) : (
-              <>
-                <div className="flex flex-col lg:flex-row gap-8">
-                  <div className="flex-1 space-y-4">
+              <div className="space-y-8 divide-y divide-[var(--border-light)]">
+                {/* Step 1 Row */}
+                <div className="flex flex-col lg:flex-row gap-8 items-start pb-8">
+                  <div className="flex-1 space-y-4 lg:max-w-sm">
                     <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-full bg-[var(--cyber-neon-pink)]/20 border border-[var(--cyber-neon-pink)]/40 flex items-center justify-center font-cyber text-[var(--cyber-neon-pink)]">
+                      <div className="w-8 h-8 rounded-full bg-[var(--cyber-neon-pink)]/20 border border-[var(--cyber-neon-pink)]/40 flex items-center justify-center font-cyber text-[var(--cyber-neon-pink)] shrink-0">
                         1
                       </div>
                       <h3 className="font-cyber font-bold text-sm uppercase tracking-widest">
@@ -307,10 +303,19 @@ const VarintExplainer: React.FC = () => {
                       bit".
                     </p>
                   </div>
+                  <div className="flex-1 w-full lg:pt-2">
+                    <VarintStep1Diagram
+                      groups7Bit={groups7Bit}
+                      colors={COLORS}
+                    />
+                  </div>
+                </div>
 
-                  <div className="flex-1 space-y-4">
+                {/* Step 2 Row */}
+                <div className="flex flex-col lg:flex-row gap-8 items-start pt-8">
+                  <div className="flex-1 space-y-4 lg:max-w-sm">
                     <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-full bg-[var(--cyber-neon-green)]/20 border border-[var(--cyber-neon-green)]/40 flex items-center justify-center font-cyber text-[var(--cyber-neon-green)]">
+                      <div className="w-8 h-8 rounded-full bg-[var(--cyber-neon-green)]/20 border border-[var(--cyber-neon-green)]/40 flex items-center justify-center font-cyber text-[var(--cyber-neon-green)] shrink-0">
                         2
                       </div>
                       <h3 className="font-cyber font-bold text-sm uppercase tracking-widest">
@@ -323,12 +328,14 @@ const VarintExplainer: React.FC = () => {
                       <code>1</code> for all bytes except the last one.
                     </p>
                   </div>
+                  <div className="flex-1 w-full lg:pt-2">
+                    <VarintStep2Diagram
+                      groups7Bit={groups7Bit}
+                      colors={COLORS}
+                    />
+                  </div>
                 </div>
-
-                <div className="pt-8 border-t border-[var(--border-light)]">
-                  <VarintHTMLDiagram partitionedBinary={partitionedBinary} />
-                </div>
-              </>
+              </div>
             )}
           </div>
         </CyberPanel>

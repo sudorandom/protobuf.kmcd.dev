@@ -599,7 +599,10 @@ const BinaryBasics = () => (
           />
         </div>
         <p className="text-sm text-[var(--text-dim)] leading-relaxed text-center max-w-2xl mx-auto">
-          Bit shifting is a foundational operation for data serialization, compression, and networking. By shifting bits to the left or right, we can align values to specific boundaries, pack multiple small numbers side-by-side, or perform extremely fast multiplication and division.
+          Bit shifting is a foundational operation for data serialization,
+          compression, and networking. By shifting bits to the left or right, we
+          can align values to specific boundaries, pack multiple small numbers
+          side-by-side, or perform extremely fast multiplication and division.
         </p>
       </div>
     </div>
@@ -635,7 +638,11 @@ const BinaryBasics = () => (
           />
         </div>
         <p className="text-sm text-[var(--text-dim)] leading-relaxed text-center max-w-2xl mx-auto">
-          The bitwise OR operation is commonly used to combine separate bitfields, configuration options, or flags into a single composite integer. As long as the individual values are shifted to occupy non-overlapping bit ranges, they can be merged together safely without corrupting one another.
+          The bitwise OR operation is commonly used to combine separate
+          bitfields, configuration options, or flags into a single composite
+          integer. As long as the individual values are shifted to occupy
+          non-overlapping bit ranges, they can be merged together safely without
+          corrupting one another.
         </p>
       </div>
     </div>

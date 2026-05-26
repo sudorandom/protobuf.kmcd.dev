@@ -73,7 +73,11 @@ export const ZigZagExplainer = () => {
             onChange={(e) => {
               const val = e.target.value;
               const sanitized = val.replace(/[,_ .]/g, "");
-              if (sanitized === "" || sanitized === "-" || /^-?\d+$/.test(sanitized)) {
+              if (
+                sanitized === "" ||
+                sanitized === "-" ||
+                /^-?\d+$/.test(sanitized)
+              ) {
                 setInputValue(sanitized);
               }
             }}
@@ -198,7 +202,12 @@ export const ZigZagExplainer = () => {
                 </div>
                 {rawValue < 0n && rawValue >= -10000n && (
                   <p className="text-xs text-[var(--cyber-neon-pink)] font-mono leading-relaxed mt-2 bg-[var(--cyber-neon-pink)]/5 p-2.5 rounded border border-[var(--cyber-neon-pink)]/20">
-                    💡 <strong>Silliness Warning:</strong> Because of Two's Complement, a tiny negative number like <code>{rawValue.toString()}</code> requires all {standardBytes.length} bytes (80 bits) under standard varint encoding, while positive <code>1</code> requires only 1 byte! This is a massive 10x space overhead.
+                    💡 <strong>Silliness Warning:</strong> Because of Two's
+                    Complement, a tiny negative number like{" "}
+                    <code>{rawValue.toString()}</code> requires all{" "}
+                    {standardBytes.length} bytes (80 bits) under standard varint
+                    encoding, while positive <code>1</code> requires only 1
+                    byte! This is a massive 10x space overhead.
                   </p>
                 )}
               </div>
@@ -234,15 +243,12 @@ export const ZigZagExplainer = () => {
                   ))}
                 </div>
                 <p className="text-xs text-[var(--cyber-neon-green)] font-mono leading-relaxed mt-2 bg-[var(--cyber-neon-green)]/5 p-2.5 rounded border border-[var(--cyber-neon-green)]/20">
-                  💡 <strong>ZigZag Scaling:</strong> Space usage is determined strictly by the absolute magnitude of the number rather than its sign. The greater the magnitude, the more bytes will be used. A small negative number like <code>-1</code> takes only 1 byte!
+                  💡 <strong>ZigZag Scaling:</strong> Space usage is determined
+                  strictly by the absolute magnitude of the number rather than
+                  its sign. The greater the magnitude, the more bytes will be
+                  used. A small negative number like <code>-1</code> takes only
+                  1 byte!
                 </p>
-              </div>
-
-              <div className="flex justify-between px-1 text-[10px] sm:text-xs font-mono uppercase tracking-tighter">
-                <span className="text-[var(--cyber-neon-pink)]">
-                  MSB (Continuation Bit)
-                </span>
-                <span className="text-[var(--text-dim)]">7-Bit Payload</span>
               </div>
             </div>
           </div>
