@@ -857,73 +857,95 @@ export const TypeSystem = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <CyberPanel title="DEFAULT_CHOICE">
-                <div className="p-4 space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="font-mono text-sm font-bold text-[var(--cyber-neon-blue)]">
-                      int32 / int64
-                    </span>
-                    <span className="text-sm bg-[var(--cyber-neon-blue)]/10 text-[var(--cyber-neon-blue)] px-1.5 py-0.5 rounded uppercase font-bold">
-                      Recommended
-                    </span>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <CyberPanel
+                title="DEFAULT_CHOICE"
+                className="flex flex-col h-full"
+              >
+                <div className="p-4 space-y-3 flex-1 flex flex-col">
+                  <div className="font-mono text-sm font-bold text-[var(--cyber-neon-blue)]">
+                    int32 / int64
                   </div>
                   <p className="text-sm text-[var(--text-dim)] leading-relaxed">
                     Use for typical signed integers. <code>int32</code> covers
                     most use cases; use <code>int64</code> for large IDs or
                     timestamps.
                   </p>
-                  <div className="pt-2 flex items-center gap-2">
-                    <div className="w-1 h-1 rounded-full bg-[var(--cyber-neon-blue)]" />
-                    <span className="text-sm font-mono text-[var(--text-dim)] uppercase">
-                      Best for: General Data
+                  <div className="pt-2 flex flex-col gap-1 mt-auto">
+                    <span className="text-[11px] font-mono text-[var(--text-dim)] uppercase tracking-wider">
+                      Best for:
+                    </span>
+                    <span className="text-sm font-mono font-bold text-[var(--text-color)] uppercase">
+                      General Data
                     </span>
                   </div>
                 </div>
               </CyberPanel>
 
-              <CyberPanel title="NON_NEGATIVE">
-                <div className="p-4 space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="font-mono text-sm font-bold text-[var(--cyber-neon-green)]">
-                      uint32 / uint64
-                    </span>
-                    <span className="text-sm bg-[var(--cyber-neon-green)]/10 text-[var(--cyber-neon-green)] px-1.5 py-0.5 rounded uppercase font-bold">
-                      Efficient
-                    </span>
+              <CyberPanel title="NON_NEGATIVE" className="flex flex-col h-full">
+                <div className="p-4 space-y-3 flex-1 flex flex-col">
+                  <div className="font-mono text-sm font-bold text-[var(--cyber-neon-green)]">
+                    uint32 / uint64
                   </div>
                   <p className="text-sm text-[var(--text-dim)] leading-relaxed">
                     Ideal when you know values will never be negative. Slightly
                     more efficient than <code>int</code> for large positive
                     values.
                   </p>
-                  <div className="pt-2 flex items-center gap-2">
-                    <div className="w-1 h-1 rounded-full bg-[var(--cyber-neon-green)]" />
-                    <span className="text-sm font-mono text-[var(--text-dim)] uppercase">
-                      Best for: Counts & Sizes
+                  <div className="pt-2 flex flex-col gap-1 mt-auto">
+                    <span className="text-[11px] font-mono text-[var(--text-dim)] uppercase tracking-wider">
+                      Best for:
+                    </span>
+                    <span className="text-sm font-mono font-bold text-[var(--text-color)] uppercase">
+                      Counts & Sizes
                     </span>
                   </div>
                 </div>
               </CyberPanel>
 
-              <CyberPanel title="FIXED_PRECISION">
-                <div className="p-4 space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="font-mono text-sm font-bold text-[var(--cyber-neon-yellow)]">
-                      fixed32 / fixed64
+              <CyberPanel
+                title="SIGNED_ZIGZAG"
+                className="flex flex-col h-full"
+              >
+                <div className="p-4 space-y-3 flex-1 flex flex-col">
+                  <div className="font-mono text-sm font-bold text-[var(--cyber-neon-pink)]">
+                    sint32 / sint64
+                  </div>
+                  <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+                    Crucial when values can be negative. Uses ZigZag encoding to
+                    keep small negative numbers compact (1–2 bytes), unlike{" "}
+                    <code>int32/int64</code> which require 10 bytes for any
+                    negative value.
+                  </p>
+                  <div className="pt-2 flex flex-col gap-1 mt-auto">
+                    <span className="text-[11px] font-mono text-[var(--text-dim)] uppercase tracking-wider">
+                      Best for:
                     </span>
-                    <span className="text-sm bg-[var(--cyber-neon-yellow)]/10 text-[var(--cyber-neon-yellow)] px-1.5 py-0.5 rounded uppercase font-bold">
-                      Specialized
+                    <span className="text-sm font-mono font-bold text-[var(--text-color)] uppercase">
+                      Negative Values
                     </span>
+                  </div>
+                </div>
+              </CyberPanel>
+
+              <CyberPanel
+                title="FIXED_PRECISION"
+                className="flex flex-col h-full"
+              >
+                <div className="p-4 space-y-3 flex-1 flex flex-col">
+                  <div className="font-mono text-sm font-bold text-[var(--cyber-neon-yellow)]">
+                    fixed32 / fixed64
                   </div>
                   <p className="text-sm text-[var(--text-dim)] leading-relaxed">
                     Always uses 4 or 8 bytes. More efficient than varints ONLY
                     if values are consistently greater than 2<sup>28</sup>.
                   </p>
-                  <div className="pt-2 flex items-center gap-2">
-                    <div className="w-1 h-1 rounded-full bg-[var(--cyber-neon-yellow)]" />
-                    <span className="text-sm font-mono text-[var(--text-dim)] uppercase">
-                      Best for: Large Constants
+                  <div className="pt-2 flex flex-col gap-1 mt-auto">
+                    <span className="text-[11px] font-mono text-[var(--text-dim)] uppercase tracking-wider">
+                      Best for:
+                    </span>
+                    <span className="text-sm font-mono font-bold text-[var(--text-color)] uppercase">
+                      Large Constants
                     </span>
                   </div>
                 </div>
@@ -1114,15 +1136,14 @@ export const TypeSystem = () => {
 
               <div className="p-4 bg-[var(--cyber-neon-yellow)]/5 border border-[var(--cyber-neon-yellow)]/20 rounded-lg space-y-4 max-w-4xl">
                 <h4 className="text-[var(--cyber-neon-yellow)] font-cyber font-bold text-sm uppercase tracking-wider">
-                  The 64-bit Precision
+                  64-bit Precision
                 </h4>
                 <p className="text-sm leading-relaxed text-[var(--text-color)]/90">
                   JavaScript numbers are 64-bit floats, which lose precision for
                   integers above 2<sup>53</sup> - 1.
                 </p>
                 <p className="text-sm leading-relaxed font-bold text-[var(--text-color)]">
-                  To prevent data loss, <code>int64</code> and{" "}
-                  <code>uint64</code> types MUST be encoded as strings in JSON.
+                  To prevent data loss, 64-bit integer types (<code>int64</code>, <code>fixed64</code>, <code>uint64</code>, <code>sint64</code>, and <code>sfixed64</code>) are encoded as strings in JSON.
                 </p>
               </div>
             </div>

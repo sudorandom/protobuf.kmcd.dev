@@ -290,7 +290,6 @@ export const ExternalLinkText = ({
 export const SectionTitle = ({
   children,
   icon: Icon,
-  subtitle,
   asH1 = false,
 }: {
   children: React.ReactNode;
@@ -302,7 +301,7 @@ export const SectionTitle = ({
   const HeadingTag = asH1 ? "h1" : "h2";
   return (
     <div className="flex flex-col mb-12">
-      <div className="flex items-center gap-3 md:gap-4 mb-2">
+      <div className="flex items-center gap-3 md:gap-4">
         <div
           className="p-2 bg-[var(--cyber-neon-blue)]/10 rounded-lg border border-[var(--cyber-neon-blue)]/20 shrink-0"
           aria-hidden="true"
@@ -323,11 +322,6 @@ export const SectionTitle = ({
           </a>
         </HeadingTag>
       </div>
-      {subtitle && (
-        <p className="text-[var(--text-dim)] font-mono text-sm md:text-sm uppercase tracking-widest ml-11 md:ml-14">
-          {subtitle}
-        </p>
-      )}
     </div>
   );
 };
