@@ -1143,7 +1143,10 @@ export const TypeSystem = () => {
                   integers above 2<sup>53</sup> - 1.
                 </p>
                 <p className="text-sm leading-relaxed font-bold text-[var(--text-color)]">
-                  To prevent data loss, 64-bit integer types (<code>int64</code>, <code>fixed64</code>, <code>uint64</code>, <code>sint64</code>, and <code>sfixed64</code>) are encoded as strings in JSON.
+                  To prevent data loss, 64-bit integer types (<code>int64</code>
+                  , <code>fixed64</code>, <code>uint64</code>,{" "}
+                  <code>sint64</code>, and <code>sfixed64</code>) are encoded as
+                  strings in JSON.
                 </p>
               </div>
             </div>

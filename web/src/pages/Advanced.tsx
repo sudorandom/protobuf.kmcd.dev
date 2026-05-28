@@ -558,6 +558,12 @@ message User {
       color: "blue",
     },
     {
+      id: "extensions",
+      title: "Proto Extensions",
+      desc: "Adding fields to messages from outside their definition file.",
+      color: "cyan",
+    },
+    {
       id: "annotations",
       title: "Custom Options",
       desc: "Attaching domain metadata to any schema element.",
@@ -1022,10 +1028,99 @@ $ protoc --plugin=protoc-gen-custom=./my-plugin \\
       ),
     },
     {
+      id: "extensions",
+      icon: Combine,
+      title: "Proto Extensions",
+      subtitle: "03h_EXTENDING",
+      desc: (
+        <div className="space-y-4">
+          <p>
+            Protobuf extensions allow you to declare that a message has a range
+            of field numbers reserved for external usage. Third parties can then
+            define new fields for that message without modifying the original
+            file.
+          </p>
+          <p>How extension support differs across versions:</p>
+          <ul className="list-disc pl-5 space-y-1 text-sm text-[var(--text-dim)]">
+            <li>
+              <strong>
+                <code>proto2</code>
+              </strong>
+              : Allows extensions on <strong>any message</strong> (both
+              user-defined messages and standard options).
+            </li>
+            <li>
+              <strong>
+                <code>proto3</code>
+              </strong>
+              : Restricts extensions{" "}
+              <strong>exclusively to option messages</strong> (specifically to
+              define custom options; more on that later).
+            </li>
+            <li>
+              <strong>Editions</strong>: Restores the ability to extend{" "}
+              <strong>any message</strong> (bringing back general-purpose
+              extensions) while keeping option definitions standard and native.
+            </li>
+          </ul>
+          <p>
+            To use extensions in <code>proto2</code> or <code>Editions</code>,
+            you must define an extension range in the base message using the{" "}
+            <code>extensions</code> keyword. External files can then declare
+            fields targeting that range.
+          </p>
+          <TechnicalNuance title="Extension Numbers are Field Numbers">
+            <p>
+              Under the hood, extension numbers <strong>are</strong> standard
+              field numbers. Because they occupy tag space in the serialized
+              message, you must ensure that no two extensions targeting the same
+              message use the same number, as this would result in collisions
+              and data corruption.
+            </p>
+          </TechnicalNuance>
+        </div>
+      ),
+      children: (
+        <div className="space-y-4">
+          <CyberPanel title="BASE.PROTO (DEFINITION)" className="h-auto">
+            <div className="p-2">
+              <SyntaxHighlighter
+                language="proto"
+                code={`edition = "2023";
+
+message UserProfile {
+  string username = 1;
+
+  // Declare range of tags reserved for third-party extensions
+  extensions 100 to 199;
+}`}
+                wrap={true}
+              />
+            </div>
+          </CyberPanel>
+          <CyberPanel title="BILLING.PROTO (EXTENSION)" className="h-auto">
+            <div className="p-2">
+              <SyntaxHighlighter
+                language="proto"
+                code={`edition = "2023";
+import "base.proto";
+
+// Extend the custom UserProfile message directly
+extend UserProfile {
+  optional string stripe_customer_id = 100;
+}`}
+                wrap={true}
+              />
+            </div>
+          </CyberPanel>
+        </div>
+      ),
+    },
+    {
       id: "options",
       icon: Settings,
       title: "Standard Options",
-      subtitle: "03h_BUILTINS",
+      subtitle: "03i_BUILTINS",
       panelTitle: "OPTIONS_SNIPPET",
       desc: (
         <div className="space-y-4">
@@ -1069,9 +1164,9 @@ message User {
     },
     {
       id: "annotations",
-      icon: Combine,
+      icon: Settings2,
       title: "Custom Options",
-      subtitle: "03i_ANNOTATIONS",
+      subtitle: "03j_ANNOTATIONS",
       panelTitle: "CUSTOM_ANNOTATIONS",
       desc: (
         <div className="space-y-4">
@@ -1091,21 +1186,12 @@ message User {
             or dynamic tools that{" "}
             <strong>load and inspect schemas on demand</strong> via reflection.
           </p>
-          <TechnicalNuance title="The Evolution of Extensions">
-            <p>
-              Before Editions, you <strong>had</strong> to use{" "}
-              <code>proto2</code> syntax to define custom extensions; this was
-              true even if the rest of your project used <code>proto3</code>.
-              This requirement made extensions feel "alien" and niche to many
-              developers.
-            </p>
-            <p>
-              <strong>Protobuf Editions</strong> finally unifies this by
-              supporting the <code>extend</code> keyword natively. You can now
-              extend descriptor messages to hold custom options directly within
-              the modern workflow.
-            </p>
-          </TechnicalNuance>
+          <p>
+            Under the hood, custom options are defined by using the{" "}
+            <code>extend</code> keyword to target the built-in option descriptor
+            messages (like <code>FieldOptions</code> or{" "}
+            <code>MethodOptions</code>).
+          </p>
           <div className="space-y-3">
             <p className="text-sm font-bold uppercase text-[var(--cyber-neon-blue)] tracking-widest">
               Available Scopes
