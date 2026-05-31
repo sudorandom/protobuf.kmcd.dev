@@ -338,14 +338,12 @@ const TagCalculator = () => {
             <div className="p-3 bg-[var(--cyber-neon-pink)]/5 border border-[var(--cyber-neon-pink)]/20 rounded-sm">
               <p className="text-sm text-[var(--text-dim)] leading-relaxed italic">
                 <strong className="text-[var(--cyber-neon-pink)] not-italic uppercase">
-                  Overflow Alert:
+                  Varint Continuation:
                 </strong>{" "}
-                Field 16 shifted by 3 is 128 (
-                <code className="bg-black/20 px-1 rounded text-[var(--cyber-neon-blue)]">
-                  10000000
-                </code>
-                ). This exceeds the 7-bit capacity of a single Varint byte,
-                forcing the "1" into Byte 1 and setting MSB=1 in Byte 0.
+                Field 16 shifted by 3 is 128. This number is too large to fit in
+                the 7-bit capacity of a single Varint byte! This forces the tag
+                value to split across two bytes, demonstrating why field numbers 1-15
+                are best for small, frequently used fields.
               </p>
             </div>
           )}
@@ -513,7 +511,7 @@ const BinaryBasics = () => (
   <div className="space-y-32">
     <div className="max-w-4xl mx-auto text-center space-y-4">
       <p className="text-xl text-[var(--text-dim)] leading-relaxed">
-        Before we dig into protobuf encoding, there are three concepts to cover
+        Before we dig into Protobuf encoding, there are three concepts to cover
         when working with binary data: <strong>Endianness</strong>,{" "}
         <strong>
           <ExternalLinkText href="https://en.wikipedia.org/wiki/Bitwise_operation#Bit_shifts">
@@ -541,10 +539,13 @@ const BinaryBasics = () => (
           memory. Systems generally use either <strong>Big-Endian</strong> (most
           significant byte first) or <strong>Little-Endian</strong> (least
           significant byte first).
+          <strong>Protobuf uses a Little-Endian approach for most integer types.</strong>
         </p>
         <p className="text-sm text-[var(--text-dim)] leading-relaxed max-w-2xl mx-auto">
           In Little-Endian systems, the "least significant byte" (the one with
           the smallest numerical weight) is stored first in the sequence.
+          When we look at Protobuf's raw binary streams, this explains why smaller pieces
+          of a number often appear before larger pieces.
         </p>
       </div>
       <div className="max-w-4xl mx-auto">
@@ -577,13 +578,12 @@ const BinaryBasics = () => (
           to "make room" for other data.
         </p>
         <p className="text-sm text-[var(--text-dim)] leading-relaxed max-w-2xl mx-auto">
-          A left shift (<code>&lt;&lt;</code>) moves every bit in a number a
-          specific number of places to the left. The vacated spots on the right
-          are filled with zeroes. This is mathematically equivalent to
-          multiplying by <code>2ⁿ</code>. It works exactly like our base-10
-          system: just as adding a zero to the end of a number multiplies it by{" "}
-          <code>10¹</code>, shifting bits to the left in base-2 multiplies the
-          value by powers of 2.
+          A left shift (<code>&lt;&lt;</code>) moves every bit in a number to the left.
+          The empty spaces on the right become zeroes.
+          Think of it like adding a zero to the end of a base-10 number (which multiplies it by 10).
+          In binary, shifting left by 1 multiplies the number by 2.
+          Shifting left by 3 multiplies it by 8 (2<sup>3</sup>), and creates exactly 3 empty bits
+          on the right side.
         </p>
       </div>
       <div className="max-w-3xl mx-auto space-y-6">
@@ -599,10 +599,10 @@ const BinaryBasics = () => (
           />
         </div>
         <p className="text-sm text-[var(--text-dim)] leading-relaxed text-center max-w-2xl mx-auto">
-          Bit shifting is a foundational operation for data serialization,
-          compression, and networking. By shifting bits to the left or right, we
-          can align values to specific boundaries, pack multiple small numbers
-          side-by-side, or perform extremely fast multiplication and division.
+          Bit shifting is a foundational operation for data serialization.
+          By shifting bits to the left, we can "make room" on the right side.
+          Protobuf uses this exact technique: it shifts the field number to the left by 3,
+          creating 3 empty bits to store the wire type.
         </p>
       </div>
     </div>
@@ -619,10 +619,8 @@ const BinaryBasics = () => (
           <code>1</code>, the output bit is <code>1</code>.
         </p>
         <p className="text-sm text-[var(--text-dim)] leading-relaxed max-w-2xl mx-auto">
-          Bitwise merging is a standard technique for assembly. We take two
-          values, one shifted to provide a specific bitmask or "slot," and "OR"
-          them together. This effectively "plugs" the second value into the
-          empty bits of the first.
+          Once we've shifted bits to make room (like creating 3 empty zeros),
+          we can use the OR operation to "glue" another value into that space.
         </p>
       </div>
       <div className="max-w-3xl mx-auto space-y-6">
@@ -638,11 +636,10 @@ const BinaryBasics = () => (
           />
         </div>
         <p className="text-sm text-[var(--text-dim)] leading-relaxed text-center max-w-2xl mx-auto">
-          The bitwise OR operation is commonly used to combine separate
-          bitfields, configuration options, or flags into a single composite
-          integer. As long as the individual values are shifted to occupy
-          non-overlapping bit ranges, they can be merged together safely without
-          corrupting one another.
+          The bitwise OR operation allows us to safely combine separate
+          values into a single number. As long as the individual values are shifted
+          to occupy non-overlapping bit ranges (like a puzzle fitting together),
+          they can be merged without corrupting one another.
         </p>
       </div>
     </div>

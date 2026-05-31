@@ -1983,6 +1983,9 @@ const FieldPresence = () => (
               between a field that was <strong>never set</strong> and one that
               was set to its <strong>default value</strong> (like <code>0</code>{" "}
               or <code>""</code>).
+              In short, <strong>implicit presence</strong> saves space by
+              never sending default values, while <strong>explicit presence</strong>
+              includes extra tracking to definitively tell you if a field was populated.
             </p>
           </div>
 

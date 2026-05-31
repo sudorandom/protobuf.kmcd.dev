@@ -127,9 +127,9 @@ export const Introduction = ({
           <ExternalLinkText href="https://protobuf.dev/reference/protobuf/textformat-spec/">
             text format
           </ExternalLinkText>{" "}
-          often used in CLI tools and server logs. This format is not used as
-          often since protojson provides a more standardized and widely
-          supported representation that humans can easily read and write.
+          often used in CLI tools and server logs. This format is used less
+          frequently today because ProtoJSON provides a more standardized and
+          widely supported representation that humans can easily read and write.
         </>
       ),
       code: STATIC_FACES.txt,
