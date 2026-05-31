@@ -342,8 +342,8 @@ const TagCalculator = () => {
                 </strong>{" "}
                 Field 16 shifted by 3 is 128. This number is too large to fit in
                 the 7-bit capacity of a single Varint byte! This forces the tag
-                value to split across two bytes, demonstrating why field numbers 1-15
-                are best for small, frequently used fields.
+                value to split across two bytes, demonstrating why field numbers
+                1-15 are best for small, frequently used fields.
               </p>
             </div>
           )}
@@ -539,13 +539,15 @@ const BinaryBasics = () => (
           memory. Systems generally use either <strong>Big-Endian</strong> (most
           significant byte first) or <strong>Little-Endian</strong> (least
           significant byte first).
-          <strong>Protobuf uses a Little-Endian approach for most integer types.</strong>
+          <strong>
+            Protobuf uses a Little-Endian approach for most integer types.
+          </strong>
         </p>
         <p className="text-sm text-[var(--text-dim)] leading-relaxed max-w-2xl mx-auto">
           In Little-Endian systems, the "least significant byte" (the one with
-          the smallest numerical weight) is stored first in the sequence.
-          When we look at Protobuf's raw binary streams, this explains why smaller pieces
-          of a number often appear before larger pieces.
+          the smallest numerical weight) is stored first in the sequence. When
+          we look at Protobuf's raw binary streams, this explains why smaller
+          pieces of a number often appear before larger pieces.
         </p>
       </div>
       <div className="max-w-4xl mx-auto">
@@ -578,12 +580,12 @@ const BinaryBasics = () => (
           to "make room" for other data.
         </p>
         <p className="text-sm text-[var(--text-dim)] leading-relaxed max-w-2xl mx-auto">
-          A left shift (<code>&lt;&lt;</code>) moves every bit in a number to the left.
-          The empty spaces on the right become zeroes.
-          Think of it like adding a zero to the end of a base-10 number (which multiplies it by 10).
-          In binary, shifting left by 1 multiplies the number by 2.
-          Shifting left by 3 multiplies it by 8 (2<sup>3</sup>), and creates exactly 3 empty bits
-          on the right side.
+          A left shift (<code>&lt;&lt;</code>) moves every bit in a number to
+          the left. The empty spaces on the right become zeroes. Think of it
+          like adding a zero to the end of a base-10 number (which multiplies it
+          by 10). In binary, shifting left by 1 multiplies the number by 2.
+          Shifting left by 3 multiplies it by 8 (2<sup>3</sup>), and creates
+          exactly 3 empty bits on the right side.
         </p>
       </div>
       <div className="max-w-3xl mx-auto space-y-6">
@@ -599,10 +601,10 @@ const BinaryBasics = () => (
           />
         </div>
         <p className="text-sm text-[var(--text-dim)] leading-relaxed text-center max-w-2xl mx-auto">
-          Bit shifting is a foundational operation for data serialization.
-          By shifting bits to the left, we can "make room" on the right side.
-          Protobuf uses this exact technique: it shifts the field number to the left by 3,
-          creating 3 empty bits to store the wire type.
+          Bit shifting is a foundational operation for data serialization. By
+          shifting bits to the left, we can "make room" on the right side.
+          Protobuf uses this exact technique: it shifts the field number to the
+          left by 3, creating 3 empty bits to store the wire type.
         </p>
       </div>
     </div>
@@ -619,8 +621,8 @@ const BinaryBasics = () => (
           <code>1</code>, the output bit is <code>1</code>.
         </p>
         <p className="text-sm text-[var(--text-dim)] leading-relaxed max-w-2xl mx-auto">
-          Once we've shifted bits to make room (like creating 3 empty zeros),
-          we can use the OR operation to "glue" another value into that space.
+          Once we've shifted bits to make room (like creating 3 empty zeros), we
+          can use the OR operation to "glue" another value into that space.
         </p>
       </div>
       <div className="max-w-3xl mx-auto space-y-6">
@@ -636,9 +638,9 @@ const BinaryBasics = () => (
           />
         </div>
         <p className="text-sm text-[var(--text-dim)] leading-relaxed text-center max-w-2xl mx-auto">
-          The bitwise OR operation allows us to safely combine separate
-          values into a single number. As long as the individual values are shifted
-          to occupy non-overlapping bit ranges (like a puzzle fitting together),
+          The bitwise OR operation allows us to safely combine separate values
+          into a single number. As long as the individual values are shifted to
+          occupy non-overlapping bit ranges (like a puzzle fitting together),
           they can be merged without corrupting one another.
         </p>
       </div>
