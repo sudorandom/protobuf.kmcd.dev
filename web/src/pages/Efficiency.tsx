@@ -615,7 +615,7 @@ export const SizeComparison = ({
                   Protobuf performance is highly dependent on the language and
                   library implementation. In languages with native binary
                   support like <strong>C++, Go, and Java</strong>, Protobuf can
-                  be decodes <strong>5x-10x faster</strong> than JSON.
+                be decoded <strong>5x-10x faster</strong> than JSON.
                 </p>
                 <p className="text-sm text-[var(--text-dim)] leading-relaxed">
                   In interpreted languages like{" "}
@@ -635,8 +635,8 @@ export const SizeComparison = ({
                   If your payload is 90% long strings (like blog posts),
                   Protobuf will only save you a few percentage points of space.
                   However, if your data is <strong>numeric-heavy</strong> (IDs,
-                  timestamps, coordinates, or metrics), Protobuf DECIMATES JSON
-                  in both size and speed.
+                timestamps, coordinates, or metrics), Protobuf significantly
+                outperforms JSON in both size and speed.
                 </p>
                 <p className="text-sm text-[var(--text-dim)] leading-relaxed italic border-l-2 border-[var(--cyber-neon-green)]/80 pl-4">
                   "The win isn't just bytes on the wire; it's the CPU cycles
