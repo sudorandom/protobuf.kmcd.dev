@@ -242,17 +242,19 @@ export const ProtoscopeLab: React.FC<ProtoscopeLabProps> = ({
             title="JSON_INPUT"
             className="flex-1 min-h-[400px] flex flex-col"
           >
-            <div className="flex-1 relative">
+            <div className="flex-1 flex flex-col min-h-0 relative">
+              <div className="flex-1 relative min-h-0">
+                <JsonEditor
+                  value={jsonInput}
+                  onChange={setJsonInput}
+                  className="h-full rounded-none border-none bg-transparent"
+                />
+              </div>
               {error && (
-                <div className="absolute top-0 left-0 right-0 p-2 bg-[var(--text-error)]/10 border-b border-[var(--text-error)]/30 text-[var(--text-error)] text-sm font-mono z-30 break-words line-clamp-2">
+                <div className="p-2 bg-[var(--text-error)]/10 border-t border-[var(--text-error)]/30 text-[var(--text-error)] text-sm font-mono z-30 break-words">
                   {error}
                 </div>
               )}
-              <JsonEditor
-                value={jsonInput}
-                onChange={setJsonInput}
-                className="h-full rounded-none border-none bg-transparent"
-              />
             </div>
           </CyberPanel>
         </div>

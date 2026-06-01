@@ -882,25 +882,6 @@ message DescriptorProto {
                       </div>
                     )}
                   </div>
-                  {localFds && (
-                    <div className="p-4 border-t border-[var(--border-light)] bg-[var(--overlay-bg)]">
-                      <div className="flex items-start gap-3">
-                        <div className="p-2 bg-[var(--cyber-neon-blue)]/10 rounded">
-                          <Database className="w-4 h-4 text-[var(--cyber-neon-blue)]" />
-                        </div>
-                        <div className="space-y-1">
-                          <h4 className="text-sm font-cyber font-bold text-[var(--text-color)] uppercase tracking-wider">
-                            Reflection Ready
-                          </h4>
-                          <p className="text-sm text-[var(--text-dim)] leading-relaxed uppercase">
-                            This schema is now representable as a{" "}
-                            <code>FileDescriptorSet</code> message, enabling
-                            dynamic tools and reflection.
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
                 </div>
               </CyberPanel>
             </div>

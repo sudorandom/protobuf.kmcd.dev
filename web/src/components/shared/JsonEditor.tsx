@@ -30,7 +30,7 @@ export const JsonEditor = ({
 
       {/* Foreground Interactive Layer */}
       <textarea
-        className="absolute inset-0 w-full h-full bg-transparent p-4 font-mono text-sm leading-6 text-transparent caret-white focus:outline-none focus:border-[var(--cyber-neon-blue)]/80 resize-none whitespace-pre overflow-auto custom-scrollbar border-none shadow-none"
+        className="absolute inset-0 w-full h-full bg-transparent p-4 font-mono text-sm leading-6 text-transparent caret-[var(--text-color)] focus:outline-none focus:border-[var(--cyber-neon-blue)]/80 resize-none whitespace-pre overflow-auto custom-scrollbar border-none shadow-none"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onScroll={(e) =>
