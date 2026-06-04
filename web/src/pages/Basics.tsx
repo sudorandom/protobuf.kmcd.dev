@@ -174,7 +174,7 @@ export const SchemaDrivenAPIs = () => {
                 <code>PATH</code>.
               </p>
               <div className="space-y-4">
-                <CyberPanel title="1. INSTALL PLUGIN">
+                <CyberPanel title="INSTALL PLUGIN">
                   <div className="p-4">
                     <SyntaxHighlighter
                       language="bash"
@@ -192,7 +192,7 @@ export const SchemaDrivenAPIs = () => {
                     />
                   </div>
                 </CyberPanel>
-                <CyberPanel title="3. GENERATE CODE">
+                <CyberPanel title="GENERATE CODE">
                   <div className="p-4">
                     <SyntaxHighlighter
                       language="bash"
