@@ -218,7 +218,7 @@ export const SchemaDrivenAPIs = () => {
                   <div className="p-4">
                     <SyntaxHighlighter
                       language="yaml"
-                      code={`version: v2\nplugins:\n  - remote: buf.build/bufbuild/es:v2.2.3\n    out: src/gen\n    opt: target=ts`}
+                      code={`version: v2\nplugins:\n  - remote: buf.build/bufbuild/es:v2.12.0\n    out: src/gen\n    opt: target=ts`}
                       wrap={true}
                     />
                   </div>
