@@ -1,19 +1,24 @@
 web-install:
-	cd web && mise exec -- pnpm install
+	cd web && pnpm install
 
 web-format:
-	cd web && mise exec -- pnpm run format
+	cd web && pnpm run format
 
 web-dev: web-format
-	cd web && mise exec -- pnpm run dev
+	cd web && pnpm run dev
 
 web-serve: web-build
-	cd web && mise exec -- pnpm run preview
+	cd web && pnpm run preview
 
 web-build: web-format wasm-build
-	cd web && mise exec -- pnpm run build
+	cd web && pnpm run build
 
 wasm-build:
+	@if ! command -v tinygo >/dev/null 2>&1; then \
+		echo "Error: tinygo is not installed."; \
+		echo "Please install tinygo by following the instructions at: https://tinygo.org/getting-started/install/"; \
+		exit 1; \
+	fi
 	@if [ -f web/public/parser.wasm ] && [ -z "$(find wasm-parser -type f -newer web/public/parser.wasm)" ]; then \
 		echo "WASM is up to date."; \
 	else \
@@ -28,13 +33,13 @@ wasm-build:
 	fi
 
 generate:
-	mise exec -- buf generate
+	buf generate
 
 pre-compute:
 	cd examples-gen && go mod tidy && go run . > ../web/src/utils/static-examples.ts
 
 web-check: web-format wasm-build
-	cd web && mise exec -- pnpm run lint
-	cd web && mise exec -- pnpm run build
+	cd web && pnpm run lint
+	cd web && pnpm run build
 
 all: web-install web-build

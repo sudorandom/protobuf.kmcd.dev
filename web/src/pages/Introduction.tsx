@@ -48,6 +48,7 @@ export const Introduction = ({
     {
       id: "idl",
       label: "Schema",
+      ext: ".proto",
       icon: FileCode,
       title: "The Schema (.proto)",
       desc: "The source of truth. Defines the structure using the Interface Definition Language (IDL).",
@@ -69,8 +70,9 @@ export const Introduction = ({
     {
       id: "fds",
       label: "Descriptor",
+      ext: ".pb",
       icon: Code2,
-      title: "The Binary Descriptor",
+      title: "The Binary Descriptor (.pb)",
       desc: (
         <>
           The machine-readable version of the schema. This binary message (shown
@@ -87,8 +89,9 @@ export const Introduction = ({
     {
       id: "bin",
       label: "Binary",
+      ext: ".bin",
       icon: Binary,
-      title: "Binary Encoding",
+      title: "Binary Encoding (.bin)",
       desc: "What actually travels over the wire. Compact, extremely fast to parse, and machine-optimized.",
       code: dynamicExamples.hex,
       language: null,
@@ -98,8 +101,9 @@ export const Introduction = ({
     {
       id: "json",
       label: "ProtoJSON",
+      ext: ".json",
       icon: Braces,
-      title: "ProtoJSON Mapping",
+      title: "ProtoJSON Mapping (.json)",
       desc: (
         <div className="space-y-4">
           <p>
@@ -119,8 +123,9 @@ export const Introduction = ({
     {
       id: "txt",
       label: "ProtoText",
+      ext: ".pbtxt / .txt",
       icon: AlignLeft,
-      title: "ProtoText format",
+      title: "ProtoText format (.pbtxt / .txt)",
       desc: (
         <>
           A human-friendly{" "}
@@ -140,8 +145,9 @@ export const Introduction = ({
     {
       id: "scope",
       label: "Protoscope",
+      ext: ".protoscope / .txt",
       icon: SearchCheck,
-      title: "Protoscope format",
+      title: "Protoscope format (.protoscope / .txt)",
       desc: (
         <>
           A diagnostic language for{" "}
@@ -283,14 +289,25 @@ export const Introduction = ({
                             ? "bg-[var(--cyber-neon-blue)]/10 border-[var(--cyber-neon-blue)] text-[var(--cyber-neon-blue)]"
                             : "bg-[var(--overlay-bg)] border-[var(--border-light)] text-[var(--text-dim)] hover:border-[var(--cyber-neon-blue)]/50 hover:text-[var(--text-color)]"
                         }`}
-                        aria-label={`View ${face.label} representation`}
+                        aria-label={`View ${face.ext} representation`}
                       >
                         <face.icon
-                          className={`w-5 h-5 ${activeFace === face.id ? "text-[var(--cyber-neon-blue)]" : "text-[var(--text-dim)] group-hover:text-[var(--text-dim)]"}`}
+                          className={`w-5 h-5 shrink-0 ${activeFace === face.id ? "text-[var(--cyber-neon-blue)]" : "text-[var(--text-dim)] group-hover:text-[var(--text-dim)]"}`}
                         />
-                        <span className="font-cyber font-bold text-sm tracking-widest uppercase">
-                          {face.label}
-                        </span>
+                        <div className="flex flex-col min-w-0">
+                          <span className="font-cyber font-bold text-sm tracking-widest uppercase truncate">
+                            {face.label}
+                          </span>
+                          <span
+                            className={`font-mono text-[10px] mt-0.5 transition-colors ${
+                              activeFace === face.id
+                                ? "text-[var(--cyber-neon-blue)]/70"
+                                : "text-[var(--text-dim)]/50 group-hover:text-[var(--text-dim)]/80"
+                            }`}
+                          >
+                            {face.ext}
+                          </span>
+                        </div>
                       </button>
                     ))}
                 </div>
@@ -315,14 +332,25 @@ export const Introduction = ({
                             ? "bg-[var(--cyber-neon-blue)]/10 border-[var(--cyber-neon-blue)] text-[var(--cyber-neon-blue)]"
                             : "bg-[var(--overlay-bg)] border-[var(--border-light)] text-[var(--text-dim)] hover:border-[var(--cyber-neon-blue)]/50 hover:text-[var(--text-color)]"
                         }`}
-                        aria-label={`View ${face.label} representation`}
+                        aria-label={`View ${face.ext} representation`}
                       >
                         <face.icon
-                          className={`w-5 h-5 ${activeFace === face.id ? "text-[var(--cyber-neon-blue)]" : "text-[var(--text-dim)] group-hover:text-[var(--text-dim)]"}`}
+                          className={`w-5 h-5 shrink-0 ${activeFace === face.id ? "text-[var(--cyber-neon-blue)]" : "text-[var(--text-dim)] group-hover:text-[var(--text-dim)]"}`}
                         />
-                        <span className="font-cyber font-bold text-sm tracking-widest uppercase">
-                          {face.label}
-                        </span>
+                        <div className="flex flex-col min-w-0">
+                          <span className="font-cyber font-bold text-sm tracking-widest uppercase truncate">
+                            {face.label}
+                          </span>
+                          <span
+                            className={`font-mono text-[10px] mt-0.5 transition-colors ${
+                              activeFace === face.id
+                                ? "text-[var(--cyber-neon-blue)]/70"
+                                : "text-[var(--text-dim)]/50 group-hover:text-[var(--text-dim)]/80"
+                            }`}
+                          >
+                            {face.ext}
+                          </span>
+                        </div>
                       </button>
                     ))}
                 </div>

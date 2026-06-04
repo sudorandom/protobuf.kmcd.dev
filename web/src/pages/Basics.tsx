@@ -169,17 +169,39 @@ export const SchemaDrivenAPIs = () => {
               <p className="text-sm text-[var(--text-dim)] leading-relaxed">
                 The <code>protoc</code> compiler is the original tool for
                 Protobuf. It requires manual management of plugins and complex
-                CLI flags.
+                CLI flags. Using <code>--es_out</code> assumes that there is a
+                binary named <code>protoc-gen-es</code> on your system's{" "}
+                <code>PATH</code>.
               </p>
-              <CyberPanel title="TERMINAL">
-                <div className="p-4">
-                  <SyntaxHighlighter
-                    language="bash"
-                    code={`$ protoc --es_out=src/gen \\ \n    --es_opt=target=ts \\ \n    proto/demo/v1/user.proto`}
-                    wrap={true}
-                  />
-                </div>
-              </CyberPanel>
+              <div className="space-y-4">
+                <CyberPanel title="1. INSTALL PLUGIN">
+                  <div className="p-4">
+                    <SyntaxHighlighter
+                      language="bash"
+                      code={`$ npm install --save-dev @bufbuild/protoc-gen-es`}
+                      wrap={true}
+                    />
+                  </div>
+                </CyberPanel>
+                <CyberPanel title="package.json">
+                  <div className="p-4 space-y-4">
+                    <SyntaxHighlighter
+                      language="json"
+                      code={`{\n  "scripts": {\n    "gen:proto": "protoc --es_out=src/gen --es_opt=target=ts proto/demo/v1/user.proto"\n  }\n}`}
+                      wrap={true}
+                    />
+                  </div>
+                </CyberPanel>
+                <CyberPanel title="3. GENERATE CODE">
+                  <div className="p-4">
+                    <SyntaxHighlighter
+                      language="bash"
+                      code={`$ npm run gen:proto`}
+                      wrap={true}
+                    />
+                  </div>
+                </CyberPanel>
+              </div>
             </div>
 
             <div className="space-y-6">
@@ -201,7 +223,7 @@ export const SchemaDrivenAPIs = () => {
                     />
                   </div>
                 </CyberPanel>
-                <CyberPanel title="TERMINAL">
+                <CyberPanel title="GENERATE CODE">
                   <div className="p-4">
                     <SyntaxHighlighter
                       language="bash"
@@ -240,12 +262,47 @@ export const SchemaDrivenAPIs = () => {
             </CyberPanel>
 
             <TechnicalNuance title="Different languages and runtimes">
-              While this example uses TypeScript, the fundamental process is
-              similar across every supported language (Go, Python, Rust, Java,
-              etc.). However, there are always language-specific details, such
-              as how generated packages are imported, how native structs or
-              objects are managed, and how the runtime libraries are integrated
-              into your specific build system.
+              <div className="space-y-4">
+                <p className="leading-relaxed">
+                  While this example uses TypeScript, the fundamental process is
+                  similar across every supported language. However, there are
+                  always language-specific details, such as how generated
+                  packages are imported, how native structs or objects are
+                  managed, and how the runtime libraries are integrated into
+                  your specific build system.
+                </p>
+                <div className="space-y-2 pt-2 border-t border-[var(--border-light)]">
+                  <p className="font-cyber font-bold text-xs uppercase tracking-widest text-[var(--cyber-neon-blue)]">
+                    Official Getting Started Tutorials:
+                  </p>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-y-2 gap-x-4 text-sm">
+                    <ExternalLinkText href="https://protobuf.dev/getting-started/gotutorial/">
+                      Go Tutorial
+                    </ExternalLinkText>
+                    <ExternalLinkText href="https://protobuf.dev/getting-started/pythontutorial/">
+                      Python Tutorial
+                    </ExternalLinkText>
+                    <ExternalLinkText href="https://protobuf.dev/getting-started/javatutorial/">
+                      Java Tutorial
+                    </ExternalLinkText>
+                    <ExternalLinkText href="https://protobuf.dev/getting-started/cpptutorial/">
+                      C++ Tutorial
+                    </ExternalLinkText>
+                    <ExternalLinkText href="https://protobuf.dev/getting-started/csharptutorial/">
+                      C# Tutorial
+                    </ExternalLinkText>
+                    <ExternalLinkText href="https://protobuf.dev/getting-started/kotlintutorial/">
+                      Kotlin Tutorial
+                    </ExternalLinkText>
+                    <ExternalLinkText href="https://protobuf.dev/getting-started/darttutorial/">
+                      Dart Tutorial
+                    </ExternalLinkText>
+                    <ExternalLinkText href="https://github.com/tokio-rs/prost">
+                      Rust (prost)
+                    </ExternalLinkText>
+                  </div>
+                </div>
+              </div>
             </TechnicalNuance>
           </div>
         </section>
