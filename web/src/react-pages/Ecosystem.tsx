@@ -24,6 +24,8 @@ const GithubIcon = ({ className }: { className?: string }) => (
     strokeLinejoin="round"
   >
     <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+    <path d="M9 18c-4.51 2-5-2-7-2" />
+  </svg>
 );
 
 const LanguageIcon = ({
@@ -36,324 +38,47 @@ const LanguageIcon = ({
   className?: string;
 }) => {
   const norm = lang.toLowerCase().trim();
-  switch (norm) {
-    case "go":
-      return (
-        <svg
-          viewBox="0 0 24 24"
-          width={size}
-          height={size}
-          className={className}
-          fill="currentColor"
-        >
-          <path d="M14.2 12.1c-.8.8-1.9 1.3-3.2 1.3-2.6 0-4.6-2-4.6-4.6v-.6C6.4 5.6 8.4 3.6 11 3.6c1.3 0 2.4.5 3.2 1.3l2.5-2.5C15.1.8 13.2 0 11 0 5 0 .5 4.5.5 10.5v.6c0 6 4.5 10.5 10.5 10.5 2.2 0 4.1-.8 5.7-2.4l-2.5-2.5z" />
-          <path d="M23.5 10.5h-8v3h8v-3z" />
-        </svg>
-      );
-    case "rust":
-      return (
-        <svg
-          viewBox="0 0 24 24"
-          width={size}
-          height={size}
-          className={className}
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <circle cx="12" cy="12" r="9" />
-          <path d="M12 1v2M12 21v2M1 12h2M21 12h2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1.4 22.6l1.4-1.4M22.6 1.4l-1.4 1.4" />
-          <text
-            x="12"
-            y="16"
-            fontSize="12"
-            fontWeight="bold"
-            textAnchor="middle"
-            fill="currentColor"
-            stroke="none"
-          >
-            R
-          </text>
-        </svg>
-      );
-    case "python":
-      return (
-        <svg
-          viewBox="0 0 24 24"
-          width={size}
-          height={size}
-          className={className}
-          fill="currentColor"
-        >
-          <path d="M11.9 0C5.3 0 5.8 2.9 5.8 2.9v2.2h6.2V6H3.3S0 6.3 0 12.5c0 6.1 2.9 5.9 2.9 5.9h1.7v-2.4c0-3 2.5-5.6 5.6-5.6h6v-2.2c0-2.3-2.1-8.2-4.3-8.2zm4.4 5.6v2.4c0 3-2.5 5.6-5.6 5.6h-6v2.2c0 2.3 2.1 8.2 4.3 8.2 6.6 0 6.1-2.9 6.1-2.9v-2.2H8.9v-.9h8.7s3.3-.3 3.3-6.5c.1-6.1-2.8-5.9-2.8-5.9h-1.8z" />
-        </svg>
-      );
-    case "typescript":
-      return (
-        <svg
-          viewBox="0 0 24 24"
-          width={size}
-          height={size}
-          className={className}
-          fill="currentColor"
-        >
-          <rect width="24" height="24" rx="3" />
-          <path
-            fill="#fff"
-            d="M8.2 17.5c-.7 0-1.3-.2-1.8-.7-.5-.4-.7-.9-.7-1.6h2.2c0 .3.1.6.3.8.2.1.4.2.7.2.3 0 .6-.1.7-.3.2-.2.2-.4.2-.7v-8h2.3v8c0 1.2-.3 2.1-.9 2.6-.6.5-1.5.7-2.6.7zm7.5 0c-1.1 0-2-.3-2.5-.9-.6-.6-.8-1.5-.8-2.6v-2h2.2v2c0 .5.1.8.3 1 .2.2.5.3.9.3.3 0 .6-.1.8-.3.2-.2.3-.5.3-1 0-.4-.1-.7-.3-.9-.2-.2-.6-.4-1.2-.6-.9-.3-1.6-.7-2-1.1s-.6-1-.6-1.8c0-.9.3-1.7.9-2.2s1.5-.8 2.6-.8 1.9.3 2.4.9c.5.6.8 1.4.8 2.4h-2.2c0-.5-.1-.8-.3-1-.2-.2-.5-.3-.8-.3-.3 0-.6.1-.7.3-.2.2-.2.4-.2.7 0 .3.1.6.4.8.3.2.8.4 1.5.6.9.3 1.6.7 2 1.2s.6 1.1.6 1.9c0 1-.3 1.8-.9 2.3-.6.5-1.5.8-2.7.8z"
-          />
-        </svg>
-      );
-    case "javascript":
-      return (
-        <svg
-          viewBox="0 0 24 24"
-          width={size}
-          height={size}
-          className={className}
-          fill="currentColor"
-        >
-          <rect width="24" height="24" rx="3" />
-          <path
-            fill="#000"
-            d="M12.2 18c-.8 0-1.5-.3-2-.8-.5-.5-.8-1.2-.8-2.1h2c0 .4.1.7.2.9.2.2.5.3.9.3.3 0 .6-.1.8-.3.2-.2.3-.5.3-.9 0-.3-.1-.6-.3-.8-.2-.2-.6-.4-1.2-.6-.9-.3-1.6-.7-2-1.1s-.6-1-.6-1.8c0-.9.3-1.7.9-2.2s1.5-.8 2.6-.8c1.1 0 1.9.3 2.4.9.5.6.8 1.4.8 2.4h-2c0-.5-.1-.8-.3-1-.2-.2-.5-.3-.8-.3-.3 0-.6.1-.7.3-.2.2-.2.4-.2.7 0 .3.1.6.4.8.3.2.8.4 1.5.6.9.3 1.6.7 2 1.2s.6 1.1.6 1.9c0 1-.3 1.8-.9 2.3-.6.5-1.5.8-2.7.8zm-6.5 0c-.7 0-1.3-.2-1.8-.7-.5-.4-.7-.9-.7-1.6h2c0 .3.1.6.3.8.2.1.4.2.7.2.3 0 .6-.1.7-.3.2-.2.2-.4.2-.7V9.7h2v5.7c0 1.2-.3 2.1-.9 2.6-.6.5-1.5.7-2.6.7z"
-          />
-        </svg>
-      );
-    case "java":
-      return (
-        <svg
-          viewBox="0 0 24 24"
-          width={size}
-          height={size}
-          className={className}
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M17 8h1a4 4 0 1 1 0 8h-1" />
-          <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z" />
-          <line x1="6" y1="2" x2="6" y2="4" />
-          <line x1="10" y1="2" x2="10" y2="4" />
-          <line x1="14" y1="2" x2="14" y2="4" />
-        </svg>
-      );
-    case "c++":
-      return (
-        <svg
-          viewBox="0 0 24 24"
-          width={size}
-          height={size}
-          className={className}
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M18 10h4M20 8v4M12 10h4M14 8v4" />
-          <path d="M10 6.5A5.5 5.5 0 1 0 10 17.5" />
-        </svg>
-      );
-    case "c":
-      return (
-        <svg
-          viewBox="0 0 24 24"
-          width={size}
-          height={size}
-          className={className}
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M15 6.5A5.5 5.5 0 1 0 15 17.5" />
-        </svg>
-      );
-    case "c#":
-      return (
-        <svg
-          viewBox="0 0 24 24"
-          width={size}
-          height={size}
-          className={className}
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M9 6.5A5.5 5.5 0 1 0 9 17.5" />
-          <path d="M14 8h8M14 12h8M16 6v8M20 6v8" />
-        </svg>
-      );
-    case "swift":
-      return (
-        <svg
-          viewBox="0 0 24 24"
-          width={size}
-          height={size}
-          className={className}
-          fill="currentColor"
-        >
-          <path
-            d="M22.5 13.5c-4.5 4.5-10.5 4.5-13.5 1.5-1.5-1.5-1.5-3.5 0-5 1.5-1.5 3.5-1.5 5 0 3 3 3 9 1.5 13.5z"
-            opacity="0.3"
-          />
-          <path d="M2.5 19.5c6-6 12-6 16.5-1.5.8.8.8 2 0 2.8s-2 .8-2.8 0c-3-3-7.5-3-11.5 0-.8.8-2 .8-2.8 0s-.8-2.1.6-1.3z" />
-          <path d="M9.5 4.5C14.5 1 19 3 21.5 5.5s4 7 1.5 11c-1.5-3.5-4.5-6.5-8-8-3.5-1.5-6.5-.5-5.5-4z" />
-        </svg>
-      );
-    case "kotlin":
-      return (
-        <svg
-          viewBox="0 0 24 24"
-          width={size}
-          height={size}
-          className={className}
-          fill="currentColor"
-        >
-          <path d="M24 24H0V0h24L12 12Z" />
-        </svg>
-      );
-    case "elixir":
-      return (
-        <svg
-          viewBox="0 0 24 24"
-          width={size}
-          height={size}
-          className={className}
-          fill="currentColor"
-        >
-          <path d="M12 24c-5.5 0-10-4.5-10-10C2 7.7 7.7 2 12 0c4.3 2 10 7.7 10 14 0 5.5-4.5 10-10 10zm0-22c-3.1 1.7-8 6.4-8 12 0 4.4 3.6 8 8 8s8-3.6 8-8c0-5.6-4.9-10.3-8-12z" />
-          <path
-            d="M12 19c-2.8 0-5-2.2-5-5 0-2 .8-3.9 2.2-5.2.4-.4 1-.4 1.4 0s.4 1 0 1.4C9.7 11.1 9 12.5 9 14c0 1.7 1.3 3 3 3s3-1.3 3-3c0-.6-.4-1-1-1s-1 .4-1 1c0 2.2-2.2 4-5 4z"
-            opacity="0.5"
-          />
-        </svg>
-      );
-    case "dart":
-      return (
-        <svg
-          viewBox="0 0 24 24"
-          width={size}
-          height={size}
-          className={className}
-          fill="currentColor"
-        >
-          <path d="M22.2 7.8L12 0 1.8 7.8l5.4 14.4L12 24l4.8-1.8z" />
-        </svg>
-      );
-    case "php":
-      return (
-        <svg
-          viewBox="0 0 24 24"
-          width={size}
-          height={size}
-          className={className}
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-        >
-          <ellipse cx="12" cy="12" rx="11" ry="6" />
-          <text
-            x="12"
-            y="15"
-            fontSize="10"
-            fontWeight="bold"
-            textAnchor="middle"
-            fill="currentColor"
-            stroke="none"
-          >
-            PHP
-          </text>
-        </svg>
-      );
-    case "ruby":
-      return (
-        <svg
-          viewBox="0 0 24 24"
-          width={size}
-          height={size}
-          className={className}
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M6 3h12l4 6-10 12L2 9Z" />
-          <path d="M11 3 8 9l4 12 4-12-3-6" />
-          <path d="M2 9h20" />
-        </svg>
-      );
-    case "scala":
-      return (
-        <svg
-          viewBox="0 0 24 24"
-          width={size}
-          height={size}
-          className={className}
-          fill="currentColor"
-        >
-          <path d="M4 2h16v3H4zm2 5h14v3H6zm2 5h14v3H8zm2 5h14v3H10zm2 5h14v3H12z" />
-        </svg>
-      );
-    case "julia":
-      return (
-        <svg
-          viewBox="0 0 24 24"
-          width={size}
-          height={size}
-          className={className}
-          fill="currentColor"
-        >
-          <circle cx="12" cy="6" r="4" />
-          <circle cx="6" cy="16" r="4" />
-          <circle cx="18" cy="16" r="4" />
-        </svg>
-      );
-    case "objective-c":
-      return (
-        <svg
-          viewBox="0 0 24 24"
-          width={size}
-          height={size}
-          className={className}
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M12 17.5A5.5 5.5 0 1 0 12 6.5" />
-          <path d="M12 6.5c1-2 2.5-3 4-3s2 1.5 2 3c0 3.5-3.5 5.5-6 5.5" />
-        </svg>
-      );
-    case "agnostic":
-    default:
-      return (
-        <svg
-          viewBox="0 0 24 24"
-          width={size}
-          height={size}
-          className={className}
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <circle cx="12" cy="12" r="10" />
-          <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-        </svg>
-      );
+  const iconClassMap: Record<string, string> = {
+    go: "devicon-go-plain",
+    rust: "devicon-rust-plain",
+    python: "devicon-python-plain",
+    typescript: "devicon-typescript-plain",
+    javascript: "devicon-javascript-plain",
+    java: "devicon-java-plain",
+    "c++": "devicon-cplusplus-plain",
+    c: "devicon-c-plain",
+    "c#": "devicon-csharp-plain",
+    swift: "devicon-swift-plain",
+    kotlin: "devicon-kotlin-plain",
+    elixir: "devicon-elixir-plain",
+    dart: "devicon-dart-plain",
+    php: "devicon-php-plain",
+    ruby: "devicon-ruby-plain",
+    scala: "devicon-scala-plain",
+    julia: "devicon-julia-plain",
+    "objective-c": "devicon-objectivec-plain",
+  };
+
+  const iconClass = iconClassMap[norm];
+  if (!iconClass) {
+    return (
+      <Code2 className={className} style={{ width: size, height: size }} />
+    );
   }
+
+  return (
+    <i
+      className={`${iconClass} ${className}`}
+      style={{
+        fontSize: size,
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        width: size,
+        height: size,
+      }}
+    />
+  );
 };
 import { Section, SectionTitle } from "../components/shared/Common";
 import ecosystemData from "../data/ecosystem-stars.json";
@@ -546,7 +271,10 @@ const Ecosystem = () => {
     }
   };
 
-  const projects = (ecosystemData.projects || []) as Project[];
+  const projects = useMemo(
+    () => (ecosystemData.projects || []) as Project[],
+    [],
+  );
 
   // Compute category counts
   const categoryCounts = useMemo(() => {
@@ -831,7 +559,11 @@ const Ecosystem = () => {
                   </h4>
                   <div className="relative">
                     <div className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center pointer-events-none text-[var(--text-dim)]">
-                      <LanguageIcon lang={selectedLanguage} size={14} className="" />
+                      <LanguageIcon
+                        lang={selectedLanguage}
+                        size={14}
+                        className=""
+                      />
                     </div>
                     <select
                       value={selectedLanguage}
@@ -1063,7 +795,11 @@ const Ecosystem = () => {
                   </h3>
                   <div className="relative">
                     <div className="absolute left-3.5 top-1/2 -translate-y-1/2 flex items-center pointer-events-none text-[var(--text-dim)]">
-                      <LanguageIcon lang={selectedLanguage} size={14} className="" />
+                      <LanguageIcon
+                        lang={selectedLanguage}
+                        size={14}
+                        className=""
+                      />
                     </div>
                     <select
                       value={selectedLanguage}
@@ -1191,27 +927,6 @@ const Ecosystem = () => {
 
             {/* Right Main Area: Filter pills, Project count, Cards grid, Pagination */}
             <div className="lg:col-span-3 space-y-6">
-              {/* Horizontal Language Filter Bar with Icons */}
-              <div className="flex items-center gap-2 overflow-x-auto pb-2 -mx-2 px-2 scrollbar-none sm:scrollbar-thin">
-                {["all", ...availableLanguages].map((lang) => {
-                  const isActive = (lang === "all" && selectedLanguage === "all") || selectedLanguage === lang;
-                  const displayName = lang === "all" ? "All" : lang;
-                  return (
-                    <button
-                      key={lang}
-                      onClick={() => handleSetLanguage(lang)}
-                      className={`flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-cyber font-bold uppercase border rounded-full whitespace-nowrap transition-all cursor-pointer ${
-                        isActive
-                          ? "bg-[var(--cyber-neon-blue)]/10 text-[var(--cyber-neon-blue)] border-[var(--cyber-neon-blue)]/50 shadow-[0_0_8px_rgba(0,243,255,0.1)]"
-                          : "bg-[var(--overlay-bg)] text-[var(--text-dim)] border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)]/30 hover:text-white"
-                      }`}
-                    >
-                      <LanguageIcon lang={lang} size={10} className="" />
-                      <span>{displayName}</span>
-                    </button>
-                  );
-                })}
-              </div>
               {/* Active Filters Summary */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 bg-[var(--panel-bg)]/40 border border-[var(--border-light)]/60 rounded-xl backdrop-blur-sm">
                 <span className="text-xs font-mono text-[var(--text-dim)]/70 uppercase">
@@ -1414,9 +1129,9 @@ const Ecosystem = () => {
                             href={project.github}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-1.5 px-2.5 py-1 bg-[var(--overlay-bg)] hover:bg-[var(--border-light)] border border-[var(--border-light)] hover:border-[var(--cyber-neon-yellow)] rounded-md text-xs font-mono text-[var(--cyber-neon-yellow)] transition-all shadow-inner group/stars"
+                            className="flex items-center gap-1.5 px-2.5 py-1 bg-[var(--warning-bg)] hover:bg-[var(--warning-border)] border border-[var(--warning-border)] hover:border-[var(--warning-text)] rounded-md text-xs font-mono text-[var(--warning-text)] transition-all shadow-inner group/stars"
                           >
-                            <Star className="w-3.5 h-3.5 fill-current opacity-40 group-hover/stars:opacity-100 transition-all" />
+                            <Star className="w-3.5 h-3.5 fill-current opacity-70 group-hover/stars:opacity-100 transition-all" />
                             <span className="font-bold">
                               {formatStars(project.stars)}
                             </span>
@@ -1456,7 +1171,11 @@ const Ecosystem = () => {
                                   onClick={() => handleLanguageClick(lang)}
                                   className="inline-flex items-center px-2 py-0.5 bg-[var(--overlay-bg)]/50 text-[var(--text-dim)] hover:text-white border border-[var(--border-light)]/50 hover:border-[var(--cyber-neon-blue)]/50 rounded text-[10px] font-mono uppercase tracking-wider cursor-pointer transition-all"
                                 >
-                                  <LanguageIcon lang={lang} size={10} className="mr-1" />
+                                  <LanguageIcon
+                                    lang={lang}
+                                    size={10}
+                                    className="mr-1"
+                                  />
                                   {lang}
                                 </button>
                               ))}

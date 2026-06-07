@@ -82,6 +82,7 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
   useEffect(() => {
     if (typeof window !== "undefined") {
       const isLight = document.documentElement.classList.contains("light");
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setTheme(isLight ? "light" : "dark");
     }
   }, []);

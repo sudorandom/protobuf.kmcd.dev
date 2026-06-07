@@ -37,7 +37,15 @@
     "desc": "Runtime validation for Protobuf messages using rules defined directly in your .proto files.",
     "url": "https://github.com/bufbuild/protovalidate",
     "github": "https://github.com/bufbuild/protovalidate",
-    "languages": ["Go", "Java", "C++", "TypeScript", "JavaScript", "Python", "Rust"]
+    "languages": [
+      "Go",
+      "Java",
+      "C++",
+      "TypeScript",
+      "JavaScript",
+      "Python",
+      "Rust"
+    ]
   },
   {
     "category": "tools",
