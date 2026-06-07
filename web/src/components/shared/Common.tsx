@@ -368,38 +368,39 @@ export const RoadmapGrid = ({
   const numCols = numColsMatch ? parseInt(numColsMatch[1], 10) : 3;
 
   return (
-    <div
-      className={`grid grid-cols-1 md:grid-cols-2 ${cols} gap-8 pt-8 text-left`}
-      role="list"
+    <ul
+      className={`grid grid-cols-1 md:grid-cols-2 ${cols} gap-8 pt-8 text-left list-none p-0 m-0`}
     >
       {items.map((item, index) => {
         const theme = themes[index % numCols];
         return (
-          <a
-            key={item.id}
-            href={`#${item.id}`}
-            className="group/item hover:bg-white/5 p-2 -m-2 rounded-lg transition-all flex gap-3 items-center"
-            role="listitem"
-            aria-label={`Jump to: ${item.title}. ${item.desc}`}
-          >
-            <div
-              className={`w-8 h-8 rounded border flex items-center justify-center shrink-0 font-mono text-sm transition-colors ${theme.bg} ${theme.border} ${theme.text} ${theme.hoverBorder}`}
-              aria-hidden="true"
+          <li key={item.id}>
+            <a
+              href={`#${item.id}`}
+              className="group/item hover:bg-white/5 p-2 -m-2 rounded-lg transition-all flex gap-3 items-center"
+              aria-label={`Jump to: ${item.title}. ${item.desc}`}
             >
-              {(index + 1).toString().padStart(2, "0")}
-            </div>
-            <div>
-              <h2
-                className={`text-sm font-bold uppercase tracking-wider text-[var(--text-color)] transition-colors ${theme.hoverText}`}
+              <div
+                className={`w-8 h-8 rounded border flex items-center justify-center shrink-0 font-mono text-sm transition-colors ${theme.bg} ${theme.border} ${theme.text} ${theme.hoverBorder}`}
+                aria-hidden="true"
               >
-                {item.title}
-              </h2>
-              <p className="text-sm text-[var(--text-dim)] mt-1">{item.desc}</p>
-            </div>
-          </a>
+                {(index + 1).toString().padStart(2, "0")}
+              </div>
+              <div>
+                <h2
+                  className={`text-sm font-bold uppercase tracking-wider text-[var(--text-color)] transition-colors ${theme.hoverText}`}
+                >
+                  {item.title}
+                </h2>
+                <p className="text-sm text-[var(--text-dim)] mt-1">
+                  {item.desc}
+                </p>
+              </div>
+            </a>
+          </li>
         );
       })}
-    </div>
+    </ul>
   );
 };
 
