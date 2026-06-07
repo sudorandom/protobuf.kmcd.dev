@@ -360,6 +360,29 @@ export const Toolbox = () => {
             ))}
           </div>
         </div>
+
+        {/* Ecosystem CTA */}
+        <div className="mt-12 p-6 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="absolute top-0 left-0 w-1.5 h-full bg-[var(--cyber-neon-blue)]" />
+          <div>
+            <h4 className="font-cyber font-bold text-[var(--text-color)] text-base uppercase tracking-wider mb-1">
+              Looking for more tools, plugins, or libraries?
+            </h4>
+            <p className="text-sm text-[var(--text-dim)] max-w-2xl leading-relaxed">
+              Explore our comprehensive, paginated registry containing over 80+
+              third-party tools, remote plugins, and serialization libraries
+              with real-time GitHub star counts, categories, sorting, and search
+              filtering.
+            </p>
+          </div>
+          <a
+            href="/ecosystem/"
+            className="shrink-0 flex items-center gap-2 px-6 py-3 text-xs font-cyber font-bold uppercase tracking-wider bg-[var(--cyber-neon-blue)] text-[var(--neon-contrast-text)] hover:shadow-[0_0_20px_rgba(0,243,255,0.4)] transition-all rounded-lg scale-[1.02]"
+          >
+            Explore Ecosystem Directory
+            <ArrowRight className="w-4 h-4" />
+          </a>
+        </div>
       </div>
     </Section>
   );
@@ -432,7 +455,7 @@ export const CommunityResources = () => (
   >
     <div className="max-w-7xl mx-auto">
       <SectionTitle icon={GitBranch} subtitle="06d_COMMUNITY">
-        Community & Support
+        Community
       </SectionTitle>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         <div className="space-y-4">
@@ -605,7 +628,7 @@ export const AlternativesLandscape = () => (
   </Section>
 );
 
-const Ecosystem = () => (
+const Community = () => (
   <>
     <VersionTimeline />
     <PoweringTheIndustry />
@@ -616,4 +639,4 @@ const Ecosystem = () => (
   </>
 );
 
-export default Ecosystem;
+export default Community;

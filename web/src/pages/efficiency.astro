@@ -1,0 +1,11 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Efficiency from "../react-pages/Efficiency";
+---
+
+<Layout
+  title="Efficiency | Protobuf Visualized"
+  description="Compare payload sizes of Protobuf vs JSON using our interactive calculator. Learn why Protobuf is significantly smaller and faster to serialize."
+>
+  <Efficiency client:load />
+</Layout>

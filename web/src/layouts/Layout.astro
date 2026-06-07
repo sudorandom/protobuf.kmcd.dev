@@ -1,0 +1,75 @@
+---
+import { LayoutShell } from "../components/LayoutShell";
+import "../index.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = "Protobuf Visualized", description = "A comprehensive visual guide to Protocol Buffers." } = Astro.props;
+const currentPath = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <meta name="theme-color" content="#050505" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://protobuf.kmcd.dev" />
+    <meta property="og:image" content="https://protobuf.kmcd.dev/hero-social.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:domain" content="protobuf.kmcd.dev" />
+    <meta name="twitter:url" content="https://protobuf.kmcd.dev" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content="https://protobuf.kmcd.dev/hero-social.png" />
+
+    <script
+      src="https://analytics.ahrefs.com/analytics.js"
+      data-key="2eNO7jS4q3dKAsgvccIzbw"
+      async
+    ></script>
+    
+    <script is:inline>
+      const theme = (() => {
+        if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
+          return localStorage.getItem("theme");
+        }
+        if (window.matchMedia("(prefers-color-scheme: light)").matches) {
+          return "light";
+        }
+        return "dark";
+      })();
+      if (theme === "light") {
+        document.documentElement.classList.add("light");
+      } else {
+        document.documentElement.classList.remove("light");
+      }
+    </script>
+  </head>
+  <body>
+    <LayoutShell currentPath={currentPath} client:load>
+      <slot />
+    </LayoutShell>
+  </body>
+</html>

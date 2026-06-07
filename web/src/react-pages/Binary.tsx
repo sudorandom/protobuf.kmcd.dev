@@ -1102,16 +1102,35 @@ export const BinaryMatrix = ({
 };
 
 const BinaryPage = ({
-  explorerProto,
-  setExplorerProto,
-  protoscopeProto,
-  setProtoscopeProto,
+  explorerProto: propExplorerProto,
+  setExplorerProto: propSetExplorerProto,
+  protoscopeProto: propProtoscopeProto,
+  setProtoscopeProto: propSetProtoscopeProto,
 }: {
-  explorerProto: string;
-  setExplorerProto: (s: string) => void;
-  protoscopeProto: string;
-  setProtoscopeProto: (s: string) => void;
+  explorerProto?: string;
+  setExplorerProto?: (s: string) => void;
+  protoscopeProto?: string;
+  setProtoscopeProto?: (s: string) => void;
 }) => {
+  const [localExplorerProto, setLocalExplorerProto] = useState(INITIAL_PROTO);
+  const [localProtoscopeProto, setLocalProtoscopeProto] =
+    useState(INITIAL_PROTO);
+
+  const explorerProto =
+    propExplorerProto !== undefined ? propExplorerProto : localExplorerProto;
+  const setExplorerProto =
+    propSetExplorerProto !== undefined
+      ? propSetExplorerProto
+      : setLocalExplorerProto;
+  const protoscopeProto =
+    propProtoscopeProto !== undefined
+      ? propProtoscopeProto
+      : localProtoscopeProto;
+  const setProtoscopeProto =
+    propSetProtoscopeProto !== undefined
+      ? propSetProtoscopeProto
+      : setLocalProtoscopeProto;
+
   const roadmapItems = [
     {
       id: "binary-basics",

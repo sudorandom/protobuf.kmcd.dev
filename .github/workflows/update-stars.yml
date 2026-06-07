@@ -1,0 +1,43 @@
+name: Update GitHub Stars
+
+on:
+  schedule:
+    - cron: '43 * * * *'  # Runs every hour with a random offset (43rd minute)
+  workflow_dispatch:      # Allows manual trigger
+
+permissions:
+  contents: write
+
+jobs:
+  update-stars:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup tools with mise
+        uses: jdx/mise-action@v4
+        with:
+          install: true
+
+      - name: Install dependencies
+        run: just web-install
+
+      - name: Fetch GitHub star counts
+        run: pnpm run fetch-stars
+        working-directory: web
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add web/src/data/ecosystem-stars.json
+          # Only commit and push if there are changes
+          if ! git diff --quiet web/src/data/ecosystem-stars.json; then
+            git commit -m "chore: update ecosystem github stars and activity"
+            git push
+          else
+            echo "No changes in star counts or activity."
+          fi

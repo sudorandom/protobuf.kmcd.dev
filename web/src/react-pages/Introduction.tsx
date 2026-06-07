@@ -1,6 +1,5 @@
 import { useState, useMemo } from "react";
 import { trackEvent } from "../utils/analytics";
-import { Link } from "react-router-dom";
 import {
   FileCode,
   Binary,
@@ -394,13 +393,13 @@ export const Introduction = ({
                       and failing: congratulations, you're human. We'll be
                       investigating how machines actually make sense of this
                       chaos in the{" "}
-                      <Link
-                        to="/binary/"
+                      <a
+                        href="/binary/"
                         className="text-[var(--cyber-neon-pink)] hover:underline"
                       >
                         {" "}
                         <strong>Binary</strong>
-                      </Link>{" "}
+                      </a>{" "}
                       section later on.
                     </p>
                   </div>

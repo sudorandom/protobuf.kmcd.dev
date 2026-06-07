@@ -49,12 +49,18 @@ async function getGzipSize(data: string | Uint8Array): Promise<number> {
 }
 
 export const SizeComparison = ({
-  protoSource,
-  setProtoSource,
+  protoSource: propProtoSource,
+  setProtoSource: propSetProtoSource,
 }: {
-  protoSource: string;
-  setProtoSource: (s: string) => void;
+  protoSource?: string;
+  setProtoSource?: (s: string) => void;
 }) => {
+  const [localProtoSource, setLocalProtoSource] = useState(INITIAL_PROTO);
+  const protoSource =
+    propProtoSource !== undefined ? propProtoSource : localProtoSource;
+  const setProtoSource =
+    propSetProtoSource !== undefined ? propSetProtoSource : setLocalProtoSource;
+
   const [activeExample, setActiveExample] = useState<
     keyof typeof SIZE_EXAMPLES | null
   >("BASIC");

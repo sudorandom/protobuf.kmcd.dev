@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ChevronLeft } from "lucide-react";
 import { Section } from "../components/shared/Common";
@@ -108,13 +107,13 @@ export const Conclusion = () => (
         </div>
 
         <div className="flex flex-col sm:flex-row gap-6 justify-center">
-          <Link
-            to="/"
+          <a
+            href="/"
             className="px-8 py-3 border border-[var(--cyber-neon-blue)] text-[var(--cyber-neon-blue)] font-cyber font-bold uppercase hover:bg-[var(--cyber-neon-blue)]/10 transition-all flex items-center gap-2 rounded-md"
           >
             <ChevronLeft className="w-5 h-5" />
             Return to Start
-          </Link>
+          </a>
           <a
             href="https://github.com/sudorandom/protobuf.kmcd.dev"
             target="_blank"
