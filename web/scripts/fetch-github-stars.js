@@ -27,8 +27,7 @@ async function fetchStars() {
       const existingData = JSON.parse(fs.readFileSync(OUTPUT_PATH, "utf8"));
       if (existingData && Array.isArray(existingData.projects)) {
         for (const p of existingData.projects) {
-          const key = `${p.owner}/${p.repo}`;
-          existingMetadata[key] = {
+          existingMetadata[p.name] = {
             stars: p.stars || 0,
             pushedAt: p.pushedAt || new Date().toISOString(),
           };
@@ -62,22 +61,35 @@ async function fetchStars() {
   oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
 
   for (const project of projects) {
-    const { owner, repo } = project;
-    const repoKey = `${owner}/${repo}`;
+    const githubUrls = Array.isArray(project.github)
+      ? project.github
+      : project.github
+        ? [project.github]
+        : [];
 
-    // Find existing metadata fallback values
-    const fallback = existingMetadata[repoKey] || {
+    let totalStars = 0;
+    let latestPushedAt = null;
+
+    // Use project name fallback if we can't fetch individual repos
+    const fallback = existingMetadata[project.name] || {
       stars: 0,
-      pushedAt: new Date().toISOString(),
+      pushedAt: new Date(0).toISOString(),
     };
-    let stars = fallback.stars;
-    let pushedAt = fallback.pushedAt;
 
-    if (owner && repo) {
+    for (const url of githubUrls) {
+      const match = url.match(/github\.com\/([^\/]+)\/([^\/]+)/);
+      if (!match) continue;
+      const owner = match[1];
+      const repo = match[2];
+      const repoKey = `${owner}/${repo}`;
+
+      let stars = 0;
+      let pushedAt = new Date(0).toISOString();
+
       try {
-        const url = `https://api.github.com/repos/${owner}/${repo}`;
-        console.log(`Fetching ${url}...`);
-        const res = await fetch(url, { headers });
+        const apiUrl = `https://api.github.com/repos/${owner}/${repo}`;
+        console.log(`Fetching ${apiUrl}...`);
+        const res = await fetch(apiUrl, { headers });
 
         if (res.ok) {
           const data = await res.json();
@@ -88,29 +100,54 @@ async function fetchStars() {
           );
         } else {
           console.warn(
-            `  ⚠ Failed to fetch ${repoKey}: ${res.status} ${res.statusText}. Using fallback: stars=${stars}, pushed=${pushedAt}`,
+            `  ⚠ Failed to fetch ${repoKey}: ${res.status} ${res.statusText}.`,
           );
+          // If we have single repo or it matches the fallback, we can try using fallback values
+          if (githubUrls.length === 1) {
+            stars = fallback.stars;
+            pushedAt = fallback.pushedAt;
+          }
         }
       } catch (err) {
-        console.warn(
-          `  ⚠ Error fetching ${repoKey}: ${err.message}. Using fallback: stars=${stars}, pushed=${pushedAt}`,
-        );
+        console.warn(`  ⚠ Error fetching ${repoKey}: ${err.message}.`);
+        if (githubUrls.length === 1) {
+          stars = fallback.stars;
+          pushedAt = fallback.pushedAt;
+        }
       }
+
+      totalStars += stars;
+      if (!latestPushedAt || new Date(pushedAt) > new Date(latestPushedAt)) {
+        latestPushedAt = pushedAt;
+      }
+
+      // Small delay to respect rate limit guidelines
+      await new Promise((resolve) => setTimeout(resolve, 200));
+    }
+
+    if (!latestPushedAt || latestPushedAt === new Date(0).toISOString()) {
+      latestPushedAt = fallback.pushedAt || new Date().toISOString();
+      totalStars = fallback.stars || 0;
     }
 
     // Determine if repository has been inactive (no pushed commits) for 1+ years
-    const pushedDate = new Date(pushedAt);
+    const pushedDate = new Date(latestPushedAt);
     const inactive = pushedDate < oneYearAgo;
+
+    // Use the first repo's owner/repo as top-level fields for backwards compatibility
+    const firstUrl = githubUrls[0] || "";
+    const firstMatch = firstUrl.match(/github\.com\/([^\/]+)\/([^\/]+)/);
+    const primaryOwner = firstMatch ? firstMatch[1] : project.owner || "";
+    const primaryRepo = firstMatch ? firstMatch[2] : project.repo || "";
 
     updatedProjects.push({
       ...project,
-      stars,
-      pushedAt,
+      owner: primaryOwner,
+      repo: primaryRepo,
+      stars: totalStars,
+      pushedAt: latestPushedAt,
       inactive,
     });
-
-    // Small delay to respect rate limit guidelines
-    await new Promise((resolve) => setTimeout(resolve, 200));
   }
 
   const outputData = {

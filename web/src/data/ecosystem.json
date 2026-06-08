@@ -36,7 +36,14 @@
     "repo": "protovalidate",
     "desc": "Runtime validation for Protobuf messages using rules defined directly in your .proto files.",
     "url": "https://github.com/bufbuild/protovalidate",
-    "github": "https://github.com/bufbuild/protovalidate",
+    "github": [
+      "https://github.com/bufbuild/protovalidate",
+      "https://github.com/bufbuild/protovalidate-go",
+      "https://github.com/bufbuild/protovalidate-java",
+      "https://github.com/bufbuild/protovalidate-python",
+      "https://github.com/bufbuild/protovalidate-cc",
+      "https://github.com/bufbuild/protovalidate-es"
+    ],
     "languages": [
       "Go",
       "Java",
@@ -114,7 +121,14 @@
     "repo": "connect-go",
     "desc": "A simple, modern, multi-protocol alternative to gRPC for Go, TypeScript, Kotlin, Swift, and Python. Supports gRPC, gRPC-Web, and Connect HTTP protocols natively.",
     "url": "https://connectrpc.com/",
-    "github": "https://github.com/connectrpc/connect-go",
+    "github": [
+      "https://github.com/connectrpc/connect-go",
+      "https://github.com/connectrpc/connect-es",
+      "https://github.com/connectrpc/connect-kotlin",
+      "https://github.com/connectrpc/connect-swift",
+      "https://github.com/connectrpc/connect-python",
+      "https://github.com/connectrpc/connect-dart"
+    ],
     "languages": ["Go", "TypeScript", "JavaScript", "Kotlin", "Swift", "Python"]
   },
   {
@@ -725,7 +739,7 @@
     "owner": "postmanlabs",
     "repo": "postman-app-support",
     "desc": "A popular API platform that includes support for creating, testing, and debugging gRPC requests and mocking Protobuf endpoints.",
-    "url": "https://www.postman.com/grpc/",
+    "url": "https://learning.postman.com/docs/use/send-requests/protocols/grpc/first-grpc-request",
     "github": "https://github.com/postmanlabs/postman-app-support",
     "languages": ["Agnostic"]
   },

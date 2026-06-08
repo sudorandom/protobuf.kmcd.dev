@@ -91,7 +91,7 @@ interface Project {
   repo: string;
   desc: string;
   url: string;
-  github: string;
+  github: string | string[];
   stars: number;
   pushedAt: string;
   inactive: boolean;
@@ -283,10 +283,20 @@ const Ecosystem = () => {
       const matchesLanguage =
         selectedLanguage === "all" ||
         (Array.isArray(p.languages) && p.languages.includes(selectedLanguage));
+      const githubUrls = Array.isArray(p.github) ? p.github : [p.github];
+      const matchesGithubSearch = githubUrls.some((url) => {
+        const match = url.match(/github\.com\/([^/]+)\/([^/]+)/);
+        return (
+          match &&
+          `${match[1]}/${match[2]}`
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase())
+        );
+      });
       const matchesSearch =
         p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         p.desc.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        `${p.owner}/${p.repo}`.toLowerCase().includes(searchTerm.toLowerCase());
+        matchesGithubSearch;
       const matchesInactive =
         statusFilter === "all" ||
         (statusFilter === "active" && !p.inactive) ||
@@ -339,12 +349,22 @@ const Ecosystem = () => {
           selectedLanguage === "all" ||
           (Array.isArray(project.languages) &&
             project.languages.includes(selectedLanguage));
+        const githubUrls = Array.isArray(project.github)
+          ? project.github
+          : [project.github];
+        const matchesGithubSearch = githubUrls.some((url) => {
+          const match = url.match(/github\.com\/([^/]+)\/([^/]+)/);
+          return (
+            match &&
+            `${match[1]}/${match[2]}`
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase())
+          );
+        });
         const matchesSearch =
           project.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
           project.desc.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          `${project.owner}/${project.repo}`
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase());
+          matchesGithubSearch;
         const matchesInactive =
           statusFilter === "all" ||
           (statusFilter === "active" && !project.inactive) ||
@@ -1082,14 +1102,15 @@ const Ecosystem = () => {
                     : [project.category];
                   const primaryCategory = categories[0] || "libraries";
                   const primaryBadge = getCategoryBadgeStyles(primaryCategory);
-                  const projectLink =
-                    project.url && project.url !== project.github
-                      ? project.url
-                      : project.github;
+                  const githubUrls = Array.isArray(project.github)
+                    ? project.github
+                    : [project.github];
+                  const primaryGithubUrl = githubUrls[0] || "";
+                  const projectLink = project.url || primaryGithubUrl;
 
                   return (
                     <div
-                      key={`${project.owner}/${project.repo}`}
+                      key={project.name}
                       className="p-6 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-xl hover:border-[var(--hover-color)] transition-all duration-300 hover:-translate-y-1 hover:shadow-lg flex flex-col justify-between min-h-[260px] relative overflow-hidden"
                       style={
                         {
@@ -1126,7 +1147,7 @@ const Ecosystem = () => {
                           </div>
 
                           <a
-                            href={project.github}
+                            href={primaryGithubUrl}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="flex items-center gap-1.5 px-2.5 py-1 bg-[var(--warning-bg)] hover:bg-[var(--warning-border)] border border-[var(--warning-border)] hover:border-[var(--warning-text)] rounded-md text-xs font-mono text-[var(--warning-text)] transition-all shadow-inner group/stars"
@@ -1189,24 +1210,35 @@ const Ecosystem = () => {
                       </div>
 
                       {/* Bottom Row: Links */}
-                      <div className="flex items-center gap-4 pt-4 border-t border-[var(--border-light)]/40 mt-auto">
-                        <a
-                          href={project.github}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-xs font-cyber font-bold uppercase tracking-wider text-[var(--text-color)] hover:text-[var(--cyber-neon-pink)] transition-colors flex items-center gap-1 group/git"
-                        >
-                          <GithubIcon className="w-3.5 h-3.5 opacity-70 group-hover/git:scale-110 transition-transform" />
-                          Repository
-                        </a>
-                        {project.url && project.url !== project.github && (
+                      <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 pt-4 border-t border-[var(--border-light)]/40 mt-auto">
+                        {githubUrls.map((url) => {
+                          const match = url.match(
+                            /github\.com\/([^/]+)\/([^/]+)/,
+                          );
+                          const displayName = match
+                            ? `${match[1]}/${match[2]}`
+                            : "Repository";
+                          return (
+                            <a
+                              key={url}
+                              href={url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-[10px] font-cyber font-bold uppercase tracking-wider text-[var(--text-color)] hover:text-[var(--cyber-neon-pink)] transition-colors flex items-center gap-1 group/git"
+                            >
+                              <GithubIcon className="w-3 h-3 opacity-70 group-hover/git:scale-110 transition-transform" />
+                              {displayName}
+                            </a>
+                          );
+                        })}
+                        {project.url && !githubUrls.includes(project.url) && (
                           <a
                             href={project.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-xs font-cyber font-bold uppercase tracking-wider text-[var(--text-color)] hover:text-[var(--cyber-neon-blue)] transition-colors flex items-center gap-1 group/ext"
+                            className="text-[10px] font-cyber font-bold uppercase tracking-wider text-[var(--text-color)] hover:text-[var(--cyber-neon-blue)] transition-colors flex items-center gap-1 group/ext"
                           >
-                            <ExternalLink className="w-3.5 h-3.5 opacity-70 group-hover/ext:scale-110 transition-transform" />
+                            <ExternalLink className="w-3 h-3 opacity-70 group-hover/ext:scale-110 transition-transform" />
                             Website
                           </a>
                         )}
