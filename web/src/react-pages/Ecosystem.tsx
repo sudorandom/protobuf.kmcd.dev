@@ -179,9 +179,9 @@ const Ecosystem = () => {
     currentPage,
   ]);
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = (page: number, shouldScroll = true) => {
     setCurrentPage(page);
-    if (typeof window !== "undefined") {
+    if (shouldScroll && typeof window !== "undefined") {
       const el = document.getElementById("ecosystem");
       if (el) {
         const offset = el.getBoundingClientRect().top + window.scrollY - 88;
@@ -1050,7 +1050,7 @@ const Ecosystem = () => {
                   <div className="flex items-center gap-2">
                     <button
                       disabled={activePage === 1}
-                      onClick={() => handlePageChange(activePage - 1)}
+                      onClick={() => handlePageChange(activePage - 1, false)}
                       className={`px-3 py-1.5 text-xs font-cyber font-bold uppercase border rounded-md transition-all ${
                         activePage === 1
                           ? "opacity-30 cursor-not-allowed border-[var(--border-light)] text-[var(--text-dim)]"
@@ -1066,7 +1066,7 @@ const Ecosystem = () => {
                         return (
                           <button
                             key={pNum}
-                            onClick={() => handlePageChange(pNum)}
+                            onClick={() => handlePageChange(pNum, false)}
                             className={`w-8 h-8 flex items-center justify-center text-xs font-cyber font-bold rounded-md transition-all border ${
                               isPageActive
                                 ? "bg-[var(--cyber-neon-blue)] text-[var(--neon-contrast-text)] border-[var(--cyber-neon-blue)] shadow-[0_0_10px_rgba(0,243,255,0.2)]"
@@ -1081,7 +1081,7 @@ const Ecosystem = () => {
 
                     <button
                       disabled={activePage === totalPages}
-                      onClick={() => handlePageChange(activePage + 1)}
+                      onClick={() => handlePageChange(activePage + 1, false)}
                       className={`px-3 py-1.5 text-xs font-cyber font-bold uppercase border rounded-md transition-all ${
                         activePage === totalPages
                           ? "opacity-30 cursor-not-allowed border-[var(--border-light)] text-[var(--text-dim)]"
