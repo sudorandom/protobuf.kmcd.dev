@@ -1,0 +1,40 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { Section } from "../components/shared/Common";
+import { Terminal } from "lucide-react";
+---
+
+<Layout
+  title="404: Not Found | Protobuf Visualized"
+  description="The requested page could not be found."
+>
+  <Section
+    id="404"
+    className="min-h-[70vh] flex flex-col items-center justify-center text-center p-4 sm:p-8"
+  >
+    <div
+      className="w-16 h-16 bg-[var(--text-error)]/10 rounded border border-[var(--text-error)]/30 flex items-center justify-center mb-6"
+    >
+      <Terminal className="w-8 h-8 text-[var(--text-error)]" />
+    </div>
+    
+    <h1
+      className="text-4xl sm:text-6xl font-cyber font-black mb-4 tracking-tight leading-none text-[var(--text-error)]"
+    >
+      404_NOT_FOUND
+    </h1>
+    
+    <p
+      className="text-base sm:text-lg text-[var(--text-dim)] max-w-md mx-auto mb-12 font-mono uppercase tracking-widest leading-relaxed"
+    >
+      The page you are looking for has expired, moved, or never existed in this timeline.
+    </p>
+
+    <a
+      href="/"
+      className="px-8 py-3 bg-[var(--cyber-neon-blue)] text-[var(--bg-color)] font-cyber font-bold uppercase hover:bg-[var(--cyber-neon-blue)]/90 transition-all rounded-md shadow-[0_0_20px_rgba(0,243,255,0.4)]"
+    >
+      Return to System Start
+    </a>
+  </Section>
+</Layout>
