@@ -32,131 +32,16 @@ import { BitwiseMergeVisualization } from "../components/BitwiseMergeVisualizati
 import MultiFieldEncoding from "../components/MultiFieldEncoding";
 import { FieldPresenceVisualization } from "../components/FieldPresenceVisualization";
 import { PackedRepeatedVisualization } from "../components/PackedRepeatedVisualization";
+import { VarintWireTypeVisualization } from "../components/VarintWireTypeVisualization";
+import { FixedWireTypeVisualization } from "../components/FixedWireTypeVisualization";
+import { LengthDelimitedWireTypeVisualization } from "../components/LengthDelimitedWireTypeVisualization";
 import { decodeBinary, type DecodedSegment } from "../utils/decoder";
 import { SIZE_EXAMPLES } from "../utils/constants";
 import { INITIAL_PROTO } from "../utils/initial-proto";
 import { generateFake, convertToProtoscope } from "../utils/wasm-parser";
 import { ProtoscopeLab } from "../components/ProtoscopeLab";
 
-// --- Static Envelope Diagrams ---
-
-const PacketDiagram = () => (
-  <div className="w-full max-w-2xl mx-auto my-12">
-    <div className="flex items-stretch gap-1 h-20">
-      <div className="flex-1 bg-[var(--cyber-neon-blue)]/10 border border-[var(--cyber-neon-blue)]/30 rounded flex flex-col items-center justify-center text-[var(--cyber-neon-blue)] font-mono text-sm relative group px-2 text-center">
-        <div className="absolute -top-6 left-0 text-sm uppercase text-[var(--text-dim)] font-bold tracking-widest flex items-center gap-1">
-          <Hash className="w-3 h-3" /> Tag
-        </div>
-        <span className="font-bold">VARINT</span>
-        <span className="text-sm ">(Field # | Type)</span>
-      </div>
-      <div className="flex-1 bg-[var(--cyber-neon-yellow)]/10 border border-[var(--cyber-neon-yellow)]/30 rounded flex flex-col items-center justify-center text-[var(--cyber-neon-yellow)] font-mono text-sm relative group px-2 text-center">
-        <div className="absolute -top-6 left-0 text-sm uppercase text-[var(--text-dim)] font-bold tracking-widest flex items-center gap-1">
-          <Zap className="w-3 h-3" /> Length
-        </div>
-        <span className="font-bold">VARINT</span>
-        <span className="text-sm ">N Bytes</span>
-      </div>
-      <div className="flex-[2] bg-[var(--cyber-neon-green)]/10 border border-[var(--cyber-neon-green)]/30 rounded flex flex-col items-center justify-center text-[var(--cyber-neon-green)] font-mono text-sm relative group px-2 text-center">
-        <div className="absolute -top-6 left-0 text-sm uppercase text-[var(--text-dim)] font-bold tracking-widest flex items-center gap-1">
-          <Database className="w-3 h-3" /> Payload
-        </div>
-        <span className="font-bold">DATA</span>
-        <span className="text-sm ">Binary Bytes</span>
-      </div>
-    </div>
-    <div className="flex gap-1 mt-8">
-      <div className="flex-1 flex flex-col items-center gap-1">
-        <div className="w-px h-4 bg-[var(--border-light)]" />
-        <span className="text-sm font-mono text-[var(--text-dim)] uppercase">
-          1-5 Bytes
-        </span>
-      </div>
-      <div className="flex-1 flex flex-col items-center gap-1">
-        <div className="w-px h-4 bg-[var(--border-light)]" />
-        <span className="text-sm font-mono text-[var(--text-dim)] uppercase">
-          1-5 Bytes
-        </span>
-      </div>
-      <div className="flex-[2] flex flex-col items-center gap-1">
-        <div className="w-px h-4 bg-[var(--border-light)]" />
-        <span className="text-sm font-mono text-[var(--text-dim)] uppercase">
-          N Bytes
-        </span>
-      </div>
-    </div>
-  </div>
-);
-
-const FixedPacketDiagram = ({ size = "4 or 8 Bytes" }: { size?: string }) => (
-  <div className="w-full max-w-2xl mx-auto my-12">
-    <div className="flex items-stretch gap-1 h-20">
-      <div className="flex-1 bg-[var(--cyber-neon-blue)]/10 border border-[var(--cyber-neon-blue)]/30 rounded flex flex-col items-center justify-center text-[var(--cyber-neon-blue)] font-mono text-sm relative group px-2 text-center">
-        <div className="absolute -top-6 left-0 text-sm uppercase text-[var(--text-dim)] font-bold tracking-widest flex items-center gap-1">
-          <Hash className="w-3 h-3" /> Tag
-        </div>
-        <span className="font-bold">VARINT</span>
-        <span className="text-sm ">(Field # | Type)</span>
-      </div>
-      <div className="flex-[2.7] bg-[var(--cyber-neon-green)]/10 border border-[var(--cyber-neon-green)]/30 rounded flex flex-col items-center justify-center text-[var(--cyber-neon-green)] font-mono text-sm relative group px-2 text-center">
-        <div className="absolute -top-6 left-0 text-sm uppercase text-[var(--text-dim)] font-bold tracking-widest flex items-center gap-1">
-          <Database className="w-3 h-3" /> Payload
-        </div>
-        <span className="font-bold">DATA</span>
-        <span className="text-sm ">{size}</span>
-      </div>
-    </div>
-    <div className="flex justify-between mt-8 px-2">
-      <div className="flex flex-col items-center gap-1">
-        <div className="w-px h-4 bg-[var(--border-light)]" />
-        <span className="text-sm font-mono text-[var(--text-dim)] uppercase">
-          1-5 Bytes
-        </span>
-      </div>
-      <div className="flex flex-col items-center gap-1">
-        <div className="w-px h-4 bg-[var(--border-light)]" />
-        <span className="text-sm font-mono text-[var(--text-dim)] uppercase">
-          {size}
-        </span>
-      </div>
-    </div>
-  </div>
-);
-
-const VarintPacketDiagram = () => (
-  <div className="w-full max-w-2xl mx-auto my-12">
-    <div className="flex items-stretch gap-1 h-20">
-      <div className="flex-1 bg-[var(--cyber-neon-blue)]/10 border border-[var(--cyber-neon-blue)]/30 rounded flex flex-col items-center justify-center text-[var(--cyber-neon-blue)] font-mono text-sm relative group px-2 text-center">
-        <div className="absolute -top-6 left-0 text-sm uppercase text-[var(--text-dim)] font-bold tracking-widest flex items-center gap-1">
-          <Hash className="w-3 h-3" /> Tag
-        </div>
-        <span className="font-bold">VARINT</span>
-        <span className="text-sm ">(Field # | Type)</span>
-      </div>
-      <div className="flex-[2.7] bg-[var(--cyber-neon-green)]/10 border border-[var(--cyber-neon-green)]/30 rounded flex flex-col items-center justify-center text-[var(--cyber-neon-green)] font-mono text-sm relative group px-2 text-center">
-        <div className="absolute -top-6 left-0 text-sm uppercase text-[var(--text-dim)] font-bold tracking-widest flex items-center gap-1">
-          <Database className="w-3 h-3" /> Payload
-        </div>
-        <span className="font-bold">VARINT</span>
-        <span className="text-sm ">1-10 Bytes</span>
-      </div>
-    </div>
-    <div className="flex gap-1 mt-8">
-      <div className="flex-1 flex flex-col items-center gap-1">
-        <div className="w-px h-4 bg-[var(--border-light)]" />
-        <span className="text-sm font-mono text-[var(--text-dim)] uppercase">
-          1-5 Bytes
-        </span>
-      </div>
-      <div className="flex-[2.7] flex flex-col items-center gap-1">
-        <div className="w-px h-4 bg-[var(--border-light)]" />
-        <span className="text-sm font-mono text-[var(--text-dim)] uppercase">
-          1-10 Bytes
-        </span>
-      </div>
-    </div>
-  </div>
-);
+// --- Interactive Wire Type Diagrams ---
 
 const TagCalculator = () => {
   const [mode, setMode] = useState<"small" | "large">("small");
@@ -442,7 +327,7 @@ const WireFormatBreakdown = () => {
               "continuation bit" logic allows the payload to be self-delimiting.
             </p>
           </div>
-          <VarintPacketDiagram />
+          <VarintWireTypeVisualization />
           <div className="max-w-2xl mx-auto p-4 bg-[var(--section-bg-dark)] border border-[var(--border-light)] rounded-lg">
             <span className="text-xs font-cyber font-bold text-[var(--text-dim)] uppercase tracking-widest block mb-2">
               Protoscope Representation
@@ -466,7 +351,7 @@ const WireFormatBreakdown = () => {
               exactly 8 or 4 bytes respectively immediately following the tag.
             </p>
           </div>
-          <FixedPacketDiagram />
+          <FixedWireTypeVisualization />
           <div className="max-w-2xl mx-auto p-4 bg-[var(--section-bg-dark)] border border-[var(--border-light)] rounded-lg">
             <span className="text-xs font-cyber font-bold text-[var(--text-dim)] uppercase tracking-widest block mb-2">
               Protoscope Representation
@@ -491,7 +376,7 @@ const WireFormatBreakdown = () => {
               belong to this field.
             </p>
           </div>
-          <PacketDiagram />
+          <LengthDelimitedWireTypeVisualization />
           <div className="max-w-2xl mx-auto p-4 bg-[var(--section-bg-dark)] border border-[var(--border-light)] rounded-lg">
             <span className="text-xs font-cyber font-bold text-[var(--text-dim)] uppercase tracking-widest block mb-2">
               Protoscope Representation
