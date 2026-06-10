@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-06-10T19:50:56.672Z",
+  "fetchedAt": "2026-06-10T21:08:35.757Z",
   "projects": [
     {
       "category": "tools",
@@ -10,6 +10,7 @@
       "url": "https://buf.build/docs/introduction",
       "github": "https://github.com/bufbuild/buf",
       "languages": ["Agnostic"],
+      "relevance": 4,
       "stars": 11175,
       "pushedAt": "2026-06-08T12:55:41Z",
       "inactive": false
@@ -23,6 +24,7 @@
       "url": "https://github.com/yoheimuta/protolint",
       "github": "https://github.com/yoheimuta/protolint",
       "languages": ["Agnostic"],
+      "relevance": 2,
       "stars": 696,
       "pushedAt": "2026-05-27T04:40:26Z",
       "inactive": false
@@ -36,6 +38,7 @@
       "url": "https://github.com/googleapis/api-linter",
       "github": "https://github.com/googleapis/api-linter",
       "languages": ["Agnostic"],
+      "relevance": 2,
       "stars": 762,
       "pushedAt": "2026-05-18T14:58:21Z",
       "inactive": false
@@ -64,6 +67,7 @@
         "Python",
         "Rust"
       ],
+      "relevance": 3,
       "stars": 2219,
       "pushedAt": "2026-06-09T14:49:29Z",
       "inactive": false
@@ -77,6 +81,7 @@
       "url": "https://github.com/streamdal/plumber",
       "github": "https://github.com/streamdal/plumber",
       "languages": ["Agnostic"],
+      "relevance": 1,
       "stars": 2158,
       "pushedAt": "2025-07-16T23:04:58Z",
       "inactive": false
@@ -90,6 +95,7 @@
       "url": "https://github.com/pseudomuto/protoc-gen-doc",
       "github": "https://github.com/pseudomuto/protoc-gen-doc",
       "languages": ["Agnostic"],
+      "relevance": 2,
       "stars": 2827,
       "pushedAt": "2025-02-11T14:03:18Z",
       "inactive": true
@@ -103,6 +109,7 @@
       "url": "https://github.com/sudorandom/protoc-gen-connect-openapi",
       "github": "https://github.com/sudorandom/protoc-gen-connect-openapi",
       "languages": ["Agnostic"],
+      "relevance": 2,
       "stars": 290,
       "pushedAt": "2026-05-20T09:02:58Z",
       "inactive": false
@@ -116,6 +123,7 @@
       "url": "https://github.com/bufbuild/protoschema-plugins",
       "github": "https://github.com/bufbuild/protoschema-plugins",
       "languages": ["Agnostic"],
+      "relevance": 2,
       "stars": 58,
       "pushedAt": "2026-06-03T18:32:21Z",
       "inactive": false
@@ -129,8 +137,9 @@
       "url": "https://github.com/grpc-ecosystem/grpc-gateway",
       "github": "https://github.com/grpc-ecosystem/grpc-gateway",
       "languages": ["Agnostic"],
+      "relevance": 3,
       "stars": 19915,
-      "pushedAt": "2026-06-10T03:11:43Z",
+      "pushedAt": "2026-06-10T20:04:11Z",
       "inactive": false
     },
     {
@@ -142,8 +151,9 @@
       "url": "https://grpc.io/",
       "github": "https://github.com/grpc/grpc",
       "languages": ["C++", "C#", "Java", "Python", "Go", "Ruby", "PHP"],
-      "stars": 44876,
-      "pushedAt": "2026-06-10T18:45:22Z",
+      "relevance": 1,
+      "stars": 44875,
+      "pushedAt": "2026-06-10T21:06:28Z",
       "inactive": false
     },
     {
@@ -169,6 +179,7 @@
         "Swift",
         "Python"
       ],
+      "relevance": 4,
       "stars": 6144,
       "pushedAt": "2026-06-10T17:22:53Z",
       "inactive": false
@@ -182,6 +193,7 @@
       "url": "https://twitchtv.github.io/twirp/",
       "github": "https://github.com/twitchtv/twirp",
       "languages": ["Go"],
+      "relevance": 1,
       "stars": 7516,
       "pushedAt": "2024-08-05T21:36:11Z",
       "inactive": true
@@ -195,6 +207,7 @@
       "url": "https://github.com/storj/drpc",
       "github": "https://github.com/storj/drpc",
       "languages": ["Go"],
+      "relevance": 1,
       "stars": 1628,
       "pushedAt": "2026-05-14T12:11:27Z",
       "inactive": false
@@ -208,6 +221,7 @@
       "url": "https://brpc.apache.org/",
       "github": "https://github.com/apache/brpc",
       "languages": ["C++"],
+      "relevance": 1,
       "stars": 17528,
       "pushedAt": "2026-06-05T09:15:54Z",
       "inactive": false
@@ -221,6 +235,7 @@
       "url": "https://dubbo.apache.org/",
       "github": "https://github.com/apache/dubbo",
       "languages": ["Java", "Go"],
+      "relevance": 1,
       "stars": 41518,
       "pushedAt": "2026-06-08T10:43:57Z",
       "inactive": false
@@ -230,10 +245,11 @@
       "name": "protobuf-c (C)",
       "owner": "protobuf-c",
       "repo": "protobuf-c",
-      "desc": "C: https://github.com/protobuf-c/protobuf-c",
+      "desc": "An implementation of Protocol Buffers in C, generating C code from .proto files and supporting runtime serialization.",
       "url": "https://github.com/protobuf-c/protobuf-c",
       "github": "https://github.com/protobuf-c/protobuf-c",
       "languages": ["C"],
+      "relevance": 2,
       "stars": 2969,
       "pushedAt": "2025-04-07T01:18:13Z",
       "inactive": true
@@ -243,10 +259,11 @@
       "name": "upb (C)",
       "owner": "haberman",
       "repo": "upb",
-      "desc": "C: https://github.com/haberman/upb/wiki",
+      "desc": "A small and fast Protocol Buffers library in C, designed to be embedded in scripting language runtimes like Python and Ruby.",
       "url": "https://github.com/haberman/upb",
       "github": "https://github.com/haberman/upb",
       "languages": ["C"],
+      "relevance": 2,
       "stars": 69,
       "pushedAt": "2023-10-16T22:14:39Z",
       "inactive": true
@@ -256,10 +273,11 @@
       "name": "protobluff (C)",
       "owner": "squidfunk",
       "repo": "protobluff",
-      "desc": "C: https://github.com/squidfunk/protobluff",
+      "desc": "A lightweight C library for Protocol Buffers, focusing on speed and minimal memory footprint.",
       "url": "https://github.com/squidfunk/protobluff",
       "github": "https://github.com/squidfunk/protobluff",
       "languages": ["C"],
+      "relevance": 2,
       "stars": 100,
       "pushedAt": "2026-01-21T08:09:56Z",
       "inactive": false
@@ -273,6 +291,7 @@
       "url": "https://github.com/dart-lang/dart-protobuf",
       "github": "https://github.com/dart-lang/dart-protobuf",
       "languages": ["Dart"],
+      "relevance": 2,
       "stars": 572,
       "pushedAt": "2026-06-03T01:17:54Z",
       "inactive": false
@@ -282,10 +301,11 @@
       "name": "exprotoc (Elixir)",
       "owner": "jeremyong",
       "repo": "exprotoc",
-      "desc": "Elixir: https://github.com/jeremyong/exprotoc",
+      "desc": "An Elixir code generator plugin for the Protobuf compiler, generating Elixir modules from .proto files.",
       "url": "https://github.com/jeremyong/exprotoc",
       "github": "https://github.com/jeremyong/exprotoc",
       "languages": ["Elixir"],
+      "relevance": 2,
       "stars": 22,
       "pushedAt": "2024-04-09T21:13:26Z",
       "inactive": true
@@ -299,6 +319,7 @@
       "url": "https://square.github.io/wire/",
       "github": "https://github.com/square/wire",
       "languages": ["Java", "Kotlin", "Swift"],
+      "relevance": 2,
       "stars": 4421,
       "pushedAt": "2026-06-10T18:59:43Z",
       "inactive": false
@@ -308,10 +329,11 @@
       "name": "ProtoBuf.js (JavaScript)",
       "owner": "dcodeIO",
       "repo": "ProtoBuf.js",
-      "desc": "JavaScript: https://github.com/dcodeIO/ProtoBuf.js",
+      "desc": "A popular, comprehensive JavaScript library for serializing and deserializing Protobuf messages, supporting both node and browser environments.",
       "url": "https://github.com/dcodeIO/ProtoBuf.js",
       "github": "https://github.com/dcodeIO/ProtoBuf.js",
       "languages": ["JavaScript"],
+      "relevance": 2,
       "stars": 10556,
       "pushedAt": "2026-06-10T14:55:26Z",
       "inactive": false
@@ -325,6 +347,7 @@
       "url": "https://github.com/tanmaykm/ProtoBuf.jl",
       "github": "https://github.com/tanmaykm/ProtoBuf.jl",
       "languages": ["Julia"],
+      "relevance": 2,
       "stars": 222,
       "pushedAt": "2026-06-08T20:33:01Z",
       "inactive": false
@@ -334,10 +357,11 @@
       "name": "php-protocolbuffers (PHP)",
       "owner": "chobie",
       "repo": "php-protocolbuffers",
-      "desc": "PHP: https://github.com/chobie/php-protocolbuffers",
+      "desc": "A high-performance PHP extension implementing Protocol Buffers for fast serialization and deserialization.",
       "url": "https://github.com/chobie/php-protocolbuffers",
       "github": "https://github.com/chobie/php-protocolbuffers",
       "languages": ["PHP"],
+      "relevance": 2,
       "stars": 127,
       "pushedAt": "2026-04-18T11:43:30Z",
       "inactive": false
@@ -347,10 +371,11 @@
       "name": "protobuf (Ruby)",
       "owner": "localshred",
       "repo": "protobuf",
-      "desc": "Ruby: https://github.com/localshred/protobuf",
+      "desc": "A native Ruby implementation of Protocol Buffers, providing message definitions and serialization support.",
       "url": "https://github.com/localshred/protobuf",
       "github": "https://github.com/localshred/protobuf",
       "languages": ["Ruby"],
+      "relevance": 2,
       "stars": 469,
       "pushedAt": "2024-01-12T19:41:17Z",
       "inactive": true
@@ -360,10 +385,11 @@
       "name": "rust-protobuf (Rust)",
       "owner": "stepancheg",
       "repo": "rust-protobuf",
-      "desc": "Rust: https://github.com/stepancheg/rust-protobuf/",
+      "desc": "A classic Rust implementation of Google Protocol Buffers, providing a code generator and runtime library.",
       "url": "https://github.com/stepancheg/rust-protobuf",
       "github": "https://github.com/stepancheg/rust-protobuf",
       "languages": ["Rust"],
+      "relevance": 2,
       "stars": 2972,
       "pushedAt": "2025-09-21T22:00:37Z",
       "inactive": false
@@ -377,6 +403,7 @@
       "url": "https://github.com/alexeyxo/protobuf-swift",
       "github": "https://github.com/alexeyxo/protobuf-swift",
       "languages": ["Swift"],
+      "relevance": 2,
       "stars": 938,
       "pushedAt": "2024-04-28T06:44:58Z",
       "inactive": true
@@ -390,6 +417,7 @@
       "url": "https://github.com/BaiduPS/sofa-pbrpc",
       "github": "https://github.com/BaiduPS/sofa-pbrpc",
       "languages": ["C++"],
+      "relevance": 1,
       "stars": 2142,
       "pushedAt": "2023-08-24T08:55:55Z",
       "inactive": true
@@ -403,6 +431,7 @@
       "url": "https://github.com/w359405949/libmaid",
       "github": "https://github.com/w359405949/libmaid",
       "languages": ["C++", "Python"],
+      "relevance": 1,
       "stars": 9,
       "pushedAt": "2015-10-26T14:43:16Z",
       "inactive": true
@@ -416,6 +445,7 @@
       "url": "https://github.com/madwyn/libpbrpc",
       "github": "https://github.com/madwyn/libpbrpc",
       "languages": ["C++"],
+      "relevance": 1,
       "stars": 29,
       "pushedAt": "2019-05-07T14:52:28Z",
       "inactive": true
@@ -429,6 +459,7 @@
       "url": "https://github.com/sijuv/protobuf-codec",
       "github": "https://github.com/sijuv/protobuf-codec",
       "languages": ["Agnostic"],
+      "relevance": 2,
       "stars": 42,
       "pushedAt": "2011-08-21T08:11:55Z",
       "inactive": true
@@ -442,6 +473,7 @@
       "url": "https://github.com/nnmatveev/idea-plugin-protobuf",
       "github": "https://github.com/nnmatveev/idea-plugin-protobuf",
       "languages": ["Agnostic"],
+      "relevance": 1,
       "stars": 118,
       "pushedAt": "2017-04-04T15:27:37Z",
       "inactive": true
@@ -455,6 +487,7 @@
       "url": "https://github.com/saadware/protobuf-cppbuilder",
       "github": "https://github.com/saadware/protobuf-cppbuilder",
       "languages": ["C++"],
+      "relevance": 2,
       "stars": 2,
       "pushedAt": "2015-05-02T01:01:06Z",
       "inactive": true
@@ -468,6 +501,7 @@
       "url": "https://github.com/sergei-ivanov/maven-protoc-plugin",
       "github": "https://github.com/sergei-ivanov/maven-protoc-plugin",
       "languages": ["Agnostic"],
+      "relevance": 1,
       "stars": 38,
       "pushedAt": "2016-02-25T13:34:30Z",
       "inactive": true
@@ -481,6 +515,7 @@
       "url": "https://github.com/os72/protoc-jar-maven-plugin",
       "github": "https://github.com/os72/protoc-jar-maven-plugin",
       "languages": ["Agnostic"],
+      "relevance": 1,
       "stars": 261,
       "pushedAt": "2023-04-27T14:21:30Z",
       "inactive": true
@@ -494,6 +529,7 @@
       "url": "https://github.com/dbcode/protobuf-nginx",
       "github": "https://github.com/dbcode/protobuf-nginx",
       "languages": ["Agnostic"],
+      "relevance": 1,
       "stars": 59,
       "pushedAt": "2013-05-27T16:47:38Z",
       "inactive": true
@@ -507,6 +543,7 @@
       "url": "https://github.com/Atry/sbt-cppp",
       "github": "https://github.com/Atry/sbt-cppp",
       "languages": ["Scala"],
+      "relevance": 1,
       "stars": 5,
       "pushedAt": "2015-08-05T09:40:41Z",
       "inactive": true
@@ -520,6 +557,7 @@
       "url": "https://github.com/aantono/gradle-plugin-protobuf",
       "github": "https://github.com/aantono/gradle-plugin-protobuf",
       "languages": ["Agnostic"],
+      "relevance": 1,
       "stars": 39,
       "pushedAt": "2015-03-23T19:24:41Z",
       "inactive": true
@@ -533,6 +571,7 @@
       "url": "https://github.com/os72/protoc-jar",
       "github": "https://github.com/os72/protoc-jar",
       "languages": ["Java"],
+      "relevance": 2,
       "stars": 148,
       "pushedAt": "2024-08-07T06:43:14Z",
       "inactive": true
@@ -546,6 +585,7 @@
       "url": "https://github.com/NextTuesday/py-pb-converters",
       "github": "https://github.com/NextTuesday/py-pb-converters",
       "languages": ["Python"],
+      "relevance": 2,
       "stars": 111,
       "pushedAt": "2023-01-11T11:19:16Z",
       "inactive": true
@@ -559,6 +599,7 @@
       "url": "https://github.com/yinqiwen/pbjson",
       "github": "https://github.com/yinqiwen/pbjson",
       "languages": ["C++"],
+      "relevance": 2,
       "stars": 160,
       "pushedAt": "2017-09-05T12:15:03Z",
       "inactive": true
@@ -572,6 +613,7 @@
       "url": "https://github.com/estan/protoc-gen-doc",
       "github": "https://github.com/estan/protoc-gen-doc",
       "languages": ["Agnostic"],
+      "relevance": 2,
       "stars": 2827,
       "pushedAt": "2025-02-11T14:03:18Z",
       "inactive": true
@@ -585,6 +627,7 @@
       "url": "https://github.com/protobufel/protobuf-el",
       "github": "https://github.com/protobufel/protobuf-el",
       "languages": ["Java"],
+      "relevance": 2,
       "stars": 13,
       "pushedAt": "2017-07-04T18:02:10Z",
       "inactive": true
@@ -598,6 +641,7 @@
       "url": "https://github.com/ckaznocha/protoc-gen-lint",
       "github": "https://github.com/ckaznocha/protoc-gen-lint",
       "languages": ["Agnostic"],
+      "relevance": 2,
       "stars": 289,
       "pushedAt": "2024-12-23T22:35:00Z",
       "inactive": true
@@ -611,6 +655,7 @@
       "url": "https://github.com/bufbuild/protobuf-es",
       "github": "https://github.com/bufbuild/protobuf-es",
       "languages": ["TypeScript", "JavaScript"],
+      "relevance": 2,
       "stars": 1605,
       "pushedAt": "2026-06-10T18:00:15Z",
       "inactive": false
@@ -624,6 +669,7 @@
       "url": "https://github.com/bufbuild/protoplugin",
       "github": "https://github.com/bufbuild/protoplugin",
       "languages": ["TypeScript", "JavaScript"],
+      "relevance": 2,
       "stars": 40,
       "pushedAt": "2026-04-14T12:58:20Z",
       "inactive": false
@@ -637,6 +683,7 @@
       "url": "https://github.com/connectrpc/connect-query-es",
       "github": "https://github.com/connectrpc/connect-query-es",
       "languages": ["TypeScript", "JavaScript"],
+      "relevance": 1,
       "stars": 371,
       "pushedAt": "2026-05-28T17:44:13Z",
       "inactive": false
@@ -650,6 +697,7 @@
       "url": "https://github.com/timostamm/protobuf-ts",
       "github": "https://github.com/timostamm/protobuf-ts",
       "languages": ["TypeScript", "JavaScript"],
+      "relevance": 2,
       "stars": 1342,
       "pushedAt": "2026-05-20T11:36:33Z",
       "inactive": false
@@ -663,6 +711,7 @@
       "url": "https://github.com/opendoor-labs/protoc-gen-graphql",
       "github": "https://github.com/opendoor-labs/protoc-gen-graphql",
       "languages": ["Agnostic"],
+      "relevance": 2,
       "stars": 51,
       "pushedAt": "2024-06-18T16:51:36Z",
       "inactive": true
@@ -676,6 +725,7 @@
       "url": "https://github.com/betterproto/python-betterproto2",
       "github": "https://github.com/betterproto/python-betterproto2",
       "languages": ["Python"],
+      "relevance": 2,
       "stars": 159,
       "pushedAt": "2026-06-02T22:24:14Z",
       "inactive": false
@@ -689,6 +739,7 @@
       "url": "https://github.com/grpc/grpc-web",
       "github": "https://github.com/grpc/grpc-web",
       "languages": ["TypeScript", "JavaScript"],
+      "relevance": 1,
       "stars": 9223,
       "pushedAt": "2026-06-09T13:15:54Z",
       "inactive": false
@@ -702,6 +753,7 @@
       "url": "https://github.com/grpc/grpc-node",
       "github": "https://github.com/grpc/grpc-node",
       "languages": ["TypeScript", "JavaScript"],
+      "relevance": 1,
       "stars": 4831,
       "pushedAt": "2026-05-20T18:04:03Z",
       "inactive": false
@@ -715,6 +767,7 @@
       "url": "https://protobuf-net.github.io/protobuf-net/",
       "github": "https://github.com/protobuf-net/protobuf-net",
       "languages": ["C#"],
+      "relevance": 2,
       "stars": 4953,
       "pushedAt": "2026-05-17T15:43:12Z",
       "inactive": false
@@ -728,6 +781,7 @@
       "url": "https://go-kratos.dev/",
       "github": "https://github.com/go-kratos/kratos",
       "languages": ["Go"],
+      "relevance": 1,
       "stars": 25726,
       "pushedAt": "2026-06-05T06:10:21Z",
       "inactive": false
@@ -741,7 +795,8 @@
       "url": "https://github.com/fullstorydev/grpcurl",
       "github": "https://github.com/fullstorydev/grpcurl",
       "languages": ["Agnostic"],
-      "stars": 12682,
+      "relevance": 1,
+      "stars": 12683,
       "pushedAt": "2026-06-10T17:57:11Z",
       "inactive": false
     },
@@ -754,6 +809,7 @@
       "url": "https://www.cloudwego.io/docs/kitex/",
       "github": "https://github.com/cloudwego/kitex",
       "languages": ["Go"],
+      "relevance": 1,
       "stars": 7972,
       "pushedAt": "2026-06-09T03:32:12Z",
       "inactive": false
@@ -767,6 +823,7 @@
       "url": "https://github.com/Kotlin/kotlinx.serialization",
       "github": "https://github.com/Kotlin/kotlinx.serialization",
       "languages": ["Kotlin"],
+      "relevance": 1,
       "stars": 5919,
       "pushedAt": "2026-06-10T16:06:09Z",
       "inactive": false
@@ -780,6 +837,7 @@
       "url": "https://typia.io/",
       "github": "https://github.com/samchon/typia",
       "languages": ["TypeScript", "JavaScript"],
+      "relevance": 1,
       "stars": 5823,
       "pushedAt": "2026-06-10T18:29:05Z",
       "inactive": false
@@ -793,8 +851,9 @@
       "url": "https://typespec.io/",
       "github": "https://github.com/microsoft/typespec",
       "languages": ["Agnostic"],
+      "relevance": 1,
       "stars": 5769,
-      "pushedAt": "2026-06-10T19:49:51Z",
+      "pushedAt": "2026-06-10T20:44:32Z",
       "inactive": false
     },
     {
@@ -806,6 +865,7 @@
       "url": "https://proto.actor/",
       "github": "https://github.com/asynkron/protoactor-go",
       "languages": ["Go"],
+      "relevance": 1,
       "stars": 5467,
       "pushedAt": "2026-04-08T21:41:59Z",
       "inactive": false
@@ -819,6 +879,7 @@
       "url": "https://github.com/uber/prototool",
       "github": "https://github.com/uber/prototool",
       "languages": ["Agnostic"],
+      "relevance": 2,
       "stars": 5037,
       "pushedAt": "2022-03-01T12:56:26Z",
       "inactive": true
@@ -832,6 +893,7 @@
       "url": "https://github.com/tokio-rs/prost",
       "github": "https://github.com/tokio-rs/prost",
       "languages": ["Rust"],
+      "relevance": 2,
       "stars": 4711,
       "pushedAt": "2026-06-07T10:12:23Z",
       "inactive": false
@@ -845,6 +907,7 @@
       "url": "https://github.com/davyxu/cellnet",
       "github": "https://github.com/davyxu/cellnet",
       "languages": ["Go"],
+      "relevance": 1,
       "stars": 4060,
       "pushedAt": "2024-03-14T09:01:56Z",
       "inactive": true
@@ -856,10 +919,14 @@
       "repo": "protobuf",
       "desc": "Google's language-neutral, platform-neutral, extensible mechanism for serializing structured data. Contains the protoc compiler, code generator stubs, and official runtimes.",
       "url": "https://protobuf.dev/",
-      "github": "https://github.com/protocolbuffers/protobuf",
-      "languages": ["C++", "C#", "C", "Java", "Objective-C", "Python"],
-      "stars": 71337,
-      "pushedAt": "2026-06-10T19:48:32Z",
+      "github": [
+        "https://github.com/protocolbuffers/protobuf",
+        "google.golang.org/protobuf"
+      ],
+      "languages": ["C++", "C#", "C", "Java", "Objective-C", "Python", "Go"],
+      "relevance": 4,
+      "stars": 71336,
+      "pushedAt": "2026-06-10T21:05:42Z",
       "inactive": false
     },
     {
@@ -871,6 +938,7 @@
       "url": "https://github.com/connectrpc/grpcreflect-go",
       "github": "https://github.com/connectrpc/grpcreflect-go",
       "languages": ["Go"],
+      "relevance": 1,
       "stars": 110,
       "pushedAt": "2026-01-23T14:04:50Z",
       "inactive": false
@@ -884,6 +952,7 @@
       "url": "https://github.com/connectrpc/grpchealth-go",
       "github": "https://github.com/connectrpc/grpchealth-go",
       "languages": ["Go"],
+      "relevance": 1,
       "stars": 95,
       "pushedAt": "2026-04-20T17:06:52Z",
       "inactive": false
@@ -897,6 +966,7 @@
       "url": "https://github.com/connectrpc/otelconnect-go",
       "github": "https://github.com/connectrpc/otelconnect-go",
       "languages": ["Go"],
+      "relevance": 1,
       "stars": 159,
       "pushedAt": "2026-04-13T22:47:19Z",
       "inactive": false
@@ -910,6 +980,7 @@
       "url": "https://github.com/connectrpc/examples-es",
       "github": "https://github.com/connectrpc/examples-es",
       "languages": ["TypeScript", "JavaScript"],
+      "relevance": 1,
       "stars": 164,
       "pushedAt": "2026-06-10T09:10:36Z",
       "inactive": false
@@ -923,6 +994,7 @@
       "url": "https://github.com/connectrpc/conformance",
       "github": "https://github.com/connectrpc/conformance",
       "languages": ["Agnostic"],
+      "relevance": 1,
       "stars": 90,
       "pushedAt": "2026-06-08T00:42:47Z",
       "inactive": false
@@ -936,6 +1008,7 @@
       "url": "https://github.com/connectrpc/vanguard-go",
       "github": "https://github.com/connectrpc/vanguard-go",
       "languages": ["Go"],
+      "relevance": 1,
       "stars": 399,
       "pushedAt": "2026-06-05T20:18:07Z",
       "inactive": false
@@ -949,8 +1022,9 @@
       "url": "https://insomnia.rest",
       "github": "https://github.com/Kong/insomnia",
       "languages": ["Agnostic"],
+      "relevance": 1,
       "stars": 38470,
-      "pushedAt": "2026-06-10T19:33:47Z",
+      "pushedAt": "2026-06-10T21:01:07Z",
       "inactive": false
     },
     {
@@ -962,6 +1036,7 @@
       "url": "https://learning.postman.com/docs/use/send-requests/protocols/grpc/first-grpc-request",
       "github": "https://github.com/postmanlabs/postman-app-support",
       "languages": ["Agnostic"],
+      "relevance": 1,
       "stars": 6002,
       "pushedAt": "2026-03-03T22:08:08Z",
       "inactive": false
@@ -975,6 +1050,7 @@
       "url": "https://k6.io",
       "github": "https://github.com/grafana/k6",
       "languages": ["Agnostic"],
+      "relevance": 1,
       "stars": 30778,
       "pushedAt": "2026-06-10T15:01:36Z",
       "inactive": false
@@ -988,6 +1064,7 @@
       "url": "https://github.com/open-toast/protokt",
       "github": "https://github.com/open-toast/protokt",
       "languages": ["Kotlin"],
+      "relevance": 2,
       "stars": 167,
       "pushedAt": "2026-06-01T05:46:52Z",
       "inactive": false
@@ -1001,8 +1078,9 @@
       "url": "https://www.wireshark.org",
       "github": "https://github.com/wireshark/wireshark",
       "languages": ["Agnostic"],
+      "relevance": 1,
       "stars": 9450,
-      "pushedAt": "2026-06-10T18:11:30Z",
+      "pushedAt": "2026-06-10T20:42:23Z",
       "inactive": false
     },
     {
@@ -1014,6 +1092,7 @@
       "url": "https://github.com/nilslice/protolock",
       "github": "https://github.com/nilslice/protolock",
       "languages": ["Agnostic"],
+      "relevance": 2,
       "stars": 633,
       "pushedAt": "2024-02-12T21:22:32Z",
       "inactive": true
@@ -1027,21 +1106,9 @@
       "url": "https://fauxrpc.com",
       "github": "https://github.com/sudorandom/fauxrpc",
       "languages": ["Agnostic"],
+      "relevance": 3,
       "stars": 129,
       "pushedAt": "2026-05-29T13:35:03Z",
-      "inactive": false
-    },
-    {
-      "category": "libraries",
-      "name": "google.golang.org/protobuf",
-      "owner": "protocolbuffers",
-      "repo": "protobuf-go",
-      "desc": "The official and current standard Go implementation for Protocol Buffers.",
-      "url": "https://protobuf.dev/reference/go/",
-      "github": "https://github.com/protocolbuffers/protobuf-go",
-      "languages": ["Go"],
-      "stars": 3329,
-      "pushedAt": "2026-01-20T15:10:56Z",
       "inactive": false
     },
     {
@@ -1053,6 +1120,7 @@
       "url": "https://github.com/richardartoul/molecule",
       "github": "https://github.com/richardartoul/molecule",
       "languages": ["Go"],
+      "relevance": 1,
       "stars": 418,
       "pushedAt": "2024-06-07T13:24:02Z",
       "inactive": true
@@ -1066,8 +1134,9 @@
       "url": "https://www.envoyproxy.io",
       "github": "https://github.com/envoyproxy/envoy",
       "languages": ["Agnostic"],
-      "stars": 28379,
-      "pushedAt": "2026-06-10T19:45:35Z",
+      "relevance": 1,
+      "stars": 28380,
+      "pushedAt": "2026-06-10T21:05:42Z",
       "inactive": false
     },
     {
@@ -1079,6 +1148,7 @@
       "url": "https://github.com/fullstorydev/grpcui",
       "github": "https://github.com/fullstorydev/grpcui",
       "languages": ["Agnostic"],
+      "relevance": 2,
       "stars": 5901,
       "pushedAt": "2026-06-10T18:08:00Z",
       "inactive": false
@@ -1092,6 +1162,7 @@
       "url": "https://kreya.app",
       "github": "https://github.com/riok/kreya",
       "languages": ["Agnostic"],
+      "relevance": 1,
       "stars": 340,
       "pushedAt": "2026-02-25T17:11:22Z",
       "inactive": false
@@ -1105,6 +1176,7 @@
       "url": "https://github.com/ktr0731/evans",
       "github": "https://github.com/ktr0731/evans",
       "languages": ["Agnostic"],
+      "relevance": 1,
       "stars": 4482,
       "pushedAt": "2023-12-26T08:27:59Z",
       "inactive": true
@@ -1118,7 +1190,8 @@
       "url": "https://github.com/hyperium/tonic",
       "github": "https://github.com/hyperium/tonic",
       "languages": ["Rust"],
-      "stars": 12273,
+      "relevance": 1,
+      "stars": 12274,
       "pushedAt": "2026-06-05T23:13:10Z",
       "inactive": false
     },
@@ -1131,6 +1204,7 @@
       "url": "https://github.com/stephenh/ts-proto",
       "github": "https://github.com/stephenh/ts-proto",
       "languages": ["TypeScript", "JavaScript"],
+      "relevance": 2,
       "stars": 2577,
       "pushedAt": "2026-05-07T14:02:54Z",
       "inactive": false
@@ -1144,8 +1218,9 @@
       "url": "https://github.com/apple/swift-protobuf",
       "github": "https://github.com/apple/swift-protobuf",
       "languages": ["Swift"],
+      "relevance": 2,
       "stars": 4928,
-      "pushedAt": "2026-06-10T19:49:37Z",
+      "pushedAt": "2026-06-10T20:32:25Z",
       "inactive": false
     },
     {
@@ -1157,6 +1232,7 @@
       "url": "https://github.com/grpc/grpc-swift",
       "github": "https://github.com/grpc/grpc-swift",
       "languages": ["Swift"],
+      "relevance": 1,
       "stars": 2239,
       "pushedAt": "2026-04-01T10:01:41Z",
       "inactive": false
@@ -1170,6 +1246,7 @@
       "url": "https://scalapb.github.io",
       "github": "https://github.com/scalapb/ScalaPB",
       "languages": ["Scala"],
+      "relevance": 2,
       "stars": 1336,
       "pushedAt": "2026-05-27T20:25:40Z",
       "inactive": false
@@ -1183,8 +1260,9 @@
       "url": "https://armeria.dev",
       "github": "https://github.com/line/armeria",
       "languages": ["Java", "Kotlin", "Scala"],
+      "relevance": 1,
       "stars": 5114,
-      "pushedAt": "2026-06-10T04:07:37Z",
+      "pushedAt": "2026-06-10T20:31:10Z",
       "inactive": false
     },
     {
@@ -1196,8 +1274,9 @@
       "url": "https://docs.confluent.io/platform/current/schema-registry/index.html",
       "github": "https://github.com/confluentinc/schema-registry",
       "languages": ["Agnostic"],
+      "relevance": 1,
       "stars": 2437,
-      "pushedAt": "2026-06-10T19:16:41Z",
+      "pushedAt": "2026-06-10T20:32:42Z",
       "inactive": false
     },
     {
@@ -1209,6 +1288,7 @@
       "url": "https://github.com/marin-m/pbtk",
       "github": "https://github.com/marin-m/pbtk",
       "languages": ["Agnostic"],
+      "relevance": 1,
       "stars": 1669,
       "pushedAt": "2026-05-19T22:40:01Z",
       "inactive": false
@@ -1222,6 +1302,7 @@
       "url": "https://github.com/nccgroup/blackboxprotobuf",
       "github": "https://github.com/nccgroup/blackboxprotobuf",
       "languages": ["Python"],
+      "relevance": 1,
       "stars": 722,
       "pushedAt": "2026-04-13T17:08:18Z",
       "inactive": false
@@ -1235,6 +1316,7 @@
       "url": "https://github.com/helsing-ai/buffrs",
       "github": "https://github.com/helsing-ai/buffrs",
       "languages": ["Agnostic"],
+      "relevance": 2,
       "stars": 369,
       "pushedAt": "2026-06-10T11:51:20Z",
       "inactive": false
@@ -1248,6 +1330,7 @@
       "url": "https://embeddedproto.com/",
       "github": "https://github.com/Embedded-AMS/EmbeddedProto",
       "languages": ["C++"],
+      "relevance": 2,
       "stars": 271,
       "pushedAt": "2026-05-22T17:52:38Z",
       "inactive": false
@@ -1261,6 +1344,7 @@
       "url": "https://grpcb.in/",
       "github": "https://github.com/moul/grpcbin",
       "languages": ["Agnostic"],
+      "relevance": 1,
       "stars": 169,
       "pushedAt": "2026-06-10T19:49:56Z",
       "inactive": false
@@ -1274,6 +1358,7 @@
       "url": "https://github.com/elixir-protobuf/protobuf",
       "github": "https://github.com/elixir-protobuf/protobuf",
       "languages": ["Elixir"],
+      "relevance": 2,
       "stars": 899,
       "pushedAt": "2026-06-08T09:31:34Z",
       "inactive": false
@@ -1287,6 +1372,7 @@
       "url": "https://github.com/ahamez/protox",
       "github": "https://github.com/ahamez/protox",
       "languages": ["Elixir"],
+      "relevance": 2,
       "stars": 297,
       "pushedAt": "2026-06-08T11:06:27Z",
       "inactive": false
@@ -1300,6 +1386,7 @@
       "url": "https://grpclib.readthedocs.io/",
       "github": "https://github.com/vmagamedov/grpclib",
       "languages": ["Python"],
+      "relevance": 1,
       "stars": 985,
       "pushedAt": "2025-12-14T22:22:50Z",
       "inactive": false
@@ -1313,6 +1400,7 @@
       "url": "https://pawitp.github.io/protobuf-decoder/",
       "github": "https://github.com/pawitp/protobuf-decoder",
       "languages": ["Agnostic"],
+      "relevance": 2,
       "stars": 661,
       "pushedAt": "2026-06-01T23:09:04Z",
       "inactive": false
@@ -1326,6 +1414,7 @@
       "url": "https://github.com/qaware/protocurl",
       "github": "https://github.com/qaware/protocurl",
       "languages": ["Agnostic"],
+      "relevance": 2,
       "stars": 251,
       "pushedAt": "2026-06-04T05:03:48Z",
       "inactive": false
@@ -1339,6 +1428,7 @@
       "url": "https://github.com/protocolbuffers/protobuf-javascript",
       "github": "https://github.com/protocolbuffers/protobuf-javascript",
       "languages": ["JavaScript"],
+      "relevance": 2,
       "stars": 467,
       "pushedAt": "2026-03-26T07:27:46Z",
       "inactive": false
@@ -1352,6 +1442,7 @@
       "url": "https://github.com/dart-lang/protobuf",
       "github": "https://github.com/dart-lang/protobuf",
       "languages": ["Dart"],
+      "relevance": 2,
       "stars": 572,
       "pushedAt": "2026-06-03T01:17:54Z",
       "inactive": false
@@ -1365,6 +1456,7 @@
       "url": "https://grpc.io/",
       "github": "https://github.com/grpc/grpc-go",
       "languages": ["Go"],
+      "relevance": 1,
       "stars": 22954,
       "pushedAt": "2026-06-09T19:44:29Z",
       "inactive": false
@@ -1378,6 +1470,7 @@
       "url": "https://grpc.io/",
       "github": "https://github.com/grpc/grpc-java",
       "languages": ["Java"],
+      "relevance": 1,
       "stars": 12027,
       "pushedAt": "2026-06-10T06:05:57Z",
       "inactive": false
@@ -1391,6 +1484,7 @@
       "url": "https://github.com/bufbuild/protoc-gen-validate",
       "github": "https://github.com/bufbuild/protoc-gen-validate",
       "languages": ["Go", "Java", "C++", "Python"],
+      "relevance": 2,
       "stars": 4122,
       "pushedAt": "2026-05-27T16:21:14Z",
       "inactive": false
@@ -1404,6 +1498,7 @@
       "url": "https://github.com/bufbuild/hyperpb-go",
       "github": "https://github.com/bufbuild/hyperpb-go",
       "languages": ["Go"],
+      "relevance": 2,
       "stars": 671,
       "pushedAt": "2026-03-19T00:27:16Z",
       "inactive": false
@@ -1417,6 +1512,7 @@
       "url": "https://github.com/matrix3d/JProtoc",
       "github": "https://github.com/matrix3d/JProtoc",
       "languages": ["Action Script"],
+      "relevance": 2,
       "stars": 9,
       "pushedAt": "2019-01-23T12:08:54Z",
       "inactive": true
@@ -1430,6 +1526,7 @@
       "url": "https://github.com/zhongfq/protobuf-as3",
       "github": "https://github.com/zhongfq/protobuf-as3",
       "languages": ["Action Script"],
+      "relevance": 2,
       "stars": 10,
       "pushedAt": "2016-07-02T06:40:48Z",
       "inactive": true
@@ -1443,6 +1540,7 @@
       "url": "https://github.com/reznikmm/protobuf",
       "github": "https://github.com/reznikmm/protobuf",
       "languages": ["Ada"],
+      "relevance": 2,
       "stars": 45,
       "pushedAt": "2026-04-19T10:32:26Z",
       "inactive": false
@@ -1456,6 +1554,7 @@
       "url": "https://github.com/nanopb/nanopb",
       "github": "https://github.com/nanopb/nanopb",
       "languages": ["C"],
+      "relevance": 2,
       "stars": 5432,
       "pushedAt": "2026-05-22T11:01:47Z",
       "inactive": false
@@ -1469,6 +1568,7 @@
       "url": "https://github.com/cloudwu/pbc",
       "github": "https://github.com/cloudwu/pbc",
       "languages": ["C"],
+      "relevance": 2,
       "stars": 1625,
       "pushedAt": "2022-11-03T03:00:02Z",
       "inactive": true
@@ -1482,6 +1582,7 @@
       "url": "https://github.com/eerimoq/pbtools",
       "github": "https://github.com/eerimoq/pbtools",
       "languages": ["C"],
+      "relevance": 2,
       "stars": 83,
       "pushedAt": "2024-04-06T15:11:06Z",
       "inactive": true
@@ -1495,6 +1596,7 @@
       "url": "https://github.com/tonda-kriz/simple-protobuf",
       "github": "https://github.com/tonda-kriz/simple-protobuf",
       "languages": ["C++"],
+      "relevance": 2,
       "stars": 22,
       "pushedAt": "2026-06-05T19:20:15Z",
       "inactive": false
@@ -1508,6 +1610,7 @@
       "url": "https://github.com/yksten/struct2x",
       "github": "https://github.com/yksten/struct2x",
       "languages": ["C++"],
+      "relevance": 2,
       "stars": 205,
       "pushedAt": "2025-10-22T12:33:48Z",
       "inactive": false
@@ -1521,6 +1624,7 @@
       "url": "http://spbc.sf.net",
       "github": "",
       "languages": ["C/C++"],
+      "relevance": 2,
       "stars": 0,
       "pushedAt": "1970-01-01T00:00:00.000Z",
       "inactive": true
@@ -1534,6 +1638,7 @@
       "url": "https://github.com/silentorbit/protobuf",
       "github": "https://github.com/silentorbit/protobuf",
       "languages": ["C#"],
+      "relevance": 2,
       "stars": 318,
       "pushedAt": "2022-08-26T06:54:43Z",
       "inactive": true
@@ -1547,6 +1652,7 @@
       "url": "https://github.com/ninjudd/clojure-protobuf",
       "github": "https://github.com/ninjudd/clojure-protobuf",
       "languages": ["Clojure"],
+      "relevance": 2,
       "stars": 219,
       "pushedAt": "2017-09-01T21:32:43Z",
       "inactive": true
@@ -1560,6 +1666,7 @@
       "url": "https://github.com/clojusc/protobuf",
       "github": "https://github.com/clojusc/protobuf",
       "languages": ["Clojure"],
+      "relevance": 2,
       "stars": 75,
       "pushedAt": "2022-05-07T10:48:50Z",
       "inactive": true
@@ -1573,6 +1680,7 @@
       "url": "https://github.com/protojure/lib",
       "github": "https://github.com/protojure/lib",
       "languages": ["Clojure"],
+      "relevance": 2,
       "stars": 68,
       "pushedAt": "2026-04-16T18:52:42Z",
       "inactive": false
@@ -1586,6 +1694,7 @@
       "url": "https://github.com/s-expresso/clojobuf",
       "github": "https://github.com/s-expresso/clojobuf",
       "languages": ["Clojure", "ClojureScript"],
+      "relevance": 2,
       "stars": 25,
       "pushedAt": "2025-06-25T23:47:54Z",
       "inactive": false
@@ -1599,6 +1708,7 @@
       "url": "https://github.com/brown/protobuf",
       "github": "https://github.com/brown/protobuf",
       "languages": ["Common Lisp"],
+      "relevance": 2,
       "stars": 115,
       "pushedAt": "2023-03-24T23:52:11Z",
       "inactive": true
@@ -1612,6 +1722,7 @@
       "url": "https://github.com/qitab/cl-protobufs",
       "github": "https://github.com/qitab/cl-protobufs",
       "languages": ["Common Lisp"],
+      "relevance": 2,
       "stars": 91,
       "pushedAt": "2026-06-10T14:38:37Z",
       "inactive": false
@@ -1625,6 +1736,7 @@
       "url": "https://github.com/dcarp/protobuf-d",
       "github": "https://github.com/dcarp/protobuf-d",
       "languages": ["D"],
+      "relevance": 2,
       "stars": 39,
       "pushedAt": "2026-06-10T12:00:29Z",
       "inactive": false
@@ -1638,6 +1750,7 @@
       "url": "https://github.com/msoucy/dproto",
       "github": "https://github.com/msoucy/dproto",
       "languages": ["D"],
+      "relevance": 2,
       "stars": 38,
       "pushedAt": "2020-05-02T23:36:33Z",
       "inactive": true
@@ -1651,6 +1764,7 @@
       "url": "https://github.com/opticron/ProtocolBuffer",
       "github": "https://github.com/opticron/ProtocolBuffer",
       "languages": ["D"],
+      "relevance": 2,
       "stars": 16,
       "pushedAt": "2016-07-30T21:12:02Z",
       "inactive": true
@@ -1664,6 +1778,7 @@
       "url": "http://sourceforge.net/projects/protobuf-delphi",
       "github": "",
       "languages": ["Delphi"],
+      "relevance": 2,
       "stars": 0,
       "pushedAt": "1970-01-01T00:00:00.000Z",
       "inactive": true
@@ -1677,6 +1792,7 @@
       "url": "https://github.com/tony612/protobuf-elixir",
       "github": "https://github.com/tony612/protobuf-elixir",
       "languages": ["Elixir"],
+      "relevance": 2,
       "stars": 899,
       "pushedAt": "2026-06-08T09:31:34Z",
       "inactive": false
@@ -1690,6 +1806,7 @@
       "url": "https://github.com/tiziano88/elm-protobuf",
       "github": "https://github.com/tiziano88/elm-protobuf",
       "languages": ["Elm"],
+      "relevance": 2,
       "stars": 94,
       "pushedAt": "2022-11-14T03:55:36Z",
       "inactive": true
@@ -1703,6 +1820,7 @@
       "url": "https://github.com/tomas-abrahamsson/gpb",
       "github": "https://github.com/tomas-abrahamsson/gpb",
       "languages": ["Erlang"],
+      "relevance": 2,
       "stars": 578,
       "pushedAt": "2026-05-27T20:15:53Z",
       "inactive": false
@@ -1716,6 +1834,7 @@
       "url": "https://github.com/basho/erlang_protobuffs",
       "github": "https://github.com/basho/erlang_protobuffs",
       "languages": ["Erlang"],
+      "relevance": 2,
       "stars": 393,
       "pushedAt": "2020-07-10T14:00:30Z",
       "inactive": true
@@ -1729,6 +1848,7 @@
       "url": "https://github.com/y3llowcake/proto-hack",
       "github": "https://github.com/y3llowcake/proto-hack",
       "languages": ["Hacklang/HHVM"],
+      "relevance": 2,
       "stars": 4,
       "pushedAt": "2021-05-04T16:30:50Z",
       "inactive": true
@@ -1742,6 +1862,7 @@
       "url": "https://github.com/oniksan/godobuf",
       "github": "https://github.com/oniksan/godobuf",
       "languages": ["GDScript"],
+      "relevance": 2,
       "stars": 391,
       "pushedAt": "2026-05-06T14:57:24Z",
       "inactive": false
@@ -1755,6 +1876,7 @@
       "url": "https://github.com/golang/protobuf",
       "github": "https://github.com/golang/protobuf",
       "languages": ["Go"],
+      "relevance": 2,
       "stars": 10072,
       "pushedAt": "2024-08-05T20:04:08Z",
       "inactive": true
@@ -1768,6 +1890,7 @@
       "url": "https://github.com/akunspy/gopbuf",
       "github": "https://github.com/akunspy/gopbuf",
       "languages": ["Go"],
+      "relevance": 2,
       "stars": 19,
       "pushedAt": "2014-02-24T11:04:55Z",
       "inactive": true
@@ -1781,6 +1904,7 @@
       "url": "https://github.com/gogo/protobuf",
       "github": "https://github.com/gogo/protobuf",
       "languages": ["Go"],
+      "relevance": 2,
       "stars": 5670,
       "pushedAt": "2023-07-27T11:52:49Z",
       "inactive": true
@@ -1794,6 +1918,7 @@
       "url": "https://github.com/johanbrandhorst/protobuf",
       "github": "https://github.com/johanbrandhorst/protobuf",
       "languages": ["GopherJS"],
+      "relevance": 2,
       "stars": 81,
       "pushedAt": "2019-11-25T09:20:22Z",
       "inactive": true
@@ -1807,6 +1932,7 @@
       "url": "https://hackage.haskell.org/package/hprotoc",
       "github": "",
       "languages": ["Haskell"],
+      "relevance": 2,
       "stars": 0,
       "pushedAt": "1970-01-01T00:00:00.000Z",
       "inactive": true
@@ -1820,6 +1946,7 @@
       "url": "https://github.com/google/proto-lens",
       "github": "https://github.com/google/proto-lens",
       "languages": ["Haskell"],
+      "relevance": 2,
       "stars": 508,
       "pushedAt": "2026-05-02T00:11:42Z",
       "inactive": false
@@ -1833,6 +1960,7 @@
       "url": "https://github.com/awakesecurity/proto3-suite",
       "github": "https://github.com/awakesecurity/proto3-suite",
       "languages": ["Haskell"],
+      "relevance": 2,
       "stars": 83,
       "pushedAt": "2026-05-27T17:23:52Z",
       "inactive": false
@@ -1846,6 +1974,7 @@
       "url": "https://github.com/Atry/protoc-gen-haxe",
       "github": "https://github.com/Atry/protoc-gen-haxe",
       "languages": ["Haxe"],
+      "relevance": 2,
       "stars": 37,
       "pushedAt": "2015-07-22T19:05:39Z",
       "inactive": true
@@ -1859,6 +1988,7 @@
       "url": "https://github.com/HebiRobotics/QuickBuffers",
       "github": "https://github.com/HebiRobotics/QuickBuffers",
       "languages": ["Java"],
+      "relevance": 2,
       "stars": 136,
       "pushedAt": "2024-09-19T16:21:54Z",
       "inactive": true
@@ -1872,6 +2002,7 @@
       "url": "http://swingme.sourceforge.net/encode.shtml",
       "github": "",
       "languages": ["Java ME"],
+      "relevance": 2,
       "stars": 0,
       "pushedAt": "1970-01-01T00:00:00.000Z",
       "inactive": true
@@ -1885,6 +2016,7 @@
       "url": "https://github.com/sirikata/protojs",
       "github": "https://github.com/sirikata/protojs",
       "languages": ["Javascript"],
+      "relevance": 2,
       "stars": 210,
       "pushedAt": "2013-11-22T18:44:12Z",
       "inactive": true
@@ -1898,6 +2030,7 @@
       "url": "https://github.com/seishun/node-protoc-plugin",
       "github": "https://github.com/seishun/node-protoc-plugin",
       "languages": ["Javascript"],
+      "relevance": 2,
       "stars": 3,
       "pushedAt": "2020-08-07T09:36:01Z",
       "inactive": true
@@ -1911,6 +2044,7 @@
       "url": "https://github.com/seishun/node-protoc-gen-javascript",
       "github": "https://github.com/seishun/node-protoc-gen-javascript",
       "languages": ["Javascript"],
+      "relevance": 2,
       "stars": 2,
       "pushedAt": "2020-08-07T10:58:03Z",
       "inactive": true
@@ -1924,6 +2058,7 @@
       "url": "https://github.com/ButterCam/sisyphus-js",
       "github": "https://github.com/ButterCam/sisyphus-js",
       "languages": ["Javascript"],
+      "relevance": 2,
       "stars": 24,
       "pushedAt": "2023-09-08T07:38:16Z",
       "inactive": true
@@ -1937,6 +2072,7 @@
       "url": "https://github.com/JuliaIO/ProtoBuf.jl",
       "github": "https://github.com/JuliaIO/ProtoBuf.jl",
       "languages": ["Julia"],
+      "relevance": 2,
       "stars": 222,
       "pushedAt": "2026-06-08T20:33:01Z",
       "inactive": false
@@ -1950,6 +2086,7 @@
       "url": "https://github.com/marcoferrer/kroto-plus",
       "github": "https://github.com/marcoferrer/kroto-plus",
       "languages": ["Kotlin"],
+      "relevance": 2,
       "stars": 492,
       "pushedAt": "2020-12-18T08:55:26Z",
       "inactive": true
@@ -1963,6 +2100,7 @@
       "url": "https://github.com/ButterCam/sisyphus",
       "github": "https://github.com/ButterCam/sisyphus",
       "languages": ["Kotlin"],
+      "relevance": 1,
       "stars": 100,
       "pushedAt": "2024-04-08T21:08:26Z",
       "inactive": true
@@ -1976,6 +2114,7 @@
       "url": "https://github.com/streem/pbandk",
       "github": "https://github.com/streem/pbandk",
       "languages": ["Kotlin Multiplatform"],
+      "relevance": 2,
       "stars": 297,
       "pushedAt": "2026-01-23T08:22:43Z",
       "inactive": false
@@ -1989,6 +2128,7 @@
       "url": "https://github.com/indygreg/lua-protobuf",
       "github": "https://github.com/indygreg/lua-protobuf",
       "languages": ["Lua"],
+      "relevance": 2,
       "stars": 89,
       "pushedAt": "2020-04-09T10:32:44Z",
       "inactive": true
@@ -2002,6 +2142,7 @@
       "url": "https://github.com/Neopallium/lua-pb",
       "github": "https://github.com/Neopallium/lua-pb",
       "languages": ["Lua"],
+      "relevance": 2,
       "stars": 293,
       "pushedAt": "2018-05-31T14:59:37Z",
       "inactive": true
@@ -2015,6 +2156,7 @@
       "url": "https://github.com/alexeyxo/protobuf-objc",
       "github": "https://github.com/alexeyxo/protobuf-objc",
       "languages": ["Objective C"],
+      "relevance": 2,
       "stars": 668,
       "pushedAt": "2018-05-11T20:42:44Z",
       "inactive": true
@@ -2028,6 +2170,7 @@
       "url": "http://groups.google.com/group/protobuf-perl",
       "github": "",
       "languages": ["Perl"],
+      "relevance": 2,
       "stars": 0,
       "pushedAt": "1970-01-01T00:00:00.000Z",
       "inactive": true
@@ -2041,6 +2184,7 @@
       "url": "https://metacpan.org/pod/Google::ProtocolBuffers",
       "github": "",
       "languages": ["Perl"],
+      "relevance": 2,
       "stars": 0,
       "pushedAt": "1970-01-01T00:00:00.000Z",
       "inactive": true
@@ -2054,6 +2198,7 @@
       "url": "https://github.com/mbarbon/google-protobuf-dynamic",
       "github": "https://github.com/mbarbon/google-protobuf-dynamic",
       "languages": ["Perl"],
+      "relevance": 2,
       "stars": 34,
       "pushedAt": "2024-06-04T09:24:37Z",
       "inactive": true
@@ -2067,6 +2212,7 @@
       "url": "https://github.com/allegro/php-protobuf",
       "github": "https://github.com/allegro/php-protobuf",
       "languages": ["PHP"],
+      "relevance": 2,
       "stars": 910,
       "pushedAt": "2021-01-12T07:01:07Z",
       "inactive": true
@@ -2080,6 +2226,7 @@
       "url": "https://github.com/mycroftjr/protoc-gen-proto",
       "github": "https://github.com/mycroftjr/protoc-gen-proto",
       "languages": ["Protobuf"],
+      "relevance": 2,
       "stars": 1,
       "pushedAt": "2023-07-18T01:40:24Z",
       "inactive": true
@@ -2093,6 +2240,7 @@
       "url": "http://www.swi-prolog.org/pldoc/package/protobufs.html",
       "github": "",
       "languages": ["Prolog"],
+      "relevance": 2,
       "stars": 0,
       "pushedAt": "1970-01-01T00:00:00.000Z",
       "inactive": true
@@ -2106,6 +2254,7 @@
       "url": "https://github.com/xc-jp/purescript-protobuf",
       "github": "https://github.com/xc-jp/purescript-protobuf",
       "languages": ["Purescript"],
+      "relevance": 2,
       "stars": 56,
       "pushedAt": "2025-03-12T03:06:57Z",
       "inactive": true
@@ -2119,6 +2268,7 @@
       "url": "https://github.com/eigenein/protobuf",
       "github": "https://github.com/eigenein/protobuf",
       "languages": ["Python"],
+      "relevance": 2,
       "stars": 290,
       "pushedAt": "2026-05-14T18:13:30Z",
       "inactive": false
@@ -2132,6 +2282,7 @@
       "url": "https://github.com/danielgtaylor/python-betterproto",
       "github": "https://github.com/danielgtaylor/python-betterproto",
       "languages": ["Python"],
+      "relevance": 2,
       "stars": 1767,
       "pushedAt": "2025-07-17T12:50:40Z",
       "inactive": false
@@ -2145,6 +2296,7 @@
       "url": "http://cran.r-project.org/package=RProtoBuf",
       "github": "",
       "languages": ["R"],
+      "relevance": 2,
       "stars": 0,
       "pushedAt": "1970-01-01T00:00:00.000Z",
       "inactive": true
@@ -2158,6 +2310,7 @@
       "url": "https://github.com/mozy/ruby-protocol-buffers",
       "github": "https://github.com/mozy/ruby-protocol-buffers",
       "languages": ["Ruby"],
+      "relevance": 2,
       "stars": 58,
       "pushedAt": "2013-02-20T23:49:13Z",
       "inactive": true
@@ -2171,6 +2324,7 @@
       "url": "https://github.com/bmizerany/beefcake",
       "github": "https://github.com/bmizerany/beefcake",
       "languages": ["Ruby"],
+      "relevance": 2,
       "stars": 274,
       "pushedAt": "2016-08-15T22:43:08Z",
       "inactive": true
@@ -2184,6 +2338,7 @@
       "url": "https://github.com/tafia/quick-protobuf",
       "github": "https://github.com/tafia/quick-protobuf",
       "languages": ["Rust"],
+      "relevance": 2,
       "stars": 472,
       "pushedAt": "2024-02-14T05:48:24Z",
       "inactive": true
@@ -2197,6 +2352,7 @@
       "url": "https://github.com/jeffplaisance/scala-protobuf",
       "github": "https://github.com/jeffplaisance/scala-protobuf",
       "languages": ["Scala"],
+      "relevance": 2,
       "stars": 42,
       "pushedAt": "2010-08-18T05:41:20Z",
       "inactive": true
@@ -2210,6 +2366,7 @@
       "url": "https://github.com/SandroGrzicic/ScalaBuff",
       "github": "https://github.com/SandroGrzicic/ScalaBuff",
       "languages": ["Scala"],
+      "relevance": 2,
       "stars": 219,
       "pushedAt": "2017-08-18T01:06:05Z",
       "inactive": true
@@ -2223,6 +2380,7 @@
       "url": "https://github.com/celer-network/pb3-gen-sol",
       "github": "https://github.com/celer-network/pb3-gen-sol",
       "languages": ["Solidity"],
+      "relevance": 2,
       "stars": 16,
       "pushedAt": "2026-05-01T00:05:56Z",
       "inactive": false
@@ -2236,6 +2394,7 @@
       "url": "https://github.com/improbable-eng/ts-protoc-gen",
       "github": "https://github.com/improbable-eng/ts-protoc-gen",
       "languages": ["Typescript"],
+      "relevance": 2,
       "stars": 1397,
       "pushedAt": "2026-01-21T23:30:21Z",
       "inactive": false
@@ -2249,6 +2408,7 @@
       "url": "https://github.com/thesayyn/protoc-gen-ts",
       "github": "https://github.com/thesayyn/protoc-gen-ts",
       "languages": ["Typescript"],
+      "relevance": 2,
       "stars": 405,
       "pushedAt": "2026-03-19T00:09:38Z",
       "inactive": false
@@ -2262,6 +2422,7 @@
       "url": "https://github.com/pbkit/pbkit",
       "github": "https://github.com/pbkit/pbkit",
       "languages": ["Typescript"],
+      "relevance": 2,
       "stars": 340,
       "pushedAt": "2025-05-18T14:39:36Z",
       "inactive": true
@@ -2275,6 +2436,7 @@
       "url": "https://launchpad.net/protobuf-vala",
       "github": "",
       "languages": ["Vala"],
+      "relevance": 2,
       "stars": 0,
       "pushedAt": "1970-01-01T00:00:00.000Z",
       "inactive": true
@@ -2288,6 +2450,7 @@
       "url": "https://github.com/Arwalk/zig-protobuf",
       "github": "https://github.com/Arwalk/zig-protobuf",
       "languages": ["Zig"],
+      "relevance": 2,
       "stars": 409,
       "pushedAt": "2026-06-08T22:08:48Z",
       "inactive": false
@@ -2301,6 +2464,7 @@
       "url": "https://github.com/protocolbuffers/protoscope",
       "github": "https://github.com/protocolbuffers/protoscope",
       "languages": ["Go"],
+      "relevance": 2,
       "stars": 430,
       "pushedAt": "2024-03-13T21:46:35Z",
       "inactive": true

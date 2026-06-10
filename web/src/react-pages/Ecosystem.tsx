@@ -154,9 +154,13 @@ const Ecosystem = () => {
   const [searchTerm, setSearchTerm] = useState(() =>
     getQueryParam("search", ""),
   );
-  const [sortBy, setSortBy] = useState<"stars" | "name" | "updated">(() => {
-    const val = getQueryParam("sort", "stars");
-    return ["stars", "name", "updated"].includes(val) ? (val as any) : "stars";
+  const [sortBy, setSortBy] = useState<
+    "stars" | "name" | "updated" | "default"
+  >(() => {
+    const val = getQueryParam("sort", "default");
+    return ["stars", "name", "updated", "default"].includes(val)
+      ? (val as any)
+      : "default";
   });
   const [sortDirection, setSortDirection] = useState<"desc" | "asc">(() => {
     const val = getQueryParam("direction", "desc");
@@ -185,7 +189,7 @@ const Ecosystem = () => {
     if (selectedCategory !== "all") params.set("category", selectedCategory);
     if (searchTerm) params.set("search", searchTerm);
     if (selectedLanguage !== "all") params.set("lang", selectedLanguage);
-    if (sortBy !== "stars") params.set("sort", sortBy);
+    if (sortBy !== "default") params.set("sort", sortBy);
     if (sortDirection !== "desc") params.set("direction", sortDirection);
     if (statusFilter !== "all") params.set("status", statusFilter);
     if (currentPage > 1) params.set("page", currentPage.toString());
@@ -242,7 +246,7 @@ const Ecosystem = () => {
     setCurrentPage(1);
   };
 
-  const handleSetSortBy = (sort: "stars" | "name" | "updated") => {
+  const handleSetSortBy = (sort: "stars" | "name" | "updated" | "default") => {
     setSortBy(sort);
     setCurrentPage(1);
   };
@@ -406,7 +410,19 @@ const Ecosystem = () => {
       })
       .sort((a, b) => {
         let comparison = 0;
-        if (sortBy === "stars") {
+        if (sortBy === "default") {
+          const relA = (a as any).relevance || 0;
+          const relB = (b as any).relevance || 0;
+          if (relA !== relB) {
+            comparison = relA - relB;
+          } else if (a.stars !== b.stars) {
+            comparison = a.stars - b.stars;
+          } else {
+            comparison = b.name
+              .toLowerCase()
+              .localeCompare(a.name.toLowerCase());
+          }
+        } else if (sortBy === "stars") {
           comparison = a.stars - b.stars;
         } else if (sortBy === "name") {
           comparison = a.name.toLowerCase().localeCompare(b.name.toLowerCase());
@@ -654,53 +670,57 @@ const Ecosystem = () => {
                 {/* Sorting */}
                 <div className="space-y-2">
                   <h2 className="text-[10px] font-mono text-[var(--text-dim)]/80 uppercase tracking-widest font-bold">
-                    Sort Projects
+                    Sort
                   </h2>
                   <div className="flex gap-2">
-                    <div className="flex-1 flex p-1 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg gap-1">
-                      <button
-                        onClick={() => {
-                          handleSetSortBy("stars");
-                          handleSetSortDirection("desc");
+                    <div className="relative flex-1">
+                      <select
+                        value={sortBy}
+                        onChange={(e) => {
+                          const val = e.target.value as any;
+                          handleSetSortBy(val);
+                          handleSetSortDirection(
+                            val === "name" ? "asc" : "desc",
+                          );
                         }}
-                        className={`flex-1 py-1.5 text-[10px] font-cyber font-bold uppercase rounded-md transition-all ${
-                          sortBy === "stars"
-                            ? "bg-[var(--cyber-neon-blue)]/20 text-[var(--cyber-neon-blue)]"
-                            : "text-[var(--text-dim)] hover:text-[var(--text-color)]"
-                        }`}
-                      >
-                        Stars
-                      </button>
-                      <button
-                        onClick={() => {
-                          handleSetSortBy("updated");
-                          handleSetSortDirection("desc");
+                        aria-label="Sort Projects"
+                        className="w-full pl-3 pr-8 py-2.5 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg text-xs font-cyber font-bold uppercase tracking-wider text-[var(--text-color)] focus:outline-none focus:border-[var(--cyber-neon-blue)] focus:ring-1 focus:ring-[var(--cyber-neon-blue)] transition-colors appearance-none cursor-pointer"
+                        style={{
+                          backgroundImage: `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%238892b0' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E")`,
+                          backgroundPosition: "right 0.75rem center",
+                          backgroundSize: "1em 1em",
+                          backgroundRepeat: "no-repeat",
                         }}
-                        className={`flex-1 py-1.5 text-[10px] font-cyber font-bold uppercase rounded-md transition-all ${
-                          sortBy === "updated"
-                            ? "bg-[var(--cyber-neon-blue)]/20 text-[var(--cyber-neon-blue)]"
-                            : "text-[var(--text-dim)] hover:text-[var(--text-color)]"
-                        }`}
                       >
-                        Updated
-                      </button>
-                      <button
-                        onClick={() => {
-                          handleSetSortBy("name");
-                          handleSetSortDirection("asc");
-                        }}
-                        className={`flex-1 py-1.5 text-[10px] font-cyber font-bold uppercase rounded-md transition-all ${
-                          sortBy === "name"
-                            ? "bg-[var(--cyber-neon-blue)]/20 text-[var(--cyber-neon-blue)]"
-                            : "text-[var(--text-dim)] hover:text-[var(--text-color)]"
-                        }`}
-                      >
-                        A-Z
-                      </button>
+                        <option
+                          value="default"
+                          className="bg-[var(--panel-bg)] text-[var(--text-color)]"
+                        >
+                          Relevance
+                        </option>
+                        <option
+                          value="stars"
+                          className="bg-[var(--panel-bg)] text-[var(--text-color)]"
+                        >
+                          Stars
+                        </option>
+                        <option
+                          value="updated"
+                          className="bg-[var(--panel-bg)] text-[var(--text-color)]"
+                        >
+                          Updated
+                        </option>
+                        <option
+                          value="name"
+                          className="bg-[var(--panel-bg)] text-[var(--text-color)]"
+                        >
+                          Name (A-Z)
+                        </option>
+                      </select>
                     </div>
                     <button
                       onClick={toggleSortDirection}
-                      className="px-3 border border-[var(--border-light)] rounded-lg text-[var(--text-dim)] hover:text-[var(--text-color)] bg-[var(--overlay-bg)] flex items-center justify-center"
+                      className="px-3 border border-[var(--border-light)] rounded-lg text-[var(--text-dim)] hover:text-[var(--text-color)] bg-[var(--overlay-bg)] flex items-center justify-center hover:border-[var(--cyber-neon-blue)] transition-all"
                     >
                       <ArrowUpDown
                         className={`w-3.5 h-3.5 transition-transform duration-200 ${sortDirection === "asc" ? "rotate-180" : ""}`}
@@ -904,49 +924,53 @@ const Ecosystem = () => {
                 {/* Sort selector */}
                 <div className="space-y-2.5">
                   <h2 className="text-[10px] font-mono text-[var(--text-dim)]/80 uppercase tracking-widest font-bold">
-                    Sort Projects
+                    Sort
                   </h2>
                   <div className="flex flex-col gap-2">
-                    <div className="flex p-1 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg gap-1">
-                      <button
-                        onClick={() => {
-                          handleSetSortBy("stars");
-                          handleSetSortDirection("desc");
+                    <div className="relative">
+                      <select
+                        value={sortBy}
+                        onChange={(e) => {
+                          const val = e.target.value as any;
+                          handleSetSortBy(val);
+                          handleSetSortDirection(
+                            val === "name" ? "asc" : "desc",
+                          );
                         }}
-                        className={`flex-1 py-1.5 text-xs font-cyber font-bold uppercase rounded-md transition-all ${
-                          sortBy === "stars"
-                            ? "bg-[var(--cyber-neon-blue)]/20 text-[var(--cyber-neon-blue)] font-bold"
-                            : "text-[var(--text-dim)] hover:text-[var(--text-color)]"
-                        }`}
-                      >
-                        Stars
-                      </button>
-                      <button
-                        onClick={() => {
-                          handleSetSortBy("updated");
-                          handleSetSortDirection("desc");
+                        aria-label="Sort Projects"
+                        className="w-full pl-3 pr-8 py-2 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg text-xs font-cyber font-bold uppercase tracking-wider text-[var(--text-color)] focus:outline-none focus:border-[var(--cyber-neon-blue)] focus:ring-1 focus:ring-[var(--cyber-neon-blue)] transition-colors appearance-none cursor-pointer"
+                        style={{
+                          backgroundImage: `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%238892b0' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E")`,
+                          backgroundPosition: "right 0.75rem center",
+                          backgroundSize: "1em 1em",
+                          backgroundRepeat: "no-repeat",
                         }}
-                        className={`flex-1 py-1.5 text-xs font-cyber font-bold uppercase rounded-md transition-all ${
-                          sortBy === "updated"
-                            ? "bg-[var(--cyber-neon-blue)]/20 text-[var(--cyber-neon-blue)] font-bold"
-                            : "text-[var(--text-dim)] hover:text-[var(--text-color)]"
-                        }`}
                       >
-                        Updated
-                      </button>
-                      <button
-                        onClick={() => {
-                          handleSetSortBy("name");
-                          handleSetSortDirection("asc");
-                        }}
-                        className={`flex-1 py-1.5 text-xs font-cyber font-bold uppercase rounded-md transition-all ${
-                          sortBy === "name"
-                            ? "bg-[var(--cyber-neon-blue)]/20 text-[var(--cyber-neon-blue)] font-bold"
-                            : "text-[var(--text-dim)] hover:text-[var(--text-color)]"
-                        }`}
-                      >
-                        A-Z
-                      </button>
+                        <option
+                          value="default"
+                          className="bg-[var(--panel-bg)] text-[var(--text-color)]"
+                        >
+                          Relevance
+                        </option>
+                        <option
+                          value="stars"
+                          className="bg-[var(--panel-bg)] text-[var(--text-color)]"
+                        >
+                          Stars
+                        </option>
+                        <option
+                          value="updated"
+                          className="bg-[var(--panel-bg)] text-[var(--text-color)]"
+                        >
+                          Updated
+                        </option>
+                        <option
+                          value="name"
+                          className="bg-[var(--panel-bg)] text-[var(--text-color)]"
+                        >
+                          Name (A-Z)
+                        </option>
+                      </select>
                     </div>
 
                     <button
