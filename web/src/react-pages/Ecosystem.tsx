@@ -1125,34 +1125,36 @@ const Ecosystem = () => {
                       Prev
                     </button>
 
-                    {getPageNumbers(activePage, totalPages).map((pItem, idx) => {
-                      if (pItem === "...") {
-                        return (
-                          <span
-                            key={`ellipsis-top-${idx}`}
-                            className="w-8 h-8 flex items-center justify-center text-xs font-mono text-[var(--text-dim)]/60"
-                          >
-                            ...
-                          </span>
-                        );
-                      }
+                    {getPageNumbers(activePage, totalPages).map(
+                      (pItem, idx) => {
+                        if (pItem === "...") {
+                          return (
+                            <span
+                              key={`ellipsis-top-${idx}`}
+                              className="w-8 h-8 flex items-center justify-center text-xs font-mono text-[var(--text-dim)]/60"
+                            >
+                              ...
+                            </span>
+                          );
+                        }
 
-                      const pNum = pItem as number;
-                      const isPageActive = activePage === pNum;
-                      return (
-                        <button
-                          key={pNum}
-                          onClick={() => handlePageChange(pNum, false)}
-                          className={`w-8 h-8 flex items-center justify-center text-xs font-cyber font-bold rounded-md transition-all border ${
-                            isPageActive
-                              ? "bg-[var(--cyber-neon-blue)] text-[var(--neon-contrast-text)] border-[var(--cyber-neon-blue)] shadow-[0_0_10px_rgba(0,243,255,0.2)]"
-                              : "bg-transparent text-[var(--text-dim)] border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)] hover:text-[var(--text-color)]"
-                          }`}
-                        >
-                          {pNum}
-                        </button>
-                      );
-                    })}
+                        const pNum = pItem as number;
+                        const isPageActive = activePage === pNum;
+                        return (
+                          <button
+                            key={pNum}
+                            onClick={() => handlePageChange(pNum, false)}
+                            className={`w-8 h-8 flex items-center justify-center text-xs font-cyber font-bold rounded-md transition-all border ${
+                              isPageActive
+                                ? "bg-[var(--cyber-neon-blue)] text-[var(--neon-contrast-text)] border-[var(--cyber-neon-blue)] shadow-[0_0_10px_rgba(0,243,255,0.2)]"
+                                : "bg-transparent text-[var(--text-dim)] border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)] hover:text-[var(--text-color)]"
+                            }`}
+                          >
+                            {pNum}
+                          </button>
+                        );
+                      },
+                    )}
 
                     <button
                       disabled={activePage === totalPages}
@@ -1364,34 +1366,36 @@ const Ecosystem = () => {
                       Prev
                     </button>
 
-                    {getPageNumbers(activePage, totalPages).map((pItem, idx) => {
-                      if (pItem === "...") {
-                        return (
-                          <span
-                            key={`ellipsis-bottom-${idx}`}
-                            className="w-8 h-8 flex items-center justify-center text-xs font-mono text-[var(--text-dim)]/60"
-                          >
-                            ...
-                          </span>
-                        );
-                      }
+                    {getPageNumbers(activePage, totalPages).map(
+                      (pItem, idx) => {
+                        if (pItem === "...") {
+                          return (
+                            <span
+                              key={`ellipsis-bottom-${idx}`}
+                              className="w-8 h-8 flex items-center justify-center text-xs font-mono text-[var(--text-dim)]/60"
+                            >
+                              ...
+                            </span>
+                          );
+                        }
 
-                      const pNum = pItem as number;
-                      const isPageActive = activePage === pNum;
-                      return (
-                        <button
-                          key={pNum}
-                          onClick={() => handlePageChange(pNum)}
-                          className={`w-8 h-8 flex items-center justify-center text-xs font-cyber font-bold rounded-md transition-all border ${
-                            isPageActive
-                              ? "bg-[var(--cyber-neon-blue)] text-[var(--neon-contrast-text)] border-[var(--cyber-neon-blue)] shadow-[0_0_10px_rgba(0,243,255,0.2)]"
-                              : "bg-transparent text-[var(--text-dim)] border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)] hover:text-[var(--text-color)]"
-                          }`}
-                        >
-                          {pNum}
-                        </button>
-                      );
-                    })}
+                        const pNum = pItem as number;
+                        const isPageActive = activePage === pNum;
+                        return (
+                          <button
+                            key={pNum}
+                            onClick={() => handlePageChange(pNum)}
+                            className={`w-8 h-8 flex items-center justify-center text-xs font-cyber font-bold rounded-md transition-all border ${
+                              isPageActive
+                                ? "bg-[var(--cyber-neon-blue)] text-[var(--neon-contrast-text)] border-[var(--cyber-neon-blue)] shadow-[0_0_10px_rgba(0,243,255,0.2)]"
+                                : "bg-transparent text-[var(--text-dim)] border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)] hover:text-[var(--text-color)]"
+                            }`}
+                          >
+                            {pNum}
+                          </button>
+                        );
+                      },
+                    )}
 
                     <button
                       disabled={activePage === totalPages}

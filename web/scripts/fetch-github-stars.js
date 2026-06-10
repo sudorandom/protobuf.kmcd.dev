@@ -167,7 +167,9 @@ async function fetchStars() {
   });
 
   const CONCURRENCY_LIMIT = 5; // Fetch up to 5 projects concurrently
-  console.log(`Running fetch with a concurrency limit of ${CONCURRENCY_LIMIT}...`);
+  console.log(
+    `Running fetch with a concurrency limit of ${CONCURRENCY_LIMIT}...`,
+  );
   const updatedProjects = await limitConcurrency(tasks, CONCURRENCY_LIMIT);
 
   const outputData = {
