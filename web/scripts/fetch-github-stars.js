@@ -6,6 +6,23 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const INPUT_PATH = path.resolve(__dirname, "../src/data/ecosystem.json");
 const OUTPUT_PATH = path.resolve(__dirname, "../src/data/ecosystem-stars.json");
 
+// Helper function to limit concurrency of async tasks
+async function limitConcurrency(tasks, limit) {
+  const results = [];
+  const executing = new Set();
+  for (const task of tasks) {
+    const p = Promise.resolve().then(() => task());
+    results.push(p);
+    executing.add(p);
+    const clean = () => executing.delete(p);
+    p.then(clean, clean);
+    if (executing.size >= limit) {
+      await Promise.race(executing);
+    }
+  }
+  return Promise.all(results);
+}
+
 async function fetchStars() {
   console.log(
     "Fetching GitHub star counts and activity metadata for ecosystem projects...",
@@ -56,11 +73,10 @@ async function fetchStars() {
     );
   }
 
-  const updatedProjects = [];
   const oneYearAgo = new Date();
   oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
 
-  for (const project of projects) {
+  const tasks = projects.map((project) => async () => {
     const githubUrls = Array.isArray(project.github)
       ? project.github
       : project.github
@@ -140,15 +156,19 @@ async function fetchStars() {
     const primaryOwner = firstMatch ? firstMatch[1] : project.owner || "";
     const primaryRepo = firstMatch ? firstMatch[2] : project.repo || "";
 
-    updatedProjects.push({
+    return {
       ...project,
       owner: primaryOwner,
       repo: primaryRepo,
       stars: totalStars,
       pushedAt: latestPushedAt,
       inactive,
-    });
-  }
+    };
+  });
+
+  const CONCURRENCY_LIMIT = 5; // Fetch up to 5 projects concurrently
+  console.log(`Running fetch with a concurrency limit of ${CONCURRENCY_LIMIT}...`);
+  const updatedProjects = await limitConcurrency(tasks, CONCURRENCY_LIMIT);
 
   const outputData = {
     fetchedAt: new Date().toISOString(),

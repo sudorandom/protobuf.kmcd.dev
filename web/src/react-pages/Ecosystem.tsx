@@ -106,6 +106,32 @@ const formatStars = (stars: number) => {
   return stars.toString();
 };
 
+const getPageNumbers = (current: number, total: number) => {
+  if (total <= 5) {
+    return Array.from({ length: total }, (_, i) => i + 1);
+  }
+
+  const pages: (number | string)[] = [];
+  pages.push(1);
+
+  if (current <= 3) {
+    pages.push(2, 3, 4);
+    pages.push("...");
+    pages.push(total);
+  } else if (current >= total - 2) {
+    pages.push("...");
+    pages.push(total - 3, total - 2, total - 1);
+    pages.push(total);
+  } else {
+    pages.push("...");
+    pages.push(current - 1, current, current + 1);
+    pages.push("...");
+    pages.push(total);
+  }
+
+  return pages;
+};
+
 // --- Main Ecosystem Page Component ---
 const PAGE_SIZE = 12;
 
@@ -128,9 +154,9 @@ const Ecosystem = () => {
   const [searchTerm, setSearchTerm] = useState(() =>
     getQueryParam("search", ""),
   );
-  const [sortBy, setSortBy] = useState<"stars" | "name">(() => {
+  const [sortBy, setSortBy] = useState<"stars" | "name" | "updated">(() => {
     const val = getQueryParam("sort", "stars");
-    return ["stars", "name"].includes(val) ? (val as any) : "stars";
+    return ["stars", "name", "updated"].includes(val) ? (val as any) : "stars";
   });
   const [sortDirection, setSortDirection] = useState<"desc" | "asc">(() => {
     const val = getQueryParam("direction", "desc");
@@ -148,10 +174,8 @@ const Ecosystem = () => {
   const [statusFilter, setStatusFilter] = useState<
     "active" | "all" | "inactive"
   >(() => {
-    const val = getQueryParam("status", "active");
-    return ["active", "all", "inactive"].includes(val)
-      ? (val as any)
-      : "active";
+    const val = getQueryParam("status", "all");
+    return ["active", "all", "inactive"].includes(val) ? (val as any) : "all";
   });
 
   // Sync state to URL query parameters
@@ -163,7 +187,7 @@ const Ecosystem = () => {
     if (selectedLanguage !== "all") params.set("lang", selectedLanguage);
     if (sortBy !== "stars") params.set("sort", sortBy);
     if (sortDirection !== "desc") params.set("direction", sortDirection);
-    if (statusFilter !== "active") params.set("status", statusFilter);
+    if (statusFilter !== "all") params.set("status", statusFilter);
     if (currentPage > 1) params.set("page", currentPage.toString());
 
     const newSearch = params.toString();
@@ -218,7 +242,7 @@ const Ecosystem = () => {
     setCurrentPage(1);
   };
 
-  const handleSetSortBy = (sort: "stars" | "name") => {
+  const handleSetSortBy = (sort: "stars" | "name" | "updated") => {
     setSortBy(sort);
     setCurrentPage(1);
   };
@@ -248,6 +272,13 @@ const Ecosystem = () => {
     if (!pushedAt) return "No updates in a long time";
     try {
       const pushedDate = new Date(pushedAt);
+      if (
+        isNaN(pushedDate.getTime()) ||
+        pushedDate.getTime() === 0 ||
+        pushedDate.getFullYear() <= 1970
+      ) {
+        return "Last updated date unknown";
+      }
       const now = new Date();
       const diffMs = now.getTime() - pushedDate.getTime();
       const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
@@ -321,7 +352,7 @@ const Ecosystem = () => {
       (selectedCategory !== "all" ? 1 : 0) +
       (selectedLanguage !== "all" ? 1 : 0) +
       (searchTerm ? 1 : 0) +
-      (statusFilter !== "active" ? 1 : 0)
+      (statusFilter !== "all" ? 1 : 0)
     );
   }, [selectedCategory, selectedLanguage, searchTerm, statusFilter]);
 
@@ -379,6 +410,10 @@ const Ecosystem = () => {
           comparison = a.stars - b.stars;
         } else if (sortBy === "name") {
           comparison = a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+        } else if (sortBy === "updated") {
+          const dateA = new Date(a.pushedAt || 0).getTime();
+          const dateB = new Date(b.pushedAt || 0).getTime();
+          comparison = dateA - dateB;
         }
 
         return sortDirection === "desc" ? -comparison : comparison;
@@ -471,18 +506,18 @@ const Ecosystem = () => {
           <div className="lg:hidden mb-6 space-y-4">
             <div className="flex gap-3">
               <div className="relative flex-1">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-dim)]/50" />
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-dim)]/70" />
                 <input
                   type="text"
                   placeholder="Search ecosystem..."
                   value={searchTerm}
                   onChange={(e) => handleSetSearch(e.target.value)}
-                  className="w-full pl-10 pr-20 py-2.5 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-xl text-xs text-[var(--text-color)] font-mono placeholder:text-[var(--text-dim)]/40 focus:outline-none focus:border-[var(--cyber-neon-blue)] focus:ring-1 focus:ring-[var(--cyber-neon-blue)] transition-colors shadow-inner"
+                  className="w-full pl-10 pr-20 py-2.5 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-xl text-xs text-[var(--text-color)] font-mono placeholder:text-[var(--text-dim)]/60 focus:outline-none focus:border-[var(--cyber-neon-blue)] focus:ring-1 focus:ring-[var(--cyber-neon-blue)] transition-colors shadow-inner"
                 />
                 {searchTerm && (
                   <button
                     onClick={() => handleSetSearch("")}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[9px] font-mono text-[var(--text-dim)] hover:text-white bg-[var(--overlay-bg)] px-2 py-0.5 rounded border border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)] transition-all"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[9px] font-mono text-[var(--text-dim)] hover:text-[var(--text-color)] bg-[var(--overlay-bg)] px-2 py-0.5 rounded border border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)] transition-all"
                   >
                     CLEAR
                   </button>
@@ -511,9 +546,9 @@ const Ecosystem = () => {
               <div className="p-5 bg-[var(--panel-bg)] border border-[var(--border-light)] rounded-2xl shadow-xl backdrop-blur-md relative space-y-5">
                 {/* Categories */}
                 <div className="space-y-2">
-                  <h4 className="text-[10px] font-mono text-[var(--text-dim)]/50 uppercase tracking-widest font-bold">
+                  <h2 className="text-[10px] font-mono text-[var(--text-dim)]/80 uppercase tracking-widest font-bold">
                     Categories
-                  </h4>
+                  </h2>
                   <div className="grid grid-cols-2 gap-2">
                     {[
                       {
@@ -561,7 +596,7 @@ const Ecosystem = () => {
                             className={`text-[9px] font-mono px-1 rounded bg-[var(--overlay-bg)] border border-[var(--border-light)] ${
                               isActive
                                 ? "text-[var(--text-color)]"
-                                : "text-[var(--text-dim)]/50"
+                                : "text-[var(--text-dim)]/70"
                             }`}
                           >
                             {tab.count}
@@ -574,9 +609,9 @@ const Ecosystem = () => {
 
                 {/* Language Select */}
                 <div className="space-y-2">
-                  <h4 className="text-[10px] font-mono text-[var(--text-dim)]/50 uppercase tracking-widest font-bold">
+                  <h2 className="text-[10px] font-mono text-[var(--text-dim)]/80 uppercase tracking-widest font-bold">
                     Language
-                  </h4>
+                  </h2>
                   <div className="relative">
                     <div className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center pointer-events-none text-[var(--text-dim)]">
                       <LanguageIcon
@@ -588,6 +623,7 @@ const Ecosystem = () => {
                     <select
                       value={selectedLanguage}
                       onChange={(e) => handleSetLanguage(e.target.value)}
+                      aria-label="Filter by Language"
                       className="w-full pl-9 pr-8 py-2 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg text-xs font-cyber font-bold uppercase tracking-wider text-[var(--text-color)] appearance-none cursor-pointer"
                       style={{
                         backgroundImage: `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%238892b0' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E")`,
@@ -617,33 +653,46 @@ const Ecosystem = () => {
 
                 {/* Sorting */}
                 <div className="space-y-2">
-                  <h4 className="text-[10px] font-mono text-[var(--text-dim)]/50 uppercase tracking-widest font-bold">
+                  <h2 className="text-[10px] font-mono text-[var(--text-dim)]/80 uppercase tracking-widest font-bold">
                     Sort Projects
-                  </h4>
+                  </h2>
                   <div className="flex gap-2">
-                    <div className="flex-1 flex border border-[var(--border-light)] rounded-lg overflow-hidden bg-[var(--overlay-bg)]">
+                    <div className="flex-1 flex p-1 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg gap-1">
                       <button
                         onClick={() => {
                           handleSetSortBy("stars");
                           handleSetSortDirection("desc");
                         }}
-                        className={`flex-1 py-2 text-[10px] font-cyber font-bold uppercase transition-all ${
+                        className={`flex-1 py-1.5 text-[10px] font-cyber font-bold uppercase rounded-md transition-all ${
                           sortBy === "stars"
                             ? "bg-[var(--cyber-neon-blue)]/20 text-[var(--cyber-neon-blue)]"
-                            : "text-[var(--text-dim)] hover:text-white"
+                            : "text-[var(--text-dim)] hover:text-[var(--text-color)]"
                         }`}
                       >
                         Stars
                       </button>
                       <button
                         onClick={() => {
+                          handleSetSortBy("updated");
+                          handleSetSortDirection("desc");
+                        }}
+                        className={`flex-1 py-1.5 text-[10px] font-cyber font-bold uppercase rounded-md transition-all ${
+                          sortBy === "updated"
+                            ? "bg-[var(--cyber-neon-blue)]/20 text-[var(--cyber-neon-blue)]"
+                            : "text-[var(--text-dim)] hover:text-[var(--text-color)]"
+                        }`}
+                      >
+                        Updated
+                      </button>
+                      <button
+                        onClick={() => {
                           handleSetSortBy("name");
                           handleSetSortDirection("asc");
                         }}
-                        className={`flex-1 py-2 text-[10px] font-cyber font-bold uppercase transition-all border-l border-[var(--border-light)] ${
+                        className={`flex-1 py-1.5 text-[10px] font-cyber font-bold uppercase rounded-md transition-all ${
                           sortBy === "name"
                             ? "bg-[var(--cyber-neon-blue)]/20 text-[var(--cyber-neon-blue)]"
-                            : "text-[var(--text-dim)] hover:text-white"
+                            : "text-[var(--text-dim)] hover:text-[var(--text-color)]"
                         }`}
                       >
                         A-Z
@@ -651,7 +700,7 @@ const Ecosystem = () => {
                     </div>
                     <button
                       onClick={toggleSortDirection}
-                      className="px-3 border border-[var(--border-light)] rounded-lg text-[var(--text-dim)] hover:text-white bg-[var(--overlay-bg)] flex items-center justify-center"
+                      className="px-3 border border-[var(--border-light)] rounded-lg text-[var(--text-dim)] hover:text-[var(--text-color)] bg-[var(--overlay-bg)] flex items-center justify-center"
                     >
                       <ArrowUpDown
                         className={`w-3.5 h-3.5 transition-transform duration-200 ${sortDirection === "asc" ? "rotate-180" : ""}`}
@@ -662,10 +711,10 @@ const Ecosystem = () => {
 
                 {/* Status */}
                 <div className="space-y-2">
-                  <h4 className="text-[10px] font-mono text-[var(--text-dim)]/50 uppercase tracking-widest font-bold">
+                  <h2 className="text-[10px] font-mono text-[var(--text-dim)]/80 uppercase tracking-widest font-bold">
                     Status
-                  </h4>
-                  <div className="flex border border-[var(--border-light)] rounded-lg overflow-hidden bg-[var(--overlay-bg)]">
+                  </h2>
+                  <div className="flex p-1 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg gap-1">
                     {[
                       { id: "active", label: "Active Only" },
                       { id: "all", label: "Show All" },
@@ -679,11 +728,11 @@ const Ecosystem = () => {
                             setStatusFilter(opt.id as any);
                             setCurrentPage(1);
                           }}
-                          className={`flex-1 py-2 text-[10px] font-cyber font-bold uppercase transition-all ${
+                          className={`flex-1 py-1.5 text-[10px] font-cyber font-bold uppercase rounded-md transition-all ${
                             isActive
                               ? "bg-[var(--cyber-neon-blue)]/20 text-[var(--cyber-neon-blue)]"
-                              : "text-[var(--text-dim)] hover:text-white"
-                          } ${opt.id !== "active" ? "border-l border-[var(--border-light)]" : ""}`}
+                              : "text-[var(--text-dim)] hover:text-[var(--text-color)]"
+                          }`}
                         >
                           {opt.label}
                         </button>
@@ -692,7 +741,7 @@ const Ecosystem = () => {
                   </div>
                 </div>
 
-                <div className="pt-2 text-[9px] font-mono text-[var(--text-dim)]/30 uppercase tracking-wider text-center">
+                <div className="pt-2 text-[9px] font-mono text-[var(--text-dim)]/60 uppercase tracking-wider text-center">
                   GitHub Stars Synced:{" "}
                   {formatFetchedAt(ecosystemData.fetchedAt)}
                 </div>
@@ -709,22 +758,22 @@ const Ecosystem = () => {
               <div className="p-6 bg-[var(--panel-bg)] border border-[var(--border-light)] rounded-2xl shadow-xl backdrop-blur-md relative space-y-6">
                 {/* Search */}
                 <div className="space-y-2">
-                  <h3 className="text-[10px] font-mono text-[var(--text-dim)]/60 uppercase tracking-widest font-bold">
+                  <h2 className="text-[10px] font-mono text-[var(--text-dim)]/80 uppercase tracking-widest font-bold">
                     Search Registry
-                  </h3>
+                  </h2>
                   <div className="relative">
-                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-dim)]/50" />
+                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-dim)]/70" />
                     <input
                       type="text"
                       placeholder="Search projects..."
                       value={searchTerm}
                       onChange={(e) => handleSetSearch(e.target.value)}
-                      className="w-full pl-10 pr-16 py-2.5 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-xl text-xs text-[var(--text-color)] font-mono placeholder:text-[var(--text-dim)]/40 focus:outline-none focus:border-[var(--cyber-neon-blue)] focus:ring-1 focus:ring-[var(--cyber-neon-blue)] transition-colors shadow-inner"
+                      className="w-full pl-10 pr-16 py-2.5 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-xl text-xs text-[var(--text-color)] font-mono placeholder:text-[var(--text-dim)]/60 focus:outline-none focus:border-[var(--cyber-neon-blue)] focus:ring-1 focus:ring-[var(--cyber-neon-blue)] transition-colors shadow-inner"
                     />
                     {searchTerm && (
                       <button
                         onClick={() => handleSetSearch("")}
-                        className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[9px] font-mono text-[var(--text-dim)] hover:text-white bg-[var(--overlay-bg)] px-2 py-0.5 rounded border border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)] transition-all"
+                        className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[9px] font-mono text-[var(--text-dim)] hover:text-[var(--text-color)] bg-[var(--overlay-bg)] px-2 py-0.5 rounded border border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)] transition-all"
                       >
                         CLEAR
                       </button>
@@ -734,9 +783,9 @@ const Ecosystem = () => {
 
                 {/* Category Selection */}
                 <div className="space-y-2.5">
-                  <h3 className="text-[10px] font-mono text-[var(--text-dim)]/60 uppercase tracking-widest font-bold">
+                  <h2 className="text-[10px] font-mono text-[var(--text-dim)]/80 uppercase tracking-widest font-bold">
                     Categories
-                  </h3>
+                  </h2>
                   <div className="flex flex-col gap-2">
                     {[
                       {
@@ -797,7 +846,7 @@ const Ecosystem = () => {
                             className={`text-[10px] font-mono px-1.5 py-0.5 rounded bg-[var(--overlay-bg)] border border-[var(--border-light)] ${
                               isActive
                                 ? "text-[var(--text-color)]"
-                                : "text-[var(--text-dim)]/50"
+                                : "text-[var(--text-dim)]/70"
                             }`}
                           >
                             {tab.count}
@@ -810,9 +859,9 @@ const Ecosystem = () => {
 
                 {/* Language selection */}
                 <div className="space-y-2.5">
-                  <h3 className="text-[10px] font-mono text-[var(--text-dim)]/60 uppercase tracking-widest font-bold">
+                  <h2 className="text-[10px] font-mono text-[var(--text-dim)]/80 uppercase tracking-widest font-bold">
                     Language
-                  </h3>
+                  </h2>
                   <div className="relative">
                     <div className="absolute left-3.5 top-1/2 -translate-y-1/2 flex items-center pointer-events-none text-[var(--text-dim)]">
                       <LanguageIcon
@@ -824,6 +873,7 @@ const Ecosystem = () => {
                     <select
                       value={selectedLanguage}
                       onChange={(e) => handleSetLanguage(e.target.value)}
+                      aria-label="Filter by Language"
                       className="w-full pl-9 pr-8 py-2 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg text-xs font-cyber font-bold uppercase tracking-wider text-[var(--text-color)] focus:outline-none focus:border-[var(--cyber-neon-blue)] focus:ring-1 focus:ring-[var(--cyber-neon-blue)] transition-colors appearance-none cursor-pointer"
                       style={{
                         backgroundImage: `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%238892b0' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E")`,
@@ -853,33 +903,46 @@ const Ecosystem = () => {
 
                 {/* Sort selector */}
                 <div className="space-y-2.5">
-                  <h3 className="text-[10px] font-mono text-[var(--text-dim)]/60 uppercase tracking-widest font-bold">
+                  <h2 className="text-[10px] font-mono text-[var(--text-dim)]/80 uppercase tracking-widest font-bold">
                     Sort Projects
-                  </h3>
+                  </h2>
                   <div className="flex flex-col gap-2">
-                    <div className="flex border border-[var(--border-light)] rounded-lg overflow-hidden bg-[var(--overlay-bg)]">
+                    <div className="flex p-1 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg gap-1">
                       <button
                         onClick={() => {
                           handleSetSortBy("stars");
                           handleSetSortDirection("desc");
                         }}
-                        className={`flex-1 py-2 text-xs font-cyber font-bold uppercase transition-all ${
+                        className={`flex-1 py-1.5 text-xs font-cyber font-bold uppercase rounded-md transition-all ${
                           sortBy === "stars"
                             ? "bg-[var(--cyber-neon-blue)]/20 text-[var(--cyber-neon-blue)] font-bold"
-                            : "text-[var(--text-dim)] hover:text-white"
+                            : "text-[var(--text-dim)] hover:text-[var(--text-color)]"
                         }`}
                       >
                         Stars
                       </button>
                       <button
                         onClick={() => {
+                          handleSetSortBy("updated");
+                          handleSetSortDirection("desc");
+                        }}
+                        className={`flex-1 py-1.5 text-xs font-cyber font-bold uppercase rounded-md transition-all ${
+                          sortBy === "updated"
+                            ? "bg-[var(--cyber-neon-blue)]/20 text-[var(--cyber-neon-blue)] font-bold"
+                            : "text-[var(--text-dim)] hover:text-[var(--text-color)]"
+                        }`}
+                      >
+                        Updated
+                      </button>
+                      <button
+                        onClick={() => {
                           handleSetSortBy("name");
                           handleSetSortDirection("asc");
                         }}
-                        className={`flex-1 py-2 text-xs font-cyber font-bold uppercase transition-all border-l border-[var(--border-light)] ${
+                        className={`flex-1 py-1.5 text-xs font-cyber font-bold uppercase rounded-md transition-all ${
                           sortBy === "name"
                             ? "bg-[var(--cyber-neon-blue)]/20 text-[var(--cyber-neon-blue)] font-bold"
-                            : "text-[var(--text-dim)] hover:text-white"
+                            : "text-[var(--text-dim)] hover:text-[var(--text-color)]"
                         }`}
                       >
                         A-Z
@@ -888,7 +951,7 @@ const Ecosystem = () => {
 
                     <button
                       onClick={toggleSortDirection}
-                      className="w-full flex items-center justify-center gap-2 py-2 border border-[var(--border-light)] rounded-lg text-xs font-cyber font-bold uppercase tracking-wider text-[var(--text-dim)] hover:text-white bg-[var(--overlay-bg)] hover:border-[var(--cyber-neon-blue)] transition-all"
+                      className="w-full flex items-center justify-center gap-2 py-2 border border-[var(--border-light)] rounded-lg text-xs font-cyber font-bold uppercase tracking-wider text-[var(--text-dim)] hover:text-[var(--text-color)] bg-[var(--overlay-bg)] hover:border-[var(--cyber-neon-blue)] transition-all"
                     >
                       <ArrowUpDown
                         className={`w-3.5 h-3.5 transition-transform duration-200 ${sortDirection === "asc" ? "rotate-180" : ""}`}
@@ -902,10 +965,10 @@ const Ecosystem = () => {
 
                 {/* Status */}
                 <div className="space-y-2.5">
-                  <h3 className="text-[10px] font-mono text-[var(--text-dim)]/60 uppercase tracking-widest font-bold">
+                  <h2 className="text-[10px] font-mono text-[var(--text-dim)]/80 uppercase tracking-widest font-bold">
                     Status Filter
-                  </h3>
-                  <div className="flex border border-[var(--border-light)] rounded-lg overflow-hidden bg-[var(--overlay-bg)]">
+                  </h2>
+                  <div className="flex p-1 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg gap-1">
                     {[
                       { id: "active", label: "Active" },
                       { id: "all", label: "All" },
@@ -919,11 +982,11 @@ const Ecosystem = () => {
                             setStatusFilter(opt.id as any);
                             setCurrentPage(1);
                           }}
-                          className={`flex-1 py-2 text-xs font-cyber font-bold uppercase tracking-wider transition-all ${
+                          className={`flex-1 py-1.5 text-xs font-cyber font-bold uppercase tracking-wider rounded-md transition-all ${
                             isActive
                               ? "bg-[var(--cyber-neon-blue)]/20 text-[var(--cyber-neon-blue)] font-bold"
-                              : "text-[var(--text-dim)] hover:text-white"
-                          } ${opt.id !== "active" ? "border-l border-[var(--border-light)]" : ""}`}
+                              : "text-[var(--text-dim)] hover:text-[var(--text-color)]"
+                          }`}
                         >
                           {opt.label}
                         </button>
@@ -933,10 +996,10 @@ const Ecosystem = () => {
                 </div>
 
                 {/* Last synced timestamp */}
-                <div className="pt-4 border-t border-[var(--border-light)]/50 text-[9px] font-mono text-[var(--text-dim)]/30 uppercase tracking-wider text-center">
+                <div className="pt-4 border-t border-[var(--border-light)]/50 text-[9px] font-mono text-[var(--text-dim)]/60 uppercase tracking-wider text-center">
                   GitHub Stars Synced:
                   <br />
-                  <span className="text-[var(--text-dim)]/50 font-bold">
+                  <span className="text-[var(--text-dim)]/80 font-bold">
                     {formatFetchedAt(ecosystemData.fetchedAt)}
                   </span>
                 </div>
@@ -949,7 +1012,7 @@ const Ecosystem = () => {
             <div className="lg:col-span-3 space-y-6">
               {/* Active Filters Summary */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 bg-[var(--panel-bg)]/40 border border-[var(--border-light)]/60 rounded-xl backdrop-blur-sm">
-                <span className="text-xs font-mono text-[var(--text-dim)]/70 uppercase">
+                <span className="text-xs font-mono text-[var(--text-dim)]/90 uppercase">
                   Found{" "}
                   <span className="text-[var(--text-color)] font-bold font-cyber">
                     {filteredAndSortedProjects.length}
@@ -958,7 +1021,7 @@ const Ecosystem = () => {
                   {searchTerm ||
                   selectedCategory !== "all" ||
                   selectedLanguage !== "all" ||
-                  statusFilter !== "active"
+                  statusFilter !== "all"
                     ? " matching filters"
                     : ""}
                 </span>
@@ -966,9 +1029,9 @@ const Ecosystem = () => {
                 {(searchTerm ||
                   selectedCategory !== "all" ||
                   selectedLanguage !== "all" ||
-                  statusFilter !== "active") && (
+                  statusFilter !== "all") && (
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-[10px] font-mono text-[var(--text-dim)]/40 uppercase tracking-wider">
+                    <span className="text-xs font-sans font-semibold text-[var(--text-color)] uppercase tracking-wider">
                       Active Filters:
                     </span>
                     {selectedCategory !== "all" && (
@@ -1008,13 +1071,15 @@ const Ecosystem = () => {
                         </span>
                       </button>
                     )}
-                    {statusFilter !== "active" && (
+                    {statusFilter !== "all" && (
                       <button
-                        onClick={() => setStatusFilter("active")}
+                        onClick={() => setStatusFilter("all")}
                         className="flex items-center gap-1.5 px-2.5 py-1 text-[9px] font-cyber font-bold uppercase tracking-wider text-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/5 border border-[var(--cyber-neon-pink)]/20 rounded-md hover:bg-[var(--cyber-neon-pink)]/10 hover:border-[var(--cyber-neon-pink)]/40 transition-all"
                       >
                         Status:{" "}
-                        {statusFilter === "all" ? "All" : "Inactive Only"}
+                        {statusFilter === "active"
+                          ? "Active Only"
+                          : "Inactive Only"}
                         <span className="text-[11px] font-mono leading-none">
                           &times;
                         </span>
@@ -1025,9 +1090,9 @@ const Ecosystem = () => {
                         handleSetCategory("all");
                         handleSetLanguage("all");
                         handleSetSearch("");
-                        setStatusFilter("active");
+                        setStatusFilter("all");
                       }}
-                      className="text-[9px] font-mono text-[var(--text-dim)]/60 hover:text-white uppercase underline hover:no-underline transition-all"
+                      className="text-[9px] font-mono text-[var(--text-dim)]/80 hover:text-[var(--text-color)] uppercase underline hover:no-underline transition-all"
                     >
                       Reset All
                     </button>
@@ -1038,7 +1103,7 @@ const Ecosystem = () => {
               {/* Top Pagination Controls */}
               {totalPages > 1 && (
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-6 pb-4 border-b border-[var(--border-light)]/20">
-                  <span className="text-xs font-mono text-[var(--text-dim)]/50 uppercase tracking-wider">
+                  <span className="text-xs font-mono text-[var(--text-dim)]/80 uppercase tracking-wider">
                     Showing {startIndex + 1}–
                     {Math.min(
                       startIndex + PAGE_SIZE,
@@ -1054,30 +1119,40 @@ const Ecosystem = () => {
                       className={`px-3 py-1.5 text-xs font-cyber font-bold uppercase border rounded-md transition-all ${
                         activePage === 1
                           ? "opacity-30 cursor-not-allowed border-[var(--border-light)] text-[var(--text-dim)]"
-                          : "bg-transparent text-[var(--text-color)] border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)] hover:text-white"
+                          : "bg-transparent text-[var(--text-color)] border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)] hover:text-[var(--text-color)]"
                       }`}
                     >
                       Prev
                     </button>
 
-                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                      (pNum) => {
-                        const isPageActive = activePage === pNum;
+                    {getPageNumbers(activePage, totalPages).map((pItem, idx) => {
+                      if (pItem === "...") {
                         return (
-                          <button
-                            key={pNum}
-                            onClick={() => handlePageChange(pNum, false)}
-                            className={`w-8 h-8 flex items-center justify-center text-xs font-cyber font-bold rounded-md transition-all border ${
-                              isPageActive
-                                ? "bg-[var(--cyber-neon-blue)] text-[var(--neon-contrast-text)] border-[var(--cyber-neon-blue)] shadow-[0_0_10px_rgba(0,243,255,0.2)]"
-                                : "bg-transparent text-[var(--text-dim)] border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)] hover:text-white"
-                            }`}
+                          <span
+                            key={`ellipsis-top-${idx}`}
+                            className="w-8 h-8 flex items-center justify-center text-xs font-mono text-[var(--text-dim)]/60"
                           >
-                            {pNum}
-                          </button>
+                            ...
+                          </span>
                         );
-                      },
-                    )}
+                      }
+
+                      const pNum = pItem as number;
+                      const isPageActive = activePage === pNum;
+                      return (
+                        <button
+                          key={pNum}
+                          onClick={() => handlePageChange(pNum, false)}
+                          className={`w-8 h-8 flex items-center justify-center text-xs font-cyber font-bold rounded-md transition-all border ${
+                            isPageActive
+                              ? "bg-[var(--cyber-neon-blue)] text-[var(--neon-contrast-text)] border-[var(--cyber-neon-blue)] shadow-[0_0_10px_rgba(0,243,255,0.2)]"
+                              : "bg-transparent text-[var(--text-dim)] border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)] hover:text-[var(--text-color)]"
+                          }`}
+                        >
+                          {pNum}
+                        </button>
+                      );
+                    })}
 
                     <button
                       disabled={activePage === totalPages}
@@ -1085,7 +1160,7 @@ const Ecosystem = () => {
                       className={`px-3 py-1.5 text-xs font-cyber font-bold uppercase border rounded-md transition-all ${
                         activePage === totalPages
                           ? "opacity-30 cursor-not-allowed border-[var(--border-light)] text-[var(--text-dim)]"
-                          : "bg-transparent text-[var(--text-color)] border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)] hover:text-white"
+                          : "bg-transparent text-[var(--text-color)] border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)] hover:text-[var(--text-color)]"
                       }`}
                     >
                       Next
@@ -1111,7 +1186,11 @@ const Ecosystem = () => {
                   return (
                     <div
                       key={project.name}
-                      className="p-6 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-xl hover:border-[var(--hover-color)] transition-all duration-300 hover:-translate-y-1 hover:shadow-lg flex flex-col justify-between min-h-[260px] relative overflow-hidden"
+                      className={`p-6 bg-[var(--card-bg)] border rounded-xl hover:border-[var(--hover-color)] transition-all duration-300 hover:-translate-y-1 hover:shadow-lg flex flex-col justify-between min-h-[260px] relative overflow-hidden ${
+                        project.inactive
+                          ? "border-slate-500/40 opacity-80 hover:opacity-100"
+                          : "border-[var(--border-light)]"
+                      }`}
                       style={
                         {
                           "--hover-color": `color-mix(in srgb, ${primaryBadge.color}, transparent 60%)`,
@@ -1138,7 +1217,7 @@ const Ecosystem = () => {
                             {project.inactive && (
                               <span
                                 title={getInactiveDuration(project.pushedAt)}
-                                className="flex items-center gap-1 px-2 py-0.5 bg-white/5 text-[var(--text-dim)] opacity-50 border border-[var(--border-light)] rounded-md text-[10px] font-cyber font-bold uppercase tracking-wider cursor-help"
+                                className="flex items-center gap-1 px-2 py-0.5 bg-[var(--warning-bg)] text-[var(--warning-text)] border border-[var(--warning-border)] rounded-md text-[10px] font-cyber font-bold uppercase tracking-wider cursor-help"
                               >
                                 <AlertTriangle className="w-3.5 h-3.5" />
                                 Inactive
@@ -1170,13 +1249,13 @@ const Ecosystem = () => {
                             {project.name}
                           </a>
                         </h3>
-                        <p className="text-[10px] font-mono text-[var(--text-dim)]/40 uppercase tracking-widest mb-2">
+                        <p className="text-xs font-sans text-[var(--text-dim)] uppercase tracking-wider mb-2">
                           BY{" "}
                           <a
                             href={`https://github.com/${project.owner}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="hover:text-[var(--cyber-neon-pink)] hover:underline transition-colors"
+                            className="hover:text-[var(--cyber-neon-pink)] hover:underline transition-colors font-semibold"
                           >
                             {project.owner}
                           </a>
@@ -1190,7 +1269,7 @@ const Ecosystem = () => {
                                 <button
                                   key={lang}
                                   onClick={() => handleLanguageClick(lang)}
-                                  className="inline-flex items-center px-2 py-0.5 bg-[var(--overlay-bg)]/50 text-[var(--text-dim)] hover:text-white border border-[var(--border-light)]/50 hover:border-[var(--cyber-neon-blue)]/50 rounded text-[10px] font-mono uppercase tracking-wider cursor-pointer transition-all"
+                                  className="inline-flex items-center px-2 py-0.5 bg-[var(--overlay-bg)]/50 text-[var(--text-dim)] hover:text-[var(--cyber-neon-blue)] hover:bg-[var(--cyber-neon-blue)]/10 border border-[var(--border-light)]/50 hover:border-[var(--cyber-neon-blue)]/40 rounded text-[10px] font-mono uppercase tracking-wider cursor-pointer transition-all"
                                 >
                                   <LanguageIcon
                                     lang={lang}
@@ -1224,10 +1303,10 @@ const Ecosystem = () => {
                               href={url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-[10px] font-cyber font-bold uppercase tracking-wider text-[var(--text-color)] hover:text-[var(--cyber-neon-pink)] transition-colors flex items-center gap-1 group/git"
+                              className="text-xs font-sans text-[var(--text-dim)] hover:text-[var(--cyber-neon-pink)] transition-colors flex items-center gap-1.5 group/git"
                             >
-                              <GithubIcon className="w-3 h-3 opacity-70 group-hover/git:scale-110 transition-transform" />
-                              {displayName}
+                              <GithubIcon className="w-3.5 h-3.5 opacity-70 group-hover/git:scale-110 transition-transform" />
+                              <span className="font-medium">{displayName}</span>
                             </a>
                           );
                         })}
@@ -1236,10 +1315,10 @@ const Ecosystem = () => {
                             href={project.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-[10px] font-cyber font-bold uppercase tracking-wider text-[var(--text-color)] hover:text-[var(--cyber-neon-blue)] transition-colors flex items-center gap-1 group/ext"
+                            className="text-xs font-sans text-[var(--text-dim)] hover:text-[var(--cyber-neon-blue)] transition-colors flex items-center gap-1.5 group/ext"
                           >
-                            <ExternalLink className="w-3 h-3 opacity-70 group-hover/ext:scale-110 transition-transform" />
-                            Website
+                            <ExternalLink className="w-3.5 h-3.5 opacity-70 group-hover/ext:scale-110 transition-transform" />
+                            <span className="font-medium">Website</span>
                           </a>
                         )}
                       </div>
@@ -1249,11 +1328,11 @@ const Ecosystem = () => {
 
                 {filteredAndSortedProjects.length === 0 && (
                   <div className="col-span-full py-16 text-center border border-dashed border-[var(--border-light)] rounded-xl bg-[var(--overlay-bg)]/5">
-                    <Search className="w-12 h-12 text-[var(--text-dim)]/20 mx-auto mb-4" />
+                    <Search className="w-12 h-12 text-[var(--text-dim)]/40 mx-auto mb-4" />
                     <p className="text-base font-cyber text-[var(--text-color)] uppercase tracking-widest mb-1">
                       No matches found
                     </p>
-                    <p className="text-xs text-[var(--text-dim)]/50 font-mono">
+                    <p className="text-xs text-[var(--text-dim)]/80 font-mono">
                       Try adjusting your filters or search keywords.
                     </p>
                   </div>
@@ -1263,7 +1342,7 @@ const Ecosystem = () => {
               {/* Pagination Controls */}
               {totalPages > 1 && (
                 <div className="mt-12 flex flex-col sm:flex-row items-center justify-between gap-6 pt-6 border-t border-[var(--border-light)]/30">
-                  <span className="text-xs font-mono text-[var(--text-dim)]/50 uppercase tracking-wider">
+                  <span className="text-xs font-mono text-[var(--text-dim)]/80 uppercase tracking-wider">
                     Showing {startIndex + 1}–
                     {Math.min(
                       startIndex + PAGE_SIZE,
@@ -1279,30 +1358,40 @@ const Ecosystem = () => {
                       className={`px-3 py-1.5 text-xs font-cyber font-bold uppercase border rounded-md transition-all ${
                         activePage === 1
                           ? "opacity-30 cursor-not-allowed border-[var(--border-light)] text-[var(--text-dim)]"
-                          : "bg-transparent text-[var(--text-color)] border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)] hover:text-white"
+                          : "bg-transparent text-[var(--text-color)] border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)] hover:text-[var(--text-color)]"
                       }`}
                     >
                       Prev
                     </button>
 
-                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                      (pNum) => {
-                        const isPageActive = activePage === pNum;
+                    {getPageNumbers(activePage, totalPages).map((pItem, idx) => {
+                      if (pItem === "...") {
                         return (
-                          <button
-                            key={pNum}
-                            onClick={() => handlePageChange(pNum)}
-                            className={`w-8 h-8 flex items-center justify-center text-xs font-cyber font-bold rounded-md transition-all border ${
-                              isPageActive
-                                ? "bg-[var(--cyber-neon-blue)] text-[var(--neon-contrast-text)] border-[var(--cyber-neon-blue)] shadow-[0_0_10px_rgba(0,243,255,0.2)]"
-                                : "bg-transparent text-[var(--text-dim)] border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)] hover:text-white"
-                            }`}
+                          <span
+                            key={`ellipsis-bottom-${idx}`}
+                            className="w-8 h-8 flex items-center justify-center text-xs font-mono text-[var(--text-dim)]/60"
                           >
-                            {pNum}
-                          </button>
+                            ...
+                          </span>
                         );
-                      },
-                    )}
+                      }
+
+                      const pNum = pItem as number;
+                      const isPageActive = activePage === pNum;
+                      return (
+                        <button
+                          key={pNum}
+                          onClick={() => handlePageChange(pNum)}
+                          className={`w-8 h-8 flex items-center justify-center text-xs font-cyber font-bold rounded-md transition-all border ${
+                            isPageActive
+                              ? "bg-[var(--cyber-neon-blue)] text-[var(--neon-contrast-text)] border-[var(--cyber-neon-blue)] shadow-[0_0_10px_rgba(0,243,255,0.2)]"
+                              : "bg-transparent text-[var(--text-dim)] border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)] hover:text-[var(--text-color)]"
+                          }`}
+                        >
+                          {pNum}
+                        </button>
+                      );
+                    })}
 
                     <button
                       disabled={activePage === totalPages}
@@ -1310,7 +1399,7 @@ const Ecosystem = () => {
                       className={`px-3 py-1.5 text-xs font-cyber font-bold uppercase border rounded-md transition-all ${
                         activePage === totalPages
                           ? "opacity-30 cursor-not-allowed border-[var(--border-light)] text-[var(--text-dim)]"
-                          : "bg-transparent text-[var(--text-color)] border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)] hover:text-white"
+                          : "bg-transparent text-[var(--text-color)] border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)] hover:text-[var(--text-color)]"
                       }`}
                     >
                       Next
