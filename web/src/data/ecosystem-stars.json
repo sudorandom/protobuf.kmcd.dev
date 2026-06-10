@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-06-10T19:09:31.699Z",
+  "fetchedAt": "2026-06-10T19:50:56.672Z",
   "projects": [
     {
       "category": "tools",
@@ -10,7 +10,7 @@
       "url": "https://buf.build/docs/introduction",
       "github": "https://github.com/bufbuild/buf",
       "languages": ["Agnostic"],
-      "stars": 11174,
+      "stars": 11175,
       "pushedAt": "2026-06-08T12:55:41Z",
       "inactive": false
     },
@@ -794,7 +794,7 @@
       "github": "https://github.com/microsoft/typespec",
       "languages": ["Agnostic"],
       "stars": 5769,
-      "pushedAt": "2026-06-10T19:05:07Z",
+      "pushedAt": "2026-06-10T19:49:51Z",
       "inactive": false
     },
     {
@@ -859,7 +859,7 @@
       "github": "https://github.com/protocolbuffers/protobuf",
       "languages": ["C++", "C#", "C", "Java", "Objective-C", "Python"],
       "stars": 71337,
-      "pushedAt": "2026-06-10T19:05:58Z",
+      "pushedAt": "2026-06-10T19:48:32Z",
       "inactive": false
     },
     {
@@ -950,7 +950,7 @@
       "github": "https://github.com/Kong/insomnia",
       "languages": ["Agnostic"],
       "stars": 38470,
-      "pushedAt": "2026-06-10T18:01:07Z",
+      "pushedAt": "2026-06-10T19:33:47Z",
       "inactive": false
     },
     {
@@ -1067,7 +1067,7 @@
       "github": "https://github.com/envoyproxy/envoy",
       "languages": ["Agnostic"],
       "stars": 28379,
-      "pushedAt": "2026-06-10T19:00:52Z",
+      "pushedAt": "2026-06-10T19:45:35Z",
       "inactive": false
     },
     {
@@ -1145,7 +1145,7 @@
       "github": "https://github.com/apple/swift-protobuf",
       "languages": ["Swift"],
       "stars": 4928,
-      "pushedAt": "2026-06-10T18:29:56Z",
+      "pushedAt": "2026-06-10T19:49:37Z",
       "inactive": false
     },
     {
@@ -1197,7 +1197,7 @@
       "github": "https://github.com/confluentinc/schema-registry",
       "languages": ["Agnostic"],
       "stars": 2437,
-      "pushedAt": "2026-06-10T19:06:43Z",
+      "pushedAt": "2026-06-10T19:16:41Z",
       "inactive": false
     },
     {
@@ -1262,7 +1262,7 @@
       "github": "https://github.com/moul/grpcbin",
       "languages": ["Agnostic"],
       "stars": 169,
-      "pushedAt": "2026-06-09T23:38:02Z",
+      "pushedAt": "2026-06-10T19:49:56Z",
       "inactive": false
     },
     {
@@ -2301,9 +2301,9 @@
       "url": "https://github.com/protocolbuffers/protoscope",
       "github": "https://github.com/protocolbuffers/protoscope",
       "languages": ["Go"],
-      "stars": 0,
-      "pushedAt": "2026-06-10T19:47:01.814Z",
-      "inactive": false
+      "stars": 430,
+      "pushedAt": "2024-03-13T21:46:35Z",
+      "inactive": true
     }
   ]
 }
