@@ -1179,11 +1179,12 @@ const Ecosystem = () => {
                     : [project.category];
                   const primaryCategory = categories[0] || "libraries";
                   const primaryBadge = getCategoryBadgeStyles(primaryCategory);
-                  const githubUrls = (Array.isArray(project.github)
-                    ? project.github
-                    : project.github
-                      ? [project.github]
-                      : []
+                  const githubUrls = (
+                    Array.isArray(project.github)
+                      ? project.github
+                      : project.github
+                        ? [project.github]
+                        : []
                   ).filter(Boolean);
                   const primaryGithubUrl = githubUrls[0] || "";
                   const projectLink = project.url || primaryGithubUrl;
