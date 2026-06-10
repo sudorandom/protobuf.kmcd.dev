@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-06-10T21:08:35.757Z",
+  "fetchedAt": "2026-06-10T21:26:20.399Z",
   "projects": [
     {
       "category": "tools",
@@ -95,7 +95,7 @@
       "url": "https://github.com/pseudomuto/protoc-gen-doc",
       "github": "https://github.com/pseudomuto/protoc-gen-doc",
       "languages": ["Agnostic"],
-      "relevance": 2,
+      "relevance": 3,
       "stars": 2827,
       "pushedAt": "2025-02-11T14:03:18Z",
       "inactive": true
@@ -193,7 +193,7 @@
       "url": "https://twitchtv.github.io/twirp/",
       "github": "https://github.com/twitchtv/twirp",
       "languages": ["Go"],
-      "relevance": 1,
+      "relevance": 3,
       "stars": 7516,
       "pushedAt": "2024-08-05T21:36:11Z",
       "inactive": true
@@ -319,7 +319,7 @@
       "url": "https://square.github.io/wire/",
       "github": "https://github.com/square/wire",
       "languages": ["Java", "Kotlin", "Swift"],
-      "relevance": 2,
+      "relevance": 3,
       "stars": 4421,
       "pushedAt": "2026-06-10T18:59:43Z",
       "inactive": false
@@ -333,7 +333,7 @@
       "url": "https://github.com/dcodeIO/ProtoBuf.js",
       "github": "https://github.com/dcodeIO/ProtoBuf.js",
       "languages": ["JavaScript"],
-      "relevance": 2,
+      "relevance": 3,
       "stars": 10556,
       "pushedAt": "2026-06-10T14:55:26Z",
       "inactive": false
@@ -853,7 +853,7 @@
       "languages": ["Agnostic"],
       "relevance": 1,
       "stars": 5769,
-      "pushedAt": "2026-06-10T20:44:32Z",
+      "pushedAt": "2026-06-10T21:22:22Z",
       "inactive": false
     },
     {
@@ -893,7 +893,7 @@
       "url": "https://github.com/tokio-rs/prost",
       "github": "https://github.com/tokio-rs/prost",
       "languages": ["Rust"],
-      "relevance": 2,
+      "relevance": 3,
       "stars": 4711,
       "pushedAt": "2026-06-07T10:12:23Z",
       "inactive": false
@@ -926,7 +926,7 @@
       "languages": ["C++", "C#", "C", "Java", "Objective-C", "Python", "Go"],
       "relevance": 4,
       "stars": 71336,
-      "pushedAt": "2026-06-10T21:05:42Z",
+      "pushedAt": "2026-06-10T21:17:43Z",
       "inactive": false
     },
     {
@@ -982,7 +982,7 @@
       "languages": ["TypeScript", "JavaScript"],
       "relevance": 1,
       "stars": 164,
-      "pushedAt": "2026-06-10T09:10:36Z",
+      "pushedAt": "2026-06-10T21:24:02Z",
       "inactive": false
     },
     {
@@ -1024,7 +1024,7 @@
       "languages": ["Agnostic"],
       "relevance": 1,
       "stars": 38470,
-      "pushedAt": "2026-06-10T21:01:07Z",
+      "pushedAt": "2026-06-10T21:17:09Z",
       "inactive": false
     },
     {
@@ -1106,7 +1106,7 @@
       "url": "https://fauxrpc.com",
       "github": "https://github.com/sudorandom/fauxrpc",
       "languages": ["Agnostic"],
-      "relevance": 3,
+      "relevance": 2,
       "stars": 129,
       "pushedAt": "2026-05-29T13:35:03Z",
       "inactive": false
@@ -1136,7 +1136,7 @@
       "languages": ["Agnostic"],
       "relevance": 1,
       "stars": 28380,
-      "pushedAt": "2026-06-10T21:05:42Z",
+      "pushedAt": "2026-06-10T21:18:28Z",
       "inactive": false
     },
     {
@@ -1246,7 +1246,7 @@
       "url": "https://scalapb.github.io",
       "github": "https://github.com/scalapb/ScalaPB",
       "languages": ["Scala"],
-      "relevance": 2,
+      "relevance": 3,
       "stars": 1336,
       "pushedAt": "2026-05-27T20:25:40Z",
       "inactive": false
@@ -1276,7 +1276,7 @@
       "languages": ["Agnostic"],
       "relevance": 1,
       "stars": 2437,
-      "pushedAt": "2026-06-10T20:32:42Z",
+      "pushedAt": "2026-06-10T21:13:36Z",
       "inactive": false
     },
     {
@@ -1866,20 +1866,6 @@
       "stars": 391,
       "pushedAt": "2026-05-06T14:57:24Z",
       "inactive": false
-    },
-    {
-      "category": "libraries",
-      "name": "golang-protobuf",
-      "owner": "golang",
-      "repo": "protobuf",
-      "desc": "Go support for Google's protocol buffers",
-      "url": "https://github.com/golang/protobuf",
-      "github": "https://github.com/golang/protobuf",
-      "languages": ["Go"],
-      "relevance": 2,
-      "stars": 10072,
-      "pushedAt": "2024-08-05T20:04:08Z",
-      "inactive": true
     },
     {
       "category": "libraries",

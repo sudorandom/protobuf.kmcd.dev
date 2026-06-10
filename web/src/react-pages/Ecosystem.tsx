@@ -1247,7 +1247,7 @@ const Ecosystem = () => {
                             {project.inactive && (
                               <span
                                 title={getInactiveDuration(project.pushedAt)}
-                                className="flex items-center gap-1 px-2 py-0.5 bg-[var(--warning-bg)] text-[var(--warning-text)] border border-[var(--warning-border)] rounded-md text-[10px] font-cyber font-bold uppercase tracking-wider cursor-help"
+                                className="flex items-center gap-1 px-2 py-0.5 bg-[var(--error-bg)] text-[var(--error-text)] border border-[var(--error-border)] rounded-md text-[10px] font-cyber font-bold uppercase tracking-wider cursor-help shadow-sm shadow-red-500/10"
                               >
                                 <AlertTriangle className="w-3.5 h-3.5" />
                                 Inactive

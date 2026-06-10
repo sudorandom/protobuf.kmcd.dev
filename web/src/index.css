@@ -24,6 +24,9 @@
   --warning-bg: rgba(234, 179, 8, 0.1);
   --warning-border: rgba(234, 179, 8, 0.2);
   --warning-text: #fef08a;
+  --error-bg: rgba(239, 68, 68, 0.1);
+  --error-border: rgba(239, 68, 68, 0.25);
+  --error-text: #f87171;
   --neon-contrast-text: #000000;
 }
 
@@ -49,6 +52,9 @@
   --warning-bg: rgba(254, 249, 195, 0.6);
   --warning-border: rgba(133, 77, 14, 0.3);
   --warning-text: #713f12;
+  --error-bg: rgba(254, 226, 226, 0.85);
+  --error-border: rgba(185, 28, 28, 0.3);
+  --error-text: #991b1b;
   --neon-contrast-text: #ffffff;
 }
 

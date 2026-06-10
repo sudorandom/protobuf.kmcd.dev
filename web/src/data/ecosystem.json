@@ -78,7 +78,7 @@
     "url": "https://github.com/pseudomuto/protoc-gen-doc",
     "github": "https://github.com/pseudomuto/protoc-gen-doc",
     "languages": ["Agnostic"],
-    "relevance": 2
+    "relevance": 3
   },
   {
     "category": "plugins",
@@ -158,7 +158,7 @@
     "url": "https://twitchtv.github.io/twirp/",
     "github": "https://github.com/twitchtv/twirp",
     "languages": ["Go"],
-    "relevance": 1
+    "relevance": 3
   },
   {
     "category": "libraries",
@@ -257,7 +257,7 @@
     "url": "https://square.github.io/wire/",
     "github": "https://github.com/square/wire",
     "languages": ["Java", "Kotlin", "Swift"],
-    "relevance": 2
+    "relevance": 3
   },
   {
     "category": "libraries",
@@ -268,7 +268,7 @@
     "url": "https://github.com/dcodeIO/ProtoBuf.js",
     "github": "https://github.com/dcodeIO/ProtoBuf.js",
     "languages": ["JavaScript"],
-    "relevance": 2
+    "relevance": 3
   },
   {
     "category": "libraries",
@@ -708,7 +708,7 @@
     "url": "https://github.com/tokio-rs/prost",
     "github": "https://github.com/tokio-rs/prost",
     "languages": ["Rust"],
-    "relevance": 2
+    "relevance": 3
   },
   {
     "category": "libraries",
@@ -876,7 +876,7 @@
     "url": "https://fauxrpc.com",
     "github": "https://github.com/sudorandom/fauxrpc",
     "languages": ["Agnostic"],
-    "relevance": 3
+    "relevance": 2
   },
   {
     "category": "libraries",
@@ -986,7 +986,7 @@
     "url": "https://scalapb.github.io",
     "github": "https://github.com/scalapb/ScalaPB",
     "languages": ["Scala"],
-    "relevance": 2
+    "relevance": 3
   },
   {
     "category": "libraries",
@@ -1470,17 +1470,6 @@
     "url": "https://github.com/oniksan/godobuf",
     "github": "https://github.com/oniksan/godobuf",
     "languages": ["GDScript"],
-    "relevance": 2
-  },
-  {
-    "category": "libraries",
-    "name": "golang-protobuf",
-    "owner": "golang",
-    "repo": "protobuf",
-    "desc": "Go support for Google's protocol buffers",
-    "url": "https://github.com/golang/protobuf",
-    "github": "https://github.com/golang/protobuf",
-    "languages": ["Go"],
     "relevance": 2
   },
   {
