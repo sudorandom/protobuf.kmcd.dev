@@ -1187,7 +1187,7 @@ const Ecosystem = () => {
 
                   return (
                     <div
-                      key={project.name}
+                      key={`${project.owner}-${project.name}`}
                       className={`p-6 bg-[var(--card-bg)] border rounded-xl hover:border-[var(--hover-color)] transition-all duration-300 hover:-translate-y-1 hover:shadow-lg flex flex-col justify-between min-h-[260px] relative overflow-hidden ${
                         project.inactive
                           ? "border-slate-500/40 opacity-80 hover:opacity-100"
