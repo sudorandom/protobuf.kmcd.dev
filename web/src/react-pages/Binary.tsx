@@ -812,140 +812,177 @@ export const BinaryMatrix = ({
               }
             >
               <div className="p-4 flex-1 flex flex-col space-y-4">
-                {viewMode === "hex" ? (
+                {stats.error ? (
+                  stats.error === "NO_SCHEMA" ? (
+                    <div className="flex-1 flex flex-col justify-center items-center p-6 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg text-center space-y-4 font-mono min-h-[300px]">
+                      <span className="text-4xl">⚙️</span>
+                      <div className="space-y-1">
+                        <h4 className="text-[var(--cyber-neon-blue)] font-cyber font-bold uppercase tracking-wider text-sm">
+                          No Message Schema
+                        </h4>
+                        <p className="text-xs text-[var(--text-dim)] uppercase">
+                          Please define a valid message schema to begin encoding
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex-1 flex flex-col justify-center items-center p-6 bg-[var(--text-error)]/5 border border-[var(--text-error)]/20 rounded-lg text-center space-y-4 font-mono min-h-[300px]">
+                      <span className="text-4xl">⚠️</span>
+                      <div className="space-y-1">
+                        <h4 className="text-[var(--text-error)] font-cyber font-bold uppercase tracking-wider text-sm">
+                          Encoding Error
+                        </h4>
+                        <p className="text-xs text-[var(--text-dim)] uppercase">
+                          Failed to encode JSON to Protobuf binary
+                        </p>
+                      </div>
+                      <pre className="w-full max-w-lg p-3 bg-[var(--section-bg-dark)] border border-[var(--border-light)] rounded text-left text-sm text-[var(--text-error)] overflow-auto break-all whitespace-pre-wrap">
+                        {stats.error}
+                      </pre>
+                    </div>
+                  )
+                ) : (
                   <>
-                    <div className="flex flex-col gap-2 font-mono text-sm leading-relaxed max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
-                      {stats.segments.map((seg, i) => {
-                        const color = getSegmentColor(seg);
-                        const isActive = selectedSegmentIdx === i;
+                    {viewMode === "hex" ? (
+                      <>
+                        <div className="flex flex-col gap-2 font-mono text-sm leading-relaxed max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
+                          {stats.segments.map((seg, i) => {
+                            const color = getSegmentColor(seg);
+                            const isActive = selectedSegmentIdx === i;
 
-                        return (
-                          <div key={i} className="flex flex-col gap-2">
-                            <button
-                              onClick={() =>
-                                setSelectedSegmentIdx(isActive ? null : i)
-                              }
-                              className={`group relative grid grid-cols-[1rem_1fr_auto] items-center gap-4 p-2 rounded-lg border transition-all text-left ${isActive ? "bg-[var(--overlay-bg)] border-[var(--border-light)]" : "border-transparent hover:bg-[var(--overlay-bg)]/50"}`}
-                              aria-label={`${seg.rawHex.join(" ")} ${seg.fieldName || "UNKNOWN"} - Click to inspect`}
-                            >
-                              <div className="flex justify-center">
-                                {isActive ? (
-                                  <ChevronRight className="w-4 h-4 text-[var(--cyber-neon-blue)] rotate-90 transition-transform" />
-                                ) : (
-                                  <ChevronRight className="w-4 h-4 text-[var(--text-dim)] opacity-0 group-hover:opacity-100 transition-all" />
-                                )}
-                              </div>
-
-                              <div className="flex flex-wrap gap-1 min-w-0">
-                                {seg.rawHex.map((byte, byteIdx) => {
-                                  let byteColor = color;
-                                  if (byteIdx === 0)
-                                    byteColor = "var(--cyber-neon-blue)";
-                                  else if (seg.wireType === 2 && byteIdx === 1)
-                                    byteColor = "var(--cyber-neon-yellow)";
-
-                                  return (
-                                    <span
-                                      key={byteIdx}
-                                      className="px-1.5 py-0.5 rounded border font-mono text-sm transition-colors"
-                                      style={{
-                                        borderColor: isActive
-                                          ? byteColor
-                                          : "var(--border-light)",
-                                        backgroundColor: isActive
-                                          ? `color-mix(in srgb, ${byteColor}, transparent 80%)`
-                                          : "transparent",
-                                        color: isActive
-                                          ? byteColor
-                                          : "var(--text-color)",
-                                      }}
-                                    >
-                                      {byte}
-                                    </span>
-                                  );
-                                })}
-                              </div>
-
-                              {seg.fieldName && (
-                                <span
-                                  className={`text-sm uppercase font-cyber tracking-widest flex-shrink-0 ${isActive ? "text-[var(--text-color)]" : "text-[var(--text-dim)]"}`}
+                            return (
+                              <div key={i} className="flex flex-col gap-2">
+                                <button
+                                  onClick={() =>
+                                    setSelectedSegmentIdx(isActive ? null : i)
+                                  }
+                                  className={`group relative grid grid-cols-[1rem_1fr_auto] items-center gap-4 p-2 rounded-lg border transition-all text-left ${isActive ? "bg-[var(--overlay-bg)] border-[var(--border-light)]" : "border-transparent hover:bg-[var(--overlay-bg)]/50"}`}
+                                  aria-label={`${seg.rawHex.join(" ")} ${seg.fieldName || "UNKNOWN"} - Click to inspect`}
                                 >
-                                  {seg.fieldName}
-                                </span>
-                              )}
-                            </button>
-
-                            {isActive && (
-                              <div className="ml-8 p-4 bg-[var(--section-bg-dark)] border border-[var(--border-light)] rounded-lg space-y-4 cursor-default">
-                                <div className="space-y-1">
-                                  <span className="text-xs font-mono text-[var(--text-dim)] uppercase tracking-widest">
-                                    Tag Field
-                                  </span>
-                                  <div className="text-sm font-cyber font-bold tracking-wider text-[var(--cyber-neon-blue)]">
-                                    FIELD #{seg.tag} | WIRE TYPE {seg.wireType}
+                                  <div className="flex justify-center">
+                                    {isActive ? (
+                                      <ChevronRight className="w-4 h-4 text-[var(--cyber-neon-blue)] rotate-90 transition-transform" />
+                                    ) : (
+                                      <ChevronRight className="w-4 h-4 text-[var(--text-dim)] opacity-0 group-hover:opacity-100 transition-all" />
+                                    )}
                                   </div>
-                                </div>
 
-                                {seg.lengthBytes && (
-                                  <div className="space-y-1">
-                                    <span className="text-xs font-mono text-[var(--text-dim)] uppercase tracking-widest">
-                                      Decoded Length
+                                  <div className="flex flex-wrap gap-1 min-w-0">
+                                    {seg.rawHex.map((byte, byteIdx) => {
+                                      let byteColor = color;
+                                      if (byteIdx === 0)
+                                        byteColor = "var(--cyber-neon-blue)";
+                                      else if (
+                                        seg.wireType === 2 &&
+                                        byteIdx === 1
+                                      )
+                                        byteColor = "var(--cyber-neon-yellow)";
+
+                                      return (
+                                        <span
+                                          key={byteIdx}
+                                          className="px-1.5 py-0.5 rounded border font-mono text-sm transition-colors"
+                                          style={{
+                                            borderColor: isActive
+                                              ? byteColor
+                                              : "var(--border-light)",
+                                            backgroundColor: isActive
+                                              ? `color-mix(in srgb, ${byteColor}, transparent 80%)`
+                                              : "transparent",
+                                            color: isActive
+                                              ? byteColor
+                                              : "var(--text-color)",
+                                          }}
+                                        >
+                                          {byte}
+                                        </span>
+                                      );
+                                    })}
+                                  </div>
+
+                                  {seg.fieldName && (
+                                    <span
+                                      className={`text-sm uppercase font-cyber tracking-widest flex-shrink-0 ${isActive ? "text-[var(--text-color)]" : "text-[var(--text-dim)]"}`}
+                                    >
+                                      {seg.fieldName}
                                     </span>
-                                    <div className="text-sm font-cyber font-bold tracking-wider text-[var(--cyber-neon-yellow)]">
-                                      {seg.payloadBytes.length} BYTES
+                                  )}
+                                </button>
+
+                                {isActive && (
+                                  <div className="ml-8 p-4 bg-[var(--section-bg-dark)] border border-[var(--border-light)] rounded-lg space-y-4 cursor-default">
+                                    <div className="space-y-1">
+                                      <span className="text-xs font-mono text-[var(--text-dim)] uppercase tracking-widest">
+                                        Tag Field
+                                      </span>
+                                      <div className="text-sm font-cyber font-bold tracking-wider text-[var(--cyber-neon-blue)]">
+                                        FIELD #{seg.tag} | WIRE TYPE{" "}
+                                        {seg.wireType}
+                                      </div>
+                                    </div>
+
+                                    {seg.lengthBytes && (
+                                      <div className="space-y-1">
+                                        <span className="text-xs font-mono text-[var(--text-dim)] uppercase tracking-widest">
+                                          Decoded Length
+                                        </span>
+                                        <div className="text-sm font-cyber font-bold tracking-wider text-[var(--cyber-neon-yellow)]">
+                                          {seg.payloadBytes.length} BYTES
+                                        </div>
+                                      </div>
+                                    )}
+
+                                    <div className="space-y-1">
+                                      <span className="text-xs font-mono text-[var(--text-dim)] uppercase tracking-widest">
+                                        Semantic Value{" "}
+                                        {seg.fieldType && `(${seg.fieldType})`}
+                                      </span>
+                                      <div
+                                        className="text-lg font-mono break-all whitespace-pre-wrap"
+                                        style={{ color }}
+                                      >
+                                        {seg.value.toString()}
+                                      </div>
                                     </div>
                                   </div>
                                 )}
-
-                                <div className="space-y-1">
-                                  <span className="text-xs font-mono text-[var(--text-dim)] uppercase tracking-widest">
-                                    Semantic Value{" "}
-                                    {seg.fieldType && `(${seg.fieldType})`}
-                                  </span>
-                                  <div
-                                    className="text-lg font-mono break-all whitespace-pre-wrap"
-                                    style={{ color }}
-                                  >
-                                    {seg.value.toString()}
-                                  </div>
-                                </div>
                               </div>
-                            )}
+                            );
+                          })}
+                        </div>
+                        <div className="pt-4 border-t border-[var(--border-light)] flex flex-wrap gap-4 mt-auto">
+                          <div className="flex items-center gap-2">
+                            <div className="w-2 h-2 rounded-full bg-[var(--cyber-neon-blue)]" />
+                            <span className="text-sm font-mono text-[var(--text-dim)] uppercase">
+                              Tag
+                            </span>
                           </div>
-                        );
-                      })}
-                    </div>
-                    <div className="pt-4 border-t border-[var(--border-light)] flex flex-wrap gap-4 mt-auto">
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-[var(--cyber-neon-blue)]" />
-                        <span className="text-sm font-mono text-[var(--text-dim)] uppercase">
-                          Tag
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-[var(--cyber-neon-yellow)]" />
-                        <span className="text-sm font-mono text-[var(--text-dim)] uppercase">
-                          Length
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-[var(--cyber-neon-green)]" />
-                        <span className="text-sm font-mono text-[var(--text-dim)] uppercase">
-                          Payload
-                        </span>
-                      </div>
-                    </div>
+                          <div className="flex items-center gap-2">
+                            <div className="w-2 h-2 rounded-full bg-[var(--cyber-neon-yellow)]" />
+                            <span className="text-sm font-mono text-[var(--text-dim)] uppercase">
+                              Length
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <div className="w-2 h-2 rounded-full bg-[var(--cyber-neon-green)]" />
+                            <span className="text-sm font-mono text-[var(--text-dim)] uppercase">
+                              Payload
+                            </span>
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <pre className="font-mono text-sm text-[var(--cyber-neon-pink)] leading-relaxed flex-1 overflow-auto custom-scrollbar p-2 bg-[var(--section-bg-dark)]/30 rounded border border-[var(--border-light)]">
+                        {protoscopeOutput}
+                      </pre>
+                    )}
+                    <p className="text-sm font-mono text-[var(--text-dim)] uppercase tracking-widest">
+                      {viewMode === "hex"
+                        ? "Click a segment to investigate its structure"
+                        : "Disassembled binary stream (schema-agnostic)"}
+                    </p>
                   </>
-                ) : (
-                  <pre className="font-mono text-sm text-[var(--cyber-neon-pink)] leading-relaxed flex-1 overflow-auto custom-scrollbar p-2 bg-[var(--section-bg-dark)]/30 rounded border border-[var(--border-light)]">
-                    {protoscopeOutput}
-                  </pre>
                 )}
-                <p className="text-sm font-mono text-[var(--text-dim)] uppercase tracking-widest">
-                  {viewMode === "hex"
-                    ? "Click a segment to investigate its structure"
-                    : "Disassembled binary stream (schema-agnostic)"}
-                </p>
               </div>
             </CyberPanel>
           </div>
