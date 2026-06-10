@@ -268,7 +268,7 @@
     "url": "https://github.com/dcodeIO/ProtoBuf.js",
     "github": "https://github.com/dcodeIO/ProtoBuf.js",
     "languages": ["JavaScript"],
-    "relevance": 3
+    "relevance": 4
   },
   {
     "category": "libraries",
@@ -521,7 +521,7 @@
     "url": "https://github.com/bufbuild/protobuf-es",
     "github": "https://github.com/bufbuild/protobuf-es",
     "languages": ["TypeScript", "JavaScript"],
-    "relevance": 2
+    "relevance": 3
   },
   {
     "category": "libraries",
