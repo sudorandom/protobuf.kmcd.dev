@@ -358,7 +358,11 @@ const WireFormatBreakdown = () => {
             </span>
             <SyntaxHighlighter
               language="proto"
-              code={`2: 0x40490fdb  // Field 2 (32-bit floating point)`}
+              code={`// Field 2: float (value 3.14)
+2: 0x40490fdb
+
+// Field 3: double (value 80.0)
+3: 0x4054000000000000`}
             />
           </div>
         </div>

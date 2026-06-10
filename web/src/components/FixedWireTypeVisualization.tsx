@@ -11,7 +11,7 @@ export const FixedWireTypeVisualization = () => {
     >
       <svg
         key={restartKey}
-        viewBox="0 0 800 440"
+        viewBox="0 0 800 580"
         className="w-full h-auto max-w-full font-mono drop-shadow-2xl"
         style={{ color: "var(--text-color)" }}
       >
@@ -70,7 +70,7 @@ export const FixedWireTypeVisualization = () => {
             x="90"
             y="50"
             width="280"
-            height="120"
+            height="135"
             rx="8"
             fill="var(--panel-bg)"
             stroke="var(--cyber-neon-blue)"
@@ -79,29 +79,43 @@ export const FixedWireTypeVisualization = () => {
           />
           <text
             x="105"
-            y="80"
+            y="75"
             fill="var(--cyber-neon-pink)"
             fontSize="14"
             className="font-bold"
           >
             message
           </text>
-          <text x="170" y="80" fill="currentColor" fontSize="14">
+          <text x="170" y="75" fill="currentColor" fontSize="14">
             {"User {"}
           </text>
-          <text x="120" y="110" fill="var(--cyber-neon-blue)" fontSize="14">
+          <text x="120" y="100" fill="var(--cyber-neon-blue)" fontSize="14">
             float
           </text>
-          <text x="170" y="110" fill="currentColor" fontSize="14">
+          <text x="170" y="100" fill="currentColor" fontSize="14">
             height =
           </text>
-          <text x="250" y="110" fill="var(--cyber-neon-yellow)" fontSize="14">
+          <text x="250" y="100" fill="var(--cyber-neon-yellow)" fontSize="14">
             2
           </text>
-          <text x="260" y="110" fill="currentColor" fontSize="14">
+          <text x="260" y="100" fill="currentColor" fontSize="14">
             ;
           </text>
-          <text x="105" y="140" fill="currentColor" fontSize="14">
+
+          <text x="120" y="125" fill="var(--cyber-neon-blue)" fontSize="14">
+            double
+          </text>
+          <text x="180" y="125" fill="currentColor" fontSize="14">
+            weight =
+          </text>
+          <text x="255" y="125" fill="var(--cyber-neon-yellow)" fontSize="14">
+            3
+          </text>
+          <text x="265" y="125" fill="currentColor" fontSize="14">
+            ;
+          </text>
+
+          <text x="105" y="150" fill="currentColor" fontSize="14">
             {"}"}
           </text>
           <text
@@ -126,22 +140,33 @@ export const FixedWireTypeVisualization = () => {
             x="430"
             y="50"
             width="280"
-            height="120"
+            height="135"
             rx="8"
             fill="var(--panel-bg)"
             stroke="var(--cyber-neon-green)"
             strokeWidth="1"
             opacity="0.9"
           />
-          <text x="445" y="95" fill="var(--cyber-neon-blue)" fontSize="14">
+          <text x="445" y="90" fill="var(--cyber-neon-blue)" fontSize="14">
             height
           </text>
-          <text x="495" y="95" fill="currentColor" fontSize="14">
+          <text x="495" y="90" fill="currentColor" fontSize="14">
             :
           </text>
-          <text x="510" y="95" fill="var(--cyber-neon-green)" fontSize="14">
+          <text x="510" y="90" fill="var(--cyber-neon-green)" fontSize="14">
             3.14
           </text>
+
+          <text x="445" y="115" fill="var(--cyber-neon-blue)" fontSize="14">
+            weight
+          </text>
+          <text x="495" y="115" fill="currentColor" fontSize="14">
+            :
+          </text>
+          <text x="510" y="115" fill="var(--cyber-neon-green)" fontSize="14">
+            80.0
+          </text>
+
           <text
             x="445"
             y="40"
@@ -161,24 +186,21 @@ export const FixedWireTypeVisualization = () => {
           transition={{ duration: 1, delay: 1 }}
         >
           <path
-            d="M 230 170 L 230 210 L 360 210 L 360 240"
+            d="M 230 185 L 230 210 L 384 210"
             fill="none"
             stroke="var(--cyber-neon-blue)"
             strokeWidth="2"
             strokeDasharray="5,5"
-            markerEnd="url(#arrowhead-fixed)"
             className="opacity-60"
           />
           <path
-            d="M 570 170 L 570 210 L 440 210 L 440 240"
+            d="M 570 185 L 570 210 L 416 210"
             fill="none"
             stroke="var(--cyber-neon-green)"
             strokeWidth="2"
             strokeDasharray="5,5"
-            markerEnd="url(#arrowhead-fixed)"
             className="opacity-60"
           />
-
           <circle
             cx="400"
             cy="210"
@@ -198,16 +220,8 @@ export const FixedWireTypeVisualization = () => {
           >
             +
           </text>
-        </motion.g>
-
-        {/* Connecting Line to Output */}
-        <motion.g
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 1.4 }}
-        >
           <path
-            d="M 400 325 L 400 360"
+            d="M 400 226 L 400 250"
             fill="none"
             stroke="var(--cyber-neon-pink)"
             strokeWidth="2"
@@ -224,10 +238,10 @@ export const FixedWireTypeVisualization = () => {
           transition={{ duration: 0.8, delay: 1.2 }}
         >
           <rect
-            x="150"
+            x="100"
             y="250"
-            width="500"
-            height="150"
+            width="600"
+            height="295"
             rx="8"
             fill="var(--panel-bg)"
             stroke="url(#cyber-gradient-fixed)"
@@ -236,7 +250,7 @@ export const FixedWireTypeVisualization = () => {
             opacity="0.9"
           />
           <text
-            x="170"
+            x="120"
             y="240"
             fill="var(--text-dim)"
             fontSize="12"
@@ -246,6 +260,7 @@ export const FixedWireTypeVisualization = () => {
             Encoded Payload
           </text>
 
+          {/* Row 1: float height */}
           <g transform="translate(190, 290)">
             <rect
               x="0"
@@ -367,6 +382,143 @@ export const FixedWireTypeVisualization = () => {
               className="font-mono"
             >
               Fixed 32-bit (4 Bytes)
+            </text>
+          </g>
+
+          {/* Separator line between rows */}
+          <line
+            x1="120"
+            y1="395"
+            x2="680"
+            y2="395"
+            stroke="var(--border-light)"
+            strokeWidth="1"
+            strokeDasharray="5,5"
+            opacity="0.3"
+          />
+
+          {/* Row 2: double weight */}
+          <g transform="translate(150, 440)">
+            <rect
+              x="0"
+              y="-20"
+              width="130"
+              height="30"
+              rx="4"
+              fill="var(--cyber-neon-blue)"
+              fillOpacity="0.2"
+            />
+            <text
+              x="65"
+              y="0"
+              fill="var(--cyber-neon-blue)"
+              fontSize="18"
+              textAnchor="middle"
+              className="font-bold"
+            >
+              19
+            </text>
+            <text
+              x="65"
+              y="25"
+              fill="var(--text-dim)"
+              fontSize="12"
+              textAnchor="middle"
+            >
+              Tag
+            </text>
+
+            <rect
+              x="150"
+              y="-20"
+              width="350"
+              height="30"
+              rx="4"
+              fill="var(--cyber-neon-green)"
+              fillOpacity="0.2"
+            />
+            <text
+              x="325"
+              y="0"
+              fill="var(--cyber-neon-green)"
+              fontSize="18"
+              textAnchor="middle"
+              className="font-bold tracking-widest"
+            >
+              00 00 00 00 00 00 54 40
+            </text>
+            <text
+              x="325"
+              y="25"
+              fill="var(--text-dim)"
+              fontSize="12"
+              textAnchor="middle"
+            >
+              Value (80.0 double, Little-Endian)
+            </text>
+          </g>
+
+          <g transform="translate(150, 505)">
+            <text
+              x="65"
+              y="0"
+              fontSize="12"
+              textAnchor="middle"
+              className="font-mono"
+            >
+              <tspan fill="var(--cyber-neon-blue)">00011</tspan>
+              <tspan fill="var(--cyber-neon-pink)">001</tspan>
+            </text>
+            <text
+              x="25"
+              y="24"
+              fill="var(--text-dim)"
+              fontSize="11"
+              textAnchor="middle"
+              className="font-mono"
+            >
+              Field 3
+            </text>
+            <text
+              x="85"
+              y="24"
+              fill="var(--text-dim)"
+              fontSize="11"
+              textAnchor="middle"
+              className="font-mono"
+            >
+              Type 1
+            </text>
+
+            <text
+              x="325"
+              y="-8"
+              fill="var(--cyber-neon-green)"
+              fontSize="11"
+              textAnchor="middle"
+              className="font-mono tracking-wider"
+            >
+              00000000 00000000 00000000 00000000
+            </text>
+            <text
+              x="325"
+              y="8"
+              fill="var(--cyber-neon-green)"
+              fontSize="11"
+              textAnchor="middle"
+              className="font-mono tracking-wider"
+            >
+              00000000 00000000 01010100 01000000
+            </text>
+            <text
+              x="325"
+              y="24"
+              fill="var(--text-dim)"
+              fontSize="11"
+              textAnchor="middle"
+              className="font-mono"
+            >
+              Fixed 64-bit (8 Bytes)
             </text>
           </g>
         </motion.g>
