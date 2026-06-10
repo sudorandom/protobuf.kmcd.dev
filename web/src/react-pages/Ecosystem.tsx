@@ -1179,9 +1179,12 @@ const Ecosystem = () => {
                     : [project.category];
                   const primaryCategory = categories[0] || "libraries";
                   const primaryBadge = getCategoryBadgeStyles(primaryCategory);
-                  const githubUrls = Array.isArray(project.github)
+                  const githubUrls = (Array.isArray(project.github)
                     ? project.github
-                    : [project.github];
+                    : project.github
+                      ? [project.github]
+                      : []
+                  ).filter(Boolean);
                   const primaryGithubUrl = githubUrls[0] || "";
                   const projectLink = project.url || primaryGithubUrl;
 
@@ -1227,17 +1230,24 @@ const Ecosystem = () => {
                             )}
                           </div>
 
-                          <a
-                            href={primaryGithubUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-1.5 px-2.5 py-1 bg-[var(--warning-bg)] hover:bg-[var(--warning-border)] border border-[var(--warning-border)] hover:border-[var(--warning-text)] rounded-md text-xs font-mono text-[var(--warning-text)] transition-all shadow-inner group/stars"
-                          >
-                            <Star className="w-3.5 h-3.5 fill-current opacity-70 group-hover/stars:opacity-100 transition-all" />
-                            <span className="font-bold">
-                              {formatStars(project.stars)}
-                            </span>
-                          </a>
+                          {primaryGithubUrl ? (
+                            <a
+                              href={primaryGithubUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-1.5 px-2.5 py-1 bg-[var(--warning-bg)] hover:bg-[var(--warning-border)] border border-[var(--warning-border)] hover:border-[var(--warning-text)] rounded-md text-xs font-mono text-[var(--warning-text)] transition-all shadow-inner group/stars"
+                            >
+                              <Star className="w-3.5 h-3.5 fill-current opacity-70 group-hover/stars:opacity-100 transition-all" />
+                              <span className="font-bold">
+                                {formatStars(project.stars)}
+                              </span>
+                            </a>
+                          ) : (
+                            <div className="flex items-center gap-1.5 px-2.5 py-1 bg-[var(--warning-bg)]/60 border border-[var(--warning-border)]/50 rounded-md text-xs font-mono text-[var(--warning-text)]/70 shadow-inner select-none">
+                              <Star className="w-3.5 h-3.5 fill-current opacity-40" />
+                              <span className="font-bold">?</span>
+                            </div>
+                          )}
                         </div>
 
                         {/* Title & Owner */}
@@ -1251,17 +1261,19 @@ const Ecosystem = () => {
                             {project.name}
                           </a>
                         </h3>
-                        <p className="text-xs font-sans text-[var(--text-dim)] uppercase tracking-wider mb-2">
-                          BY{" "}
-                          <a
-                            href={`https://github.com/${project.owner}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="hover:text-[var(--cyber-neon-pink)] hover:underline transition-colors font-semibold"
-                          >
-                            {project.owner}
-                          </a>
-                        </p>
+                        {project.owner && (
+                          <p className="text-xs font-sans text-[var(--text-dim)] uppercase tracking-wider mb-2">
+                            BY{" "}
+                            <a
+                              href={`https://github.com/${project.owner}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="hover:text-[var(--cyber-neon-pink)] hover:underline transition-colors font-semibold"
+                            >
+                              {project.owner}
+                            </a>
+                          </p>
+                        )}
 
                         {/* Languages */}
                         {Array.isArray(project.languages) &&
