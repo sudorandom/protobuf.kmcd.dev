@@ -81,7 +81,7 @@ const LanguageIcon = ({
   );
 };
 import { Section, SectionTitle } from "../components/shared/Common";
-import ecosystemData from "../data/ecosystem-stars.json";
+import ecosystemData from "../data/ecosystem.json";
 
 // --- Types ---
 interface Project {
@@ -96,6 +96,8 @@ interface Project {
   pushedAt: string;
   inactive: boolean;
   languages: string[];
+  starsWeekly?: number;
+  starsMonthly?: number;
 }
 
 // --- Formatting helper ---
@@ -415,6 +417,32 @@ const Ecosystem = () => {
           const relB = (b as any).relevance || 0;
           if (relA !== relB) {
             comparison = relA - relB;
+          } else {
+            const weeklyA = a.starsWeekly || 0;
+            const weeklyB = b.starsWeekly || 0;
+            const monthlyA = a.starsMonthly || 0;
+            const monthlyB = b.starsMonthly || 0;
+            if (weeklyA !== weeklyB) {
+              comparison = weeklyA - weeklyB;
+            } else if (monthlyA !== monthlyB) {
+              comparison = monthlyA - monthlyB;
+            } else if (a.stars !== b.stars) {
+              comparison = a.stars - b.stars;
+            } else {
+              comparison = b.name
+                .toLowerCase()
+                .localeCompare(a.name.toLowerCase());
+            }
+          }
+        } else if (sortBy === "stars") {
+          const weeklyA = a.starsWeekly || 0;
+          const weeklyB = b.starsWeekly || 0;
+          const monthlyA = a.starsMonthly || 0;
+          const monthlyB = b.starsMonthly || 0;
+          if (weeklyA !== weeklyB) {
+            comparison = weeklyA - weeklyB;
+          } else if (monthlyA !== monthlyB) {
+            comparison = monthlyA - monthlyB;
           } else if (a.stars !== b.stars) {
             comparison = a.stars - b.stars;
           } else {
@@ -422,8 +450,6 @@ const Ecosystem = () => {
               .toLowerCase()
               .localeCompare(a.name.toLowerCase());
           }
-        } else if (sortBy === "stars") {
-          comparison = a.stars - b.stars;
         } else if (sortBy === "name") {
           comparison = a.name.toLowerCase().localeCompare(b.name.toLowerCase());
         } else if (sortBy === "updated") {
@@ -702,7 +728,7 @@ const Ecosystem = () => {
                           value="stars"
                           className="bg-[var(--panel-bg)] text-[var(--text-color)]"
                         >
-                          Stars
+                          Popularity
                         </option>
                         <option
                           value="updated"
@@ -956,7 +982,7 @@ const Ecosystem = () => {
                           value="stars"
                           className="bg-[var(--panel-bg)] text-[var(--text-color)]"
                         >
-                          Stars
+                          Popularity
                         </option>
                         <option
                           value="updated"
@@ -1260,7 +1286,8 @@ const Ecosystem = () => {
                               href={primaryGithubUrl}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex items-center gap-1.5 px-2.5 py-1 bg-[var(--warning-bg)] hover:bg-[var(--warning-border)] border border-[var(--warning-border)] hover:border-[var(--warning-text)] rounded-md text-xs font-mono text-[var(--warning-text)] transition-all shadow-inner group/stars"
+                              title={`Total stars: ${project.stars.toLocaleString()}\n+${project.starsWeekly || 0} stars this week\n+${project.starsMonthly || 0} stars this month`}
+                              className="flex items-center gap-1.5 px-2.5 py-1 bg-[var(--warning-bg)] hover:bg-[var(--warning-border)] border border-[var(--warning-border)] hover:border-[var(--warning-text)] rounded-md text-xs font-mono text-[var(--warning-text)] transition-all shadow-inner group/stars cursor-help"
                             >
                               <Star className="w-3.5 h-3.5 fill-current opacity-70 group-hover/stars:opacity-100 transition-all" />
                               <span className="font-bold">
@@ -1268,7 +1295,10 @@ const Ecosystem = () => {
                               </span>
                             </a>
                           ) : (
-                            <div className="flex items-center gap-1.5 px-2.5 py-1 bg-[var(--warning-bg)]/60 border border-[var(--warning-border)]/50 rounded-md text-xs font-mono text-[var(--warning-text)]/70 shadow-inner select-none">
+                            <div 
+                              title="GitHub repository not specified"
+                              className="flex items-center gap-1.5 px-2.5 py-1 bg-[var(--warning-bg)]/60 border border-[var(--warning-border)]/50 rounded-md text-xs font-mono text-[var(--warning-text)]/70 shadow-inner select-none cursor-help"
+                            >
                               <Star className="w-3.5 h-3.5 fill-current opacity-40" />
                               <span className="font-bold">?</span>
                             </div>

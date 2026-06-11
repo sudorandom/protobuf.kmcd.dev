@@ -13,8 +13,8 @@ web-serve: web-build
 web-build: web-format wasm-build
 	cd web && pnpm run build
 
-web-fetch-stars:
-	cd web && GITHUB_TOKEN=$(gh auth token 2>/dev/null || echo $GITHUB_TOKEN) pnpm run fetch-stars
+web-fetch-metadata:
+	cd web && GITHUB_TOKEN=$(gh auth token 2>/dev/null || echo $GITHUB_TOKEN) pnpm run fetch-metadata
 
 wasm-build:
 	@if ! command -v tinygo >/dev/null 2>&1; then \

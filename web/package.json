@@ -12,7 +12,7 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "preview": "astro preview",
-    "fetch-stars": "node scripts/fetch-github-stars.js"
+    "fetch-metadata": "node scripts/fetch-github-metadata.js"
   },
   "dependencies": {
     "@astrojs/react": "^5.0.7",
