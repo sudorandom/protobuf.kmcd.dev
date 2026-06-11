@@ -176,13 +176,75 @@ const Ecosystem = () => {
   const [selectedLanguage, setSelectedLanguage] = useState(() =>
     getQueryParam("lang", "all"),
   );
-  const [showMobileFilters, setShowMobileFilters] = useState(false);
+  // Modal visibility states
+  const [showFilterModal, setShowFilterModal] = useState(false);
+  const [showSortModal, setShowSortModal] = useState(false);
+
+  // Draft filter states
+  const [draftSearchTerm, setDraftSearchTerm] = useState("");
+  const [draftCategory, setDraftCategory] = useState<"all" | "tools" | "plugins" | "libraries">("all");
+  const [draftLanguage, setDraftLanguage] = useState("all");
+  const [draftStatus, setDraftStatus] = useState<"active" | "all" | "inactive">("all");
+
+  // Draft sort states
+  const [draftSortBy, setDraftSortBy] = useState<"stars" | "name" | "updated" | "default">("default");
+  const [draftSortDirection, setDraftSortDirection] = useState<"desc" | "asc">("desc");
+
   const [statusFilter, setStatusFilter] = useState<
     "active" | "all" | "inactive"
   >(() => {
     const val = getQueryParam("status", "all");
     return ["active", "all", "inactive"].includes(val) ? (val as any) : "all";
   });
+
+  const openFilterModal = () => {
+    setDraftSearchTerm(searchTerm);
+    setDraftCategory(selectedCategory);
+    setDraftLanguage(selectedLanguage);
+    setDraftStatus(statusFilter);
+    setShowFilterModal(true);
+  };
+
+  const applyFilters = () => {
+    setSearchTerm(draftSearchTerm);
+    setSelectedCategory(draftCategory);
+    setSelectedLanguage(draftLanguage);
+    setStatusFilter(draftStatus);
+    setCurrentPage(1);
+    setShowFilterModal(false);
+  };
+
+  const openSortModal = () => {
+    setDraftSortBy(sortBy);
+    setDraftSortDirection(sortDirection);
+    setShowSortModal(true);
+  };
+
+  const applySort = () => {
+    setSortBy(draftSortBy);
+    setSortDirection(draftSortDirection);
+    setCurrentPage(1);
+    setShowSortModal(false);
+  };
+
+  // Handle escape key to close modals
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setShowFilterModal(false);
+        setShowSortModal(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      setShowFilterModal(false);
+      setShowSortModal(false);
+    }
+  };
 
   // Sync state to URL query parameters
   useEffect(() => {
@@ -248,15 +310,9 @@ const Ecosystem = () => {
     setCurrentPage(1);
   };
 
-  const handleSetSortBy = (sort: "stars" | "name" | "updated" | "default") => {
-    setSortBy(sort);
-    setCurrentPage(1);
-  };
 
-  const handleSetSortDirection = (dir: "desc" | "asc") => {
-    setSortDirection(dir);
-    setCurrentPage(1);
-  };
+
+
 
   const formatFetchedAt = (isoString?: string) => {
     if (!isoString) return "";
@@ -462,9 +518,7 @@ const Ecosystem = () => {
     projects,
   ]);
 
-  const toggleSortDirection = () => {
-    handleSetSortDirection(sortDirection === "desc" ? "asc" : "desc");
-  };
+
 
   const getCategoryBadgeStyles = (category: string) => {
     switch (category) {
@@ -536,976 +590,709 @@ const Ecosystem = () => {
             </span>
           </p>
 
-          {/* Mobile Filter Controls (Visible on mobile/tablet, hidden on desktop) */}
-          <div className="lg:hidden mb-6 space-y-4">
-            <div className="flex gap-3">
-              <div className="relative flex-1">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-dim)]/70" />
-                <input
-                  type="text"
-                  placeholder="Search ecosystem..."
-                  value={searchTerm}
-                  onChange={(e) => handleSetSearch(e.target.value)}
-                  className="w-full pl-10 pr-20 py-2.5 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-xl text-xs text-[var(--text-color)] font-mono placeholder:text-[var(--text-dim)]/60 focus:outline-none focus:border-[var(--cyber-neon-blue)] focus:ring-1 focus:ring-[var(--cyber-neon-blue)] transition-colors shadow-inner"
-                />
-                {searchTerm && (
+          {/* Active Filters Summary & Controls */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 bg-[var(--panel-bg)]/40 border border-[var(--border-light)]/60 rounded-xl backdrop-blur-sm relative mb-6">
+            <div className="space-y-2">
+              <span className="text-xs font-mono text-[var(--text-dim)]/90 uppercase block">
+                Found{" "}
+                <span className="text-[var(--text-color)] font-bold font-cyber">
+                  {filteredAndSortedProjects.length}
+                </span>{" "}
+                project{filteredAndSortedProjects.length !== 1 ? "s" : ""}
+                {searchTerm ||
+                selectedCategory !== "all" ||
+                selectedLanguage !== "all" ||
+                statusFilter !== "all"
+                  ? " matching filters"
+                  : ""}
+              </span>
+
+              {(searchTerm ||
+                selectedCategory !== "all" ||
+                selectedLanguage !== "all" ||
+                statusFilter !== "all") && (
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-[10px] font-sans font-semibold text-[var(--text-color)] uppercase tracking-wider">
+                    Active Filters:
+                  </span>
+                  {selectedCategory !== "all" && (
+                    <button
+                      onClick={() => handleSetCategory("all")}
+                      className="flex items-center gap-1.5 px-2 py-0.5 text-[9px] font-cyber font-bold uppercase tracking-wider text-[var(--cyber-neon-blue)] bg-[var(--cyber-neon-blue)]/5 border border-[var(--cyber-neon-blue)]/20 rounded hover:bg-[var(--cyber-neon-blue)]/10 transition-all"
+                    >
+                      Category: {selectedCategory}
+                      <span className="text-[11px] font-mono leading-none">&times;</span>
+                    </button>
+                  )}
+                  {selectedLanguage !== "all" && (
+                    <button
+                      onClick={() => handleSetLanguage("all")}
+                      className="flex items-center gap-1.5 px-2 py-0.5 text-[9px] font-cyber font-bold uppercase tracking-wider text-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/5 border border-[var(--cyber-neon-pink)]/20 rounded hover:bg-[var(--cyber-neon-pink)]/10 transition-all"
+                    >
+                      Language: {selectedLanguage}
+                      <span className="text-[11px] font-mono leading-none">&times;</span>
+                    </button>
+                  )}
+                  {searchTerm && (
+                    <button
+                      onClick={() => handleSetSearch("")}
+                      className="flex items-center gap-1.5 px-2 py-0.5 text-[9px] font-cyber font-bold uppercase tracking-wider text-[var(--cyber-neon-green)] bg-[var(--cyber-neon-green)]/5 border border-[var(--cyber-neon-green)]/20 rounded hover:bg-[var(--cyber-neon-green)]/10 transition-all"
+                    >
+                      Search: "{searchTerm.length > 12 ? searchTerm.substring(0, 10) + "..." : searchTerm}"
+                      <span className="text-[11px] font-mono leading-none">&times;</span>
+                    </button>
+                  )}
+                  {statusFilter !== "all" && (
+                    <button
+                      onClick={() => setStatusFilter("all")}
+                      className="flex items-center gap-1.5 px-2 py-0.5 text-[9px] font-cyber font-bold uppercase tracking-wider text-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/5 border border-[var(--cyber-neon-pink)]/20 rounded hover:bg-[var(--cyber-neon-pink)]/10 transition-all"
+                    >
+                      Status: {statusFilter === "active" ? "Active Only" : "Inactive Only"}
+                      <span className="text-[11px] font-mono leading-none">&times;</span>
+                    </button>
+                  )}
                   <button
-                    onClick={() => handleSetSearch("")}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[9px] font-mono text-[var(--text-dim)] hover:text-[var(--text-color)] bg-[var(--overlay-bg)] px-2 py-0.5 rounded border border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)] transition-all"
+                    onClick={() => {
+                      handleSetCategory("all");
+                      handleSetLanguage("all");
+                      handleSetSearch("");
+                      setStatusFilter("all");
+                    }}
+                    className="text-[9px] font-mono text-[var(--text-dim)]/80 hover:text-[var(--text-color)] uppercase underline hover:no-underline transition-all"
                   >
-                    CLEAR
+                    Reset All
                   </button>
-                )}
-              </div>
+                </div>
+              )}
+            </div>
+
+            <div className="flex items-center gap-3 self-start sm:self-center">
+              {/* Filter Button */}
               <button
-                onClick={() => setShowMobileFilters(!showMobileFilters)}
-                className={`flex items-center gap-2 px-4 py-2.5 text-xs font-cyber font-bold uppercase tracking-wider border rounded-xl transition-all ${
-                  showMobileFilters || activeFiltersCount > 0
-                    ? "bg-[var(--cyber-neon-blue)]/10 text-[var(--cyber-neon-blue)] border-[var(--cyber-neon-blue)] shadow-[0_0_10px_rgba(0,243,255,0.15)]"
-                    : "bg-[var(--overlay-bg)] text-[var(--text-dim)] border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)]/50"
+                onClick={openFilterModal}
+                className={`flex items-center gap-2 px-3.5 py-2 text-[10px] font-cyber font-bold uppercase tracking-wider border rounded-lg transition-all ${
+                  activeFiltersCount > 0
+                    ? "bg-[var(--cyber-neon-blue)]/10 text-[var(--cyber-neon-blue)] border-[var(--cyber-neon-blue)]/40 shadow-[0_0_10px_rgba(0,243,255,0.05)]"
+                    : "bg-[var(--overlay-bg)] text-[var(--text-dim)] border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)] hover:text-[var(--text-color)]"
                 }`}
               >
                 <Filter className="w-3.5 h-3.5" />
-                <span>Filters</span>
+                <span>Filter</span>
                 {activeFiltersCount > 0 && (
-                  <span className="w-4 h-4 flex items-center justify-center bg-[var(--cyber-neon-pink)] text-white text-[9px] font-bold rounded-full ml-1">
+                  <span className="px-1.5 py-0.5 text-[8.5px] font-mono rounded bg-[var(--cyber-neon-blue)] text-black font-extrabold animate-pulse">
                     {activeFiltersCount}
                   </span>
                 )}
               </button>
+
+              {/* Sort Button */}
+              <button
+                onClick={openSortModal}
+                className={`flex items-center gap-2 px-3.5 py-2 text-[10px] font-cyber font-bold uppercase tracking-wider border rounded-lg transition-all ${
+                  sortBy !== "default" || sortDirection !== "desc"
+                    ? "bg-[var(--cyber-neon-pink)]/10 text-[var(--cyber-neon-pink)] border-[var(--cyber-neon-pink)]/40 shadow-[0_0_10px_rgba(255,102,255,0.05)]"
+                    : "bg-[var(--overlay-bg)] text-[var(--text-dim)] border-[var(--border-light)] hover:border-[var(--cyber-neon-pink)] hover:text-[var(--text-color)]"
+                }`}
+              >
+                <ArrowUpDown className="w-3.5 h-3.5" />
+                <span>Sort</span>
+                {sortBy !== "default" && (
+                  <span className="text-[8.5px] font-mono text-[var(--cyber-neon-pink)] lowercase">
+                    ({sortBy})
+                  </span>
+                )}
+              </button>
             </div>
+          </div>
 
-            {/* Mobile Collapsible Panel */}
-            {showMobileFilters && (
-              <div className="p-5 bg-[var(--panel-bg)] border border-[var(--border-light)] rounded-2xl shadow-xl backdrop-blur-md relative space-y-5">
-                {/* Categories */}
-                <div className="space-y-2">
-                  <h2 className="text-[10px] font-mono text-[var(--text-dim)]/80 uppercase tracking-widest font-bold">
-                    Categories
-                  </h2>
-                  <div className="grid grid-cols-2 gap-2">
-                    {[
-                      {
-                        id: "all",
-                        label: "All",
-                        icon: Box,
-                        count: categoryCounts.all,
-                      },
-                      {
-                        id: "tools",
-                        label: "Tools",
-                        icon: Wrench,
-                        count: categoryCounts.tools,
-                      },
-                      {
-                        id: "plugins",
-                        label: "Plugins",
-                        icon: Puzzle,
-                        count: categoryCounts.plugins,
-                      },
-                      {
-                        id: "libraries",
-                        label: "Libraries",
-                        icon: Library,
-                        count: categoryCounts.libraries,
-                      },
-                    ].map((tab) => {
-                      const Icon = tab.icon;
-                      const isActive = selectedCategory === tab.id;
-                      return (
-                        <button
-                          key={tab.id}
-                          onClick={() => handleSetCategory(tab.id as any)}
-                          className={`flex items-center justify-between px-3 py-2 text-[10px] font-cyber font-bold uppercase border rounded-lg transition-all ${
-                            isActive
-                              ? "bg-[var(--cyber-neon-blue)]/10 text-[var(--cyber-neon-blue)] border-[var(--cyber-neon-blue)]/40 shadow-[0_0_10px_rgba(0,243,255,0.05)]"
-                              : "bg-transparent text-[var(--text-dim)] border-[var(--border-light)]"
-                          }`}
-                        >
-                          <span className="flex items-center gap-1.5">
-                            <Icon className="w-3.5 h-3.5" />
-                            {tab.label}
-                          </span>
-                          <span
-                            className={`text-[9px] font-mono px-1 rounded bg-[var(--overlay-bg)] border border-[var(--border-light)] ${
-                              isActive
-                                ? "text-[var(--text-color)]"
-                                : "text-[var(--text-dim)]/70"
-                            }`}
-                          >
-                            {tab.count}
-                          </span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
+          {/* Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {paginatedProjects.map((project) => {
+              const categories = Array.isArray(project.category)
+                ? project.category
+                : [project.category];
+              const primaryCategory = categories[0] || "libraries";
+              const primaryBadge = getCategoryBadgeStyles(primaryCategory);
+              const githubUrls = (
+                Array.isArray(project.github)
+                  ? project.github
+                  : project.github
+                    ? [project.github]
+                    : []
+              ).filter(Boolean);
+              const primaryGithubUrl = githubUrls[0] || "";
+              const projectLink = project.url || primaryGithubUrl;
 
-                {/* Language Select */}
-                <div className="space-y-2">
-                  <h2 className="text-[10px] font-mono text-[var(--text-dim)]/80 uppercase tracking-widest font-bold">
-                    Language
-                  </h2>
-                  <div className="relative">
-                    <div className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center pointer-events-none text-[var(--text-dim)]">
-                      <LanguageIcon
-                        lang={selectedLanguage}
-                        size={14}
-                        className=""
-                      />
-                    </div>
-                    <select
-                      value={selectedLanguage}
-                      onChange={(e) => handleSetLanguage(e.target.value)}
-                      aria-label="Filter by Language"
-                      className="w-full pl-9 pr-8 py-2 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg text-xs font-cyber font-bold uppercase tracking-wider text-[var(--text-color)] appearance-none cursor-pointer"
-                      style={{
-                        backgroundImage: `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%238892b0' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E")`,
-                        backgroundPosition: "right 0.75rem center",
-                        backgroundSize: "1em 1em",
-                        backgroundRepeat: "no-repeat",
-                      }}
-                    >
-                      <option
-                        value="all"
-                        className="bg-[var(--panel-bg)] text-[var(--text-color)]"
-                      >
-                        All Languages
-                      </option>
-                      {availableLanguages.map((lang) => (
-                        <option
-                          key={lang}
-                          value={lang}
-                          className="bg-[var(--panel-bg)] text-[var(--text-color)]"
-                        >
-                          {lang}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
-                {/* Sorting */}
-                <div className="space-y-2">
-                  <h2 className="text-[10px] font-mono text-[var(--text-dim)]/80 uppercase tracking-widest font-bold">
-                    Sort
-                  </h2>
-                  <div className="flex gap-2">
-                    <div className="relative flex-1">
-                      <select
-                        value={sortBy}
-                        onChange={(e) => {
-                          const val = e.target.value as any;
-                          handleSetSortBy(val);
-                          handleSetSortDirection(
-                            val === "name" ? "asc" : "desc",
+              return (
+                <div
+                  key={`${project.owner}-${project.name}`}
+                  className={`p-6 bg-[var(--card-bg)] border rounded-xl hover:border-[var(--hover-color)] transition-all duration-300 hover:-translate-y-1 hover:shadow-lg flex flex-col justify-between min-h-[260px] relative overflow-hidden ${
+                    project.inactive
+                      ? "border-slate-500/40 opacity-80 hover:opacity-100"
+                      : "border-[var(--border-light)]"
+                  }`}
+                  style={
+                    {
+                      "--hover-color": `color-mix(in srgb, ${primaryBadge.color}, transparent 60%)`,
+                    } as React.CSSProperties
+                  }
+                >
+                  <div>
+                    {/* Top Row: Category badge & Stars */}
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex flex-wrap items-center gap-2 max-w-[70%]">
+                        {categories.map((cat) => {
+                          const badge = getCategoryBadgeStyles(cat);
+                          const BadgeIcon = badge.icon;
+                          return (
+                            <span
+                              key={cat}
+                              className={`flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-cyber font-bold uppercase border ${badge.bg}`}
+                            >
+                              <BadgeIcon className="w-3 h-3" />
+                              {cat}
+                            </span>
                           );
-                        }}
-                        aria-label="Sort Projects"
-                        className="w-full pl-3 pr-8 py-2.5 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg text-xs font-cyber font-bold uppercase tracking-wider text-[var(--text-color)] focus:outline-none focus:border-[var(--cyber-neon-blue)] focus:ring-1 focus:ring-[var(--cyber-neon-blue)] transition-colors appearance-none cursor-pointer"
-                        style={{
-                          backgroundImage: `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%238892b0' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E")`,
-                          backgroundPosition: "right 0.75rem center",
-                          backgroundSize: "1em 1em",
-                          backgroundRepeat: "no-repeat",
-                        }}
-                      >
-                        <option
-                          value="default"
-                          className="bg-[var(--panel-bg)] text-[var(--text-color)]"
-                        >
-                          Relevance
-                        </option>
-                        <option
-                          value="stars"
-                          className="bg-[var(--panel-bg)] text-[var(--text-color)]"
-                        >
-                          Popularity
-                        </option>
-                        <option
-                          value="updated"
-                          className="bg-[var(--panel-bg)] text-[var(--text-color)]"
-                        >
-                          Updated
-                        </option>
-                        <option
-                          value="name"
-                          className="bg-[var(--panel-bg)] text-[var(--text-color)]"
-                        >
-                          Name (A-Z)
-                        </option>
-                      </select>
-                    </div>
-                    <button
-                      onClick={toggleSortDirection}
-                      className="px-3 border border-[var(--border-light)] rounded-lg text-[var(--text-dim)] hover:text-[var(--text-color)] bg-[var(--overlay-bg)] flex items-center justify-center hover:border-[var(--cyber-neon-blue)] transition-all"
-                    >
-                      <ArrowUpDown
-                        className={`w-3.5 h-3.5 transition-transform duration-200 ${sortDirection === "asc" ? "rotate-180" : ""}`}
-                      />
-                    </button>
-                  </div>
-                </div>
+                        })}
+                        {project.inactive && (
+                          <span
+                            title={getInactiveDuration(project.pushedAt)}
+                            className="flex items-center gap-1 px-2 py-0.5 bg-[var(--error-bg)] text-[var(--error-text)] border border-[var(--error-border)] rounded-md text-[10px] font-cyber font-bold uppercase tracking-wider cursor-help shadow-sm shadow-red-500/10"
+                          >
+                            <AlertTriangle className="w-3.5 h-3.5" />
+                            Inactive
+                          </span>
+                        )}
+                      </div>
 
-                {/* Status */}
-                <div className="space-y-2">
-                  <h2 className="text-[10px] font-mono text-[var(--text-dim)]/80 uppercase tracking-widest font-bold">
-                    Status
-                  </h2>
-                  <div className="flex p-1 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg gap-1">
-                    {[
-                      { id: "active", label: "Active Only" },
-                      { id: "all", label: "Show All" },
-                      { id: "inactive", label: "Inactive Only" },
-                    ].map((opt) => {
-                      const isActive = statusFilter === opt.id;
-                      return (
-                        <button
-                          key={opt.id}
-                          onClick={() => {
-                            setStatusFilter(opt.id as any);
-                            setCurrentPage(1);
-                          }}
-                          className={`flex-1 py-1.5 text-[10px] font-cyber font-bold uppercase rounded-md transition-all ${
-                            isActive
-                              ? "bg-[var(--cyber-neon-blue)]/20 text-[var(--cyber-neon-blue)]"
-                              : "text-[var(--text-dim)] hover:text-[var(--text-color)]"
-                          }`}
+                      <div className="relative group/star-tooltip">
+                        {primaryGithubUrl ? (
+                          <a
+                            href={primaryGithubUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-1.5 px-2.5 py-1 bg-[var(--warning-bg)] hover:bg-[var(--warning-border)] border border-[var(--warning-border)] hover:border-[var(--warning-text)] rounded-md text-xs font-mono text-[var(--warning-text)] transition-all shadow-inner group/stars cursor-help"
+                          >
+                            <Star className="w-3.5 h-3.5 fill-current opacity-70 group-hover/stars:opacity-100 transition-all" />
+                            <span className="font-bold">
+                              {formatStars(project.stars)}
+                            </span>
+                          </a>
+                        ) : (
+                          <div className="flex items-center gap-1.5 px-2.5 py-1 bg-[var(--warning-bg)]/60 border border-[var(--warning-border)]/50 rounded-md text-xs font-mono text-[var(--warning-text)]/70 shadow-inner select-none cursor-help">
+                            <Star className="w-3.5 h-3.5 fill-current opacity-40" />
+                            <span className="font-bold">?</span>
+                          </div>
+                        )}
+
+                        {/* Custom Tooltip */}
+                        {primaryGithubUrl ? (
+                          <div className="absolute right-0 top-full mt-2 z-30 w-44 p-3 bg-slate-950/95 border border-[var(--border-light)] rounded-md shadow-2xl backdrop-blur-md pointer-events-none transition-all duration-200 origin-top-right opacity-0 scale-95 group-hover/star-tooltip:opacity-100 group-hover/star-tooltip:scale-100 flex flex-col gap-1.5 text-[11px] font-mono text-[var(--text-dim)]">
+                            <div className="flex justify-between border-b border-[var(--border-light)]/40 pb-1.5 mb-1 text-[var(--text-color)] font-bold">
+                              <span>Popularity</span>
+                              <Star className="w-3.5 h-3.5 fill-[var(--warning-text)] text-[var(--warning-text)]" />
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Total:</span>
+                              <span className="text-[var(--text-color)] font-bold">
+                                {project.stars.toLocaleString()}
+                              </span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Past Week:</span>
+                              <span className="text-emerald-400 font-bold">
+                                +{project.starsWeekly || 0}
+                              </span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Past Month:</span>
+                              <span className="text-emerald-400 font-bold">
+                                +{project.starsMonthly || 0}
+                              </span>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="absolute right-0 top-full mt-2 z-30 w-40 p-2 bg-slate-950/95 border border-[var(--border-light)] rounded-md shadow-2xl backdrop-blur-md pointer-events-none transition-all duration-200 origin-top-right opacity-0 scale-95 group-hover/star-tooltip:opacity-100 group-hover/star-tooltip:scale-100 text-[10px] font-mono text-[var(--text-dim)] text-center">
+                            No GitHub repository linked
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Title & Owner */}
+                    <h3 className="text-lg font-sans font-bold tracking-wide mb-1 flex items-center gap-2">
+                      <a
+                        href={projectLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-[var(--cyber-neon-blue)] transition-colors"
+                      >
+                        {project.name}
+                      </a>
+                    </h3>
+                    {project.owner && (
+                      <p className="text-xs font-sans text-[var(--text-dim)] uppercase tracking-wider mb-2">
+                        BY{" "}
+                        <a
+                          href={`https://github.com/${project.owner}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="hover:text-[var(--cyber-neon-pink)] hover:underline transition-colors font-semibold"
                         >
-                          {opt.label}
-                        </button>
+                          {project.owner}
+                        </a>
+                      </p>
+                    )}
+
+                    {/* Languages */}
+                    {Array.isArray(project.languages) &&
+                      project.languages.length > 0 && (
+                        <div className="flex flex-wrap gap-1.5 mb-4">
+                          {project.languages.map((lang) => (
+                            <button
+                              key={lang}
+                              onClick={() => handleLanguageClick(lang)}
+                              className="inline-flex items-center px-2 py-0.5 bg-[var(--overlay-bg)]/50 text-[var(--text-dim)] hover:text-[var(--cyber-neon-blue)] hover:bg-[var(--cyber-neon-blue)]/10 border border-[var(--border-light)]/50 hover:border-[var(--cyber-neon-blue)]/40 rounded text-[10px] font-mono uppercase tracking-wider cursor-pointer transition-all"
+                            >
+                              <LanguageIcon
+                                lang={lang}
+                                size={10}
+                                className="mr-1"
+                              />
+                              {lang}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+
+                    {/* Description */}
+                    <p className="text-sm text-[var(--text-dim)] leading-relaxed mb-6">
+                      {project.desc}
+                    </p>
+                  </div>
+
+                  {/* Bottom Row: Links */}
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 pt-4 border-t border-[var(--border-light)]/40 mt-auto">
+                    {githubUrls.map((url) => {
+                      const match = url.match(
+                        /github\.com\/([^/]+)\/([^/]+)/,
+                      );
+                      const displayName = match
+                        ? `${match[1]}/${match[2]}`
+                        : "Repository";
+                      return (
+                        <a
+                          key={url}
+                          href={url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs font-sans text-[var(--text-dim)] hover:text-[var(--cyber-neon-pink)] transition-colors flex items-center gap-1.5 group/git"
+                        >
+                          <GithubIcon className="w-3.5 h-3.5 opacity-70 group-hover/git:scale-110 transition-transform" />
+                          <span className="font-medium">{displayName}</span>
+                        </a>
                       );
                     })}
+                    {project.url && !githubUrls.includes(project.url) && (
+                      <a
+                        href={project.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs font-sans text-[var(--text-dim)] hover:text-[var(--cyber-neon-blue)] transition-colors flex items-center gap-1.5 group/ext"
+                      >
+                        <ExternalLink className="w-3.5 h-3.5 opacity-70 group-hover/ext:scale-110 transition-transform" />
+                        <span className="font-medium">Website</span>
+                      </a>
+                    )}
                   </div>
                 </div>
+              );
+            })}
 
-                <div className="pt-2 text-[9px] font-mono text-[var(--text-dim)]/60 uppercase tracking-wider text-center">
-                  GitHub Stars Synced:{" "}
-                  {formatFetchedAt(ecosystemData.fetchedAt)}
-                </div>
-                <div className="absolute top-[-1px] left-[-1px] w-4 h-4 border-t-2 border-l-2 border-[var(--cyber-neon-blue)] rounded-tl-2xl m-0" />
-                <div className="absolute bottom-[-1px] right-[-1px] w-4 h-4 border-b-2 border-r-2 border-[var(--cyber-neon-pink)] rounded-br-2xl m-0" />
+            {filteredAndSortedProjects.length === 0 && (
+              <div className="col-span-full py-16 text-center border border-dashed border-[var(--border-light)] rounded-xl bg-[var(--overlay-bg)]/5">
+                <Search className="w-12 h-12 text-[var(--text-dim)]/40 mx-auto mb-4" />
+                <p className="text-base font-cyber text-[var(--text-color)] uppercase tracking-widest mb-1">
+                  No matches found
+                </p>
+                <p className="text-xs text-[var(--text-dim)]/80 font-mono">
+                  Try adjusting your filters or search keywords.
+                </p>
               </div>
             )}
           </div>
 
-          {/* Main Layout Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
-            {/* Desktop Sidebar (visible on lg:block) */}
-            <div className="hidden lg:block lg:col-span-1 lg:sticky lg:top-[88px] space-y-6">
-              <div className="p-6 bg-[var(--panel-bg)] border border-[var(--border-light)] rounded-2xl shadow-xl backdrop-blur-md relative space-y-6">
-                {/* Search */}
-                <div className="space-y-2">
-                  <h2 className="text-[10px] font-mono text-[var(--text-dim)]/80 uppercase tracking-widest font-bold">
-                    Search Registry
-                  </h2>
-                  <div className="relative">
-                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-dim)]/70" />
-                    <input
-                      type="text"
-                      placeholder="Search projects..."
-                      value={searchTerm}
-                      onChange={(e) => handleSetSearch(e.target.value)}
-                      className="w-full pl-10 pr-16 py-2.5 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-xl text-xs text-[var(--text-color)] font-mono placeholder:text-[var(--text-dim)]/60 focus:outline-none focus:border-[var(--cyber-neon-blue)] focus:ring-1 focus:ring-[var(--cyber-neon-blue)] transition-colors shadow-inner"
-                    />
-                    {searchTerm && (
+          {/* Pagination Controls */}
+          {totalPages > 1 && (
+            <div className="mt-12 flex flex-col sm:flex-row items-center justify-between gap-6 pt-6 border-t border-[var(--border-light)]/30">
+              <span className="text-xs font-mono text-[var(--text-dim)]/80 uppercase tracking-wider">
+                Showing {startIndex + 1}–
+                {Math.min(
+                  startIndex + PAGE_SIZE,
+                  filteredAndSortedProjects.length,
+                )}{" "}
+                of {filteredAndSortedProjects.length} projects
+              </span>
+
+              <div className="flex items-center gap-2">
+                <button
+                  disabled={activePage === 1}
+                  onClick={() => handlePageChange(activePage - 1)}
+                  className={`px-3 py-1.5 text-xs font-cyber font-bold uppercase border rounded-md transition-all ${
+                    activePage === 1
+                      ? "opacity-30 cursor-not-allowed border-[var(--border-light)] text-[var(--text-dim)]"
+                      : "bg-transparent text-[var(--text-color)] border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)] hover:text-[var(--text-color)]"
+                  }`}
+                >
+                  Prev
+                </button>
+
+                {getPageNumbers(activePage, totalPages).map(
+                  (pItem, idx) => {
+                    if (pItem === "...") {
+                      return (
+                        <span
+                          key={`ellipsis-bottom-${idx}`}
+                          className="w-8 h-8 flex items-center justify-center text-xs font-mono text-[var(--text-dim)]/60"
+                        >
+                          ...
+                        </span>
+                      );
+                    }
+
+                    const pNum = pItem as number;
+                    const isPageActive = activePage === pNum;
+                    return (
                       <button
-                        onClick={() => handleSetSearch("")}
-                        className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[9px] font-mono text-[var(--text-dim)] hover:text-[var(--text-color)] bg-[var(--overlay-bg)] px-2 py-0.5 rounded border border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)] transition-all"
+                        key={pNum}
+                        onClick={() => handlePageChange(pNum)}
+                        className={`w-8 h-8 flex items-center justify-center text-xs font-cyber font-bold rounded-md transition-all border ${
+                          isPageActive
+                            ? "bg-[var(--cyber-neon-blue)] text-[var(--neon-contrast-text)] border-[var(--cyber-neon-blue)] shadow-[0_0_10px_rgba(0,243,255,0.2)]"
+                            : "bg-transparent text-[var(--text-dim)] border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)] hover:text-[var(--text-color)]"
+                        }`}
                       >
-                        CLEAR
+                        {pNum}
                       </button>
-                    )}
-                  </div>
-                </div>
+                    );
+                  },
+                )}
 
-                {/* Category Selection */}
-                <div className="space-y-2.5">
-                  <h2 className="text-[10px] font-mono text-[var(--text-dim)]/80 uppercase tracking-widest font-bold">
-                    Categories
-                  </h2>
-                  <div className="flex flex-col gap-2">
-                    {[
-                      {
-                        id: "all",
-                        label: "All Projects",
-                        icon: Box,
-                        activeClass:
-                          "bg-[var(--cyber-neon-blue)]/10 text-[var(--cyber-neon-blue)] border-[var(--cyber-neon-blue)]/40 shadow-[0_0_10px_rgba(0,243,255,0.05)]",
-                        hoverClass: "hover:border-[var(--cyber-neon-blue)]/30",
-                        count: categoryCounts.all,
-                      },
-                      {
-                        id: "tools",
-                        label: "Tools",
-                        icon: Wrench,
-                        activeClass:
-                          "bg-[var(--cyber-neon-blue)]/10 text-[var(--cyber-neon-blue)] border-[var(--cyber-neon-blue)]/40 shadow-[0_0_10px_rgba(0,243,255,0.05)]",
-                        hoverClass: "hover:border-[var(--cyber-neon-blue)]/30",
-                        count: categoryCounts.tools,
-                      },
-                      {
-                        id: "plugins",
-                        label: "Plugins",
-                        icon: Puzzle,
-                        activeClass:
-                          "bg-[var(--cyber-neon-pink)]/10 text-[var(--cyber-neon-pink)] border-[var(--cyber-neon-pink)]/40 shadow-[0_0_10px_rgba(255,102,255,0.05)]",
-                        hoverClass: "hover:border-[var(--cyber-neon-pink)]/30",
-                        count: categoryCounts.plugins,
-                      },
-                      {
-                        id: "libraries",
-                        label: "Libraries",
-                        icon: Library,
-                        activeClass:
-                          "bg-[var(--cyber-neon-green)]/10 text-[var(--cyber-neon-green)] border-[var(--cyber-neon-green)]/40 shadow-[0_0_10px_rgba(0,255,159,0.05)]",
-                        hoverClass: "hover:border-[var(--cyber-neon-green)]/30",
-                        count: categoryCounts.libraries,
-                      },
-                    ].map((tab) => {
-                      const Icon = tab.icon;
-                      const isActive = selectedCategory === tab.id;
-                      return (
-                        <button
-                          key={tab.id}
-                          onClick={() => handleSetCategory(tab.id as any)}
-                          className={`w-full flex items-center justify-between px-3.5 py-2.5 text-xs font-cyber font-bold uppercase tracking-wider border transition-all rounded-lg ${
-                            isActive
-                              ? tab.activeClass
-                              : "bg-transparent text-[var(--text-dim)] border-[var(--border-light)] " +
-                                tab.hoverClass
-                          }`}
-                        >
-                          <span className="flex items-center gap-2">
-                            <Icon className="w-3.5 h-3.5" />
-                            {tab.label}
-                          </span>
-                          <span
-                            className={`text-[10px] font-mono px-1.5 py-0.5 rounded bg-[var(--overlay-bg)] border border-[var(--border-light)] ${
-                              isActive
-                                ? "text-[var(--text-color)]"
-                                : "text-[var(--text-dim)]/70"
-                            }`}
-                          >
-                            {tab.count}
-                          </span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* Language selection */}
-                <div className="space-y-2.5">
-                  <h2 className="text-[10px] font-mono text-[var(--text-dim)]/80 uppercase tracking-widest font-bold">
-                    Language
-                  </h2>
-                  <div className="relative">
-                    <div className="absolute left-3.5 top-1/2 -translate-y-1/2 flex items-center pointer-events-none text-[var(--text-dim)]">
-                      <LanguageIcon
-                        lang={selectedLanguage}
-                        size={14}
-                        className=""
-                      />
-                    </div>
-                    <select
-                      value={selectedLanguage}
-                      onChange={(e) => handleSetLanguage(e.target.value)}
-                      aria-label="Filter by Language"
-                      className="w-full pl-9 pr-8 py-2 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg text-xs font-cyber font-bold uppercase tracking-wider text-[var(--text-color)] focus:outline-none focus:border-[var(--cyber-neon-blue)] focus:ring-1 focus:ring-[var(--cyber-neon-blue)] transition-colors appearance-none cursor-pointer"
-                      style={{
-                        backgroundImage: `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%238892b0' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E")`,
-                        backgroundPosition: "right 0.75rem center",
-                        backgroundSize: "1em 1em",
-                        backgroundRepeat: "no-repeat",
-                      }}
-                    >
-                      <option
-                        value="all"
-                        className="bg-[var(--panel-bg)] text-[var(--text-color)]"
-                      >
-                        All Languages
-                      </option>
-                      {availableLanguages.map((lang) => (
-                        <option
-                          key={lang}
-                          value={lang}
-                          className="bg-[var(--panel-bg)] text-[var(--text-color)]"
-                        >
-                          {lang}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
-                {/* Sort selector */}
-                <div className="space-y-2.5">
-                  <h2 className="text-[10px] font-mono text-[var(--text-dim)]/80 uppercase tracking-widest font-bold">
-                    Sort
-                  </h2>
-                  <div className="flex flex-col gap-2">
-                    <div className="relative">
-                      <select
-                        value={sortBy}
-                        onChange={(e) => {
-                          const val = e.target.value as any;
-                          handleSetSortBy(val);
-                          handleSetSortDirection(
-                            val === "name" ? "asc" : "desc",
-                          );
-                        }}
-                        aria-label="Sort Projects"
-                        className="w-full pl-3 pr-8 py-2 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg text-xs font-cyber font-bold uppercase tracking-wider text-[var(--text-color)] focus:outline-none focus:border-[var(--cyber-neon-blue)] focus:ring-1 focus:ring-[var(--cyber-neon-blue)] transition-colors appearance-none cursor-pointer"
-                        style={{
-                          backgroundImage: `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%238892b0' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E")`,
-                          backgroundPosition: "right 0.75rem center",
-                          backgroundSize: "1em 1em",
-                          backgroundRepeat: "no-repeat",
-                        }}
-                      >
-                        <option
-                          value="default"
-                          className="bg-[var(--panel-bg)] text-[var(--text-color)]"
-                        >
-                          Relevance
-                        </option>
-                        <option
-                          value="stars"
-                          className="bg-[var(--panel-bg)] text-[var(--text-color)]"
-                        >
-                          Popularity
-                        </option>
-                        <option
-                          value="updated"
-                          className="bg-[var(--panel-bg)] text-[var(--text-color)]"
-                        >
-                          Updated
-                        </option>
-                        <option
-                          value="name"
-                          className="bg-[var(--panel-bg)] text-[var(--text-color)]"
-                        >
-                          Name (A-Z)
-                        </option>
-                      </select>
-                    </div>
-
-                    <button
-                      onClick={toggleSortDirection}
-                      className="w-full flex items-center justify-center gap-2 py-2 border border-[var(--border-light)] rounded-lg text-xs font-cyber font-bold uppercase tracking-wider text-[var(--text-dim)] hover:text-[var(--text-color)] bg-[var(--overlay-bg)] hover:border-[var(--cyber-neon-blue)] transition-all"
-                    >
-                      <ArrowUpDown
-                        className={`w-3.5 h-3.5 transition-transform duration-200 ${sortDirection === "asc" ? "rotate-180" : ""}`}
-                      />
-                      <span>
-                        {sortDirection === "desc" ? "Descending" : "Ascending"}
-                      </span>
-                    </button>
-                  </div>
-                </div>
-
-                {/* Status */}
-                <div className="space-y-2.5">
-                  <h2 className="text-[10px] font-mono text-[var(--text-dim)]/80 uppercase tracking-widest font-bold">
-                    Status Filter
-                  </h2>
-                  <div className="flex p-1 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg gap-1">
-                    {[
-                      { id: "active", label: "Active" },
-                      { id: "all", label: "All" },
-                      { id: "inactive", label: "Inactive" },
-                    ].map((opt) => {
-                      const isActive = statusFilter === opt.id;
-                      return (
-                        <button
-                          key={opt.id}
-                          onClick={() => {
-                            setStatusFilter(opt.id as any);
-                            setCurrentPage(1);
-                          }}
-                          className={`flex-1 py-1.5 text-xs font-cyber font-bold uppercase tracking-wider rounded-md transition-all ${
-                            isActive
-                              ? "bg-[var(--cyber-neon-blue)]/20 text-[var(--cyber-neon-blue)] font-bold"
-                              : "text-[var(--text-dim)] hover:text-[var(--text-color)]"
-                          }`}
-                        >
-                          {opt.label}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* Last synced timestamp */}
-                <div className="pt-4 border-t border-[var(--border-light)]/50 text-[9px] font-mono text-[var(--text-dim)]/60 uppercase tracking-wider text-center">
-                  GitHub Stars Synced:
-                  <br />
-                  <span className="text-[var(--text-dim)]/80 font-bold">
-                    {formatFetchedAt(ecosystemData.fetchedAt)}
-                  </span>
-                </div>
-                <div className="absolute top-[-1px] left-[-1px] w-4 h-4 border-t-2 border-l-2 border-[var(--cyber-neon-blue)] rounded-tl-2xl m-0" />
-                <div className="absolute bottom-[-1px] right-[-1px] w-4 h-4 border-b-2 border-r-2 border-[var(--cyber-neon-pink)] rounded-br-2xl m-0" />
+                <button
+                  disabled={activePage === totalPages}
+                  onClick={() => handlePageChange(activePage + 1)}
+                  className={`px-3 py-1.5 text-xs font-cyber font-bold uppercase border rounded-md transition-all ${
+                    activePage === totalPages
+                      ? "opacity-30 cursor-not-allowed border-[var(--border-light)] text-[var(--text-dim)]"
+                      : "bg-transparent text-[var(--text-color)] border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)] hover:text-[var(--text-color)]"
+                  }`}
+                >
+                  Next
+                </button>
               </div>
             </div>
+          )}
 
-            {/* Right Main Area: Filter pills, Project count, Cards grid, Pagination */}
-            <div className="lg:col-span-3 space-y-6">
-              {/* Active Filters Summary */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 bg-[var(--panel-bg)]/40 border border-[var(--border-light)]/60 rounded-xl backdrop-blur-sm">
-                <span className="text-xs font-mono text-[var(--text-dim)]/90 uppercase">
-                  Found{" "}
-                  <span className="text-[var(--text-color)] font-bold font-cyber">
-                    {filteredAndSortedProjects.length}
-                  </span>{" "}
-                  project{filteredAndSortedProjects.length !== 1 ? "s" : ""}
-                  {searchTerm ||
-                  selectedCategory !== "all" ||
-                  selectedLanguage !== "all" ||
-                  statusFilter !== "all"
-                    ? " matching filters"
-                    : ""}
-                </span>
-
-                {(searchTerm ||
-                  selectedCategory !== "all" ||
-                  selectedLanguage !== "all" ||
-                  statusFilter !== "all") && (
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-xs font-sans font-semibold text-[var(--text-color)] uppercase tracking-wider">
-                      Active Filters:
-                    </span>
-                    {selectedCategory !== "all" && (
-                      <button
-                        onClick={() => handleSetCategory("all")}
-                        className="flex items-center gap-1.5 px-2.5 py-1 text-[9px] font-cyber font-bold uppercase tracking-wider text-[var(--cyber-neon-blue)] bg-[var(--cyber-neon-blue)]/5 border border-[var(--cyber-neon-blue)]/20 rounded-md hover:bg-[var(--cyber-neon-blue)]/10 hover:border-[var(--cyber-neon-blue)]/40 transition-all"
-                      >
-                        Category: {selectedCategory}
-                        <span className="text-[11px] font-mono leading-none">
-                          &times;
-                        </span>
-                      </button>
-                    )}
-                    {selectedLanguage !== "all" && (
-                      <button
-                        onClick={() => handleSetLanguage("all")}
-                        className="flex items-center gap-1.5 px-2.5 py-1 text-[9px] font-cyber font-bold uppercase tracking-wider text-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/5 border border-[var(--cyber-neon-pink)]/20 rounded-md hover:bg-[var(--cyber-neon-pink)]/10 hover:border-[var(--cyber-neon-pink)]/40 transition-all"
-                      >
-                        Language: {selectedLanguage}
-                        <span className="text-[11px] font-mono leading-none">
-                          &times;
-                        </span>
-                      </button>
-                    )}
-                    {searchTerm && (
-                      <button
-                        onClick={() => handleSetSearch("")}
-                        className="flex items-center gap-1.5 px-2.5 py-1 text-[9px] font-cyber font-bold uppercase tracking-wider text-[var(--cyber-neon-green)] bg-[var(--cyber-neon-green)]/5 border border-[var(--cyber-neon-green)]/20 rounded-md hover:bg-[var(--cyber-neon-green)]/10 hover:border-[var(--cyber-neon-green)]/40 transition-all"
-                      >
-                        Search: "
-                        {searchTerm.length > 12
-                          ? searchTerm.substring(0, 10) + "..."
-                          : searchTerm}
-                        "
-                        <span className="text-[11px] font-mono leading-none">
-                          &times;
-                        </span>
-                      </button>
-                    )}
-                    {statusFilter !== "all" && (
-                      <button
-                        onClick={() => setStatusFilter("all")}
-                        className="flex items-center gap-1.5 px-2.5 py-1 text-[9px] font-cyber font-bold uppercase tracking-wider text-[var(--cyber-neon-pink)] bg-[var(--cyber-neon-pink)]/5 border border-[var(--cyber-neon-pink)]/20 rounded-md hover:bg-[var(--cyber-neon-pink)]/10 hover:border-[var(--cyber-neon-pink)]/40 transition-all"
-                      >
-                        Status:{" "}
-                        {statusFilter === "active"
-                          ? "Active Only"
-                          : "Inactive Only"}
-                        <span className="text-[11px] font-mono leading-none">
-                          &times;
-                        </span>
-                      </button>
-                    )}
-                    <button
-                      onClick={() => {
-                        handleSetCategory("all");
-                        handleSetLanguage("all");
-                        handleSetSearch("");
-                        setStatusFilter("all");
-                      }}
-                      className="text-[9px] font-mono text-[var(--text-dim)]/80 hover:text-[var(--text-color)] uppercase underline hover:no-underline transition-all"
-                    >
-                      Reset All
-                    </button>
-                  </div>
-                )}
-              </div>
-
-              {/* Top Pagination Controls */}
-              {totalPages > 1 && (
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-6 pb-4 border-b border-[var(--border-light)]/20">
-                  <span className="text-xs font-mono text-[var(--text-dim)]/80 uppercase tracking-wider">
-                    Showing {startIndex + 1}–
-                    {Math.min(
-                      startIndex + PAGE_SIZE,
-                      filteredAndSortedProjects.length,
-                    )}{" "}
-                    of {filteredAndSortedProjects.length} projects
-                  </span>
-
-                  <div className="flex items-center gap-2">
-                    <button
-                      disabled={activePage === 1}
-                      onClick={() => handlePageChange(activePage - 1, false)}
-                      className={`px-3 py-1.5 text-xs font-cyber font-bold uppercase border rounded-md transition-all ${
-                        activePage === 1
-                          ? "opacity-30 cursor-not-allowed border-[var(--border-light)] text-[var(--text-dim)]"
-                          : "bg-transparent text-[var(--text-color)] border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)] hover:text-[var(--text-color)]"
-                      }`}
-                    >
-                      Prev
-                    </button>
-
-                    {getPageNumbers(activePage, totalPages).map(
-                      (pItem, idx) => {
-                        if (pItem === "...") {
-                          return (
-                            <span
-                              key={`ellipsis-top-${idx}`}
-                              className="w-8 h-8 flex items-center justify-center text-xs font-mono text-[var(--text-dim)]/60"
-                            >
-                              ...
-                            </span>
-                          );
-                        }
-
-                        const pNum = pItem as number;
-                        const isPageActive = activePage === pNum;
-                        return (
-                          <button
-                            key={pNum}
-                            onClick={() => handlePageChange(pNum, false)}
-                            className={`w-8 h-8 flex items-center justify-center text-xs font-cyber font-bold rounded-md transition-all border ${
-                              isPageActive
-                                ? "bg-[var(--cyber-neon-blue)] text-[var(--neon-contrast-text)] border-[var(--cyber-neon-blue)] shadow-[0_0_10px_rgba(0,243,255,0.2)]"
-                                : "bg-transparent text-[var(--text-dim)] border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)] hover:text-[var(--text-color)]"
-                            }`}
-                          >
-                            {pNum}
-                          </button>
-                        );
-                      },
-                    )}
-
-                    <button
-                      disabled={activePage === totalPages}
-                      onClick={() => handlePageChange(activePage + 1, false)}
-                      className={`px-3 py-1.5 text-xs font-cyber font-bold uppercase border rounded-md transition-all ${
-                        activePage === totalPages
-                          ? "opacity-30 cursor-not-allowed border-[var(--border-light)] text-[var(--text-dim)]"
-                          : "bg-transparent text-[var(--text-color)] border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)] hover:text-[var(--text-color)]"
-                      }`}
-                    >
-                      Next
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {/* Cards Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                {paginatedProjects.map((project) => {
-                  const categories = Array.isArray(project.category)
-                    ? project.category
-                    : [project.category];
-                  const primaryCategory = categories[0] || "libraries";
-                  const primaryBadge = getCategoryBadgeStyles(primaryCategory);
-                  const githubUrls = (
-                    Array.isArray(project.github)
-                      ? project.github
-                      : project.github
-                        ? [project.github]
-                        : []
-                  ).filter(Boolean);
-                  const primaryGithubUrl = githubUrls[0] || "";
-                  const projectLink = project.url || primaryGithubUrl;
-
-                  return (
-                    <div
-                      key={`${project.owner}-${project.name}`}
-                      className={`p-6 bg-[var(--card-bg)] border rounded-xl hover:border-[var(--hover-color)] transition-all duration-300 hover:-translate-y-1 hover:shadow-lg flex flex-col justify-between min-h-[260px] relative overflow-hidden ${
-                        project.inactive
-                          ? "border-slate-500/40 opacity-80 hover:opacity-100"
-                          : "border-[var(--border-light)]"
-                      }`}
-                      style={
-                        {
-                          "--hover-color": `color-mix(in srgb, ${primaryBadge.color}, transparent 60%)`,
-                        } as React.CSSProperties
-                      }
-                    >
-                      <div>
-                        {/* Top Row: Category badge & Stars */}
-                        <div className="flex items-start justify-between mb-4">
-                          <div className="flex flex-wrap items-center gap-2 max-w-[70%]">
-                            {categories.map((cat) => {
-                              const badge = getCategoryBadgeStyles(cat);
-                              const BadgeIcon = badge.icon;
-                              return (
-                                <span
-                                  key={cat}
-                                  className={`flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-cyber font-bold uppercase border ${badge.bg}`}
-                                >
-                                  <BadgeIcon className="w-3 h-3" />
-                                  {cat}
-                                </span>
-                              );
-                            })}
-                            {project.inactive && (
-                              <span
-                                title={getInactiveDuration(project.pushedAt)}
-                                className="flex items-center gap-1 px-2 py-0.5 bg-[var(--error-bg)] text-[var(--error-text)] border border-[var(--error-border)] rounded-md text-[10px] font-cyber font-bold uppercase tracking-wider cursor-help shadow-sm shadow-red-500/10"
-                              >
-                                <AlertTriangle className="w-3.5 h-3.5" />
-                                Inactive
-                              </span>
-                            )}
-                          </div>
-
-                          <div className="relative group/star-tooltip">
-                            {primaryGithubUrl ? (
-                              <a
-                                href={primaryGithubUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center gap-1.5 px-2.5 py-1 bg-[var(--warning-bg)] hover:bg-[var(--warning-border)] border border-[var(--warning-border)] hover:border-[var(--warning-text)] rounded-md text-xs font-mono text-[var(--warning-text)] transition-all shadow-inner group/stars cursor-help"
-                              >
-                                <Star className="w-3.5 h-3.5 fill-current opacity-70 group-hover/stars:opacity-100 transition-all" />
-                                <span className="font-bold">
-                                  {formatStars(project.stars)}
-                                </span>
-                              </a>
-                            ) : (
-                              <div className="flex items-center gap-1.5 px-2.5 py-1 bg-[var(--warning-bg)]/60 border border-[var(--warning-border)]/50 rounded-md text-xs font-mono text-[var(--warning-text)]/70 shadow-inner select-none cursor-help">
-                                <Star className="w-3.5 h-3.5 fill-current opacity-40" />
-                                <span className="font-bold">?</span>
-                              </div>
-                            )}
-
-                            {/* Custom Tooltip */}
-                            {primaryGithubUrl ? (
-                              <div className="absolute right-0 top-full mt-2 z-30 w-44 p-3 bg-slate-950/95 border border-[var(--border-light)] rounded-md shadow-2xl backdrop-blur-md pointer-events-none transition-all duration-200 origin-top-right opacity-0 scale-95 group-hover/star-tooltip:opacity-100 group-hover/star-tooltip:scale-100 flex flex-col gap-1.5 text-[11px] font-mono text-[var(--text-dim)]">
-                                <div className="flex justify-between border-b border-[var(--border-light)]/40 pb-1.5 mb-1 text-[var(--text-color)] font-bold">
-                                  <span>Popularity</span>
-                                  <Star className="w-3.5 h-3.5 fill-[var(--warning-text)] text-[var(--warning-text)]" />
-                                </div>
-                                <div className="flex justify-between">
-                                  <span>Total:</span>
-                                  <span className="text-[var(--text-color)] font-bold">
-                                    {project.stars.toLocaleString()}
-                                  </span>
-                                </div>
-                                <div className="flex justify-between">
-                                  <span>Past Week:</span>
-                                  <span className="text-emerald-400 font-bold">
-                                    +{project.starsWeekly || 0}
-                                  </span>
-                                </div>
-                                <div className="flex justify-between">
-                                  <span>Past Month:</span>
-                                  <span className="text-emerald-400 font-bold">
-                                    +{project.starsMonthly || 0}
-                                  </span>
-                                </div>
-                              </div>
-                            ) : (
-                              <div className="absolute right-0 top-full mt-2 z-30 w-40 p-2 bg-slate-950/95 border border-[var(--border-light)] rounded-md shadow-2xl backdrop-blur-md pointer-events-none transition-all duration-200 origin-top-right opacity-0 scale-95 group-hover/star-tooltip:opacity-100 group-hover/star-tooltip:scale-100 text-[10px] font-mono text-[var(--text-dim)] text-center">
-                                No GitHub repository linked
-                              </div>
-                            )}
-                          </div>
-                        </div>
-
-                        {/* Title & Owner */}
-                        <h3 className="text-lg font-sans font-bold tracking-wide mb-1 flex items-center gap-2">
-                          <a
-                            href={projectLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="hover:text-[var(--cyber-neon-blue)] transition-colors"
-                          >
-                            {project.name}
-                          </a>
-                        </h3>
-                        {project.owner && (
-                          <p className="text-xs font-sans text-[var(--text-dim)] uppercase tracking-wider mb-2">
-                            BY{" "}
-                            <a
-                              href={`https://github.com/${project.owner}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="hover:text-[var(--cyber-neon-pink)] hover:underline transition-colors font-semibold"
-                            >
-                              {project.owner}
-                            </a>
-                          </p>
-                        )}
-
-                        {/* Languages */}
-                        {Array.isArray(project.languages) &&
-                          project.languages.length > 0 && (
-                            <div className="flex flex-wrap gap-1.5 mb-4">
-                              {project.languages.map((lang) => (
-                                <button
-                                  key={lang}
-                                  onClick={() => handleLanguageClick(lang)}
-                                  className="inline-flex items-center px-2 py-0.5 bg-[var(--overlay-bg)]/50 text-[var(--text-dim)] hover:text-[var(--cyber-neon-blue)] hover:bg-[var(--cyber-neon-blue)]/10 border border-[var(--border-light)]/50 hover:border-[var(--cyber-neon-blue)]/40 rounded text-[10px] font-mono uppercase tracking-wider cursor-pointer transition-all"
-                                >
-                                  <LanguageIcon
-                                    lang={lang}
-                                    size={10}
-                                    className="mr-1"
-                                  />
-                                  {lang}
-                                </button>
-                              ))}
-                            </div>
-                          )}
-
-                        {/* Description */}
-                        <p className="text-sm text-[var(--text-dim)] leading-relaxed mb-6">
-                          {project.desc}
-                        </p>
-                      </div>
-
-                      {/* Bottom Row: Links */}
-                      <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 pt-4 border-t border-[var(--border-light)]/40 mt-auto">
-                        {githubUrls.map((url) => {
-                          const match = url.match(
-                            /github\.com\/([^/]+)\/([^/]+)/,
-                          );
-                          const displayName = match
-                            ? `${match[1]}/${match[2]}`
-                            : "Repository";
-                          return (
-                            <a
-                              key={url}
-                              href={url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-xs font-sans text-[var(--text-dim)] hover:text-[var(--cyber-neon-pink)] transition-colors flex items-center gap-1.5 group/git"
-                            >
-                              <GithubIcon className="w-3.5 h-3.5 opacity-70 group-hover/git:scale-110 transition-transform" />
-                              <span className="font-medium">{displayName}</span>
-                            </a>
-                          );
-                        })}
-                        {project.url && !githubUrls.includes(project.url) && (
-                          <a
-                            href={project.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-xs font-sans text-[var(--text-dim)] hover:text-[var(--cyber-neon-blue)] transition-colors flex items-center gap-1.5 group/ext"
-                          >
-                            <ExternalLink className="w-3.5 h-3.5 opacity-70 group-hover/ext:scale-110 transition-transform" />
-                            <span className="font-medium">Website</span>
-                          </a>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
-
-                {filteredAndSortedProjects.length === 0 && (
-                  <div className="col-span-full py-16 text-center border border-dashed border-[var(--border-light)] rounded-xl bg-[var(--overlay-bg)]/5">
-                    <Search className="w-12 h-12 text-[var(--text-dim)]/40 mx-auto mb-4" />
-                    <p className="text-base font-cyber text-[var(--text-color)] uppercase tracking-widest mb-1">
-                      No matches found
-                    </p>
-                    <p className="text-xs text-[var(--text-dim)]/80 font-mono">
-                      Try adjusting your filters or search keywords.
-                    </p>
-                  </div>
-                )}
-              </div>
-
-              {/* Pagination Controls */}
-              {totalPages > 1 && (
-                <div className="mt-12 flex flex-col sm:flex-row items-center justify-between gap-6 pt-6 border-t border-[var(--border-light)]/30">
-                  <span className="text-xs font-mono text-[var(--text-dim)]/80 uppercase tracking-wider">
-                    Showing {startIndex + 1}–
-                    {Math.min(
-                      startIndex + PAGE_SIZE,
-                      filteredAndSortedProjects.length,
-                    )}{" "}
-                    of {filteredAndSortedProjects.length} projects
-                  </span>
-
-                  <div className="flex items-center gap-2">
-                    <button
-                      disabled={activePage === 1}
-                      onClick={() => handlePageChange(activePage - 1)}
-                      className={`px-3 py-1.5 text-xs font-cyber font-bold uppercase border rounded-md transition-all ${
-                        activePage === 1
-                          ? "opacity-30 cursor-not-allowed border-[var(--border-light)] text-[var(--text-dim)]"
-                          : "bg-transparent text-[var(--text-color)] border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)] hover:text-[var(--text-color)]"
-                      }`}
-                    >
-                      Prev
-                    </button>
-
-                    {getPageNumbers(activePage, totalPages).map(
-                      (pItem, idx) => {
-                        if (pItem === "...") {
-                          return (
-                            <span
-                              key={`ellipsis-bottom-${idx}`}
-                              className="w-8 h-8 flex items-center justify-center text-xs font-mono text-[var(--text-dim)]/60"
-                            >
-                              ...
-                            </span>
-                          );
-                        }
-
-                        const pNum = pItem as number;
-                        const isPageActive = activePage === pNum;
-                        return (
-                          <button
-                            key={pNum}
-                            onClick={() => handlePageChange(pNum)}
-                            className={`w-8 h-8 flex items-center justify-center text-xs font-cyber font-bold rounded-md transition-all border ${
-                              isPageActive
-                                ? "bg-[var(--cyber-neon-blue)] text-[var(--neon-contrast-text)] border-[var(--cyber-neon-blue)] shadow-[0_0_10px_rgba(0,243,255,0.2)]"
-                                : "bg-transparent text-[var(--text-dim)] border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)] hover:text-[var(--text-color)]"
-                            }`}
-                          >
-                            {pNum}
-                          </button>
-                        );
-                      },
-                    )}
-
-                    <button
-                      disabled={activePage === totalPages}
-                      onClick={() => handlePageChange(activePage + 1)}
-                      className={`px-3 py-1.5 text-xs font-cyber font-bold uppercase border rounded-md transition-all ${
-                        activePage === totalPages
-                          ? "opacity-30 cursor-not-allowed border-[var(--border-light)] text-[var(--text-dim)]"
-                          : "bg-transparent text-[var(--text-color)] border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)] hover:text-[var(--text-color)]"
-                      }`}
-                    >
-                      Next
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
+          {/* GitHub stars synced footer */}
+          <div className="mt-12 text-center text-[9px] font-mono text-[var(--text-dim)]/50 uppercase tracking-widest">
+            GitHub stars synced: {formatFetchedAt(ecosystemData.fetchedAt)}
           </div>
         </div>
       </Section>
+
+      {/* Filter Modal */}
+      {showFilterModal && (
+        <div 
+          onClick={handleBackdropClick}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md transition-all"
+        >
+          <div className="relative w-full max-w-lg p-6 bg-[var(--panel-bg)]/95 border border-[var(--border-light)] rounded-2xl shadow-2xl space-y-6 flex flex-col backdrop-blur-xl">
+            {/* Header */}
+            <div className="flex items-center justify-between pb-3 border-b border-[var(--border-light)]/40">
+              <div className="flex items-center gap-2">
+                <Filter className="w-4 h-4 text-[var(--cyber-neon-blue)]" />
+                <h3 className="text-sm font-cyber font-bold uppercase tracking-wider text-[var(--cyber-neon-blue)]">
+                  Filter Registry
+                </h3>
+              </div>
+              <button
+                onClick={() => setShowFilterModal(false)}
+                className="text-[10px] font-mono text-[var(--text-dim)] hover:text-[var(--text-color)] uppercase tracking-wider px-2 py-0.5 rounded border border-[var(--border-light)]/40 hover:border-[var(--cyber-neon-blue)]/50 transition-colors"
+              >
+                Close
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="space-y-5 flex-1 overflow-y-auto max-h-[60vh] pr-1">
+              {/* Search Keywords */}
+              <div className="space-y-2">
+                <label className="text-[10px] font-mono text-[var(--text-dim)] uppercase tracking-widest font-bold block">
+                  Search Keywords
+                </label>
+                <div className="relative">
+                  <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-dim)]/70" />
+                  <input
+                    type="text"
+                    placeholder="Search name, description, tags..."
+                    value={draftSearchTerm}
+                    onChange={(e) => setDraftSearchTerm(e.target.value)}
+                    className="w-full pl-10 pr-16 py-2.5 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-xl text-xs text-[var(--text-color)] font-mono placeholder:text-[var(--text-dim)]/50 focus:outline-none focus:border-[var(--cyber-neon-blue)] focus:ring-1 focus:ring-[var(--cyber-neon-blue)] transition-colors shadow-inner"
+                  />
+                  {draftSearchTerm && (
+                    <button
+                      onClick={() => setDraftSearchTerm("")}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[9px] font-mono text-[var(--text-dim)] hover:text-[var(--text-color)] bg-[var(--overlay-bg)] px-2 py-0.5 rounded border border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)] transition-all"
+                    >
+                      CLEAR
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Category selector */}
+              <div className="space-y-2">
+                <label className="text-[10px] font-mono text-[var(--text-dim)] uppercase tracking-widest font-bold block">
+                  Category
+                </label>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  {[
+                    { id: "all", label: `All (${categoryCounts.all})`, icon: Box },
+                    { id: "tools", label: `Tools (${categoryCounts.tools})`, icon: Wrench },
+                    { id: "plugins", label: `Plugins (${categoryCounts.plugins})`, icon: Puzzle },
+                    { id: "libraries", label: `Libraries (${categoryCounts.libraries})`, icon: Library },
+                  ].map((cat) => {
+                    const Icon = cat.icon;
+                    const isSelected = draftCategory === cat.id;
+                    return (
+                      <button
+                        key={cat.id}
+                        type="button"
+                        onClick={() => setDraftCategory(cat.id as any)}
+                        className={`flex flex-col items-center justify-center gap-1.5 py-3 text-[10px] font-cyber font-bold uppercase tracking-wider border rounded-xl transition-all ${
+                          isSelected
+                            ? "bg-[var(--cyber-neon-blue)]/10 text-[var(--cyber-neon-blue)] border-[var(--cyber-neon-blue)] shadow-[0_0_10px_rgba(0,243,255,0.05)]"
+                            : "bg-[var(--overlay-bg)] text-[var(--text-dim)] border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)]/40 hover:text-[var(--text-color)]"
+                        }`}
+                      >
+                        <Icon className="w-4 h-4" />
+                        <span>{cat.label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Language selection */}
+              <div className="space-y-2">
+                <label className="text-[10px] font-mono text-[var(--text-dim)] uppercase tracking-widest font-bold block">
+                  Programming Language
+                </label>
+                <div className="relative">
+                  <div className="absolute left-3.5 top-1/2 -translate-y-1/2 flex items-center pointer-events-none text-[var(--text-dim)]">
+                    <LanguageIcon
+                      lang={draftLanguage}
+                      size={14}
+                      className=""
+                    />
+                  </div>
+                  <select
+                    value={draftLanguage}
+                    onChange={(e) => setDraftLanguage(e.target.value)}
+                    className="w-full pl-9 pr-8 py-2.5 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg text-xs font-cyber font-bold uppercase tracking-wider text-[var(--text-color)] focus:outline-none focus:border-[var(--cyber-neon-blue)] focus:ring-1 focus:ring-[var(--cyber-neon-blue)] transition-colors appearance-none cursor-pointer"
+                    style={{
+                      backgroundImage: `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%238892b0' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E")`,
+                      backgroundPosition: "right 0.75rem center",
+                      backgroundSize: "1em 1em",
+                      backgroundRepeat: "no-repeat",
+                    }}
+                  >
+                    <option value="all" className="bg-[var(--panel-bg)] text-[var(--text-color)]">
+                      All Languages
+                    </option>
+                    {availableLanguages.map((lang) => (
+                      <option key={lang} value={lang} className="bg-[var(--panel-bg)] text-[var(--text-color)]">
+                        {lang}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              {/* Status filter */}
+              <div className="space-y-2">
+                <label className="text-[10px] font-mono text-[var(--text-dim)] uppercase tracking-widest font-bold block">
+                  Project Status
+                </label>
+                <div className="flex p-1 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg gap-1">
+                  {[
+                    { id: "active", label: "Active Only" },
+                    { id: "all", label: "All Projects" },
+                    { id: "inactive", label: "Inactive Only" },
+                  ].map((opt) => {
+                    const isSelected = draftStatus === opt.id;
+                    return (
+                      <button
+                        key={opt.id}
+                        type="button"
+                        onClick={() => setDraftStatus(opt.id as any)}
+                        className={`flex-1 py-1.5 text-[10px] font-cyber font-bold uppercase tracking-wider rounded-md transition-all ${
+                          isSelected
+                            ? "bg-[var(--cyber-neon-blue)]/20 text-[var(--cyber-neon-blue)]"
+                            : "text-[var(--text-dim)] hover:text-[var(--text-color)]"
+                        }`}
+                      >
+                        {opt.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="flex items-center justify-end gap-3 pt-3 border-t border-[var(--border-light)]/40 mt-auto">
+              <button
+                type="button"
+                onClick={() => setShowFilterModal(false)}
+                className="px-5 py-2.5 text-xs font-cyber font-bold uppercase tracking-wider border border-[var(--border-light)] rounded-xl text-[var(--text-dim)] hover:text-[var(--text-color)] bg-transparent hover:border-[var(--text-dim)] transition-all"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={applyFilters}
+                className="px-6 py-2.5 text-xs font-cyber font-bold uppercase tracking-wider rounded-xl bg-[var(--cyber-neon-blue)] text-black font-extrabold hover:shadow-[0_0_15px_rgba(0,243,255,0.4)] hover:bg-[var(--cyber-neon-blue)]/90 transition-all"
+              >
+                Apply
+              </button>
+            </div>
+
+            {/* Corner accents */}
+            <div className="absolute top-[-1px] left-[-1px] w-4 h-4 border-t-2 border-l-2 border-[var(--cyber-neon-blue)] rounded-tl-2xl pointer-events-none" />
+            <div className="absolute bottom-[-1px] right-[-1px] w-4 h-4 border-b-2 border-r-2 border-[var(--cyber-neon-pink)] rounded-br-2xl pointer-events-none" />
+          </div>
+        </div>
+      )}
+
+      {/* Sort Modal */}
+      {showSortModal && (
+        <div 
+          onClick={handleBackdropClick}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md transition-all"
+        >
+          <div className="relative w-full max-w-md p-6 bg-[var(--panel-bg)]/95 border border-[var(--border-light)] rounded-2xl shadow-2xl space-y-6 flex flex-col backdrop-blur-xl">
+            {/* Header */}
+            <div className="flex items-center justify-between pb-3 border-b border-[var(--border-light)]/40">
+              <div className="flex items-center gap-2">
+                <ArrowUpDown className="w-4 h-4 text-[var(--cyber-neon-pink)]" />
+                <h3 className="text-sm font-cyber font-bold uppercase tracking-wider text-[var(--cyber-neon-pink)]">
+                  Sort Options
+                </h3>
+              </div>
+              <button
+                onClick={() => setShowSortModal(false)}
+                className="text-[10px] font-mono text-[var(--text-dim)] hover:text-[var(--text-color)] uppercase tracking-wider px-2 py-0.5 rounded border border-[var(--border-light)]/40 hover:border-[var(--cyber-neon-pink)]/50 transition-colors"
+              >
+                Close
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="space-y-5">
+              {/* Sort By */}
+              <div className="space-y-2">
+                <label className="text-[10px] font-mono text-[var(--text-dim)] uppercase tracking-widest font-bold block">
+                  Sort Criteria
+                </label>
+                <select
+                  value={draftSortBy}
+                  onChange={(e) => {
+                    const val = e.target.value as any;
+                    setDraftSortBy(val);
+                    setDraftSortDirection(val === "name" ? "asc" : "desc");
+                  }}
+                  className="w-full px-3.5 py-2.5 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg text-xs font-cyber font-bold uppercase tracking-wider text-[var(--text-color)] focus:outline-none focus:border-[var(--cyber-neon-pink)] focus:ring-1 focus:ring-[var(--cyber-neon-pink)] transition-colors appearance-none cursor-pointer"
+                  style={{
+                    backgroundImage: `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%238892b0' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E")`,
+                    backgroundPosition: "right 0.75rem center",
+                    backgroundSize: "1em 1em",
+                    backgroundRepeat: "no-repeat",
+                    color: "var(--text-color)",
+                  }}
+                >
+                  <option value="default" className="bg-[var(--panel-bg)] text-[var(--text-color)]">
+                    Relevance
+                  </option>
+                  <option value="stars" className="bg-[var(--panel-bg)] text-[var(--text-color)]">
+                    Popularity
+                  </option>
+                  <option value="updated" className="bg-[var(--panel-bg)] text-[var(--text-color)]">
+                    Updated
+                  </option>
+                  <option value="name" className="bg-[var(--panel-bg)] text-[var(--text-color)]">
+                    Name (A-Z)
+                  </option>
+                </select>
+              </div>
+
+              {/* Direction */}
+              <div className="space-y-2">
+                <label className="text-[10px] font-mono text-[var(--text-dim)] uppercase tracking-widest font-bold block">
+                  Direction
+                </label>
+                <div className="flex p-1 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg gap-1">
+                  {[
+                    { id: "desc", label: "Descending" },
+                    { id: "asc", label: "Ascending" },
+                  ].map((opt) => {
+                    const isSelected = draftSortDirection === opt.id;
+                    return (
+                      <button
+                        key={opt.id}
+                        type="button"
+                        onClick={() => setDraftSortDirection(opt.id as any)}
+                        className={`flex-1 py-1.5 text-xs font-cyber font-bold uppercase tracking-wider rounded-md transition-all ${
+                          isSelected
+                            ? "bg-[var(--cyber-neon-pink)]/20 text-[var(--cyber-neon-pink)]"
+                            : "text-[var(--text-dim)] hover:text-[var(--text-color)]"
+                        }`}
+                      >
+                        {opt.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="flex items-center justify-end gap-3 pt-3 border-t border-[var(--border-light)]/40 mt-auto">
+              <button
+                type="button"
+                onClick={() => setShowSortModal(false)}
+                className="px-5 py-2.5 text-xs font-cyber font-bold uppercase tracking-wider border border-[var(--border-light)] rounded-xl text-[var(--text-dim)] hover:text-[var(--text-color)] bg-transparent hover:border-[var(--text-dim)] transition-all"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={applySort}
+                className="px-6 py-2.5 text-xs font-cyber font-bold uppercase tracking-wider rounded-xl bg-[var(--cyber-neon-pink)] text-black font-extrabold hover:shadow-[0_0_15px_rgba(255,102,255,0.4)] hover:bg-[var(--cyber-neon-pink)]/90 transition-all"
+              >
+                Apply
+              </button>
+            </div>
+
+            {/* Corner accents */}
+            <div className="absolute top-[-1px] left-[-1px] w-4 h-4 border-t-2 border-l-2 border-[var(--cyber-neon-pink)] rounded-tl-2xl pointer-events-none" />
+            <div className="absolute bottom-[-1px] right-[-1px] w-4 h-4 border-b-2 border-r-2 border-[var(--cyber-neon-blue)] rounded-br-2xl pointer-events-none" />
+          </div>
+        </div>
+      )}
     </>
   );
 };
 
 export default Ecosystem;
+
