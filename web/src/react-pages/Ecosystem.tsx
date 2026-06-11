@@ -418,13 +418,9 @@ const Ecosystem = () => {
           if (relA !== relB) {
             comparison = relA - relB;
           } else {
-            const weeklyA = a.starsWeekly || 0;
-            const weeklyB = b.starsWeekly || 0;
             const monthlyA = a.starsMonthly || 0;
             const monthlyB = b.starsMonthly || 0;
-            if (weeklyA !== weeklyB) {
-              comparison = weeklyA - weeklyB;
-            } else if (monthlyA !== monthlyB) {
+            if (monthlyA !== monthlyB) {
               comparison = monthlyA - monthlyB;
             } else if (a.stars !== b.stars) {
               comparison = a.stars - b.stars;
@@ -435,13 +431,9 @@ const Ecosystem = () => {
             }
           }
         } else if (sortBy === "stars") {
-          const weeklyA = a.starsWeekly || 0;
-          const weeklyB = b.starsWeekly || 0;
           const monthlyA = a.starsMonthly || 0;
           const monthlyB = b.starsMonthly || 0;
-          if (weeklyA !== weeklyB) {
-            comparison = weeklyA - weeklyB;
-          } else if (monthlyA !== monthlyB) {
+          if (monthlyA !== monthlyB) {
             comparison = monthlyA - monthlyB;
           } else if (a.stars !== b.stars) {
             comparison = a.stars - b.stars;

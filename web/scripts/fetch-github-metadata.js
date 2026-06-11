@@ -23,15 +23,19 @@ async function limitConcurrency(tasks, limit) {
 }
 
 // Helper to query GitHub GraphQL API
-async function fetchGraphQL(owner, repo, headers) {
+async function fetchGraphQL(owner, repo, headers, cursor = null) {
   const query = `
-    query ($owner: String!, $name: String!) {
+    query ($owner: String!, $name: String!, $before: String) {
       repository(owner: $owner, name: $name) {
         stargazerCount
         pushedAt
-        stargazers(last: 100) {
+        stargazers(last: 100, before: $before) {
           edges {
             starredAt
+          }
+          pageInfo {
+            startCursor
+            hasPreviousPage
           }
         }
       }
@@ -46,7 +50,7 @@ async function fetchGraphQL(owner, repo, headers) {
     },
     body: JSON.stringify({
       query,
-      variables: { owner, name: repo },
+      variables: { owner, name: repo, before: cursor },
     }),
   });
 
@@ -194,14 +198,29 @@ async function fetchMetadata() {
       let repoGraphqlSuccess = false;
 
       if (token) {
-        // Use GraphQL API to get repository details and last 100 stargazers in one request
+        // Use GraphQL API to get repository details and stargazers (paginated backwards)
         try {
-          const data = await fetchGraphQL(owner, repo, headers);
-          if (data) {
-            stars = data.stargazerCount || 0;
-            pushedAt = data.pushedAt || new Date(0).toISOString();
-            if (data.stargazers && Array.isArray(data.stargazers.edges)) {
-              for (const edge of data.stargazers.edges) {
+          let cursor = null;
+          let hasMore = true;
+          let firstRun = true;
+          let pageCount = 0;
+
+          while (hasMore && pageCount < 10) {
+            const data = await fetchGraphQL(owner, repo, headers, cursor);
+            pageCount++;
+
+            if (firstRun) {
+              if (!data) {
+                throw new Error("Repository not found in GraphQL response");
+              }
+              stars = data.stargazerCount || 0;
+              pushedAt = data.pushedAt || new Date(0).toISOString();
+              firstRun = false;
+            }
+
+            if (data && data.stargazers && Array.isArray(data.stargazers.edges)) {
+              const edges = data.stargazers.edges;
+              for (const edge of edges) {
                 const starredAt = new Date(edge.starredAt);
                 if (starredAt >= oneWeekAgo) {
                   starsWeekly++;
@@ -210,15 +229,30 @@ async function fetchMetadata() {
                   starsMonthly++;
                 }
               }
+
+              // If the oldest stargazer on this page was starred after oneMonthAgo,
+              // there might be more stargazers in the last month on the previous page.
+              if (
+                edges.length > 0 &&
+                new Date(edges[0].starredAt) >= oneMonthAgo &&
+                data.stargazers.pageInfo?.hasPreviousPage
+              ) {
+                cursor = data.stargazers.pageInfo.startCursor;
+                // Add a small delay between paginated requests to respect GitHub API guidelines
+                await new Promise((resolve) => setTimeout(resolve, 100));
+              } else {
+                hasMore = false;
+              }
+            } else {
+              hasMore = false;
             }
-            repoSuccess = true;
-            repoGraphqlSuccess = true;
-            console.log(
-              `  ✓ ${repoKey}: ${stars} stars (weekly: ${starsWeekly}, monthly: ${starsMonthly}), last push: ${pushedAt}`,
-            );
-          } else {
-            throw new Error("Repository not found in GraphQL response");
           }
+
+          repoSuccess = true;
+          repoGraphqlSuccess = true;
+          console.log(
+            `  ✓ ${repoKey}: ${stars} stars (weekly: ${starsWeekly}, monthly: ${starsMonthly}), last push: ${pushedAt}`,
+          );
         } catch (err) {
           console.warn(
             `  ⚠ GraphQL query failed for ${repoKey}: ${err.message}. Trying REST fallback...`,
