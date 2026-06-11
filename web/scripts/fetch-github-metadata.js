@@ -224,7 +224,11 @@ async function fetchMetadata() {
               firstRun = false;
             }
 
-            if (data && data.stargazers && Array.isArray(data.stargazers.edges)) {
+            if (
+              data &&
+              data.stargazers &&
+              Array.isArray(data.stargazers.edges)
+            ) {
               const edges = data.stargazers.edges;
               for (const edge of edges) {
                 const starredAt = new Date(edge.starredAt);
@@ -353,7 +357,7 @@ async function fetchMetadata() {
     }
 
     const pushedDate = new Date(latestPushedAt);
-    const inactive = (pushedDate < oneYearAgo) || isArchived;
+    const inactive = pushedDate < oneYearAgo || isArchived;
 
     const firstUrl = githubUrls[0] || "";
     const firstMatch = firstUrl.match(/github\.com\/([^\/]+)\/([^\/]+)/);

@@ -26,7 +26,7 @@ jobs:
         run: just web-install
 
       - name: Fetch GitHub metadata
-        run: pnpm run fetch-metadata
+        run: pnpm run fetch-metadata format
         working-directory: web
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
