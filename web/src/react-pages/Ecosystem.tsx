@@ -1281,28 +1281,54 @@ const Ecosystem = () => {
                             )}
                           </div>
 
-                          {primaryGithubUrl ? (
-                            <a
-                              href={primaryGithubUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              title={`Total stars: ${project.stars.toLocaleString()}\n+${project.starsWeekly || 0} stars this week\n+${project.starsMonthly || 0} stars this month`}
-                              className="flex items-center gap-1.5 px-2.5 py-1 bg-[var(--warning-bg)] hover:bg-[var(--warning-border)] border border-[var(--warning-border)] hover:border-[var(--warning-text)] rounded-md text-xs font-mono text-[var(--warning-text)] transition-all shadow-inner group/stars cursor-help"
-                            >
-                              <Star className="w-3.5 h-3.5 fill-current opacity-70 group-hover/stars:opacity-100 transition-all" />
-                              <span className="font-bold">
-                                {formatStars(project.stars)}
-                              </span>
-                            </a>
-                          ) : (
-                            <div 
-                              title="GitHub repository not specified"
-                              className="flex items-center gap-1.5 px-2.5 py-1 bg-[var(--warning-bg)]/60 border border-[var(--warning-border)]/50 rounded-md text-xs font-mono text-[var(--warning-text)]/70 shadow-inner select-none cursor-help"
-                            >
-                              <Star className="w-3.5 h-3.5 fill-current opacity-40" />
-                              <span className="font-bold">?</span>
-                            </div>
-                          )}
+                          <div className="relative group/star-tooltip">
+                            {primaryGithubUrl ? (
+                              <a
+                                href={primaryGithubUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-1.5 px-2.5 py-1 bg-[var(--warning-bg)] hover:bg-[var(--warning-border)] border border-[var(--warning-border)] hover:border-[var(--warning-text)] rounded-md text-xs font-mono text-[var(--warning-text)] transition-all shadow-inner group/stars cursor-help"
+                              >
+                                <Star className="w-3.5 h-3.5 fill-current opacity-70 group-hover/stars:opacity-100 transition-all" />
+                                <span className="font-bold">
+                                  {formatStars(project.stars)}
+                                </span>
+                              </a>
+                            ) : (
+                              <div 
+                                className="flex items-center gap-1.5 px-2.5 py-1 bg-[var(--warning-bg)]/60 border border-[var(--warning-border)]/50 rounded-md text-xs font-mono text-[var(--warning-text)]/70 shadow-inner select-none cursor-help"
+                              >
+                                <Star className="w-3.5 h-3.5 fill-current opacity-40" />
+                                <span className="font-bold">?</span>
+                              </div>
+                            )}
+
+                            {/* Custom Tooltip */}
+                            {primaryGithubUrl ? (
+                              <div className="absolute right-0 top-full mt-2 z-30 w-44 p-3 bg-slate-950/95 border border-[var(--border-light)] rounded-md shadow-2xl backdrop-blur-md pointer-events-none transition-all duration-200 origin-top-right opacity-0 scale-95 group-hover/star-tooltip:opacity-100 group-hover/star-tooltip:scale-100 flex flex-col gap-1.5 text-[11px] font-mono text-[var(--text-dim)]">
+                                <div className="flex justify-between border-b border-[var(--border-light)]/40 pb-1.5 mb-1 text-[var(--text-color)] font-bold">
+                                  <span>Popularity</span>
+                                  <Star className="w-3.5 h-3.5 fill-[var(--warning-text)] text-[var(--warning-text)]" />
+                                </div>
+                                <div className="flex justify-between">
+                                  <span>Total:</span>
+                                  <span className="text-[var(--text-color)] font-bold">{project.stars.toLocaleString()}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span>Past Week:</span>
+                                  <span className="text-emerald-400 font-bold">+{project.starsWeekly || 0}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span>Past Month:</span>
+                                  <span className="text-emerald-400 font-bold">+{project.starsMonthly || 0}</span>
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="absolute right-0 top-full mt-2 z-30 w-40 p-2 bg-slate-950/95 border border-[var(--border-light)] rounded-md shadow-2xl backdrop-blur-md pointer-events-none transition-all duration-200 origin-top-right opacity-0 scale-95 group-hover/star-tooltip:opacity-100 group-hover/star-tooltip:scale-100 text-[10px] font-mono text-[var(--text-dim)] text-center">
+                                No GitHub repository linked
+                              </div>
+                            )}
+                          </div>
                         </div>
 
                         {/* Title & Owner */}
