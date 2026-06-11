@@ -991,10 +991,7 @@
       "repo": "protobuf",
       "desc": "Google's language-neutral, platform-neutral, extensible mechanism for serializing structured data. Contains the protoc compiler, code generator stubs, and official runtimes.",
       "url": "https://protobuf.dev/",
-      "github": [
-        "https://github.com/protocolbuffers/protobuf",
-        "google.golang.org/protobuf"
-      ],
+      "github": "https://github.com/protocolbuffers/protobuf",
       "languages": [
         "C++",
         "C#",
