@@ -174,9 +174,14 @@ async function fetchMetadata() {
       starsMonthly: 0,
     };
 
+    let githubReposAttempted = 0;
+    let githubReposSucceeded = 0;
+    let graphqlSuccess = token ? true : false;
+
     for (const url of githubUrls) {
       const match = url.match(/github\.com\/([^\/]+)\/([^\/]+)/);
       if (!match) continue;
+      githubReposAttempted++;
       const owner = match[1];
       const repo = match[2];
       const repoKey = `${owner}/${repo}`;
@@ -185,6 +190,8 @@ async function fetchMetadata() {
       let pushedAt = new Date(0).toISOString();
       let starsWeekly = 0;
       let starsMonthly = 0;
+      let repoSuccess = false;
+      let repoGraphqlSuccess = false;
 
       if (token) {
         // Use GraphQL API to get repository details and last 100 stargazers in one request
@@ -204,6 +211,8 @@ async function fetchMetadata() {
                 }
               }
             }
+            repoSuccess = true;
+            repoGraphqlSuccess = true;
             console.log(
               `  ✓ ${repoKey}: ${stars} stars (weekly: ${starsWeekly}, monthly: ${starsMonthly}), last push: ${pushedAt}`,
             );
@@ -214,6 +223,7 @@ async function fetchMetadata() {
           console.warn(
             `  ⚠ GraphQL query failed for ${repoKey}: ${err.message}. Trying REST fallback...`,
           );
+          graphqlSuccess = false;
           // Fallback to REST API for total stars and last push
           try {
             const restHeaders = { ...headers, Authorization: `token ${token}` };
@@ -225,23 +235,17 @@ async function fetchMetadata() {
               const data = await res.json();
               stars = data.stargazers_count || 0;
               pushedAt = data.pushed_at || new Date(0).toISOString();
-              // Preserve existing weekly/monthly counts
-              starsWeekly = fallback.starsWeekly;
-              starsMonthly = fallback.starsMonthly;
+              repoSuccess = true;
               console.log(
-                `  ✓ ${repoKey} (REST fallback): ${stars} stars, last push: ${pushedAt} (weekly/monthly preserved)`,
+                `  ✓ ${repoKey} (REST fallback): ${stars} stars, last push: ${pushedAt}`,
               );
             } else {
               throw new Error(`${res.status} ${res.statusText}`);
             }
           } catch (restErr) {
             console.warn(
-              `  ⚠ REST fallback failed for ${repoKey}: ${restErr.message}. Using offline fallback...`,
+              `  ⚠ REST fallback failed for ${repoKey}: ${restErr.message}.`,
             );
-            stars = fallback.stars;
-            pushedAt = fallback.pushedAt;
-            starsWeekly = fallback.starsWeekly;
-            starsMonthly = fallback.starsMonthly;
           }
         }
       } else {
@@ -255,42 +259,51 @@ async function fetchMetadata() {
             const data = await res.json();
             stars = data.stargazers_count || 0;
             pushedAt = data.pushed_at || new Date(0).toISOString();
-            // Preserve existing weekly/monthly counts
-            starsWeekly = fallback.starsWeekly;
-            starsMonthly = fallback.starsMonthly;
+            repoSuccess = true;
             console.log(
-              `  ✓ ${repoKey}: ${stars} stars, last push: ${pushedAt} (weekly/monthly preserved)`,
+              `  ✓ ${repoKey}: ${stars} stars, last push: ${pushedAt}`,
             );
           } else {
             throw new Error(`${res.status} ${res.statusText}`);
           }
         } catch (err) {
           console.warn(
-            `  ⚠ Unauthenticated REST query failed for ${repoKey}: ${err.message}. Using offline fallback...`,
+            `  ⚠ Unauthenticated REST query failed for ${repoKey}: ${err.message}.`,
           );
-          stars = fallback.stars;
-          pushedAt = fallback.pushedAt;
-          starsWeekly = fallback.starsWeekly;
-          starsMonthly = fallback.starsMonthly;
         }
       }
 
-      totalStars += stars;
-      totalStarsWeekly += starsWeekly;
-      totalStarsMonthly += starsMonthly;
-      if (!latestPushedAt || new Date(pushedAt) > new Date(latestPushedAt)) {
-        latestPushedAt = pushedAt;
+      if (repoSuccess) {
+        githubReposSucceeded++;
+        totalStars += stars;
+        if (!latestPushedAt || new Date(pushedAt) > new Date(latestPushedAt)) {
+          latestPushedAt = pushedAt;
+        }
+        if (repoGraphqlSuccess) {
+          totalStarsWeekly += starsWeekly;
+          totalStarsMonthly += starsMonthly;
+        }
+      } else {
+        graphqlSuccess = false;
       }
 
       // Respect GitHub API guidelines with a small delay
       await new Promise((resolve) => setTimeout(resolve, 200));
     }
 
-    if (!latestPushedAt || latestPushedAt === new Date(0).toISOString()) {
-      latestPushedAt = fallback.pushedAt || new Date().toISOString();
-      totalStars = fallback.stars || 0;
-      totalStarsWeekly = fallback.starsWeekly || 0;
-      totalStarsMonthly = fallback.starsMonthly || 0;
+    const allGithubSucceeded =
+      githubReposAttempted > 0 && githubReposSucceeded === githubReposAttempted;
+
+    if (allGithubSucceeded) {
+      if (!graphqlSuccess) {
+        totalStarsWeekly = fallback.starsWeekly;
+        totalStarsMonthly = fallback.starsMonthly;
+      }
+    } else {
+      totalStars = fallback.stars;
+      latestPushedAt = fallback.pushedAt;
+      totalStarsWeekly = fallback.starsWeekly;
+      totalStarsMonthly = fallback.starsMonthly;
     }
 
     const pushedDate = new Date(latestPushedAt);

@@ -1295,9 +1295,7 @@ const Ecosystem = () => {
                                 </span>
                               </a>
                             ) : (
-                              <div 
-                                className="flex items-center gap-1.5 px-2.5 py-1 bg-[var(--warning-bg)]/60 border border-[var(--warning-border)]/50 rounded-md text-xs font-mono text-[var(--warning-text)]/70 shadow-inner select-none cursor-help"
-                              >
+                              <div className="flex items-center gap-1.5 px-2.5 py-1 bg-[var(--warning-bg)]/60 border border-[var(--warning-border)]/50 rounded-md text-xs font-mono text-[var(--warning-text)]/70 shadow-inner select-none cursor-help">
                                 <Star className="w-3.5 h-3.5 fill-current opacity-40" />
                                 <span className="font-bold">?</span>
                               </div>
@@ -1312,15 +1310,21 @@ const Ecosystem = () => {
                                 </div>
                                 <div className="flex justify-between">
                                   <span>Total:</span>
-                                  <span className="text-[var(--text-color)] font-bold">{project.stars.toLocaleString()}</span>
+                                  <span className="text-[var(--text-color)] font-bold">
+                                    {project.stars.toLocaleString()}
+                                  </span>
                                 </div>
                                 <div className="flex justify-between">
                                   <span>Past Week:</span>
-                                  <span className="text-emerald-400 font-bold">+{project.starsWeekly || 0}</span>
+                                  <span className="text-emerald-400 font-bold">
+                                    +{project.starsWeekly || 0}
+                                  </span>
                                 </div>
                                 <div className="flex justify-between">
                                   <span>Past Month:</span>
-                                  <span className="text-emerald-400 font-bold">+{project.starsMonthly || 0}</span>
+                                  <span className="text-emerald-400 font-bold">
+                                    +{project.starsMonthly || 0}
+                                  </span>
                                 </div>
                               </div>
                             ) : (
