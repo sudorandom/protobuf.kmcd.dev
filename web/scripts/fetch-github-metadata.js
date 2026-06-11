@@ -29,6 +29,7 @@ async function fetchGraphQL(owner, repo, headers, cursor = null) {
       repository(owner: $owner, name: $name) {
         stargazerCount
         pushedAt
+        isArchived
         stargazers(last: 100, before: $before) {
           edges {
             starredAt
@@ -101,6 +102,7 @@ async function fetchMetadata() {
       pushedAt: p.pushedAt || new Date(0).toISOString(),
       starsWeekly: p.starsWeekly || 0,
       starsMonthly: p.starsMonthly || 0,
+      archived: p.archived || false,
     };
   }
 
@@ -170,12 +172,14 @@ async function fetchMetadata() {
     let latestPushedAt = null;
     let totalStarsWeekly = 0;
     let totalStarsMonthly = 0;
+    let isArchived = false;
 
     const fallback = existingMetadata[project.name] || {
       stars: 0,
       pushedAt: new Date(0).toISOString(),
       starsWeekly: 0,
       starsMonthly: 0,
+      archived: false,
     };
 
     let githubReposAttempted = 0;
@@ -194,6 +198,7 @@ async function fetchMetadata() {
       let pushedAt = new Date(0).toISOString();
       let starsWeekly = 0;
       let starsMonthly = 0;
+      let archived = false;
       let repoSuccess = false;
       let repoGraphqlSuccess = false;
 
@@ -215,6 +220,7 @@ async function fetchMetadata() {
               }
               stars = data.stargazerCount || 0;
               pushedAt = data.pushedAt || new Date(0).toISOString();
+              archived = data.isArchived || false;
               firstRun = false;
             }
 
@@ -269,6 +275,7 @@ async function fetchMetadata() {
               const data = await res.json();
               stars = data.stargazers_count || 0;
               pushedAt = data.pushed_at || new Date(0).toISOString();
+              archived = data.archived || false;
               repoSuccess = true;
               console.log(
                 `  ✓ ${repoKey} (REST fallback): ${stars} stars, last push: ${pushedAt}`,
@@ -293,6 +300,7 @@ async function fetchMetadata() {
             const data = await res.json();
             stars = data.stargazers_count || 0;
             pushedAt = data.pushed_at || new Date(0).toISOString();
+            archived = data.archived || false;
             repoSuccess = true;
             console.log(
               `  ✓ ${repoKey}: ${stars} stars, last push: ${pushedAt}`,
@@ -312,6 +320,9 @@ async function fetchMetadata() {
         totalStars += stars;
         if (!latestPushedAt || new Date(pushedAt) > new Date(latestPushedAt)) {
           latestPushedAt = pushedAt;
+        }
+        if (archived) {
+          isArchived = true;
         }
         if (repoGraphqlSuccess) {
           totalStarsWeekly += starsWeekly;
@@ -338,10 +349,11 @@ async function fetchMetadata() {
       latestPushedAt = fallback.pushedAt;
       totalStarsWeekly = fallback.starsWeekly;
       totalStarsMonthly = fallback.starsMonthly;
+      isArchived = fallback.archived;
     }
 
     const pushedDate = new Date(latestPushedAt);
-    const inactive = pushedDate < oneYearAgo;
+    const inactive = (pushedDate < oneYearAgo) || isArchived;
 
     const firstUrl = githubUrls[0] || "";
     const firstMatch = firstUrl.match(/github\.com\/([^\/]+)\/([^\/]+)/);
@@ -355,6 +367,7 @@ async function fetchMetadata() {
       stars: totalStars,
       pushedAt: latestPushedAt,
       inactive,
+      archived: isArchived,
       starsWeekly: totalStarsWeekly,
       starsMonthly: totalStarsMonthly,
     };

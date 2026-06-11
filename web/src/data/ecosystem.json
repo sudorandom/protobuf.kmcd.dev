@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-06-11T09:35:46.389Z",
+  "fetchedAt": "2026-06-11T11:16:35.337Z",
   "projects": [
     {
       "category": "tools",
@@ -17,7 +17,8 @@
       "pushedAt": "2026-06-08T12:55:41Z",
       "inactive": false,
       "starsWeekly": 19,
-      "starsMonthly": 84
+      "starsMonthly": 83,
+      "archived": false
     },
     {
       "category": "tools",
@@ -35,7 +36,8 @@
       "pushedAt": "2026-05-27T04:40:26Z",
       "inactive": false,
       "starsWeekly": 1,
-      "starsMonthly": 7
+      "starsMonthly": 7,
+      "archived": false
     },
     {
       "category": "tools",
@@ -53,7 +55,8 @@
       "pushedAt": "2026-05-18T14:58:21Z",
       "inactive": false,
       "starsWeekly": 0,
-      "starsMonthly": 3
+      "starsMonthly": 3,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -84,7 +87,8 @@
       "pushedAt": "2026-06-09T14:49:29Z",
       "inactive": false,
       "starsWeekly": 5,
-      "starsMonthly": 28
+      "starsMonthly": 28,
+      "archived": false
     },
     {
       "category": "tools",
@@ -102,7 +106,8 @@
       "pushedAt": "2025-07-16T23:04:58Z",
       "inactive": false,
       "starsWeekly": 1,
-      "starsMonthly": 2
+      "starsMonthly": 2,
+      "archived": false
     },
     {
       "category": "plugins",
@@ -120,7 +125,8 @@
       "pushedAt": "2025-02-11T14:03:18Z",
       "inactive": true,
       "starsWeekly": 0,
-      "starsMonthly": 2
+      "starsMonthly": 2,
+      "archived": false
     },
     {
       "category": "plugins",
@@ -138,7 +144,8 @@
       "pushedAt": "2026-05-20T09:02:58Z",
       "inactive": false,
       "starsWeekly": 1,
-      "starsMonthly": 12
+      "starsMonthly": 12,
+      "archived": false
     },
     {
       "category": "plugins",
@@ -156,7 +163,8 @@
       "pushedAt": "2026-06-11T06:54:31Z",
       "inactive": false,
       "starsWeekly": 11,
-      "starsMonthly": 45
+      "starsMonthly": 45,
+      "archived": false
     },
     {
       "category": [
@@ -180,10 +188,11 @@
       ],
       "relevance": 4,
       "stars": 44877,
-      "pushedAt": "2026-06-11T09:27:15Z",
+      "pushedAt": "2026-06-11T11:11:17Z",
       "inactive": false,
       "starsWeekly": 31,
-      "starsMonthly": 185
+      "starsMonthly": 183,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -209,11 +218,12 @@
         "Python"
       ],
       "relevance": 4,
-      "stars": 6143,
+      "stars": 6144,
       "pushedAt": "2026-06-10T22:19:42Z",
       "inactive": false,
-      "starsWeekly": 13,
-      "starsMonthly": 79
+      "starsWeekly": 14,
+      "starsMonthly": 80,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -231,7 +241,8 @@
       "pushedAt": "2026-06-11T03:10:28Z",
       "inactive": false,
       "starsWeekly": 8,
-      "starsMonthly": 77
+      "starsMonthly": 77,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -249,7 +260,8 @@
       "pushedAt": "2024-08-05T21:36:11Z",
       "inactive": true,
       "starsWeekly": 2,
-      "starsMonthly": 15
+      "starsMonthly": 15,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -267,7 +279,8 @@
       "pushedAt": "2026-05-14T12:11:27Z",
       "inactive": false,
       "starsWeekly": 2,
-      "starsMonthly": 4
+      "starsMonthly": 4,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -285,7 +298,8 @@
       "pushedAt": "2026-06-11T02:17:28Z",
       "inactive": false,
       "starsWeekly": 21,
-      "starsMonthly": 54
+      "starsMonthly": 54,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -300,11 +314,12 @@
         "Go"
       ],
       "relevance": 1,
-      "stars": 41517,
+      "stars": 41516,
       "pushedAt": "2026-06-08T10:43:57Z",
       "inactive": false,
       "starsWeekly": 15,
-      "starsMonthly": 54
+      "starsMonthly": 54,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -322,7 +337,8 @@
       "pushedAt": "2025-04-07T01:18:13Z",
       "inactive": true,
       "starsWeekly": 1,
-      "starsMonthly": 7
+      "starsMonthly": 7,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -340,7 +356,8 @@
       "pushedAt": "2026-01-21T08:09:56Z",
       "inactive": false,
       "starsWeekly": 0,
-      "starsMonthly": 1
+      "starsMonthly": 1,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -358,7 +375,8 @@
       "pushedAt": "2026-06-03T01:17:54Z",
       "inactive": false,
       "starsWeekly": 0,
-      "starsMonthly": 1
+      "starsMonthly": 1,
+      "archived": false
     },
     {
       "category": [
@@ -381,7 +399,8 @@
       "pushedAt": "2026-06-11T08:54:36Z",
       "inactive": false,
       "starsWeekly": 2,
-      "starsMonthly": 7
+      "starsMonthly": 7,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -399,7 +418,8 @@
       "pushedAt": "2026-06-11T00:12:05Z",
       "inactive": false,
       "starsWeekly": 7,
-      "starsMonthly": 31
+      "starsMonthly": 31,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -417,7 +437,8 @@
       "pushedAt": "2026-06-08T20:33:01Z",
       "inactive": false,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -435,7 +456,8 @@
       "pushedAt": "2026-04-18T11:43:30Z",
       "inactive": false,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -453,7 +475,8 @@
       "pushedAt": "2024-01-12T19:41:17Z",
       "inactive": true,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -471,7 +494,8 @@
       "pushedAt": "2025-09-21T22:00:37Z",
       "inactive": false,
       "starsWeekly": 0,
-      "starsMonthly": 2
+      "starsMonthly": 2,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -489,7 +513,8 @@
       "pushedAt": "2024-04-28T06:44:58Z",
       "inactive": true,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -507,7 +532,8 @@
       "pushedAt": "2023-08-24T08:55:55Z",
       "inactive": true,
       "starsWeekly": 0,
-      "starsMonthly": 1
+      "starsMonthly": 1,
+      "archived": false
     },
     {
       "category": "plugins",
@@ -525,7 +551,8 @@
       "pushedAt": "2017-04-04T15:27:37Z",
       "inactive": true,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": "plugins",
@@ -543,7 +570,8 @@
       "pushedAt": "2026-06-08T11:16:37Z",
       "inactive": false,
       "starsWeekly": 0,
-      "starsMonthly": 4
+      "starsMonthly": 4,
+      "archived": false
     },
     {
       "category": "plugins",
@@ -561,7 +589,8 @@
       "pushedAt": "2023-04-27T14:21:30Z",
       "inactive": true,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": "tools",
@@ -579,7 +608,8 @@
       "pushedAt": "2024-08-07T06:43:14Z",
       "inactive": true,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": "tools",
@@ -597,7 +627,8 @@
       "pushedAt": "2023-01-11T11:19:16Z",
       "inactive": true,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": "tools",
@@ -615,7 +646,8 @@
       "pushedAt": "2017-09-05T12:15:03Z",
       "inactive": true,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": "plugins",
@@ -633,7 +665,8 @@
       "pushedAt": "2025-02-11T14:03:18Z",
       "inactive": true,
       "starsWeekly": 0,
-      "starsMonthly": 2
+      "starsMonthly": 2,
+      "archived": false
     },
     {
       "category": "plugins",
@@ -651,7 +684,8 @@
       "pushedAt": "2024-12-23T22:35:00Z",
       "inactive": true,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": [
@@ -670,10 +704,11 @@
       ],
       "relevance": 3,
       "stars": 1606,
-      "pushedAt": "2026-06-10T18:00:15Z",
+      "pushedAt": "2026-06-11T10:45:37Z",
       "inactive": false,
       "starsWeekly": 3,
-      "starsMonthly": 22
+      "starsMonthly": 22,
+      "archived": false
     },
     {
       "category": "plugins",
@@ -692,7 +727,8 @@
       "pushedAt": "2026-05-28T17:44:13Z",
       "inactive": false,
       "starsWeekly": 1,
-      "starsMonthly": 10
+      "starsMonthly": 10,
+      "archived": false
     },
     {
       "category": [
@@ -714,7 +750,8 @@
       "pushedAt": "2026-05-20T11:36:33Z",
       "inactive": false,
       "starsWeekly": 1,
-      "starsMonthly": 2
+      "starsMonthly": 2,
+      "archived": false
     },
     {
       "category": [
@@ -735,7 +772,8 @@
       "pushedAt": "2026-06-02T22:24:14Z",
       "inactive": false,
       "starsWeekly": 1,
-      "starsMonthly": 5
+      "starsMonthly": 5,
+      "archived": false
     },
     {
       "category": [
@@ -757,7 +795,8 @@
       "pushedAt": "2026-06-09T13:15:54Z",
       "inactive": false,
       "starsWeekly": 6,
-      "starsMonthly": 22
+      "starsMonthly": 22,
+      "archived": false
     },
     {
       "category": [
@@ -779,7 +818,8 @@
       "pushedAt": "2026-05-20T18:04:03Z",
       "inactive": false,
       "starsWeekly": 3,
-      "starsMonthly": 7
+      "starsMonthly": 7,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -797,7 +837,8 @@
       "pushedAt": "2026-05-17T15:43:12Z",
       "inactive": false,
       "starsWeekly": 3,
-      "starsMonthly": 13
+      "starsMonthly": 13,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -814,8 +855,9 @@
       "stars": 25726,
       "pushedAt": "2026-06-05T06:10:21Z",
       "inactive": false,
-      "starsWeekly": 20,
-      "starsMonthly": 84
+      "starsWeekly": 19,
+      "starsMonthly": 84,
+      "archived": false
     },
     {
       "category": "tools",
@@ -833,7 +875,8 @@
       "pushedAt": "2026-06-10T17:57:11Z",
       "inactive": false,
       "starsWeekly": 14,
-      "starsMonthly": 68
+      "starsMonthly": 67,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -847,11 +890,12 @@
         "Go"
       ],
       "relevance": 1,
-      "stars": 7971,
+      "stars": 7970,
       "pushedAt": "2026-06-11T02:39:02Z",
       "inactive": false,
       "starsWeekly": 7,
-      "starsMonthly": 41
+      "starsMonthly": 40,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -865,11 +909,12 @@
         "Kotlin"
       ],
       "relevance": 1,
-      "stars": 5919,
+      "stars": 5918,
       "pushedAt": "2026-06-10T16:06:09Z",
       "inactive": false,
       "starsWeekly": 3,
-      "starsMonthly": 17
+      "starsMonthly": 17,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -885,10 +930,11 @@
       ],
       "relevance": 1,
       "stars": 5824,
-      "pushedAt": "2026-06-11T09:05:22Z",
+      "pushedAt": "2026-06-11T10:04:11Z",
       "inactive": false,
       "starsWeekly": 7,
-      "starsMonthly": 47
+      "starsMonthly": 47,
+      "archived": false
     },
     {
       "category": "tools",
@@ -903,10 +949,11 @@
       ],
       "relevance": 1,
       "stars": 5770,
-      "pushedAt": "2026-06-11T09:23:13Z",
+      "pushedAt": "2026-06-11T09:54:55Z",
       "inactive": false,
       "starsWeekly": 8,
-      "starsMonthly": 55
+      "starsMonthly": 55,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -924,7 +971,8 @@
       "pushedAt": "2026-04-08T21:41:59Z",
       "inactive": false,
       "starsWeekly": 6,
-      "starsMonthly": 16
+      "starsMonthly": 16,
+      "archived": false
     },
     {
       "category": "tools",
@@ -942,7 +990,8 @@
       "pushedAt": "2022-03-01T12:56:26Z",
       "inactive": true,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": true
     },
     {
       "category": "libraries",
@@ -960,7 +1009,8 @@
       "pushedAt": "2026-06-07T10:12:23Z",
       "inactive": false,
       "starsWeekly": 6,
-      "starsMonthly": 26
+      "starsMonthly": 26,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -978,7 +1028,8 @@
       "pushedAt": "2024-03-14T09:01:56Z",
       "inactive": true,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": [
@@ -1003,10 +1054,11 @@
       ],
       "relevance": 4,
       "stars": 71336,
-      "pushedAt": "2026-06-11T08:40:52Z",
+      "pushedAt": "2026-06-11T11:15:17Z",
       "inactive": false,
-      "starsWeekly": 39,
-      "starsMonthly": 206
+      "starsWeekly": 38,
+      "starsMonthly": 206,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -1024,7 +1076,8 @@
       "pushedAt": "2026-01-23T14:04:50Z",
       "inactive": false,
       "starsWeekly": 0,
-      "starsMonthly": 2
+      "starsMonthly": 2,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -1042,7 +1095,8 @@
       "pushedAt": "2026-04-13T22:47:19Z",
       "inactive": false,
       "starsWeekly": 0,
-      "starsMonthly": 1
+      "starsMonthly": 1,
+      "archived": false
     },
     {
       "category": "tools",
@@ -1061,7 +1115,8 @@
       "pushedAt": "2026-06-10T21:24:02Z",
       "inactive": false,
       "starsWeekly": 1,
-      "starsMonthly": 4
+      "starsMonthly": 4,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -1079,7 +1134,8 @@
       "pushedAt": "2026-06-05T20:18:07Z",
       "inactive": false,
       "starsWeekly": 2,
-      "starsMonthly": 5
+      "starsMonthly": 5,
+      "archived": false
     },
     {
       "category": "tools",
@@ -1094,10 +1150,11 @@
       ],
       "relevance": 1,
       "stars": 38475,
-      "pushedAt": "2026-06-11T09:29:12Z",
+      "pushedAt": "2026-06-11T10:27:36Z",
       "inactive": false,
-      "starsWeekly": 35,
-      "starsMonthly": 152
+      "starsWeekly": 33,
+      "starsMonthly": 152,
+      "archived": false
     },
     {
       "category": "tools",
@@ -1115,7 +1172,8 @@
       "pushedAt": "2026-03-03T22:08:08Z",
       "inactive": false,
       "starsWeekly": 2,
-      "starsMonthly": 14
+      "starsMonthly": 14,
+      "archived": false
     },
     {
       "category": "tools",
@@ -1129,11 +1187,12 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 30781,
-      "pushedAt": "2026-06-11T09:01:46Z",
+      "stars": 30777,
+      "pushedAt": "2026-06-11T10:22:09Z",
       "inactive": false,
-      "starsWeekly": 67,
-      "starsMonthly": 283
+      "starsWeekly": 64,
+      "starsMonthly": 278,
+      "archived": false
     },
     {
       "category": "plugins",
@@ -1151,7 +1210,8 @@
       "pushedAt": "2026-06-01T05:46:52Z",
       "inactive": false,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": "tools",
@@ -1169,7 +1229,8 @@
       "pushedAt": "2026-06-11T08:12:47Z",
       "inactive": false,
       "starsWeekly": 31,
-      "starsMonthly": 140
+      "starsMonthly": 140,
+      "archived": false
     },
     {
       "category": "tools",
@@ -1187,7 +1248,8 @@
       "pushedAt": "2024-02-12T21:22:32Z",
       "inactive": true,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": "tools",
@@ -1205,7 +1267,8 @@
       "pushedAt": "2026-05-29T13:35:03Z",
       "inactive": false,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -1223,7 +1286,8 @@
       "pushedAt": "2024-06-07T13:24:02Z",
       "inactive": true,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": "tools",
@@ -1237,11 +1301,12 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 28385,
-      "pushedAt": "2026-06-11T09:35:12Z",
+      "stars": 28376,
+      "pushedAt": "2026-06-11T11:01:47Z",
       "inactive": false,
-      "starsWeekly": 77,
-      "starsMonthly": 516
+      "starsWeekly": 70,
+      "starsMonthly": 507,
+      "archived": false
     },
     {
       "category": "tools",
@@ -1259,7 +1324,8 @@
       "pushedAt": "2026-06-10T18:08:00Z",
       "inactive": false,
       "starsWeekly": 3,
-      "starsMonthly": 16
+      "starsMonthly": 16,
+      "archived": false
     },
     {
       "category": "tools",
@@ -1277,7 +1343,8 @@
       "pushedAt": "2026-02-25T17:11:22Z",
       "inactive": false,
       "starsWeekly": 0,
-      "starsMonthly": 1
+      "starsMonthly": 1,
+      "archived": false
     },
     {
       "category": "tools",
@@ -1295,7 +1362,8 @@
       "pushedAt": "2023-12-26T08:27:59Z",
       "inactive": true,
       "starsWeekly": 1,
-      "starsMonthly": 8
+      "starsMonthly": 8,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -1309,11 +1377,12 @@
         "Rust"
       ],
       "relevance": 1,
-      "stars": 12275,
+      "stars": 12279,
       "pushedAt": "2026-06-05T23:13:10Z",
       "inactive": false,
-      "starsWeekly": 38,
-      "starsMonthly": 272
+      "starsWeekly": 41,
+      "starsMonthly": 276,
+      "archived": false
     },
     {
       "category": "plugins",
@@ -1332,7 +1401,8 @@
       "pushedAt": "2026-05-07T14:02:54Z",
       "inactive": false,
       "starsWeekly": 4,
-      "starsMonthly": 14
+      "starsMonthly": 14,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -1350,7 +1420,8 @@
       "pushedAt": "2026-06-10T21:30:45Z",
       "inactive": false,
       "starsWeekly": 5,
-      "starsMonthly": 13
+      "starsMonthly": 13,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -1368,7 +1439,8 @@
       "pushedAt": "2026-04-01T10:01:41Z",
       "inactive": false,
       "starsWeekly": 5,
-      "starsMonthly": 6
+      "starsMonthly": 6,
+      "archived": false
     },
     {
       "category": "plugins",
@@ -1386,7 +1458,8 @@
       "pushedAt": "2026-06-10T21:26:46Z",
       "inactive": false,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -1406,7 +1479,8 @@
       "pushedAt": "2026-06-11T03:39:39Z",
       "inactive": false,
       "starsWeekly": 5,
-      "starsMonthly": 16
+      "starsMonthly": 16,
+      "archived": false
     },
     {
       "category": "tools",
@@ -1424,7 +1498,8 @@
       "pushedAt": "2026-06-11T06:51:43Z",
       "inactive": false,
       "starsWeekly": 2,
-      "starsMonthly": 7
+      "starsMonthly": 7,
+      "archived": false
     },
     {
       "category": "tools",
@@ -1442,7 +1517,8 @@
       "pushedAt": "2026-05-19T22:40:01Z",
       "inactive": false,
       "starsWeekly": 2,
-      "starsMonthly": 16
+      "starsMonthly": 16,
+      "archived": false
     },
     {
       "category": "tools",
@@ -1456,11 +1532,12 @@
         "Python"
       ],
       "relevance": 1,
-      "stars": 722,
+      "stars": 723,
       "pushedAt": "2026-04-13T17:08:18Z",
       "inactive": false,
-      "starsWeekly": 1,
-      "starsMonthly": 3
+      "starsWeekly": 2,
+      "starsMonthly": 4,
+      "archived": false
     },
     {
       "category": "tools",
@@ -1478,7 +1555,8 @@
       "pushedAt": "2026-06-10T11:51:20Z",
       "inactive": false,
       "starsWeekly": 0,
-      "starsMonthly": 5
+      "starsMonthly": 5,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -1496,7 +1574,8 @@
       "pushedAt": "2026-05-22T17:52:38Z",
       "inactive": false,
       "starsWeekly": 0,
-      "starsMonthly": 1
+      "starsMonthly": 1,
+      "archived": false
     },
     {
       "category": "tools",
@@ -1514,7 +1593,8 @@
       "pushedAt": "2026-06-10T19:49:56Z",
       "inactive": false,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -1532,7 +1612,8 @@
       "pushedAt": "2026-06-08T09:31:34Z",
       "inactive": false,
       "starsWeekly": 1,
-      "starsMonthly": 1
+      "starsMonthly": 1,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -1550,7 +1631,8 @@
       "pushedAt": "2026-06-08T11:06:27Z",
       "inactive": false,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -1568,7 +1650,8 @@
       "pushedAt": "2025-12-14T22:22:50Z",
       "inactive": false,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": "tools",
@@ -1586,7 +1669,8 @@
       "pushedAt": "2026-06-01T23:09:04Z",
       "inactive": false,
       "starsWeekly": 1,
-      "starsMonthly": 6
+      "starsMonthly": 6,
+      "archived": false
     },
     {
       "category": "tools",
@@ -1604,7 +1688,8 @@
       "pushedAt": "2026-06-04T05:03:48Z",
       "inactive": false,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": "plugins",
@@ -1622,7 +1707,8 @@
       "pushedAt": "2026-03-26T07:27:46Z",
       "inactive": false,
       "starsWeekly": 1,
-      "starsMonthly": 6
+      "starsMonthly": 6,
+      "archived": false
     },
     {
       "category": "plugins",
@@ -1640,7 +1726,8 @@
       "pushedAt": "2026-06-03T01:17:54Z",
       "inactive": false,
       "starsWeekly": 0,
-      "starsMonthly": 1
+      "starsMonthly": 1,
+      "archived": false
     },
     {
       "category": "plugins",
@@ -1658,7 +1745,8 @@
       "pushedAt": "2026-06-09T19:44:29Z",
       "inactive": false,
       "starsWeekly": 12,
-      "starsMonthly": 49
+      "starsMonthly": 49,
+      "archived": false
     },
     {
       "category": "plugins",
@@ -1676,7 +1764,8 @@
       "pushedAt": "2026-06-10T06:05:57Z",
       "inactive": false,
       "starsWeekly": 7,
-      "starsMonthly": 32
+      "starsMonthly": 30,
+      "archived": false
     },
     {
       "category": "plugins",
@@ -1695,9 +1784,10 @@
       "relevance": 2,
       "stars": 4122,
       "pushedAt": "2026-05-27T16:21:14Z",
-      "inactive": false,
+      "inactive": true,
       "starsWeekly": 1,
-      "starsMonthly": 5
+      "starsMonthly": 5,
+      "archived": true
     },
     {
       "category": "libraries",
@@ -1715,7 +1805,8 @@
       "pushedAt": "2026-03-19T00:27:16Z",
       "inactive": false,
       "starsWeekly": 0,
-      "starsMonthly": 1
+      "starsMonthly": 1,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -1733,7 +1824,8 @@
       "pushedAt": "2026-05-22T11:01:47Z",
       "inactive": false,
       "starsWeekly": 8,
-      "starsMonthly": 67
+      "starsMonthly": 67,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -1751,7 +1843,8 @@
       "pushedAt": "2022-11-03T03:00:02Z",
       "inactive": true,
       "starsWeekly": 0,
-      "starsMonthly": 2
+      "starsMonthly": 2,
+      "archived": true
     },
     {
       "category": "libraries",
@@ -1769,7 +1862,8 @@
       "pushedAt": "2025-10-22T12:33:48Z",
       "inactive": false,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -1787,7 +1881,8 @@
       "pushedAt": "1970-01-01T00:00:00.000Z",
       "inactive": true,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -1805,7 +1900,8 @@
       "pushedAt": "2022-08-26T06:54:43Z",
       "inactive": true,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -1823,7 +1919,8 @@
       "pushedAt": "2017-09-01T21:32:43Z",
       "inactive": true,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -1841,7 +1938,8 @@
       "pushedAt": "2023-03-24T23:52:11Z",
       "inactive": true,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -1859,7 +1957,8 @@
       "pushedAt": "1970-01-01T00:00:00.000Z",
       "inactive": true,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -1877,7 +1976,8 @@
       "pushedAt": "2026-06-08T09:31:34Z",
       "inactive": false,
       "starsWeekly": 1,
-      "starsMonthly": 1
+      "starsMonthly": 1,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -1895,7 +1995,8 @@
       "pushedAt": "2026-05-27T20:15:53Z",
       "inactive": false,
       "starsWeekly": 0,
-      "starsMonthly": 2
+      "starsMonthly": 2,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -1913,7 +2014,8 @@
       "pushedAt": "2020-07-10T14:00:30Z",
       "inactive": true,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -1931,7 +2033,8 @@
       "pushedAt": "2026-05-06T14:57:24Z",
       "inactive": false,
       "starsWeekly": 3,
-      "starsMonthly": 7
+      "starsMonthly": 7,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -1949,7 +2052,8 @@
       "pushedAt": "2023-07-27T11:52:49Z",
       "inactive": true,
       "starsWeekly": 1,
-      "starsMonthly": 1
+      "starsMonthly": 1,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -1967,7 +2071,8 @@
       "pushedAt": "1970-01-01T00:00:00.000Z",
       "inactive": true,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -1985,7 +2090,8 @@
       "pushedAt": "2026-05-02T00:11:42Z",
       "inactive": false,
       "starsWeekly": 2,
-      "starsMonthly": 2
+      "starsMonthly": 2,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -2003,7 +2109,8 @@
       "pushedAt": "2024-09-19T16:21:54Z",
       "inactive": true,
       "starsWeekly": 0,
-      "starsMonthly": 2
+      "starsMonthly": 2,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -2021,7 +2128,8 @@
       "pushedAt": "1970-01-01T00:00:00.000Z",
       "inactive": true,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -2039,7 +2147,8 @@
       "pushedAt": "2013-11-22T18:44:12Z",
       "inactive": true,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -2057,7 +2166,8 @@
       "pushedAt": "2026-06-08T20:33:01Z",
       "inactive": false,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -2075,7 +2185,8 @@
       "pushedAt": "2020-12-18T08:55:26Z",
       "inactive": true,
       "starsWeekly": 0,
-      "starsMonthly": 2
+      "starsMonthly": 2,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -2093,7 +2204,8 @@
       "pushedAt": "2024-04-08T21:08:26Z",
       "inactive": true,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -2111,7 +2223,8 @@
       "pushedAt": "2026-01-23T08:22:43Z",
       "inactive": false,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -2129,7 +2242,8 @@
       "pushedAt": "2018-05-31T14:59:37Z",
       "inactive": true,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -2147,7 +2261,8 @@
       "pushedAt": "2018-05-11T20:42:44Z",
       "inactive": true,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -2165,7 +2280,8 @@
       "pushedAt": "1970-01-01T00:00:00.000Z",
       "inactive": true,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -2183,7 +2299,8 @@
       "pushedAt": "1970-01-01T00:00:00.000Z",
       "inactive": true,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -2201,7 +2318,8 @@
       "pushedAt": "2021-01-12T07:01:07Z",
       "inactive": true,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": true
     },
     {
       "category": "libraries",
@@ -2219,7 +2337,8 @@
       "pushedAt": "1970-01-01T00:00:00.000Z",
       "inactive": true,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -2237,7 +2356,8 @@
       "pushedAt": "2026-05-14T18:13:30Z",
       "inactive": false,
       "starsWeekly": 0,
-      "starsMonthly": 1
+      "starsMonthly": 1,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -2255,7 +2375,8 @@
       "pushedAt": "2025-07-17T12:50:40Z",
       "inactive": false,
       "starsWeekly": 1,
-      "starsMonthly": 8
+      "starsMonthly": 8,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -2273,7 +2394,8 @@
       "pushedAt": "1970-01-01T00:00:00.000Z",
       "inactive": true,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -2291,7 +2413,8 @@
       "pushedAt": "2016-08-15T22:43:08Z",
       "inactive": true,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -2309,7 +2432,8 @@
       "pushedAt": "2024-02-14T05:48:24Z",
       "inactive": true,
       "starsWeekly": 0,
-      "starsMonthly": 2
+      "starsMonthly": 2,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -2327,7 +2451,8 @@
       "pushedAt": "2017-08-18T01:06:05Z",
       "inactive": true,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -2345,7 +2470,8 @@
       "pushedAt": "2026-01-21T23:30:21Z",
       "inactive": false,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": [
@@ -2366,7 +2492,8 @@
       "pushedAt": "2026-03-19T00:09:38Z",
       "inactive": false,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -2384,7 +2511,8 @@
       "pushedAt": "2025-05-18T14:39:36Z",
       "inactive": true,
       "starsWeekly": 0,
-      "starsMonthly": 1
+      "starsMonthly": 1,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -2402,7 +2530,8 @@
       "pushedAt": "1970-01-01T00:00:00.000Z",
       "inactive": true,
       "starsWeekly": 0,
-      "starsMonthly": 0
+      "starsMonthly": 0,
+      "archived": false
     },
     {
       "category": "libraries",
@@ -2420,7 +2549,8 @@
       "pushedAt": "2026-06-08T22:08:48Z",
       "inactive": false,
       "starsWeekly": 3,
-      "starsMonthly": 10
+      "starsMonthly": 10,
+      "archived": false
     },
     {
       "category": "tools",
@@ -2438,7 +2568,27 @@
       "pushedAt": "2024-03-13T21:46:35Z",
       "inactive": true,
       "starsWeekly": 1,
-      "starsMonthly": 5
+      "starsMonthly": 5,
+      "archived": true
+    },
+    {
+      "category": "libraries",
+      "name": "protocompile",
+      "owner": "bufbuild",
+      "repo": "protocompile",
+      "desc": "A high-performance Protobuf compiler engine written in Go, implementing parsing, linking, and descriptor compilation.",
+      "url": "https://github.com/bufbuild/protocompile",
+      "github": "https://github.com/bufbuild/protocompile",
+      "languages": [
+        "Go"
+      ],
+      "relevance": 2,
+      "stars": 334,
+      "pushedAt": "2026-06-05T20:37:32Z",
+      "inactive": false,
+      "starsWeekly": 2,
+      "starsMonthly": 8,
+      "archived": false
     }
   ]
 }

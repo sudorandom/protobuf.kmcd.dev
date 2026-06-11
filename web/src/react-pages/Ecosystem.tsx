@@ -95,6 +95,7 @@ interface Project {
   stars: number;
   pushedAt: string;
   inactive: boolean;
+  archived?: boolean;
   languages: string[];
   starsWeekly?: number;
   starsMonthly?: number;
@@ -857,13 +858,36 @@ const Ecosystem = () => {
                           );
                         })}
                         {project.inactive && (
-                          <span
-                            title={getInactiveDuration(project.pushedAt)}
-                            className="flex items-center gap-1 px-2 py-0.5 bg-[var(--error-bg)] text-[var(--error-text)] border border-[var(--error-border)] rounded-md text-[10px] font-cyber font-bold uppercase tracking-wider cursor-help shadow-sm shadow-red-500/10"
-                          >
-                            <AlertTriangle className="w-3.5 h-3.5" />
-                            Inactive
-                          </span>
+                          <div className="relative group/inactive-tooltip">
+                            <span
+                              className="flex items-center gap-1 px-2 py-0.5 bg-[var(--error-bg)] text-[var(--error-text)] border border-[var(--error-border)] rounded-md text-[10px] font-cyber font-bold uppercase tracking-wider cursor-help shadow-sm shadow-red-500/10"
+                            >
+                              <AlertTriangle className="w-3.5 h-3.5" />
+                              Inactive
+                            </span>
+
+                            {/* Custom Tooltip */}
+                            <div className="absolute left-0 top-full mt-2 z-30 w-48 p-3 bg-slate-950/95 border border-[var(--border-light)] rounded-md shadow-2xl backdrop-blur-md pointer-events-none transition-all duration-200 origin-top-left opacity-0 scale-95 group-hover/inactive-tooltip:opacity-100 group-hover/inactive-tooltip:scale-100 flex flex-col gap-1.5 text-[11px] font-mono text-[var(--text-dim)]">
+                              <div className="flex justify-between border-b border-[var(--border-light)]/40 pb-1.5 mb-1 text-[var(--error-text)] font-bold">
+                                <span>{project.archived ? "Archived Project" : "Activity Status"}</span>
+                                <AlertTriangle className="w-3.5 h-3.5 text-[var(--error-text)]" />
+                              </div>
+                              <div className="text-[10px] text-[var(--text-dim)] normal-case leading-relaxed">
+                                {project.archived
+                                  ? "This project has been archived by the owner on GitHub and is no longer maintained."
+                                  : "This project is marked inactive because it has not had any updates on GitHub in over a year."}
+                              </div>
+                              <div className="flex justify-between border-t border-[var(--border-light)]/20 pt-1.5 mt-1">
+                                <span>Last Push:</span>
+                                <span className="text-[var(--text-color)] font-bold">
+                                  {project.pushedAt ? project.pushedAt.split("T")[0] : "Unknown"}
+                                </span>
+                              </div>
+                              <div className="text-[10px] text-right font-semibold text-[var(--error-text)] uppercase tracking-wider mt-0.5">
+                                {project.archived ? "Archived" : getInactiveDuration(project.pushedAt)}
+                              </div>
+                            </div>
+                          </div>
                         )}
                       </div>
 
