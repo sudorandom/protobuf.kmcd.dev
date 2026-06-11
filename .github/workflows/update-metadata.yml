@@ -1,4 +1,4 @@
-name: Update GitHub Stars
+name: Update GitHub Metadata
 
 on:
   schedule:
@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 jobs:
-  update-stars:
+  update-metadata:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -25,8 +25,8 @@ jobs:
       - name: Install dependencies
         run: just web-install
 
-      - name: Fetch GitHub star counts
-        run: pnpm run fetch-stars
+      - name: Fetch GitHub metadata
+        run: pnpm run fetch-metadata
         working-directory: web
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
@@ -38,8 +38,8 @@ jobs:
           git add web/src/data/ecosystem.json
           # Only commit and push if there are changes
           if ! git diff --quiet web/src/data/ecosystem.json; then
-            git commit -m "chore: update ecosystem github stars and activity"
+            git commit -m "chore: update ecosystem github metadata"
             git push
           else
-            echo "No changes in star counts or activity."
+            echo "No changes in metadata."
           fi

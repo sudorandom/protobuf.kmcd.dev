@@ -239,6 +239,13 @@ const Ecosystem = () => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
+  // Remove pre-hydration filter hiding class once client-side React mounts
+  useEffect(() => {
+    if (typeof document !== "undefined") {
+      document.documentElement.classList.remove("has-url-filters");
+    }
+  }, []);
+
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
       setShowFilterModal(false);
@@ -274,11 +281,14 @@ const Ecosystem = () => {
   const handlePageChange = (page: number, shouldScroll = true) => {
     setCurrentPage(page);
     if (shouldScroll && typeof window !== "undefined") {
-      const el = document.getElementById("ecosystem");
-      if (el) {
-        const offset = el.getBoundingClientRect().top + window.scrollY - 88;
-        window.scrollTo({ top: offset, behavior: "smooth" });
-      }
+      // Use setTimeout to wait for React to finish committing the DOM update and layout calculation
+      setTimeout(() => {
+        const el = document.getElementById("ecosystem-results");
+        if (el) {
+          const offset = el.getBoundingClientRect().top + window.scrollY - 88;
+          window.scrollTo({ top: offset, behavior: "smooth" });
+        }
+      }, 50);
     }
   };
 
@@ -297,7 +307,7 @@ const Ecosystem = () => {
   const handleLanguageClick = (lang: string) => {
     handleSetLanguage(lang);
     if (typeof window !== "undefined") {
-      const el = document.getElementById("ecosystem");
+      const el = document.getElementById("ecosystem-results");
       if (el) {
         const offset = el.getBoundingClientRect().top + window.scrollY - 88;
         window.scrollTo({ top: offset, behavior: "smooth" });
@@ -560,6 +570,24 @@ const Ecosystem = () => {
 
   return (
     <>
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+            .has-url-filters #ecosystem-results-container {
+              opacity: 0;
+            }
+          `,
+        }}
+      />
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+            if (typeof window !== 'undefined' && window.location.search) {
+              document.documentElement.classList.add('has-url-filters');
+            }
+          `,
+        }}
+      />
       {/* Ecosystem Hero & Interactive Registry */}
       <Section
         id="ecosystem"
@@ -590,8 +618,11 @@ const Ecosystem = () => {
             </span>
           </p>
 
+          {/* Results Container (hidden pre-hydration if query parameters are present) */}
+          <div id="ecosystem-results-container" className="transition-opacity duration-200">
+
           {/* Active Filters Summary & Controls */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 bg-[var(--panel-bg)]/40 border border-[var(--border-light)]/60 rounded-xl backdrop-blur-sm relative mb-6">
+          <div id="ecosystem-results" className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 bg-[var(--panel-bg)]/40 border border-[var(--border-light)]/60 rounded-xl backdrop-blur-sm relative mb-6">
             <div className="space-y-2">
               <span className="text-xs font-mono text-[var(--text-dim)]/90 uppercase block">
                 Found{" "}
@@ -705,8 +736,79 @@ const Ecosystem = () => {
             </div>
           </div>
 
+          {/* Top Pagination Controls */}
+          {totalPages > 1 && (
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-6 pb-6 mb-6 border-b border-[var(--border-light)]/20">
+              <span className="text-xs font-mono text-[var(--text-dim)]/80 uppercase tracking-wider">
+                Showing {startIndex + 1}–
+                {Math.min(
+                  startIndex + PAGE_SIZE,
+                  filteredAndSortedProjects.length,
+                )}{" "}
+                of {filteredAndSortedProjects.length} projects
+              </span>
+
+              <div className="flex items-center gap-2">
+                <button
+                  disabled={activePage === 1}
+                  onClick={() => handlePageChange(activePage - 1, false)}
+                  className={`px-3 py-1.5 text-xs font-cyber font-bold uppercase border rounded-md transition-all ${
+                    activePage === 1
+                      ? "opacity-30 cursor-not-allowed border-[var(--border-light)] text-[var(--text-dim)]"
+                      : "bg-transparent text-[var(--text-color)] border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)] hover:text-[var(--text-color)]"
+                  }`}
+                >
+                  Prev
+                </button>
+
+                {getPageNumbers(activePage, totalPages).map(
+                  (pItem, idx) => {
+                    if (pItem === "...") {
+                      return (
+                        <span
+                          key={`ellipsis-top-${idx}`}
+                          className="w-8 h-8 flex items-center justify-center text-xs font-mono text-[var(--text-dim)]/60"
+                        >
+                          ...
+                        </span>
+                      );
+                    }
+
+                    const pNum = pItem as number;
+                    const isPageActive = activePage === pNum;
+                    return (
+                      <button
+                        key={pNum}
+                        onClick={() => handlePageChange(pNum, false)}
+                        className={`w-8 h-8 flex items-center justify-center text-xs font-cyber font-bold rounded-md transition-all border ${
+                          isPageActive
+                            ? "bg-[var(--cyber-neon-blue)] text-[var(--neon-contrast-text)] border-[var(--cyber-neon-blue)] shadow-[0_0_10px_rgba(0,243,255,0.2)]"
+                            : "bg-transparent text-[var(--text-dim)] border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)] hover:text-[var(--text-color)]"
+                        }`}
+                      >
+                        {pNum}
+                      </button>
+                    );
+                  },
+                )}
+
+                <button
+                  disabled={activePage === totalPages}
+                  onClick={() => handlePageChange(activePage + 1, false)}
+                  className={`px-3 py-1.5 text-xs font-cyber font-bold uppercase border rounded-md transition-all ${
+                    activePage === totalPages
+                      ? "opacity-30 cursor-not-allowed border-[var(--border-light)] text-[var(--text-dim)]"
+                      : "bg-transparent text-[var(--text-color)] border-[var(--border-light)] hover:border-[var(--cyber-neon-blue)] hover:text-[var(--text-color)]"
+                  }`}
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          )}
+
           {/* Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div id="ecosystem-results-grid" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {paginatedProjects.map((project) => {
               const categories = Array.isArray(project.category)
                 ? project.category
@@ -996,6 +1098,7 @@ const Ecosystem = () => {
           {/* GitHub stars synced footer */}
           <div className="mt-12 text-center text-[9px] font-mono text-[var(--text-dim)]/50 uppercase tracking-widest">
             GitHub stars synced: {formatFetchedAt(ecosystemData.fetchedAt)}
+          </div>
           </div>
         </div>
       </Section>
