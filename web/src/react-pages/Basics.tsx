@@ -9,6 +9,7 @@ import {
   Braces,
   GitBranch,
   FileCode,
+  Link as LinkIcon,
 } from "lucide-react";
 import {
   Section,
@@ -19,6 +20,31 @@ import {
   TechnicalNuance,
   RoadmapGrid,
 } from "../components/shared/Common";
+
+const SubsectionTitle = ({
+  id,
+  children,
+}: {
+  id: string;
+  children: React.ReactNode;
+}) => (
+  <h3
+    id={id}
+    className="text-xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight scroll-mt-[calc(var(--header-height)+24px)] relative group/title"
+  >
+    <a
+      href={`#${id}`}
+      className="hover:text-[var(--cyber-neon-blue)] transition-colors"
+      aria-label={`Link to section: ${children}`}
+    >
+      {children}
+      <LinkIcon
+        className="w-4 h-4 inline-block ml-2 opacity-0 group-hover/title:opacity-80 transition-opacity"
+        aria-hidden="true"
+      />
+    </a>
+  </h3>
+);
 
 export const SchemaDrivenAPIs = () => {
   const roadmapItems = [
@@ -699,9 +725,9 @@ export const TypeSystem = () => {
         <div className="pt-16 border-t border-[var(--border-light)]">
           <div className="space-y-8">
             <div className="flex flex-col gap-2">
-              <h3 className="text-xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight">
+              <SubsectionTitle id="guidelines-for-integers">
                 Guidelines for Integers
-              </h3>
+              </SubsectionTitle>
               <p className="text-[var(--text-dim)] text-sm max-w-3xl">
                 Choosing the right integer type is important for both message
                 size and language compatibility; here are some general
@@ -809,9 +835,9 @@ export const TypeSystem = () => {
         <div className="pt-16 border-t border-[var(--border-light)]">
           <div className="grid grid-cols-1 gap-12">
             <div className="space-y-6 text-[var(--text-color)]">
-              <h3 className="text-xl font-cyber font-bold text-[var(--text-color)] uppercase">
+              <SubsectionTitle id="protojson-mapping">
                 ProtoJSON Mapping
-              </h3>
+              </SubsectionTitle>
               <p>
                 While Protobuf is primarily binary, it defines a canonical{" "}
                 <ExternalLinkText href="https://protobuf.dev/programming-guides/json/">

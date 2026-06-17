@@ -602,7 +602,8 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
           window.scrollY + window.innerHeight >=
           document.documentElement.scrollHeight - 8;
         if (pageBottom) {
-          activeId = sectionElements[sectionElements.length - 1]?.id || activeId;
+          activeId =
+            sectionElements[sectionElements.length - 1]?.id || activeId;
         }
 
         setActivePageSectionId(activeId);
