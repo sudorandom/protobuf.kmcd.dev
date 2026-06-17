@@ -33,7 +33,7 @@ export const MultiFieldEncoding = () => {
 
   return (
     <div
-      className="w-full max-w-5xl mx-auto my-16 overflow-hidden flex flex-col items-center gap-2 group cursor-pointer"
+      className="w-full max-w-7xl mx-auto my-16 overflow-hidden flex flex-col items-center gap-2 group cursor-pointer"
       onClick={() => setRestartKey((prev) => prev + 1)}
     >
       <div className="w-full flex justify-center bg-[var(--section-bg-dark)]/30 rounded-2xl border border-[var(--border-light)] p-8">

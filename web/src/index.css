@@ -82,6 +82,20 @@ body {
   background-attachment: fixed;
 }
 
+section,
+[id] {
+  scroll-margin-top: calc(var(--header-height) + 24px);
+}
+
+.search-highlight {
+  background: color-mix(in srgb, var(--cyber-neon-yellow) 72%, transparent);
+  color: var(--neon-contrast-text);
+  border-radius: 3px;
+  box-shadow: 0 0 0 2px
+    color-mix(in srgb, var(--cyber-neon-yellow) 28%, transparent);
+  padding: 0 0.12em;
+}
+
 button {
   cursor: pointer;
   border-radius: 6px;

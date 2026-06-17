@@ -7,6 +7,7 @@ import (
 	"os/exec"
 	"strings"
 
+	"github.com/bufbuild/protocompile/experimental/protoscope"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/encoding/prototext"
 	"google.golang.org/protobuf/proto"
@@ -103,16 +104,12 @@ func main() {
 		Indent:    "  ",
 	}.Marshal(stableMsg)
 
-	// Protoscope (using go tool protoscope)
-	scopeCmd := exec.Command("go", "tool", "protoscope")
-	scopeCmd.Stdin = bytes.NewReader(binBytes)
-	var scopeStdout bytes.Buffer
-	scopeCmd.Stdout = &scopeStdout
-	if err := scopeCmd.Run(); err != nil {
-		fmt.Fprintf(os.Stderr, "go tool protoscope failed: %v\n", err)
+	// Protoscope (using experimental/protoscope library)
+	scopeStr, err := protoscope.Disassemble(binBytes, protoscope.DisassembleOptions{})
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "protoscope disassemble failed: %v\n", err)
 		os.Exit(1)
 	}
-	scopeStr := scopeStdout.String()
 
 	// FDS JSON (human readable for the UI)
 	// We only show the demo/v1/user.proto file to keep the UI responsive

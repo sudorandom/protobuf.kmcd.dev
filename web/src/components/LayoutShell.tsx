@@ -12,35 +12,488 @@ import {
   Fingerprint,
   Code2,
   Database,
+  Search,
+  Command,
 } from "lucide-react";
 
 interface NavItemDef {
   id: string;
   label: string;
   path: string;
+  description: string;
 }
 
 const NAV_ITEMS: NavItemDef[] = [
-  { id: "hero", label: "HOME", path: "/" },
-  { id: "intro", label: "INTRO", path: "/intro/" },
-  { id: "basics", label: "BASICS", path: "/basics/" },
-  { id: "advanced", label: "ADVANCED", path: "/advanced/" },
-  { id: "efficiency", label: "EFFICIENCY", path: "/efficiency/" },
-  { id: "binary", label: "BINARY", path: "/binary/" },
-  { id: "community", label: "COMMUNITY", path: "/community/" },
-  { id: "conclusion", label: "CONCLUSION", path: "/conclusion/" },
+  {
+    id: "hero",
+    label: "Home",
+    path: "/",
+    description: "Start from the main protobuf workbench.",
+  },
+  {
+    id: "intro",
+    label: "Introduction",
+    path: "/intro/",
+    description: "Understand messages, schemas, and generated code.",
+  },
+  {
+    id: "basics",
+    label: "Basics",
+    path: "/basics/",
+    description: "Generate code and write practical schemas.",
+  },
+  {
+    id: "advanced",
+    label: "Advanced",
+    path: "/advanced/",
+    description: "Evolve messages without breaking deployed systems.",
+  },
+  {
+    id: "tooling",
+    label: "Tooling",
+    path: "/tooling/",
+    description: "Use descriptors, plugins, options, and validation.",
+  },
+  {
+    id: "efficiency",
+    label: "Efficiency",
+    path: "/efficiency/",
+    description: "Compare protobuf size and shape against JSON.",
+  },
+  {
+    id: "binary",
+    label: "Binary",
+    path: "/binary/",
+    description: "Decode wire-format bytes one field at a time.",
+  },
+  {
+    id: "community",
+    label: "Community",
+    path: "/community/",
+    description: "Explore protobuf adoption, history, and community resources.",
+  },
 ];
 
 const SECTION_LABELS: Record<string, string> = {
-  hero: "Welcome",
+  hero: "Home",
   intro: "Introduction",
   basics: "Basics",
   advanced: "Advanced",
+  tooling: "Tooling",
   efficiency: "Efficiency",
   binary: "Binary",
   community: "Community",
-  conclusion: "Conclusion",
   ecosystem: "Ecosystem",
+  conclusion: "Conclusion",
+};
+
+const RESOURCE_ITEMS: NavItemDef[] = [
+  {
+    id: "ecosystem",
+    label: "Ecosystem",
+    path: "/ecosystem/",
+    description: "Find implementations, libraries, and protobuf projects.",
+  },
+];
+
+const ALL_PAGE_ITEMS = [...NAV_ITEMS, ...RESOURCE_ITEMS];
+const navItem = (id: string) =>
+  ALL_PAGE_ITEMS.find((item) => item.id === id) as NavItemDef;
+
+const RELATED_LINKS: Record<string, NavItemDef[]> = {
+  intro: [navItem("basics"), navItem("binary"), navItem("efficiency")],
+  basics: [navItem("intro"), navItem("advanced"), navItem("tooling")],
+  binary: [navItem("basics"), navItem("tooling"), navItem("efficiency")],
+  advanced: [navItem("basics"), navItem("tooling"), navItem("efficiency")],
+  tooling: [navItem("advanced"), navItem("ecosystem"), navItem("binary")],
+  efficiency: [navItem("basics"), navItem("binary"), navItem("advanced")],
+  ecosystem: [navItem("tooling"), navItem("binary"), navItem("efficiency")],
+  community: [navItem("ecosystem"), navItem("tooling"), navItem("intro")],
+};
+
+interface PageSectionLink {
+  id: string;
+  label: string;
+}
+
+const SideNavigationGroup = ({
+  title,
+  items,
+  activeSection,
+  pageSections,
+  activePageSectionId,
+  onNavigate,
+}: {
+  title: string;
+  items: NavItemDef[];
+  activeSection: string;
+  pageSections: PageSectionLink[];
+  activePageSectionId: string | null;
+  onNavigate?: () => void;
+}) => (
+  <div>
+    <div className="mb-3 px-2 text-xs font-mono uppercase tracking-[0.2em] text-[var(--text-dim)]">
+      {title}
+    </div>
+    <div className="space-y-1">
+      {items.map((item) => {
+        const isActive = activeSection === item.id;
+        return (
+          <div key={item.id}>
+            <a
+              href={item.path}
+              onClick={onNavigate}
+              aria-current={isActive ? "page" : undefined}
+              className={`block rounded-md px-2 py-2 font-cyber text-xs font-bold uppercase tracking-wider transition-colors ${
+                isActive
+                  ? "bg-[var(--cyber-neon-blue)]/10 text-[var(--cyber-neon-blue)]"
+                  : "text-[var(--text-dim)] hover:bg-[var(--overlay-bg)] hover:text-[var(--text-color)]"
+              }`}
+            >
+              {item.label}
+            </a>
+            {isActive && pageSections.length > 1 && (
+              <div className="mt-1 max-h-[42vh] space-y-1 overflow-y-auto border-l border-[var(--border-light)] ml-3 pl-2 pr-1 custom-scrollbar">
+                {pageSections.map((section) => {
+                  const isCurrentSection = activePageSectionId === section.id;
+                  return (
+                    <a
+                      key={section.id}
+                      href={`#${section.id}`}
+                      onClick={onNavigate}
+                      aria-current={isCurrentSection ? "location" : undefined}
+                      className={`block rounded px-2 py-1.5 text-sm leading-snug transition-colors ${
+                        isCurrentSection
+                          ? "bg-[var(--cyber-neon-blue)]/10 text-[var(--text-color)]"
+                          : "text-[var(--text-dim)] hover:bg-[var(--overlay-bg)] hover:text-[var(--text-color)]"
+                      }`}
+                    >
+                      {section.label}
+                    </a>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  </div>
+);
+
+interface PagefindData {
+  url: string;
+  title: string;
+  excerpt: string;
+  sub_results?: PagefindSubResult[];
+  meta?: Record<string, string>;
+}
+
+interface PagefindSubResult {
+  title: string;
+  url: string;
+  excerpt: string;
+}
+
+interface PagefindResult {
+  id: string;
+  data: () => Promise<PagefindData>;
+}
+
+interface PagefindSearch {
+  results: PagefindResult[];
+}
+
+interface PagefindModule {
+  search: (query: string) => Promise<PagefindSearch>;
+  options: (options: { highlightParam: string }) => Promise<void>;
+}
+
+interface SearchResultItem {
+  url: string;
+  title: string;
+  excerpt: string;
+  category?: string;
+}
+
+interface PagefindHighlightModule {
+  default: new (options: {
+    highlightParam: string;
+    addStyles: boolean;
+    markOptions: {
+      className: string;
+      exclude: string[];
+    };
+  }) => unknown;
+}
+
+const isTypingTarget = (target: EventTarget | null) => {
+  if (!(target instanceof HTMLElement)) return false;
+  const tagName = target.tagName.toLowerCase();
+  return (
+    tagName === "input" ||
+    tagName === "textarea" ||
+    tagName === "select" ||
+    target.isContentEditable
+  );
+};
+
+const scrollFirstSearchHighlightIntoView = () => {
+  window.setTimeout(() => {
+    const firstHighlight = document.querySelector(".search-highlight");
+    if (!firstHighlight) return;
+
+    firstHighlight.scrollIntoView({
+      block: "center",
+      behavior: "smooth",
+    });
+  }, 250);
+};
+
+const SearchModal = ({
+  isOpen,
+  onClose,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+}) => {
+  const [query, setQuery] = useState("");
+  const [pagefind, setPagefind] = useState<PagefindModule | null>(null);
+  const [results, setResults] = useState<SearchResultItem[]>([]);
+  const [activeResultIndex, setActiveResultIndex] = useState(-1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [loadError, setLoadError] = useState(false);
+  const resultRefs = React.useRef<(HTMLAnchorElement | null)[]>([]);
+
+  useEffect(() => {
+    if (!isOpen || pagefind || loadError) return;
+
+    let isMounted = true;
+    const pagefindUrl = "/pagefind/pagefind.js";
+    import(/* @vite-ignore */ pagefindUrl)
+      .then(async (module: PagefindModule) => {
+        await module.options({ highlightParam: "highlight" });
+        if (isMounted) setPagefind(module);
+      })
+      .catch(() => {
+        if (isMounted) setLoadError(true);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [isOpen, loadError, pagefind]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const trimmedQuery = query.trim();
+    if (!pagefind || trimmedQuery.length < 2) {
+      return;
+    }
+
+    let isCurrent = true;
+
+    const timeoutId = window.setTimeout(() => {
+      setIsLoading(true);
+      pagefind
+        .search(trimmedQuery)
+        .then(async (search) => {
+          const pageEntries = await Promise.all(
+            search.results.slice(0, 8).map((result) => result.data()),
+          );
+          const entries = pageEntries.flatMap((entry) => {
+            const subResults = entry.sub_results?.slice(0, 2) || [];
+            if (subResults.length === 0) {
+              return [
+                {
+                  url: entry.url,
+                  title: entry.title,
+                  excerpt: entry.excerpt,
+                  category: entry.meta?.category,
+                },
+              ];
+            }
+
+            return subResults.map((subResult) => ({
+              url: subResult.url,
+              title: subResult.title || entry.title,
+              excerpt: subResult.excerpt || entry.excerpt,
+              category: entry.meta?.category,
+            }));
+          });
+          if (isCurrent) {
+            setResults(entries);
+            setActiveResultIndex(entries.length > 0 ? 0 : -1);
+          }
+        })
+        .catch(() => {
+          if (isCurrent) {
+            setResults([]);
+            setActiveResultIndex(-1);
+          }
+        })
+        .finally(() => {
+          if (isCurrent) setIsLoading(false);
+        });
+    }, 120);
+
+    return () => {
+      isCurrent = false;
+      window.clearTimeout(timeoutId);
+    };
+  }, [isOpen, pagefind, query]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+      if (results.length === 0) return;
+
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        setActiveResultIndex((current) =>
+          current < results.length - 1 ? current + 1 : 0,
+        );
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        setActiveResultIndex((current) =>
+          current > 0 ? current - 1 : results.length - 1,
+        );
+      } else if (e.key === "Enter" && activeResultIndex >= 0) {
+        e.preventDefault();
+        window.location.href = results[activeResultIndex].url;
+        onClose();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [activeResultIndex, isOpen, onClose, results]);
+
+  useEffect(() => {
+    if (!isOpen || activeResultIndex < 0) return;
+    resultRefs.current[activeResultIndex]?.scrollIntoView({
+      block: "nearest",
+    });
+  }, [activeResultIndex, isOpen]);
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[130]"
+            aria-hidden="true"
+          />
+          <motion.div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Search protobuf.com"
+            initial={{ opacity: 0, y: -16, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -16, scale: 0.98 }}
+            transition={{ duration: 0.16, ease: "easeOut" }}
+            className="fixed left-1/2 top-24 z-[140] w-[calc(100vw-2rem)] max-w-2xl -translate-x-1/2 overflow-hidden rounded-lg border border-[var(--border-light)] bg-[var(--panel-bg)] shadow-2xl"
+          >
+            <div className="flex items-center gap-3 border-b border-[var(--border-light)] px-4 py-3">
+              <Search
+                className="h-5 w-5 text-[var(--cyber-neon-blue)]"
+                aria-hidden="true"
+              />
+              <input
+                autoFocus
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search wire types, field numbers, descriptors..."
+                className="min-w-0 flex-1 bg-transparent text-base text-[var(--text-color)] outline-none placeholder:text-[var(--text-dim)]"
+                role="combobox"
+                aria-expanded={results.length > 0}
+                aria-controls="search-results"
+                aria-activedescendant={
+                  activeResultIndex >= 0
+                    ? `search-result-${activeResultIndex}`
+                    : undefined
+                }
+              />
+              <button
+                onClick={onClose}
+                className="rounded p-1 text-[var(--text-dim)] transition-colors hover:bg-[var(--border-light)] hover:text-[var(--text-color)]"
+                aria-label="Close search"
+              >
+                <X className="h-5 w-5" aria-hidden="true" />
+              </button>
+            </div>
+
+            <div className="max-h-[60vh] overflow-y-auto p-2 custom-scrollbar">
+              {loadError ? (
+                <div className="px-3 py-8 text-center text-sm text-[var(--text-dim)]">
+                  Search index is not available in this environment.
+                </div>
+              ) : query.trim().length < 2 ? (
+                <div className="px-3 py-8 text-center text-sm text-[var(--text-dim)]">
+                  Type at least two characters to search the site.
+                </div>
+              ) : isLoading ? (
+                <div className="px-3 py-8 text-center text-sm text-[var(--text-dim)]">
+                  Searching...
+                </div>
+              ) : results.length === 0 ? (
+                <div className="px-3 py-8 text-center text-sm text-[var(--text-dim)]">
+                  No matches found.
+                </div>
+              ) : (
+                <div id="search-results" role="listbox" className="space-y-1">
+                  {results.map((result, index) => {
+                    const isActive = activeResultIndex === index;
+                    return (
+                      <a
+                        key={`${result.url}-${result.title}`}
+                        id={`search-result-${index}`}
+                        ref={(el) => {
+                          resultRefs.current[index] = el;
+                        }}
+                        href={result.url}
+                        onClick={onClose}
+                        onMouseEnter={() => setActiveResultIndex(index)}
+                        role="option"
+                        aria-selected={isActive}
+                        className={`block rounded-md border px-3 py-3 transition-colors ${
+                          isActive
+                            ? "border-[var(--cyber-neon-blue)]/50 bg-[var(--cyber-neon-blue)]/15"
+                            : "border-transparent hover:border-[var(--cyber-neon-blue)]/30 hover:bg-[var(--cyber-neon-blue)]/10"
+                        }`}
+                      >
+                        <div className="flex items-center justify-between gap-4">
+                          <span className="font-cyber text-sm font-bold uppercase tracking-wider text-[var(--text-color)]">
+                            {result.title}
+                          </span>
+                          {result.category && (
+                            <span className="shrink-0 font-mono text-xs uppercase tracking-wider text-[var(--cyber-neon-blue)]">
+                              {result.category}
+                            </span>
+                          )}
+                        </div>
+                        <p
+                          className="mt-1 line-clamp-2 text-sm leading-relaxed text-[var(--text-dim)]"
+                          dangerouslySetInnerHTML={{ __html: result.excerpt }}
+                        />
+                      </a>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  );
 };
 
 interface LayoutShellProps {
@@ -54,7 +507,12 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isNavDropdownOpen, setIsNavDropdownOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const [pageSections, setPageSections] = useState<PageSectionLink[]>([]);
+  const [activePageSectionId, setActivePageSectionId] = useState<string | null>(
+    null,
+  );
 
   const normalizedPathname =
     currentPath === "/"
@@ -63,16 +521,18 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
         ? currentPath
         : `${currentPath}/`;
 
+  const currentPageIndex = ALL_PAGE_ITEMS.findIndex(
+    (item) =>
+      item.path === normalizedPathname ||
+      (normalizedPathname === "/" && item.path === "/"),
+  );
   const currentNavIndex = NAV_ITEMS.findIndex(
     (item) =>
       item.path === normalizedPathname ||
       (normalizedPathname === "/" && item.path === "/"),
   );
-  let activeSection = NAV_ITEMS[currentNavIndex]?.id || "hero";
-  if (normalizedPathname === "/ecosystem/") {
-    activeSection = "ecosystem";
-  }
-
+  const activeSection = ALL_PAGE_ITEMS[currentPageIndex]?.id || "hero";
+  const relatedLinks = RELATED_LINKS[activeSection] || [];
   const prevNav = currentNavIndex > 0 ? NAV_ITEMS[currentNavIndex - 1] : null;
   const nextNav =
     currentNavIndex >= 0 && currentNavIndex < NAV_ITEMS.length - 1
@@ -86,6 +546,83 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
       setTheme(isLight ? "light" : "dark");
     }
   }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    if (!params.has("highlight")) return;
+
+    const highlightUrl = "/pagefind/pagefind-highlight.js";
+    import(/* @vite-ignore */ highlightUrl)
+      .then((module: PagefindHighlightModule) => {
+        new module.default({
+          highlightParam: "highlight",
+          addStyles: false,
+          markOptions: {
+            className: "search-highlight",
+            exclude: ["[data-pagefind-ignore]", "[data-pagefind-ignore] *"],
+          },
+        });
+        scrollFirstSearchHighlightIntoView();
+      })
+      .catch(() => {
+        // Search highlighting is only available after Pagefind assets are built.
+      });
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    let cleanupSectionListeners: (() => void) | undefined;
+    const timeoutId = window.setTimeout(() => {
+      const sectionElements = Array.from(
+        document.querySelectorAll<HTMLElement>("main section[id]"),
+      );
+      const nextSections = sectionElements.map((section) => {
+        const heading = section.querySelector("h1, h2, h3");
+        const label = heading?.textContent?.trim() || section.id;
+        return { id: section.id, label };
+      });
+
+      setPageSections(nextSections);
+
+      const updateActiveSection = () => {
+        const marker = window.scrollY + 160;
+        let activeId = sectionElements[0]?.id || null;
+
+        for (const section of sectionElements) {
+          if (section.offsetTop <= marker) {
+            activeId = section.id;
+          } else {
+            break;
+          }
+        }
+
+        const pageBottom =
+          window.scrollY + window.innerHeight >=
+          document.documentElement.scrollHeight - 8;
+        if (pageBottom) {
+          activeId = sectionElements[sectionElements.length - 1]?.id || activeId;
+        }
+
+        setActivePageSectionId(activeId);
+      };
+
+      updateActiveSection();
+      window.addEventListener("scroll", updateActiveSection, { passive: true });
+      window.addEventListener("resize", updateActiveSection);
+
+      cleanupSectionListeners = () => {
+        window.removeEventListener("scroll", updateActiveSection);
+        window.removeEventListener("resize", updateActiveSection);
+      };
+    }, 150);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+      cleanupSectionListeners?.();
+    };
+  }, [normalizedPathname]);
 
   const toggleTheme = () => {
     const nextTheme = theme === "dark" ? "light" : "dark";
@@ -105,6 +642,15 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
       if (e.key === "Escape") {
         setIsMenuOpen(false);
         setIsNavDropdownOpen(false);
+        setIsSearchOpen(false);
+      }
+      if (
+        !isTypingTarget(e.target) &&
+        (e.key === "/" ||
+          ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k"))
+      ) {
+        e.preventDefault();
+        setIsSearchOpen(true);
       }
     };
     window.addEventListener("keydown", handleKeyDown);
@@ -141,7 +687,7 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
         </div>
 
         <div className="absolute left-1/2 -translate-x-1/2 hidden lg:flex flex-col items-center pointer-events-none">
-          <div className="flex items-center gap-8 pointer-events-auto min-w-[480px] justify-center">
+          <div className="flex items-center gap-8 pointer-events-auto min-w-[420px] justify-center">
             {prevNav ? (
               <a
                 href={prevNav.path}
@@ -160,7 +706,7 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
                 aria-expanded={isNavDropdownOpen}
                 aria-controls="nav-dropdown"
                 aria-label={`${SECTION_LABELS[activeSection] || "Welcome"} - Toggle navigation menu`}
-                className={`flex items-center justify-center gap-2 text-sm font-mono font-bold uppercase tracking-widest bg-[var(--overlay-bg)] px-4 py-1.5 rounded border transition-all min-w-[200px] text-center ${
+                className={`flex items-center justify-center gap-2 text-sm font-mono font-bold uppercase tracking-widest bg-[var(--overlay-bg)] px-4 py-1.5 rounded border transition-all min-w-[220px] text-center ${
                   isNavDropdownOpen
                     ? "border-[var(--cyber-neon-blue)] text-[var(--cyber-neon-blue)] shadow-[0_0_10px_rgba(0,243,255,0.1)]"
                     : "border-[var(--border-light)] text-[var(--text-color)] hover:border-[var(--cyber-neon-blue)]/50"
@@ -189,10 +735,10 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 10, scale: 0.95 }}
                       transition={{ duration: 0.15, ease: "easeOut" }}
-                      className="absolute top-full left-0 right-0 mt-2 bg-[var(--panel-bg)] border border-[var(--border-light)] rounded shadow-2xl overflow-hidden z-[110] backdrop-blur-2xl"
+                      className="absolute top-full left-1/2 mt-2 w-[240px] -translate-x-1/2 bg-[var(--panel-bg)] border border-[var(--border-light)] rounded shadow-2xl overflow-hidden z-[110] backdrop-blur-2xl"
                     >
                       <div className="py-1 bg-[var(--panel-bg)]/95">
-                        {NAV_ITEMS.map((item, i) => {
+                        {NAV_ITEMS.map((item) => {
                           const isActive = activeSection === item.id;
                           return (
                             <a
@@ -206,35 +752,41 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
                                   : "text-[var(--text-dim)] hover:text-[var(--text-color)] hover:bg-[var(--border-light)]"
                               }`}
                             >
-                              <span className="opacity-50" aria-hidden="true">
-                                0{i + 1}
-                              </span>
-                              <span className="font-bold tracking-wider">
+                              <ChevronRight
+                                className={`h-4 w-4 ${isActive ? "opacity-100" : "opacity-40"}`}
+                                aria-hidden="true"
+                              />
+                              <span className="min-w-0 font-bold tracking-wider">
                                 {item.label}
                               </span>
                             </a>
                           );
                         })}
                         <div className="border-t border-[var(--border-light)]/40 my-1" />
-                        <a
-                          href="/ecosystem/"
-                          onClick={() => setIsNavDropdownOpen(false)}
-                          aria-current={
-                            activeSection === "ecosystem" ? "page" : undefined
-                          }
-                          className={`flex items-center gap-3 px-4 py-2 text-xs font-mono transition-colors ${
-                            activeSection === "ecosystem"
-                              ? "text-[var(--cyber-neon-blue)] bg-[var(--cyber-neon-blue)]/10"
-                              : "text-[var(--text-dim)] hover:text-[var(--text-color)] hover:bg-[var(--border-light)]"
-                          }`}
-                        >
-                          <span className="opacity-50" aria-hidden="true">
-                            ★
-                          </span>
-                          <span className="font-cyber font-bold tracking-wider">
-                            ECOSYSTEM
-                          </span>
-                        </a>
+                        {RESOURCE_ITEMS.map((item) => {
+                          const isActive = activeSection === item.id;
+                          return (
+                            <a
+                              key={item.id}
+                              href={item.path}
+                              onClick={() => setIsNavDropdownOpen(false)}
+                              aria-current={isActive ? "page" : undefined}
+                              className={`flex items-center gap-3 px-4 py-2 text-xs font-mono transition-colors ${
+                                isActive
+                                  ? "text-[var(--cyber-neon-blue)] bg-[var(--cyber-neon-blue)]/10"
+                                  : "text-[var(--text-dim)] hover:text-[var(--text-color)] hover:bg-[var(--border-light)]"
+                              }`}
+                            >
+                              <ChevronRight
+                                className={`h-4 w-4 ${isActive ? "opacity-100" : "opacity-40"}`}
+                                aria-hidden="true"
+                              />
+                              <span className="min-w-0 font-bold tracking-wider">
+                                {item.label}
+                              </span>
+                            </a>
+                          );
+                        })}
                       </div>
                     </motion.div>
                   </>
@@ -258,6 +810,23 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
 
         <div className="ml-auto flex items-center gap-4">
           <button
+            onClick={() => setIsSearchOpen(true)}
+            className="hidden sm:flex items-center gap-2 px-3 py-2 text-[var(--cyber-neon-blue)] bg-[var(--cyber-neon-blue)]/5 hover:bg-[var(--cyber-neon-blue)]/15 rounded-md border border-[var(--cyber-neon-blue)]/30 transition-all shadow-[0_0_10px_rgba(0,243,255,0.05)]"
+            aria-label="Search site"
+          >
+            <Search className="w-5 h-5" aria-hidden="true" />
+            <span className="hidden xl:inline font-mono text-xs uppercase tracking-wider">
+              Search
+            </span>
+            <span
+              className="hidden xl:flex items-center gap-1 rounded border border-[var(--border-light)] px-1.5 py-0.5 font-mono text-[10px] text-[var(--text-dim)]"
+              aria-hidden="true"
+            >
+              <Command className="h-3 w-3" />K
+            </span>
+          </button>
+
+          <button
             onClick={toggleTheme}
             className="p-2 text-[var(--cyber-neon-blue)] bg-[var(--cyber-neon-blue)]/5 hover:bg-[var(--cyber-neon-blue)]/15 rounded-md border border-[var(--cyber-neon-blue)]/30 transition-all group shadow-[0_0_10px_rgba(0,243,255,0.05)]"
             aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
@@ -279,7 +848,7 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
             onClick={() => setIsMenuOpen(true)}
             aria-expanded={isMenuOpen}
             aria-controls="mobile-menu"
-            className="p-2 text-[var(--cyber-neon-blue)] bg-[var(--cyber-neon-blue)]/5 hover:bg-[var(--cyber-neon-blue)]/15 rounded-md border border-[var(--cyber-neon-blue)]/30 transition-all group shadow-[0_0_10px_rgba(0,243,255,0.05)]"
+            className="p-2 text-[var(--cyber-neon-blue)] bg-[var(--cyber-neon-blue)]/5 hover:bg-[var(--cyber-neon-blue)]/15 rounded-md border border-[var(--cyber-neon-blue)]/30 transition-all group shadow-[0_0_10px_rgba(0,243,255,0.05)] min-[1840px]:hidden"
             aria-label="Open navigation menu"
           >
             <AlignLeft
@@ -289,6 +858,29 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
           </button>
         </div>
       </header>
+
+      <aside
+        className="fixed left-0 top-[64px] bottom-0 z-[90] hidden w-64 flex-col border-r border-[var(--border-light)] bg-[var(--bg-color)]/90 px-4 py-6 backdrop-blur-md min-[1840px]:flex"
+        aria-label="Page navigation"
+      >
+        <nav className="flex min-h-0 flex-1 flex-col gap-6">
+          <SideNavigationGroup
+            title="Pages"
+            items={NAV_ITEMS}
+            activeSection={activeSection}
+            pageSections={pageSections}
+            activePageSectionId={activePageSectionId}
+          />
+
+          <SideNavigationGroup
+            title="Resources"
+            items={RESOURCE_ITEMS}
+            activeSection={activeSection}
+            pageSections={pageSections}
+            activePageSectionId={activePageSectionId}
+          />
+        </nav>
+      </aside>
 
       <AnimatePresence>
         {isMenuOpen && (
@@ -307,11 +899,11 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
               role="dialog"
               aria-modal="true"
               aria-label="Navigation Menu"
-              initial={{ x: "100%" }}
+              initial={{ x: "-100%" }}
               animate={{ x: 0 }}
-              exit={{ x: "100%" }}
+              exit={{ x: "-100%" }}
               transition={{ type: "spring", damping: 30, stiffness: 300 }}
-              className="fixed top-0 right-0 bottom-0 w-full max-w-sm z-[120] bg-[var(--panel-bg)] border-l border-[var(--border-light)] shadow-2xl flex flex-col"
+              className="fixed top-0 left-0 bottom-0 w-full max-w-sm z-[120] bg-[var(--bg-color)]/95 border-r border-[var(--border-light)] shadow-2xl flex flex-col backdrop-blur-md"
             >
               <div className="h-[64px] flex items-center justify-between px-4 sm:px-8 border-b border-[var(--border-light)]">
                 <div className="flex items-center gap-2">
@@ -335,114 +927,39 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
               </div>
 
               <nav className="flex-1 overflow-y-auto py-6 px-4 sm:px-8 custom-scrollbar">
-                <div className="flex flex-col gap-1">
-                  {NAV_ITEMS.map((item, i) => {
-                    const isActive =
-                      normalizedPathname === item.path ||
-                      (normalizedPathname === "/" && item.path === "/");
-                    return (
-                      <div key={item.id} className="flex flex-col">
-                        <div
-                          className={`group flex items-center justify-between py-3 border-b hover:border-[var(--cyber-neon-blue)]/30 transition-colors ${
-                            isActive
-                              ? "border-[var(--cyber-neon-blue)] bg-[var(--cyber-neon-blue)]/5"
-                              : "border-[var(--border-light)]"
-                          }`}
-                        >
-                          <a
-                            href={item.path}
-                            onClick={() => setIsMenuOpen(false)}
-                            className="flex flex-col flex-1 px-2"
-                            aria-current={isActive ? "page" : undefined}
-                          >
-                            <span
-                              className={`text-sm font-mono mb-0.5 ${
-                                isActive
-                                  ? "text-[var(--cyber-neon-blue)]"
-                                  : "text-[var(--cyber-neon-blue)]/80"
-                              }`}
-                              aria-hidden="true"
-                            >
-                              0{i + 1}
-                            </span>
-                            <span
-                              className={`font-cyber font-bold text-sm tracking-wider group-hover:text-[var(--cyber-neon-blue)] transition-colors uppercase ${
-                                isActive
-                                  ? "text-[var(--cyber-neon-blue)]"
-                                  : "text-[var(--text-color)]"
-                              }`}
-                            >
-                              {item.label}
-                            </span>
-                          </a>
-                          <div
-                            className="flex items-center gap-2 pr-2"
-                            aria-hidden="true"
-                          >
-                            <ChevronRight
-                              className={`w-4 h-4 transition-all -translate-x-2 group-hover:translate-x-0 ${
-                                isActive
-                                  ? "text-[var(--cyber-neon-blue)] translate-x-0"
-                                  : "text-[var(--text-color)]/0 group-hover:text-[var(--cyber-neon-blue)]"
-                              }`}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
+                <button
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    setIsSearchOpen(true);
+                  }}
+                  className="mb-5 flex w-full items-center justify-between rounded-md border border-[var(--cyber-neon-blue)]/30 bg-[var(--cyber-neon-blue)]/5 px-4 py-3 text-left text-[var(--cyber-neon-blue)] transition-colors hover:bg-[var(--cyber-neon-blue)]/15"
+                >
+                  <span className="flex items-center gap-3">
+                    <Search className="h-5 w-5" aria-hidden="true" />
+                    <span className="font-cyber text-sm font-bold uppercase tracking-wider">
+                      Search
+                    </span>
+                  </span>
+                  <ChevronRight className="h-4 w-4" aria-hidden="true" />
+                </button>
+                <div className="flex flex-col gap-6">
+                  <SideNavigationGroup
+                    title="Pages"
+                    items={NAV_ITEMS}
+                    activeSection={activeSection}
+                    pageSections={pageSections}
+                    activePageSectionId={activePageSectionId}
+                    onNavigate={() => setIsMenuOpen(false)}
+                  />
 
-                  {/* Divider and Ecosystem Link */}
-                  <div className="border-t border-[var(--border-light)]/50 my-4 pt-4">
-                    <div
-                      className={`group flex items-center justify-between py-3 border-b hover:border-[var(--cyber-neon-blue)]/30 transition-colors ${
-                        activeSection === "ecosystem"
-                          ? "border-[var(--cyber-neon-blue)] bg-[var(--cyber-neon-blue)]/5"
-                          : "border-[var(--border-light)]"
-                      }`}
-                    >
-                      <a
-                        href="/ecosystem/"
-                        onClick={() => setIsMenuOpen(false)}
-                        className="flex flex-col flex-1 px-2"
-                        aria-current={
-                          activeSection === "ecosystem" ? "page" : undefined
-                        }
-                      >
-                        <span
-                          className={`text-sm font-mono mb-0.5 ${
-                            activeSection === "ecosystem"
-                              ? "text-[var(--cyber-neon-blue)]"
-                              : "text-[var(--cyber-neon-blue)]/80"
-                          }`}
-                          aria-hidden="true"
-                        >
-                          EXPLORER
-                        </span>
-                        <span
-                          className={`font-cyber font-bold text-sm tracking-wider group-hover:text-[var(--cyber-neon-blue)] transition-colors uppercase ${
-                            activeSection === "ecosystem"
-                              ? "text-[var(--cyber-neon-blue)]"
-                              : "text-[var(--text-color)]"
-                          }`}
-                        >
-                          ECOSYSTEM
-                        </span>
-                      </a>
-                      <div
-                        className="flex items-center gap-2 pr-2"
-                        aria-hidden="true"
-                      >
-                        <ChevronRight
-                          className={`w-4 h-4 transition-all -translate-x-2 group-hover:translate-x-0 ${
-                            activeSection === "ecosystem"
-                              ? "text-[var(--cyber-neon-blue)] translate-x-0"
-                              : "text-[var(--text-color)]/0 group-hover:text-[var(--cyber-neon-blue)]"
-                          }`}
-                        />
-                      </div>
-                    </div>
-                  </div>
+                  <SideNavigationGroup
+                    title="Resources"
+                    items={RESOURCE_ITEMS}
+                    activeSection={activeSection}
+                    pageSections={pageSections}
+                    activePageSectionId={activePageSectionId}
+                    onNavigate={() => setIsMenuOpen(false)}
+                  />
                 </div>
               </nav>
 
@@ -491,50 +1008,96 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
       <main
         id="main-content"
         className="min-h-[calc(100vh-64px)] flex flex-col pt-[64px]"
+        data-pagefind-body
+        data-pagefind-meta={`category:${SECTION_LABELS[activeSection] || "Protobuf"}`}
       >
         {children}
-        {activeSection !== "hero" && activeSection !== "ecosystem" && (
-          <div className="mt-auto max-w-7xl mx-auto px-4 sm:px-8 py-12 flex justify-between items-center border-t border-[var(--border-light)] w-full">
-            {prevNav ? (
-              <a
-                href={prevNav.path}
-                className="flex flex-col items-start gap-1 group transition-all"
-              >
-                <span className="text-sm font-mono text-[var(--text-dim)] uppercase tracking-[0.2em]">
-                  Previous
-                </span>
-                <div className="flex items-center gap-2 text-[var(--text-color)] group-hover:text-[var(--cyber-neon-blue)]">
-                  <ChevronLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-                  <span className="font-cyber font-bold text-sm tracking-wider uppercase">
-                    {prevNav.label}
+        {activeSection !== "hero" && (prevNav || nextNav) && (
+          <div className="mt-auto w-full border-t border-[var(--border-light)]">
+            <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-10 sm:px-8">
+              {prevNav ? (
+                <a
+                  href={prevNav.path}
+                  className="flex min-w-0 flex-col items-start gap-1 group transition-all"
+                >
+                  <span className="text-sm font-mono text-[var(--text-dim)] uppercase tracking-[0.2em]">
+                    Previous
                   </span>
-                </div>
-              </a>
-            ) : (
-              <div />
-            )}
+                  <div className="flex min-w-0 items-center gap-2 text-[var(--text-color)] group-hover:text-[var(--cyber-neon-blue)]">
+                    <ChevronLeft
+                      className="h-5 w-5 shrink-0 transition-transform group-hover:-translate-x-1"
+                      aria-hidden="true"
+                    />
+                    <span className="truncate font-cyber text-sm font-bold uppercase tracking-wider">
+                      {prevNav.label}
+                    </span>
+                  </div>
+                </a>
+              ) : (
+                <div />
+              )}
 
-            {nextNav ? (
-              <a
-                href={nextNav.path}
-                className="flex flex-col items-end gap-1 group transition-all"
-              >
-                <span className="text-sm font-mono text-[var(--text-dim)] uppercase tracking-[0.2em]">
-                  Next
-                </span>
-                <div className="flex items-center gap-2 text-[var(--text-color)] group-hover:text-[var(--cyber-neon-blue)]">
-                  <span className="font-cyber font-bold text-sm tracking-wider uppercase">
-                    {nextNav.label}
+              {nextNav ? (
+                <a
+                  href={nextNav.path}
+                  className="flex min-w-0 flex-col items-end gap-1 group transition-all text-right"
+                >
+                  <span className="text-sm font-mono text-[var(--text-dim)] uppercase tracking-[0.2em]">
+                    Next
                   </span>
-                  <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </div>
-              </a>
-            ) : (
-              <div />
-            )}
+                  <div className="flex min-w-0 items-center gap-2 text-[var(--text-color)] group-hover:text-[var(--cyber-neon-blue)]">
+                    <span className="truncate font-cyber text-sm font-bold uppercase tracking-wider">
+                      {nextNav.label}
+                    </span>
+                    <ChevronRight
+                      className="h-5 w-5 shrink-0 transition-transform group-hover:translate-x-1"
+                      aria-hidden="true"
+                    />
+                  </div>
+                </a>
+              ) : (
+                <div />
+              )}
+            </div>
+          </div>
+        )}
+        {relatedLinks.length > 0 && (
+          <div className="w-full border-t border-[var(--border-light)]">
+            <div className="mx-auto max-w-7xl px-4 py-12 sm:px-8">
+              <div className="mb-5 text-sm font-mono uppercase tracking-[0.2em] text-[var(--text-dim)]">
+                Related
+              </div>
+              <div className="grid gap-3 md:grid-cols-3">
+                {relatedLinks.map((item) => (
+                  <a
+                    key={`${activeSection}-${item.id}`}
+                    href={item.path}
+                    className="group rounded-md border border-[var(--border-light)] bg-[var(--overlay-bg)] p-4 transition-colors hover:border-[var(--cyber-neon-blue)]/40 hover:bg-[var(--cyber-neon-blue)]/10"
+                  >
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="font-cyber text-sm font-bold uppercase tracking-wider text-[var(--text-color)] group-hover:text-[var(--cyber-neon-blue)]">
+                        {item.label}
+                      </span>
+                      <ChevronRight
+                        className="h-4 w-4 text-[var(--cyber-neon-blue)] transition-transform group-hover:translate-x-1"
+                        aria-hidden="true"
+                      />
+                    </div>
+                    <p className="mt-2 text-sm leading-relaxed text-[var(--text-dim)]">
+                      {item.description}
+                    </p>
+                  </a>
+                ))}
+              </div>
+            </div>
           </div>
         )}
       </main>
+
+      <SearchModal
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+      />
 
       <footer className="py-12 border-t border-[var(--border-light)] px-4 sm:px-8 flex flex-col items-center gap-4 bg-[var(--bg-color)]">
         <div className="flex gap-8">

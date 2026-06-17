@@ -98,6 +98,35 @@ const TopicSection = ({
   </Section>
 );
 
+export const TrackIntro = ({
+  id,
+  title,
+  subtitle,
+  desc,
+}: {
+  id: string;
+  title: string;
+  subtitle: string;
+  desc: string;
+}) => (
+  <Section
+    id={id}
+    className="py-16 px-4 sm:px-8 bg-[var(--bg-color)] border-t border-[var(--border-light)]/30"
+  >
+    <div className="max-w-7xl mx-auto">
+      <div className="max-w-4xl">
+        <p className="text-xs font-cyber font-bold text-[var(--cyber-neon-blue)] uppercase tracking-[0.25em] mb-4">
+          {subtitle}
+        </p>
+        <h2 className="text-3xl md:text-4xl font-cyber font-bold text-[var(--text-color)] uppercase tracking-tight mb-4">
+          {title}
+        </h2>
+        <p className="text-lg text-[var(--text-dim)] leading-relaxed">{desc}</p>
+      </div>
+    </div>
+  </Section>
+);
+
 export const AdvancedProtobuf = () => {
   const topics: {
     id: string;
@@ -514,7 +543,34 @@ message User {
     },
   ];
 
+  const modelingTopicIds = new Set([
+    "imports",
+    "any",
+    "value",
+    "fieldmask",
+    "services",
+  ]);
+  const evolutionTopicIds = new Set(["compat", "editions"]);
+  const modelingTopics = topics.filter((topic) =>
+    modelingTopicIds.has(topic.id),
+  );
+  const evolutionTopics = topics.filter((topic) =>
+    evolutionTopicIds.has(topic.id),
+  );
+
   const roadmapItems = [
+    {
+      id: "advanced-modeling",
+      title: "Modeling Track",
+      desc: "Imports, dynamic payloads, field masks, and services.",
+      color: "green",
+    },
+    {
+      id: "schema-evolution",
+      title: "Evolution Track",
+      desc: "Compatibility, editions, presence, required fields, and limits.",
+      color: "blue",
+    },
     {
       id: "imports",
       title: "Imports",
@@ -546,36 +602,6 @@ message User {
       color: "green",
     },
     {
-      id: "reflection",
-      title: "Reflection",
-      desc: "Dynamic schema inspection and runtime descriptors.",
-      color: "cyan",
-    },
-    {
-      id: "plugins",
-      title: "Custom Plugins",
-      desc: "Extending protoc to generate custom code and docs.",
-      color: "blue",
-    },
-    {
-      id: "extensions",
-      title: "Proto Extensions",
-      desc: "Adding fields to messages from outside their definition file.",
-      color: "cyan",
-    },
-    {
-      id: "annotations",
-      title: "Custom Options",
-      desc: "Attaching domain metadata to any schema element.",
-      color: "green",
-    },
-    {
-      id: "validation",
-      title: "Validation Lab",
-      desc: "Live playground for protovalidate business rules.",
-      color: "yellow",
-    },
-    {
       id: "limits",
       title: "Size Limits",
       desc: "Architectural constraints and memory behavior.",
@@ -591,14 +617,14 @@ message User {
       >
         <div className="max-w-7xl mx-auto">
           <SectionTitle icon={HelpCircle} subtitle="03_OVERVIEW" asH1={true}>
-            Advanced
+            Schema Design
           </SectionTitle>
 
           <div className="mb-16 max-w-4xl space-y-6 mx-auto text-center">
             <p className="text-lg text-[var(--text-dim)] leading-relaxed">
-              Protobuf offers features for managing complex systems, including
-              deep integration, metadata enrichment, and long-term schema
-              evolution.
+              Protobuf offers advanced features for modeling richer APIs and
+              evolving schemas safely over time. Reflection, plugins, custom
+              options, and validation now live in the Tooling section.
             </p>
             <div className="pt-8 text-left">
               <RoadmapGrid items={roadmapItems} cols="lg:grid-cols-4" />
@@ -607,7 +633,35 @@ message User {
         </div>
       </Section>
 
-      {topics.map((topic) => (
+      <TrackIntro
+        id="advanced-modeling"
+        subtitle="03_TRACK_A"
+        title="Schema Modeling"
+        desc="These sections cover the schema features used to model larger APIs: imports, dynamic payloads, partial updates, and service definitions."
+      />
+
+      {modelingTopics.map((topic) => (
+        <TopicSection
+          key={topic.id}
+          id={topic.id}
+          icon={topic.icon}
+          title={topic.title}
+          subtitle={topic.subtitle}
+          panelTitle={topic.panelTitle}
+          desc={topic.desc}
+          example={topic.example}
+          children={topic.children}
+        />
+      ))}
+
+      <TrackIntro
+        id="schema-evolution"
+        subtitle="03_TRACK_B"
+        title="Schema Evolution"
+        desc="Compatibility is the difficult part of long-lived Protobuf systems. These sections focus on what can change, what must be reserved, and how presence affects API behavior."
+      />
+
+      {evolutionTopics.map((topic) => (
         <TopicSection
           key={topic.id}
           id={topic.id}
@@ -697,19 +751,20 @@ export const DescriptorsAndReflection = () => {
                 Schemas Describing Schemas
               </h3>
               <p className="text-sm leading-relaxed">
-                When you run the Protobuf compiler (`protoc`), it doesn't just
-                generate code. It can also output a binary representation of
-                your schema called a <strong>FileDescriptorSet</strong>.
+                When you run the Protobuf compiler (<code>protoc</code>), it
+                doesn't just generate code. It can also output a binary
+                representation of your schema called a{" "}
+                <strong>FileDescriptorSet</strong>.
               </p>
               <p className="text-sm leading-relaxed">
-                Fascinatingly, this `FileDescriptorSet` is itself a Protobuf
-                message! Google defines a schema (
+                Fascinatingly, this <code>FileDescriptorSet</code> is itself a
+                Protobuf message! Google defines a schema (
                 <ExternalLinkText href="https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/descriptor.proto">
                   <code>descriptor.proto</code>
                 </ExternalLinkText>
-                ) that describes how to represent `.proto` files. This means you
-                can use Protobuf tools to read and analyze Protobuf schemas
-                dynamically at runtime.
+                ) that describes how to represent <code>.proto</code> files.
+                This means you can use Protobuf tools to read and analyze
+                Protobuf schemas dynamically at runtime.
               </p>
               <div className="p-4 bg-[var(--cyber-neon-blue)]/5 border border-[var(--cyber-neon-blue)]/10 rounded text-sm text-[var(--text-dim)] space-y-4">
                 <p className="font-cyber font-bold text-[var(--cyber-neon-blue)] uppercase tracking-widest text-sm">
@@ -2153,12 +2208,9 @@ if email == "" {
 const Advanced = () => (
   <>
     <AdvancedProtobuf />
-    <DescriptorsAndReflection />
-    <SchemaEngineering />
     <FieldPresence />
     <RequiredFields />
     <LimitsAndConstraints />
-    <ValidationLab />
   </>
 );
 

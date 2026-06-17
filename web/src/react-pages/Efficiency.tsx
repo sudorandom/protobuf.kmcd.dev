@@ -220,16 +220,14 @@ export const SizeComparison = ({
 
         <div className="mb-16 max-w-4xl space-y-6 mx-auto text-center text-lg text-[var(--text-dim)] leading-relaxed">
           <p>
-            Protobuf is designed to be the high-performance backbone of
-            distributed systems. It provides a dense binary format optimized for
-            minimal wire size and lightning-fast parsing, while maintaining the
-            flexibility to evolve schemas over time without breaking existing
-            clients.
+            Protobuf is designed for high-throughput machine-to-machine data
+            exchange. It provides a dense binary format, generated APIs, and a
+            compatibility model that helps schemas evolve over time.
           </p>
           <p>
-            How much space you actually save depends on your data. While large
-            strings will always take up space, numeric data and sparse messages
-            see the biggest reductions compared to JSON.
+            How much space you save depends on your data. Numeric-heavy,
+            repeated, and sparse messages usually benefit most. String-heavy
+            payloads benefit less, especially after HTTP compression.
           </p>
           <p className="pt-8 text-sm">
             Try modifying the JSON data below or clicking the example buttons to
@@ -577,24 +575,20 @@ export const SizeComparison = ({
               Size vs. Compression
             </h2>
             <p className="text-[var(--text-dim)] leading-relaxed">
-              While Protobuf provides a massive reduction in{" "}
+              Protobuf often reduces{" "}
               <span className="text-[var(--cyber-neon-green)] font-bold">
-                raw payload size (typically 30-50%)
+                raw payload size
               </span>{" "}
-              compared to JSON, the gap often narrows when GZIP or Brotli
-              compression is applied. For GZIP compressed payloads, the
-              difference is usually in the{" "}
-              <span className="text-[var(--cyber-neon-blue)] font-bold">
-                15-30% range
-              </span>
-              .
+              compared to JSON because it removes repeated field names and
+              encodes values in compact binary forms. The gap often narrows when
+              GZIP or Brotli compression is applied, because JSON's repeated
+              keys compress well.
             </p>
             <p className="text-[var(--text-dim)] leading-relaxed">
-              This comes with a tradeoff: while compression reduces size
-              further, it introduces CPU overhead for every request. For smaller
-              payloads, the time spent on compression can exceed the transfer
-              time savings. Uncompressed Protobuf often provides the best
-              balance of size and latency.
+              Compression has its own tradeoff: it can reduce transfer size, but
+              it also adds CPU work on both ends. For very small payloads, gzip
+              headers can outweigh the savings. Measure raw and compressed sizes
+              with your actual payloads.
             </p>{" "}
             <p className="text-[var(--text-dim)] leading-relaxed text-sm">
               Protobuf shines when your data has many numbers, enums, or sparse
@@ -621,15 +615,14 @@ export const SizeComparison = ({
                   Protobuf performance is highly dependent on the language and
                   library implementation. In languages with native binary
                   support like <strong>C++, Go, and Java</strong>, Protobuf can
-                  be decoded <strong>5x-10x faster</strong> than JSON.
+                  parse much faster than JSON for many message shapes.
                 </p>
                 <p className="text-sm text-[var(--text-dim)] leading-relaxed">
                   In interpreted languages like{" "}
                   <strong>JavaScript (Node.js) or Python</strong>, the gap can
                   be smaller due to the overhead of moving data between the
-                  runtime and the binary parser, though it still generally
-                  outperforms standard JSON libraries in high-throughput
-                  scenarios.
+                  runtime and the binary parser. Benchmark your real services
+                  before treating generic numbers as architecture guidance.
                 </p>
               </div>
 
@@ -639,10 +632,10 @@ export const SizeComparison = ({
                 </h3>
                 <p className="text-sm text-[var(--text-dim)] leading-relaxed">
                   If your payload is 90% long strings (like blog posts),
-                  Protobuf will only save you a few percentage points of space.
-                  However, if your data is <strong>numeric-heavy</strong> (IDs,
-                  timestamps, coordinates, or metrics), Protobuf significantly
-                  outperforms JSON in both size and speed.
+                  Protobuf may only save a small amount of space. However, if
+                  your data is <strong>numeric-heavy</strong> (IDs, timestamps,
+                  coordinates, or metrics), Protobuf is much more likely to win
+                  in both size and parse cost.
                 </p>
                 <p className="text-sm text-[var(--text-dim)] leading-relaxed italic border-l-2 border-[var(--cyber-neon-green)]/80 pl-4">
                   "The win isn't just bytes on the wire; it's the CPU cycles

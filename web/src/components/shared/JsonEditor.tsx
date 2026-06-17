@@ -15,6 +15,7 @@ export const JsonEditor = ({
   return (
     <div
       className={`relative w-full ${className} bg-[var(--overlay-bg)] rounded overflow-hidden`}
+      data-pagefind-ignore
     >
       {/* Background Highlight Layer */}
       <div

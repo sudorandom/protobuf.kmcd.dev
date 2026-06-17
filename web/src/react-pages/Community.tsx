@@ -145,48 +145,48 @@ export const PoweringTheIndustry = () => {
   const projects = [
     {
       name: "Google",
-      desc: "The creator of Protobuf uses it for nearly all internal and public APIs (via Google Cloud). Most public REST APIs are actually Protobuf-first, using a translation layer for HTTP/JSON.",
-      url: "https://cloud.google.com/apis/design",
+      desc: "Google's API design guidance is built around resource-oriented APIs with Protobuf service definitions and HTTP/JSON transcoding.",
+      url: "https://cloud.google.com/apis/docs/http",
     },
     {
       name: "Kubernetes",
-      desc: "The container orchestration standard uses Protobuf for its internal API and high-performance communication between components.",
-      url: "https://kubernetes.io/",
+      desc: "Kubernetes documents Protobuf as an alternate API encoding for built-in resources, alongside JSON.",
+      url: "https://kubernetes.io/docs/reference/using-api/api-concepts/#protobuf-encoding",
     },
     {
       name: "Envoy Proxy",
-      desc: "Envoy's entire configuration system (xDS) is defined in Protobuf, allowing for dynamic, type-safe updates to load balancers.",
-      url: "https://www.envoyproxy.io/",
+      desc: "Envoy's xDS APIs and configuration resources are published as versioned Protobuf API references.",
+      url: "https://www.envoyproxy.io/docs/envoy/latest/api/api",
     },
     {
       name: "Docker / Swarm",
-      desc: "SwarmKit, the engine behind Docker Swarm, uses Protobuf for cluster state management and inter-node communication.",
-      url: "https://github.com/moby/swarmkit",
+      desc: "SwarmKit keeps its control-plane API definitions in Protobuf schemas in the project source.",
+      url: "https://github.com/moby/swarmkit/tree/master/api",
     },
     {
       name: "Vitess",
-      desc: "The database clustering system used by YouTube and Slack uses Protobuf for its distributed query routing and RPC layer.",
-      url: "https://vitess.io/",
+      desc: "Vitess publishes Protobuf definitions for its query, tablet, topology, and automation APIs.",
+      url: "https://github.com/vitessio/vitess/tree/main/proto",
     },
     {
       name: "Etcd",
-      desc: "The distributed key-value store that powers Kubernetes uses gRPC and Protobuf for its client and peer-to-peer APIs.",
-      url: "https://etcd.io/",
+      desc: "Etcd exposes a gRPC API with a gRPC-gateway that maps HTTP/JSON onto the same API surface.",
+      url: "https://etcd.io/docs/v3.5/dev-guide/api_grpc_gateway/",
     },
     {
       name: "TiDB",
-      desc: "A distributed HTAP database that relies on Protobuf for its internal protocols and inter-service communication.",
-      url: "https://pingcap.com/products/tidb",
+      desc: "The TiDB/TiKV ecosystem maintains shared Protobuf definitions for distributed storage APIs in kvproto.",
+      url: "https://github.com/pingcap/kvproto",
     },
     {
-      name: "Netflix",
-      desc: "The streaming giant transitioned its internal service-to-service communication to gRPC and Protobuf to improve developer productivity and system performance.",
-      url: "https://netflixtechblog.com/",
+      name: "OpenTelemetry",
+      desc: "OpenTelemetry defines its cross-language telemetry data protocol in shared Protobuf schemas.",
+      url: "https://github.com/open-telemetry/opentelemetry-proto",
     },
     {
-      name: "Cloudflare",
-      desc: "Uses Protobuf for high-speed logging, internal configuration distribution (Quicksilver), and various edge services where performance is paramount.",
-      url: "https://www.google.com/search?q=site%3Ablog.cloudflare.com+protobuf",
+      name: "Temporal",
+      desc: "Temporal publishes the API definitions for its workflow platform as Protobuf schemas.",
+      url: "https://github.com/temporalio/api",
     },
   ];
 
@@ -530,23 +530,6 @@ export const CommunityResources = () => (
             <li>
               <ExternalLinkText href="https://stackoverflow.com/questions/tagged/protobuf">
                 Stack Overflow
-              </ExternalLinkText>
-            </li>
-          </ul>
-        </div>
-        <div className="space-y-4">
-          <h3 className="font-cyber font-bold text-[var(--cyber-neon-yellow)] uppercase text-sm tracking-widest">
-            Slack & Chat
-          </h3>
-          <ul className="space-y-3 text-sm">
-            <li>
-              <ExternalLinkText href="https://invite.slack.golangbridge.org/">
-                #protobuf (Gophers Slack)
-              </ExternalLinkText>
-            </li>
-            <li>
-              <ExternalLinkText href="https://buf.build/links/slack">
-                Buf Slack
               </ExternalLinkText>
             </li>
           </ul>

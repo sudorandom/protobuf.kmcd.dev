@@ -15,7 +15,10 @@ export const SchemaEditor = ({
   const [scroll, setScroll] = useState({ top: 0, left: 0 });
 
   return (
-    <div className="relative w-full h-full rounded-lg border border-[var(--border-light)] overflow-hidden">
+    <div
+      className="relative w-full h-full rounded-lg border border-[var(--border-light)] overflow-hidden"
+      data-pagefind-ignore
+    >
       {/* Background Highlight Layer */}
       <div
         className="absolute top-0 left-0 p-4 font-mono text-sm leading-6 whitespace-pre pointer-events-none select-none"

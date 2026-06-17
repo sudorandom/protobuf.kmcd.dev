@@ -537,6 +537,111 @@ const BinaryBasics = () => (
   </div>
 );
 
+const FieldParsingWalkthrough = () => {
+  const parsingSteps = [
+    {
+      label: "01",
+      title: "Read the tag",
+      color: "var(--cyber-neon-blue)",
+      body: (
+        <>
+          The first varint in each field is the <strong>tag</strong>. Its lower
+          three bits identify the wire type, and the remaining bits identify the
+          field number.
+        </>
+      ),
+    },
+    {
+      label: "02",
+      title: "Choose the payload rule",
+      color: "var(--cyber-neon-yellow)",
+      body: (
+        <>
+          The wire type tells the decoder how to find the payload boundary:
+          varint continuation bits, a fixed 4 or 8 byte width, or a
+          length-delimited size prefix.
+        </>
+      ),
+    },
+    {
+      label: "03",
+      title: "Consume that field",
+      color: "var(--cyber-neon-green)",
+      body: (
+        <>
+          Once the payload length is known, the decoder consumes exactly those
+          bytes, maps them to the schema field when possible, and advances its
+          cursor.
+        </>
+      ),
+    },
+    {
+      label: "04",
+      title: "Repeat until EOF",
+      color: "var(--cyber-neon-pink)",
+      body: (
+        <>
+          The stream has no outer field count. Parsing continues from the next
+          byte and stops only when there are no bytes left to process.
+        </>
+      ),
+    },
+  ];
+
+  return (
+    <Section
+      id="field-parsing"
+      className="py-24 px-4 sm:px-8 bg-[var(--bg-color)] border-t border-[var(--border-light)]/30"
+    >
+      <div className="max-w-7xl mx-auto">
+        <SectionTitle icon={SearchCheck} subtitle="05b_PARSE_LOOP">
+          Field-by-Field Parsing
+        </SectionTitle>
+
+        <div className="space-y-12">
+          <div className="space-y-8">
+            <p className="text-lg text-[var(--text-dim)] leading-relaxed">
+              When multiple fields are sent together, Protobuf concatenates them
+              into one binary stream. The decoder does not need separators
+              between fields; each field tells the decoder how many bytes to
+              consume before moving on.
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+              {parsingSteps.map((step) => (
+                <div
+                  key={step.label}
+                  className="p-5 bg-[var(--section-bg-dark)] border border-[var(--border-light)] rounded-lg"
+                  style={{ borderLeftColor: step.color, borderLeftWidth: 4 }}
+                >
+                  <div className="flex items-baseline gap-3 mb-2">
+                    <span
+                      className="text-xs font-cyber font-bold tracking-widest"
+                      style={{ color: step.color }}
+                    >
+                      {step.label}
+                    </span>
+                    <h3 className="text-sm font-cyber font-bold uppercase tracking-widest text-[var(--text-color)]">
+                      {step.title}
+                    </h3>
+                  </div>
+                  <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+                    {step.body}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="w-full">
+            <MultiFieldEncoding />
+          </div>
+        </div>
+      </div>
+    </Section>
+  );
+};
+
 export const BinaryMatrix = ({
   protoSource,
   setProtoSource,
@@ -689,17 +794,10 @@ export const BinaryMatrix = ({
 
         <div className="mb-16 space-y-6">
           <p className="text-[var(--text-dim)] leading-relaxed max-w-4xl">
-            When multiple fields are sent together, they are simply concatenated
-            one after another in the binary stream. The decoder reads the{" "}
-            <strong>Tag</strong> of the first field, uses it to determine how
-            many bytes to read, and then repeats the process for the next field
-            until the end of the stream is reached.
-          </p>
-          <MultiFieldEncoding />
-
-          <p className="text-[var(--text-dim)] text-sm leading-relaxed max-w-4xl">
             Try modifying the JSON data below or clicking the example buttons to
-            see how the binary stream changes in real-time.
+            see how the binary stream changes in real-time. Click any segment in
+            the encoded stream to inspect how its tag, length, and payload were
+            parsed.
           </p>
         </div>
 
@@ -1094,6 +1192,11 @@ const BinaryPage = ({
       desc: "Why empty fields take zero bytes.",
     },
     {
+      id: "field-parsing",
+      title: "Parse Loop",
+      desc: "How each field is read until bytes run out.",
+    },
+    {
       id: "matrix",
       title: "Binary Explorer",
       desc: "Live inspection and disassembly.",
@@ -1128,7 +1231,7 @@ const BinaryPage = ({
 
             <div className="max-w-3xl mx-auto pt-4">
               <p className="text-sm text-[var(--text-dim)] leading-relaxed italic">
-                This guide should help explain how the protobuf encoding works,
+                This guide should help explain how the Protobuf encoding works,
                 but if you have questions about edge cases or specifics that we
                 don't cover, refer to the{" "}
                 <ExternalLinkText href="https://protobuf.dev/programming-guides/encoding/">
@@ -1419,6 +1522,8 @@ const BinaryPage = ({
       </Section>
 
       {/* 3. The Explorer Matrix */}
+      <FieldParsingWalkthrough />
+
       <BinaryMatrix
         protoSource={explorerProto}
         setProtoSource={setExplorerProto}

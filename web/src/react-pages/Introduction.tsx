@@ -110,7 +110,8 @@ export const Introduction = ({
             <ExternalLinkText href="https://protobuf.dev/programming-guides/proto3/#json">
               JSON mapping
             </ExternalLinkText>
-            . Every binary payload has a deterministic JSON representation.
+            . Protobuf defines how messages map to JSON so the same data can
+            move between binary APIs and human-readable tooling.
           </p>
         </div>
       ),
@@ -179,7 +180,8 @@ export const Introduction = ({
             <ExternalLinkText href="https://protobuf.dev/">
               Protocol Buffers
             </ExternalLinkText>{" "}
-            (Protobuf) is a binary serialization format built on schemas.
+            (Protobuf) is a schema-driven format for serializing structured
+            data.
           </p>
           <p className="text-[var(--text-color)] leading-relaxed">
             Developed by{" "}
@@ -187,8 +189,8 @@ export const Introduction = ({
               Google
             </ExternalLinkText>{" "}
             for efficient data exchange, it provides a language-neutral way to
-            structure information that is smaller and faster than text-based
-            formats like JSON or XML.
+            define durable contracts and encode application data into compact
+            binary payloads.
           </p>
         </div>
 
@@ -205,8 +207,8 @@ export const Introduction = ({
                 </span>
               </div>
               <p className="text-sm text-[var(--text-dim)] leading-relaxed">
-                Binary encoding is significantly faster to parse and smaller to
-                transmit than text-based formats.
+                Protobuf often reduces payload size and parsing overhead,
+                especially for numeric-heavy, repeated, or sparse data.
               </p>
             </li>
             <li className="space-y-3">
@@ -217,8 +219,8 @@ export const Introduction = ({
                 </span>
               </div>
               <p className="text-sm text-[var(--text-dim)] leading-relaxed">
-                Strong schemas prevent a whole class of bugs before they even
-                hit production.
+                Shared schemas let generated code catch many shape and type
+                mismatches before data crosses a service boundary.
               </p>
             </li>
             <li className="space-y-3">
@@ -229,7 +231,8 @@ export const Introduction = ({
                 </span>
               </div>
               <p className="text-sm text-[var(--text-dim)] leading-relaxed">
-                Works with almost every major programming language.
+                Field numbers and compatibility rules let old and new clients
+                coexist while schemas evolve.
               </p>
             </li>
           </ul>
@@ -243,9 +246,9 @@ export const Introduction = ({
         <p className="text-[var(--text-dim)] leading-relaxed">
           Protobuf works by combining a pre-defined <strong>schema</strong> with
           your <strong>data</strong> to produce a compact binary payload. Unlike
-          JSON, which carries redundant field names in every message, Protobuf
-          uses the schema to identify fields by their number, drastically
-          reducing size and increasing parsing speed.
+          JSON, which repeats field names in every object, Protobuf identifies
+          fields by numeric IDs from the schema. That is the core tradeoff: less
+          self-description in each payload, more value from a shared contract.
         </p>
         <DecodingVisualization />
       </div>

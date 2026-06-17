@@ -10,8 +10,8 @@ import (
 	"syscall/js"
 
 	"github.com/bufbuild/protocompile"
+	"github.com/bufbuild/protocompile/experimental/protoscope"
 	"github.com/bufbuild/protocompile/reporter"
-	"github.com/protocolbuffers/protoscope"
 	"github.com/sudorandom/fauxrpc"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/encoding/prototext"
@@ -40,7 +40,11 @@ func formatProtoscope(this js.Value, args []js.Value) any {
 	binaryData := make([]byte, args[0].Get("length").Int())
 	js.CopyBytesToGo(binaryData, args[0])
 
-	return js.ValueOf(protoscope.Write(binaryData, protoscope.WriterOptions{}))
+	out, err := protoscope.Disassemble(binaryData, protoscope.DisassembleOptions{})
+	if err != nil {
+		return js.ValueOf(map[string]any{"error": err.Error()})
+	}
+	return js.ValueOf(out)
 }
 
 func formatPrototext(this js.Value, args []js.Value) any {

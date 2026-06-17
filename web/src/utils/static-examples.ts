@@ -35,171 +35,171 @@ message Date {
   int32 day = 3;
 }`,
   fds: `{
-  "file":  [
+  "file": [
     {
-      "name":  "demo/v1/user.proto",
-      "package":  "demo.v1",
-      "dependency":  [
+      "name": "demo/v1/user.proto",
+      "package": "demo.v1",
+      "dependency": [
         "buf/validate/validate.proto"
       ],
-      "messageType":  [
+      "messageType": [
         {
-          "name":  "User",
-          "field":  [
+          "name": "User",
+          "field": [
             {
-              "name":  "id",
-              "number":  1,
-              "label":  "LABEL_OPTIONAL",
-              "type":  "TYPE_STRING",
-              "jsonName":  "id",
-              "options":  {}
+              "name": "id",
+              "number": 1,
+              "label": "LABEL_OPTIONAL",
+              "type": "TYPE_STRING",
+              "jsonName": "id",
+              "options": {}
             },
             {
-              "name":  "name",
-              "number":  2,
-              "label":  "LABEL_OPTIONAL",
-              "type":  "TYPE_STRING",
-              "jsonName":  "name"
+              "name": "name",
+              "number": 2,
+              "label": "LABEL_OPTIONAL",
+              "type": "TYPE_STRING",
+              "jsonName": "name"
             },
             {
-              "name":  "email",
-              "number":  3,
-              "label":  "LABEL_OPTIONAL",
-              "type":  "TYPE_STRING",
-              "jsonName":  "email"
+              "name": "email",
+              "number": 3,
+              "label": "LABEL_OPTIONAL",
+              "type": "TYPE_STRING",
+              "jsonName": "email"
             },
             {
-              "name":  "age",
-              "number":  4,
-              "label":  "LABEL_OPTIONAL",
-              "type":  "TYPE_UINT32",
-              "jsonName":  "age",
-              "options":  {}
+              "name": "age",
+              "number": 4,
+              "label": "LABEL_OPTIONAL",
+              "type": "TYPE_UINT32",
+              "jsonName": "age",
+              "options": {}
             },
             {
-              "name":  "height_cm",
-              "number":  5,
-              "label":  "LABEL_OPTIONAL",
-              "type":  "TYPE_FLOAT",
-              "jsonName":  "heightCm"
+              "name": "height_cm",
+              "number": 5,
+              "label": "LABEL_OPTIONAL",
+              "type": "TYPE_FLOAT",
+              "jsonName": "heightCm"
             },
             {
-              "name":  "weight_kg",
-              "number":  6,
-              "label":  "LABEL_OPTIONAL",
-              "type":  "TYPE_DOUBLE",
-              "jsonName":  "weightKg"
+              "name": "weight_kg",
+              "number": 6,
+              "label": "LABEL_OPTIONAL",
+              "type": "TYPE_DOUBLE",
+              "jsonName": "weightKg"
             },
             {
-              "name":  "role",
-              "number":  7,
-              "label":  "LABEL_OPTIONAL",
-              "type":  "TYPE_ENUM",
-              "typeName":  ".demo.v1.User.Role",
-              "jsonName":  "role"
+              "name": "role",
+              "number": 7,
+              "label": "LABEL_OPTIONAL",
+              "type": "TYPE_ENUM",
+              "typeName": ".demo.v1.User.Role",
+              "jsonName": "role"
             },
             {
-              "name":  "birth_date",
-              "number":  8,
-              "label":  "LABEL_OPTIONAL",
-              "type":  "TYPE_MESSAGE",
-              "typeName":  ".demo.v1.Date",
-              "jsonName":  "birthDate"
+              "name": "birth_date",
+              "number": 8,
+              "label": "LABEL_OPTIONAL",
+              "type": "TYPE_MESSAGE",
+              "typeName": ".demo.v1.Date",
+              "jsonName": "birthDate"
             },
             {
-              "name":  "manager",
-              "number":  9,
-              "label":  "LABEL_OPTIONAL",
-              "type":  "TYPE_MESSAGE",
-              "typeName":  ".demo.v1.User",
-              "jsonName":  "manager"
+              "name": "manager",
+              "number": 9,
+              "label": "LABEL_OPTIONAL",
+              "type": "TYPE_MESSAGE",
+              "typeName": ".demo.v1.User",
+              "jsonName": "manager"
             }
           ],
-          "enumType":  [
+          "enumType": [
             {
-              "name":  "Role",
-              "value":  [
+              "name": "Role",
+              "value": [
                 {
-                  "name":  "ROLE_UNSPECIFIED",
-                  "number":  0
+                  "name": "ROLE_UNSPECIFIED",
+                  "number": 0
                 },
                 {
-                  "name":  "ROLE_USER",
-                  "number":  1
+                  "name": "ROLE_USER",
+                  "number": 1
                 },
                 {
-                  "name":  "ROLE_ADMIN",
-                  "number":  2
+                  "name": "ROLE_ADMIN",
+                  "number": 2
                 }
               ]
             }
           ]
         },
         {
-          "name":  "Date",
-          "field":  [
+          "name": "Date",
+          "field": [
             {
-              "name":  "year",
-              "number":  1,
-              "label":  "LABEL_OPTIONAL",
-              "type":  "TYPE_INT32",
-              "jsonName":  "year"
+              "name": "year",
+              "number": 1,
+              "label": "LABEL_OPTIONAL",
+              "type": "TYPE_INT32",
+              "jsonName": "year"
             },
             {
-              "name":  "month",
-              "number":  2,
-              "label":  "LABEL_OPTIONAL",
-              "type":  "TYPE_INT32",
-              "jsonName":  "month"
+              "name": "month",
+              "number": 2,
+              "label": "LABEL_OPTIONAL",
+              "type": "TYPE_INT32",
+              "jsonName": "month"
             },
             {
-              "name":  "day",
-              "number":  3,
-              "label":  "LABEL_OPTIONAL",
-              "type":  "TYPE_INT32",
-              "jsonName":  "day"
+              "name": "day",
+              "number": 3,
+              "label": "LABEL_OPTIONAL",
+              "type": "TYPE_INT32",
+              "jsonName": "day"
             }
           ]
         }
       ],
-      "syntax":  "editions",
-      "edition":  "EDITION_2023"
+      "syntax": "editions",
+      "edition": "EDITION_2023"
     }
   ]
 }`,
   bin: "0a 24 35 35 30 65 38 34 30 30 2d 65 32 39 62 2d 34 31 64 34 2d 61 37 31 36 2d 34 34 36 36 35 35 34 34 30 30 30 30 12 10 48 69 72 6f 20 50 72 6f 74 61 67 6f 6e 69 73 74 1a 12 68 69 72 6f 40 6d 65 74 61 76 65 72 73 65 2e 63 6f 6d 20 18 2d 00 80 2f 43 31 cd cc cc cc cc 8c 51 40 38 02 42 07 08 c8 0f 10 05 18 16",
   json: `{
-  "id":  "550e8400-e29b-41d4-a716-446655440000",
-  "name":  "Hiro Protagonist",
-  "email":  "hiro@metaverse.com",
-  "age":  24,
-  "heightCm":  175.5,
-  "weightKg":  70.2,
-  "role":  "ROLE_ADMIN",
-  "birthDate":  {
-    "year":  1992,
-    "month":  5,
-    "day":  22
+  "id": "550e8400-e29b-41d4-a716-446655440000",
+  "name": "Hiro Protagonist",
+  "email": "hiro@metaverse.com",
+  "age": 24,
+  "heightCm": 175.5,
+  "weightKg": 70.2,
+  "role": "ROLE_ADMIN",
+  "birthDate": {
+    "year": 1992,
+    "month": 5,
+    "day": 22
   }
 }`,
-  txt: `id:  "550e8400-e29b-41d4-a716-446655440000"
-name:  "Hiro Protagonist"
-email:  "hiro@metaverse.com"
-age:  24
-height_cm:  175.5
-weight_kg:  70.2
-role:  ROLE_ADMIN
-birth_date:  {
-  year:  1992
-  month:  5
-  day:  22
+  txt: `id: "550e8400-e29b-41d4-a716-446655440000"
+name: "Hiro Protagonist"
+email: "hiro@metaverse.com"
+age: 24
+height_cm: 175.5
+weight_kg: 70.2
+role: ROLE_ADMIN
+birth_date: {
+  year: 1992
+  month: 5
+  day: 22
 }`,
   scope: `1: {"550e8400-e29b-41d4-a716-446655440000"}
 2: {"Hiro Protagonist"}
 3: {"hiro@metaverse.com"}
 4: 24
-5: 175.5i32   # 0x432f8000i32
-6: 70.2       # 0x40518ccccccccccdi64
+5: 175.5i32                   # 0x432f8000i32
+6: 70.2                       # 0x40518ccccccccccdi64
 7: 2
 8: {
   1: 1992
