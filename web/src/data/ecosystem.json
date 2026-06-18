@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-06-18T06:56:43.300Z",
+  "fetchedAt": "2026-06-18T07:00:52.446Z",
   "projects": [
     {
       "category": "tools",
@@ -16,7 +16,7 @@
       "stars": 11203,
       "pushedAt": "2026-06-16T17:14:27Z",
       "inactive": false,
-      "starsWeekly": 30,
+      "starsWeekly": 29,
       "starsMonthly": 98,
       "archived": false
     },
@@ -1038,7 +1038,7 @@
       "pushedAt": "2026-06-18T06:51:42Z",
       "inactive": false,
       "starsWeekly": 45,
-      "starsMonthly": 202,
+      "starsMonthly": 201,
       "archived": false
     },
     {
@@ -1286,7 +1286,7 @@
       "pushedAt": "2026-06-18T06:32:40Z",
       "inactive": false,
       "starsWeekly": 60,
-      "starsMonthly": 374,
+      "starsMonthly": 373,
       "archived": false
     },
     {
