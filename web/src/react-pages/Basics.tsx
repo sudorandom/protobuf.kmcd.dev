@@ -635,6 +635,15 @@ export const TypeSystem = () => {
           url: "https://protobuf.dev/reference/protobuf/google.protobuf/#struct",
         },
       ],
+      footer: (
+        <>
+          There are more well-known types in the{" "}
+          <ExternalLinkText href="https://protobuf.dev/reference/protobuf/google.protobuf/">
+            google.protobuf reference
+          </ExternalLinkText>
+          .
+        </>
+      ),
     },
   ];
 
@@ -642,10 +651,12 @@ export const TypeSystem = () => {
     groupName,
     groupIcon: Icon,
     types,
+    footer,
   }: {
     groupName: string;
     groupIcon: React.ElementType;
     types: { name: string; desc: React.ReactNode; url?: string }[];
+    footer?: React.ReactNode;
   }) => (
     <div className="space-y-4">
       <div className="flex items-center gap-2 text-[var(--cyber-neon-blue)]">
@@ -682,6 +693,11 @@ export const TypeSystem = () => {
           </div>
         ))}
       </div>
+      {footer && (
+        <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+          {footer}
+        </p>
+      )}
     </div>
   );
 
@@ -717,6 +733,7 @@ export const TypeSystem = () => {
                 groupName={g.name}
                 groupIcon={g.icon}
                 types={g.types}
+                footer={g.footer}
               />
             ))}
           </div>
