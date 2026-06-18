@@ -138,7 +138,15 @@ const getPageNumbers = (current: number, total: number) => {
 // --- Main Ecosystem Page Component ---
 const PAGE_SIZE = 12;
 
-const Ecosystem = () => {
+const slugifyProjectId = (project: Project) =>
+  `ecosystem-project-${[project.owner, project.repo || project.name]
+    .filter(Boolean)
+    .join("-")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "")}`;
+
+const Ecosystem = ({ initialPage = 1 }: { initialPage?: number }) => {
   const getQueryParam = (key: string, defaultValue: string) => {
     if (typeof window === "undefined") return defaultValue;
     const params = new URLSearchParams(window.location.search);
@@ -170,7 +178,7 @@ const Ecosystem = () => {
     return ["desc", "asc"].includes(val) ? (val as any) : "desc";
   });
   const [currentPage, setCurrentPage] = useState(() => {
-    const val = getQueryParam("page", "1");
+    const val = getQueryParam("page", initialPage.toString());
     const parsed = parseInt(val, 10);
     return isNaN(parsed) || parsed < 1 ? 1 : parsed;
   });
@@ -283,8 +291,9 @@ const Ecosystem = () => {
   useEffect(() => {
     if (typeof window === "undefined") return;
     const params = new URLSearchParams();
-    if (selectedCategory !== "all") params.set("category", selectedCategory);
+
     if (searchTerm) params.set("search", searchTerm);
+    if (selectedCategory !== "all") params.set("category", selectedCategory);
     if (selectedLanguage !== "all") params.set("lang", selectedLanguage);
     if (sortBy !== "default") params.set("sort", sortBy);
     if (sortDirection !== "desc") params.set("direction", sortDirection);
@@ -292,7 +301,7 @@ const Ecosystem = () => {
     if (currentPage > 1) params.set("page", currentPage.toString());
 
     const newSearch = params.toString();
-    const newUrl = newSearch ? `?${newSearch}` : window.location.pathname;
+    const newUrl = `/ecosystem/${newSearch ? `?${newSearch}` : ""}${window.location.hash}`;
     window.history.replaceState(null, "", newUrl);
   }, [
     selectedCategory,
@@ -866,6 +875,7 @@ const Ecosystem = () => {
                 const primaryGithubUrl = githubUrls[0] || "";
                 const projectLink = project.url || primaryGithubUrl;
                 const projectKey = `${project.owner}-${project.name}`;
+                const projectId = slugifyProjectId(project);
 
                 return (
                   <div
@@ -1051,7 +1061,10 @@ const Ecosystem = () => {
                       </div>
 
                       {/* Title & Owner */}
-                      <h3 className="text-lg font-sans font-bold tracking-wide mb-1 flex items-center gap-2">
+                      <h3
+                        id={projectId}
+                        className="text-lg font-sans font-bold tracking-wide mb-1 flex items-center gap-2 scroll-mt-[calc(var(--header-height)+24px)]"
+                      >
                         <a
                           href={projectLink}
                           target="_blank"

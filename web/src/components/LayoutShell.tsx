@@ -524,7 +524,9 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
   const currentPageIndex = ALL_PAGE_ITEMS.findIndex(
     (item) =>
       item.path === normalizedPathname ||
-      (normalizedPathname === "/" && item.path === "/"),
+      (normalizedPathname === "/" && item.path === "/") ||
+      (item.path === "/ecosystem/" &&
+        normalizedPathname.startsWith("/ecosystem/")),
   );
   const currentNavIndex = NAV_ITEMS.findIndex(
     (item) =>
