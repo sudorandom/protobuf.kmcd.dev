@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-06-18T07:00:52.446Z",
+  "fetchedAt": "2026-06-18T13:51:01.842Z",
   "projects": [
     {
       "category": "tools",
@@ -14,8 +14,8 @@
       "stars": 11203,
       "pushedAt": "2026-06-16T17:14:27Z",
       "inactive": false,
-      "starsWeekly": 29,
-      "starsMonthly": 98,
+      "starsWeekly": 28,
+      "starsMonthly": 97,
       "archived": false
     },
     {
@@ -64,7 +64,7 @@
       "pushedAt": "2026-06-16T02:32:51Z",
       "inactive": false,
       "starsWeekly": 6,
-      "starsMonthly": 26,
+      "starsMonthly": 25,
       "archived": false
     },
     {
@@ -128,11 +128,11 @@
       "github": "https://github.com/grpc-ecosystem/grpc-gateway",
       "languages": ["Agnostic"],
       "relevance": 3,
-      "stars": 19919,
+      "stars": 19923,
       "pushedAt": "2026-06-18T05:59:19Z",
       "inactive": false,
-      "starsWeekly": 10,
-      "starsMonthly": 51,
+      "starsWeekly": 14,
+      "starsMonthly": 55,
       "archived": false
     },
     {
@@ -145,10 +145,10 @@
       "github": "https://github.com/grpc/grpc",
       "languages": ["C++", "C#", "Java", "Python", "Go", "Ruby", "PHP"],
       "relevance": 4,
-      "stars": 44892,
-      "pushedAt": "2026-06-18T06:46:42Z",
+      "stars": 44894,
+      "pushedAt": "2026-06-18T11:20:02Z",
       "inactive": false,
-      "starsWeekly": 25,
+      "starsWeekly": 27,
       "starsMonthly": 160,
       "archived": false
     },
@@ -179,7 +179,7 @@
       "stars": 6159,
       "pushedAt": "2026-06-16T08:01:57Z",
       "inactive": false,
-      "starsWeekly": 18,
+      "starsWeekly": 16,
       "starsMonthly": 66,
       "archived": false
     },
@@ -193,7 +193,7 @@
       "github": "https://github.com/anthropics/connect-rust",
       "languages": ["Rust"],
       "relevance": 4,
-      "stars": 425,
+      "stars": 426,
       "pushedAt": "2026-06-18T00:42:17Z",
       "inactive": false,
       "starsWeekly": 8,
@@ -247,8 +247,8 @@
       "stars": 17542,
       "pushedAt": "2026-06-16T05:09:35Z",
       "inactive": false,
-      "starsWeekly": 16,
-      "starsMonthly": 57,
+      "starsWeekly": 17,
+      "starsMonthly": 58,
       "archived": false
     },
     {
@@ -264,7 +264,7 @@
       "stars": 41517,
       "pushedAt": "2026-06-15T07:11:22Z",
       "inactive": false,
-      "starsWeekly": 15,
+      "starsWeekly": 13,
       "starsMonthly": 60,
       "archived": false
     },
@@ -333,7 +333,7 @@
       "pushedAt": "2026-06-17T13:53:01Z",
       "inactive": false,
       "starsWeekly": 1,
-      "starsMonthly": 7,
+      "starsMonthly": 6,
       "archived": false
     },
     {
@@ -350,7 +350,7 @@
       "pushedAt": "2026-06-18T02:56:22Z",
       "inactive": false,
       "starsWeekly": 6,
-      "starsMonthly": 31,
+      "starsMonthly": 29,
       "archived": false
     },
     {
@@ -585,9 +585,9 @@
       "languages": ["TypeScript", "JavaScript"],
       "relevance": 3,
       "stars": 1609,
-      "pushedAt": "2026-06-16T14:01:51Z",
+      "pushedAt": "2026-06-18T13:29:12Z",
       "inactive": false,
-      "starsWeekly": 3,
+      "starsWeekly": 2,
       "starsMonthly": 18,
       "archived": false
     },
@@ -703,11 +703,11 @@
       "github": "https://github.com/go-kratos/kratos",
       "languages": ["Go"],
       "relevance": 1,
-      "stars": 25730,
+      "stars": 25732,
       "pushedAt": "2026-06-17T10:05:08Z",
       "inactive": false,
-      "starsWeekly": 13,
-      "starsMonthly": 80,
+      "starsWeekly": 15,
+      "starsMonthly": 82,
       "archived": false
     },
     {
@@ -737,8 +737,8 @@
       "github": "https://github.com/cloudwego/kitex",
       "languages": ["Go"],
       "relevance": 1,
-      "stars": 7974,
-      "pushedAt": "2026-06-15T15:01:11Z",
+      "stars": 7973,
+      "pushedAt": "2026-06-18T08:34:28Z",
       "inactive": false,
       "starsWeekly": 7,
       "starsMonthly": 37,
@@ -757,7 +757,7 @@
       "stars": 5927,
       "pushedAt": "2026-06-17T17:16:19Z",
       "inactive": false,
-      "starsWeekly": 9,
+      "starsWeekly": 8,
       "starsMonthly": 24,
       "archived": false
     },
@@ -772,10 +772,10 @@
       "languages": ["TypeScript", "JavaScript"],
       "relevance": 1,
       "stars": 5831,
-      "pushedAt": "2026-06-18T06:55:16Z",
+      "pushedAt": "2026-06-18T09:55:13Z",
       "inactive": false,
       "starsWeekly": 8,
-      "starsMonthly": 46,
+      "starsMonthly": 44,
       "archived": false
     },
     {
@@ -792,7 +792,7 @@
       "pushedAt": "2026-06-18T06:53:07Z",
       "inactive": false,
       "starsWeekly": 6,
-      "starsMonthly": 46,
+      "starsMonthly": 45,
       "archived": false
     },
     {
@@ -805,7 +805,7 @@
       "github": "https://github.com/asynkron/protoactor-go",
       "languages": ["Go"],
       "relevance": 1,
-      "stars": 5468,
+      "stars": 5467,
       "pushedAt": "2026-04-08T21:41:59Z",
       "inactive": false,
       "starsWeekly": 2,
@@ -843,7 +843,7 @@
       "pushedAt": "2026-06-07T10:12:23Z",
       "inactive": false,
       "starsWeekly": 5,
-      "starsMonthly": 27,
+      "starsMonthly": 26,
       "archived": false
     },
     {
@@ -874,10 +874,10 @@
       "languages": ["C++", "C#", "C", "Java", "Objective-C", "Python", "Go"],
       "relevance": 4,
       "stars": 71361,
-      "pushedAt": "2026-06-18T06:51:42Z",
+      "pushedAt": "2026-06-18T13:21:45Z",
       "inactive": false,
       "starsWeekly": 45,
-      "starsMonthly": 201,
+      "starsMonthly": 200,
       "archived": false
     },
     {
@@ -958,11 +958,11 @@
       "github": "https://github.com/Kong/insomnia",
       "languages": ["Agnostic"],
       "relevance": 1,
-      "stars": 38509,
-      "pushedAt": "2026-06-18T05:59:42Z",
+      "stars": 38540,
+      "pushedAt": "2026-06-18T13:13:30Z",
       "inactive": false,
-      "starsWeekly": 51,
-      "starsMonthly": 167,
+      "starsWeekly": 79,
+      "starsMonthly": 194,
       "archived": false
     },
     {
@@ -992,11 +992,11 @@
       "github": "https://github.com/grafana/k6",
       "languages": ["Agnostic"],
       "relevance": 1,
-      "stars": 30827,
-      "pushedAt": "2026-06-18T02:12:26Z",
+      "stars": 30831,
+      "pushedAt": "2026-06-18T12:02:49Z",
       "inactive": false,
-      "starsWeekly": 59,
-      "starsMonthly": 267,
+      "starsWeekly": 57,
+      "starsMonthly": 262,
       "archived": false
     },
     {
@@ -1026,11 +1026,11 @@
       "github": "https://github.com/wireshark/wireshark",
       "languages": ["Agnostic"],
       "relevance": 1,
-      "stars": 9488,
-      "pushedAt": "2026-06-18T04:42:54Z",
+      "stars": 9489,
+      "pushedAt": "2026-06-18T10:30:17Z",
       "inactive": false,
       "starsWeekly": 43,
-      "starsMonthly": 150,
+      "starsMonthly": 149,
       "archived": false
     },
     {
@@ -1094,11 +1094,11 @@
       "github": "https://github.com/envoyproxy/envoy",
       "languages": ["Agnostic"],
       "relevance": 1,
-      "stars": 28419,
-      "pushedAt": "2026-06-18T06:32:40Z",
+      "stars": 28422,
+      "pushedAt": "2026-06-18T09:31:10Z",
       "inactive": false,
-      "starsWeekly": 60,
-      "starsMonthly": 373,
+      "starsWeekly": 61,
+      "starsMonthly": 353,
       "archived": false
     },
     {
@@ -1162,10 +1162,10 @@
       "github": "https://github.com/hyperium/tonic",
       "languages": ["Rust"],
       "relevance": 1,
-      "stars": 12315,
-      "pushedAt": "2026-06-17T22:06:25Z",
+      "stars": 12316,
+      "pushedAt": "2026-06-18T09:08:23Z",
       "inactive": false,
-      "starsWeekly": 46,
+      "starsWeekly": 43,
       "starsMonthly": 297,
       "archived": false
     },
@@ -1196,10 +1196,10 @@
       "github": "https://github.com/apple/swift-protobuf",
       "languages": ["Swift"],
       "relevance": 2,
-      "stars": 4936,
+      "stars": 4935,
       "pushedAt": "2026-06-16T17:09:41Z",
       "inactive": false,
-      "starsWeekly": 8,
+      "starsWeekly": 7,
       "starsMonthly": 21,
       "archived": false
     },
@@ -1248,7 +1248,7 @@
       "languages": ["Java", "Kotlin", "Scala"],
       "relevance": 1,
       "stars": 5117,
-      "pushedAt": "2026-06-18T03:24:45Z",
+      "pushedAt": "2026-06-18T09:28:29Z",
       "inactive": false,
       "starsWeekly": 3,
       "starsMonthly": 15,
@@ -1264,11 +1264,11 @@
       "github": "https://github.com/confluentinc/schema-registry",
       "languages": ["Agnostic"],
       "relevance": 1,
-      "stars": 2442,
-      "pushedAt": "2026-06-18T06:29:13Z",
+      "stars": 2443,
+      "pushedAt": "2026-06-18T13:50:50Z",
       "inactive": false,
-      "starsWeekly": 5,
-      "starsMonthly": 10,
+      "starsWeekly": 6,
+      "starsMonthly": 11,
       "archived": false
     },
     {
@@ -1284,7 +1284,7 @@
       "stars": 1671,
       "pushedAt": "2026-05-19T22:40:01Z",
       "inactive": false,
-      "starsWeekly": 2,
+      "starsWeekly": 1,
       "starsMonthly": 14,
       "archived": false
     },
@@ -1301,7 +1301,7 @@
       "stars": 725,
       "pushedAt": "2026-04-13T17:08:18Z",
       "inactive": false,
-      "starsWeekly": 3,
+      "starsWeekly": 2,
       "starsMonthly": 6,
       "archived": false
     },
@@ -1421,7 +1421,7 @@
       "pushedAt": "2026-06-01T23:09:04Z",
       "inactive": false,
       "starsWeekly": 3,
-      "starsMonthly": 8,
+      "starsMonthly": 7,
       "archived": false
     },
     {
@@ -1488,7 +1488,7 @@
       "stars": 22962,
       "pushedAt": "2026-06-17T05:16:23Z",
       "inactive": false,
-      "starsWeekly": 15,
+      "starsWeekly": 14,
       "starsMonthly": 54,
       "archived": false
     },
@@ -1502,11 +1502,11 @@
       "github": "https://github.com/grpc/grpc-java",
       "languages": ["Java"],
       "relevance": 1,
-      "stars": 12031,
-      "pushedAt": "2026-06-17T17:11:25Z",
+      "stars": 12032,
+      "pushedAt": "2026-06-18T12:03:00Z",
       "inactive": false,
       "starsWeekly": 8,
-      "starsMonthly": 32,
+      "starsMonthly": 31,
       "archived": false
     },
     {
@@ -1556,7 +1556,7 @@
       "stars": 5437,
       "pushedAt": "2026-05-22T11:01:47Z",
       "inactive": false,
-      "starsWeekly": 5,
+      "starsWeekly": 4,
       "starsMonthly": 55,
       "archived": false
     },
@@ -2202,7 +2202,7 @@
       "stars": 334,
       "pushedAt": "2026-06-15T20:33:55Z",
       "inactive": false,
-      "starsWeekly": 1,
+      "starsWeekly": 0,
       "starsMonthly": 8,
       "archived": false
     },
@@ -2220,10 +2220,10 @@
       "languages": ["Agnostic"],
       "relevance": 2,
       "stars": 2351,
-      "pushedAt": "2026-06-15T17:56:47Z",
+      "pushedAt": "2026-06-18T11:40:10Z",
       "inactive": false,
       "starsWeekly": 8,
-      "starsMonthly": 20,
+      "starsMonthly": 18,
       "archived": false
     }
   ]
