@@ -4,7 +4,21 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'web/**'
+      - 'wasm-parser/**'
+      - 'proto/**'
+      - 'justfile'
+      - 'mise.toml'
+      - '.github/workflows/ci.yml'
   pull_request:
+    paths:
+      - 'web/**'
+      - 'wasm-parser/**'
+      - 'proto/**'
+      - 'justfile'
+      - 'mise.toml'
+      - '.github/workflows/ci.yml'
 
 jobs:
   build:
