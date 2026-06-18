@@ -846,21 +846,21 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
               />
             )}
           </button>
-
-          <button
-            onClick={() => setIsMenuOpen(true)}
-            aria-expanded={isMenuOpen}
-            aria-controls="mobile-menu"
-            className="p-2 text-[var(--cyber-neon-blue)] bg-[var(--cyber-neon-blue)]/5 hover:bg-[var(--cyber-neon-blue)]/15 rounded-md border border-[var(--cyber-neon-blue)]/30 transition-all group shadow-[0_0_10px_rgba(0,243,255,0.05)] min-[1840px]:hidden"
-            aria-label="Open navigation menu"
-          >
-            <AlignLeft
-              className="w-6 h-6 group-hover:scale-110 transition-transform"
-              aria-hidden="true"
-            />
-          </button>
         </div>
       </header>
+
+      <button
+        onClick={() => setIsMenuOpen(true)}
+        aria-expanded={isMenuOpen}
+        aria-controls="mobile-menu"
+        className="fixed top-20 left-4 sm:left-8 z-[95] p-2 text-[var(--cyber-neon-blue)] bg-[var(--bg-color)]/90 backdrop-blur-md hover:bg-[var(--cyber-neon-blue)]/10 rounded-md border border-[var(--cyber-neon-blue)]/30 transition-all group shadow-[0_0_15px_rgba(0,243,255,0.1)] min-[1840px]:hidden"
+        aria-label="Open navigation menu"
+      >
+        <AlignLeft
+          className="w-6 h-6 group-hover:scale-110 transition-transform"
+          aria-hidden="true"
+        />
+      </button>
 
       <aside
         className="fixed left-0 top-[64px] bottom-0 z-[90] hidden w-64 flex-col border-r border-[var(--border-light)] bg-[var(--bg-color)]/90 px-4 py-6 backdrop-blur-md min-[1840px]:flex"
