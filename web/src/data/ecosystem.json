@@ -632,25 +632,6 @@
     },
     {
       "category": "plugins",
-      "name": "protoc-gen-doc",
-      "owner": "estan",
-      "repo": "protoc-gen-doc",
-      "desc": "Documentation generator plugin (Markdown/HTML/DocBook/...)",
-      "url": "https://github.com/estan/protoc-gen-doc",
-      "github": "https://github.com/estan/protoc-gen-doc",
-      "languages": [
-        "Agnostic"
-      ],
-      "relevance": 2,
-      "stars": 2829,
-      "pushedAt": "2025-02-11T14:03:18Z",
-      "inactive": true,
-      "starsWeekly": 3,
-      "starsMonthly": 5,
-      "archived": false
-    },
-    {
-      "category": "plugins",
       "name": "protoc-gen-lint",
       "owner": "ckaznocha",
       "repo": "protoc-gen-lint",
