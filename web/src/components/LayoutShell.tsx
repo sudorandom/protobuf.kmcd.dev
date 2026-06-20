@@ -546,6 +546,10 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
       const isLight = document.documentElement.classList.contains("light");
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setTheme(isLight ? "light" : "dark");
+
+      if (window.innerWidth >= 768) {
+        setIsMenuOpen(true);
+      }
     }
   }, []);
 
@@ -849,253 +853,280 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
         </div>
       </header>
 
-      <button
-        onClick={() => setIsMenuOpen(true)}
-        aria-expanded={isMenuOpen}
-        aria-controls="mobile-menu"
-        className="fixed top-20 left-4 sm:left-8 z-[95] p-2 text-[var(--cyber-neon-blue)] bg-[var(--bg-color)]/90 backdrop-blur-md hover:bg-[var(--cyber-neon-blue)]/10 rounded-md border border-[var(--cyber-neon-blue)]/30 transition-all group shadow-[0_0_15px_rgba(0,243,255,0.1)] min-[1840px]:hidden"
-        aria-label="Open navigation menu"
-      >
-        <AlignLeft
-          className="w-6 h-6 group-hover:scale-110 transition-transform"
-          aria-hidden="true"
-        />
-      </button>
-
-      <aside
-        className="fixed left-0 top-[64px] bottom-0 z-[90] hidden w-64 flex-col border-r border-[var(--border-light)] bg-[var(--bg-color)]/90 px-4 py-6 backdrop-blur-md min-[1840px]:flex"
-        aria-label="Page navigation"
-      >
-        <nav className="flex min-h-0 flex-1 flex-col gap-6">
-          <SideNavigationGroup
-            title="Pages"
-            items={NAV_ITEMS}
-            activeSection={activeSection}
-            pageSections={pageSections}
-            activePageSectionId={activePageSectionId}
+      {!isMenuOpen && (
+        <button
+          onClick={() => setIsMenuOpen(true)}
+          aria-expanded={isMenuOpen}
+          aria-controls="mobile-menu"
+          className="fixed top-20 left-4 sm:left-8 z-[80] p-2 text-[var(--cyber-neon-blue)] bg-[var(--bg-color)]/90 backdrop-blur-md hover:bg-[var(--cyber-neon-blue)]/10 rounded-md border border-[var(--cyber-neon-blue)]/30 transition-all group shadow-[0_0_15px_rgba(0,243,255,0.1)]"
+          aria-label="Open navigation menu"
+        >
+          <AlignLeft
+            className="w-6 h-6 group-hover:scale-110 transition-transform"
+            aria-hidden="true"
           />
+        </button>
+      )}
 
-          <SideNavigationGroup
-            title="Resources"
-            items={RESOURCE_ITEMS}
-            activeSection={activeSection}
-            pageSections={pageSections}
-            activePageSectionId={activePageSectionId}
-          />
-        </nav>
-      </aside>
-
-      <AnimatePresence>
+      <div className="flex min-h-[calc(100vh-64px)] pt-[64px] relative w-full">
         {isMenuOpen && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsMenuOpen(false)}
-              className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[110]"
-              aria-hidden="true"
-            />
-
-            <motion.div
-              id="mobile-menu"
-              role="dialog"
-              aria-modal="true"
-              aria-label="Navigation Menu"
-              initial={{ x: "-100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "-100%" }}
-              transition={{ type: "spring", damping: 30, stiffness: 300 }}
-              className="fixed top-0 left-0 bottom-0 w-full max-w-sm z-[120] bg-[var(--bg-color)]/95 border-r border-[var(--border-light)] shadow-2xl flex flex-col backdrop-blur-md"
-            >
-              <div className="h-[64px] flex items-center justify-between px-4 sm:px-8 border-b border-[var(--border-light)]">
-                <div className="flex items-center gap-2">
-                  <div
-                    className="w-6 h-6 bg-[var(--cyber-neon-blue)]/10 rounded border border-[var(--cyber-neon-blue)]/30 flex items-center justify-center"
-                    aria-hidden="true"
-                  >
-                    <Cpu className="w-3.5 h-3.5 text-[var(--cyber-neon-blue)]" />
-                  </div>
-                  <span className="font-cyber font-bold text-[var(--cyber-neon-blue)] text-sm tracking-[0.2em] uppercase">
-                    Navigation
-                  </span>
-                </div>
-                <button
-                  onClick={() => setIsMenuOpen(false)}
-                  className="p-2 text-[var(--text-dim)] hover:text-[var(--text-color)] transition-colors"
-                  aria-label="Close menu"
+          <aside
+            className="hidden md:flex w-64 shrink-0 flex-col border-r border-[var(--border-light)] bg-[var(--bg-color)]/90 px-4 py-6 sticky top-[64px] h-[calc(100vh-64px)] overflow-y-auto z-[90] backdrop-blur-md"
+            aria-label="Page navigation"
+          >
+            <div className="flex justify-between items-center mb-6 border-b border-[var(--border-light)] pb-4">
+              <div className="flex items-center gap-2">
+                <div
+                  className="w-6 h-6 bg-[var(--cyber-neon-blue)]/10 rounded border border-[var(--cyber-neon-blue)]/30 flex items-center justify-center"
+                  aria-hidden="true"
                 >
-                  <X className="w-6 h-6" aria-hidden="true" />
-                </button>
+                  <Cpu className="w-3.5 h-3.5 text-[var(--cyber-neon-blue)]" />
+                </div>
+                <span className="font-cyber font-bold text-xs uppercase tracking-[0.2em] text-[var(--cyber-neon-blue)]">
+                  Navigation
+                </span>
               </div>
-
-              <nav className="flex-1 overflow-y-auto py-6 px-4 sm:px-8 custom-scrollbar">
-                <button
-                  onClick={() => {
-                    setIsMenuOpen(false);
-                    setIsSearchOpen(true);
-                  }}
-                  className="mb-5 flex w-full items-center justify-between rounded-md border border-[var(--cyber-neon-blue)]/30 bg-[var(--cyber-neon-blue)]/5 px-4 py-3 text-left text-[var(--cyber-neon-blue)] transition-colors hover:bg-[var(--cyber-neon-blue)]/15"
-                >
-                  <span className="flex items-center gap-3">
-                    <Search className="h-5 w-5" aria-hidden="true" />
-                    <span className="font-cyber text-sm font-bold uppercase tracking-wider">
-                      Search
-                    </span>
-                  </span>
-                  <ChevronRight className="h-4 w-4" aria-hidden="true" />
-                </button>
-                <div className="flex flex-col gap-6">
-                  <SideNavigationGroup
-                    title="Pages"
-                    items={NAV_ITEMS}
-                    activeSection={activeSection}
-                    pageSections={pageSections}
-                    activePageSectionId={activePageSectionId}
-                    onNavigate={() => setIsMenuOpen(false)}
-                  />
-
-                  <SideNavigationGroup
-                    title="Resources"
-                    items={RESOURCE_ITEMS}
-                    activeSection={activeSection}
-                    pageSections={pageSections}
-                    activePageSectionId={activePageSectionId}
-                    onNavigate={() => setIsMenuOpen(false)}
-                  />
-                </div>
-              </nav>
-
-              <div className="p-8 border-t border-[var(--border-light)] bg-[var(--overlay-bg)]">
-                <div className="text-sm font-mono text-[var(--text-dim)] uppercase tracking-widest mb-4">
-                  Quick Links
-                </div>
-                <div className="flex gap-4">
-                  <a
-                    href="https://kmcd.dev"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-2 bg-[var(--overlay-bg)] rounded hover:bg-[var(--border-light)] transition-colors text-[var(--text-dim)] hover:text-[var(--cyber-neon-blue)]"
-                    title="KMCD.DEV"
-                    aria-label="Visit KMCD.DEV"
-                  >
-                    <Fingerprint className="w-4 h-4" aria-hidden="true" />
-                  </a>
-                  <a
-                    href="https://github.com/sudorandom/protobuf.kmcd.dev"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-2 bg-[var(--overlay-bg)] rounded hover:bg-[var(--border-light)] transition-colors text-[var(--text-dim)] hover:text-[var(--cyber-neon-pink)]"
-                    title="GitHub Repository"
-                    aria-label="Visit GitHub Repository"
-                  >
-                    <Code2 className="w-4 h-4" aria-hidden="true" />
-                  </a>
-                  <a
-                    href="https://protobuf.dev/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-2 bg-[var(--overlay-bg)] rounded hover:bg-[var(--border-light)] transition-colors text-[var(--text-dim)] hover:text-[var(--cyber-neon-green)]"
-                    title="Protobuf Docs"
-                    aria-label="Visit Protobuf Documentation"
-                  >
-                    <Database className="w-4 h-4" aria-hidden="true" />
-                  </a>
-                </div>
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-
-      <main
-        id="main-content"
-        className="min-h-[calc(100vh-64px)] flex flex-col pt-[64px]"
-        data-pagefind-body
-        data-pagefind-meta={`category:${SECTION_LABELS[activeSection] || "Protobuf"}`}
-      >
-        {children}
-        {activeSection !== "hero" && (prevNav || nextNav) && (
-          <div className="mt-auto w-full border-t border-[var(--border-light)]">
-            <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-10 sm:px-8">
-              {prevNav ? (
-                <a
-                  href={prevNav.path}
-                  className="flex min-w-0 flex-col items-start gap-1 group transition-all"
-                >
-                  <span className="text-sm font-mono text-[var(--text-dim)] uppercase tracking-[0.2em]">
-                    Previous
-                  </span>
-                  <div className="flex min-w-0 items-center gap-2 text-[var(--text-color)] group-hover:text-[var(--cyber-neon-blue)]">
-                    <ChevronLeft
-                      className="h-5 w-5 shrink-0 transition-transform group-hover:-translate-x-1"
-                      aria-hidden="true"
-                    />
-                    <span className="truncate font-cyber text-sm font-bold uppercase tracking-wider">
-                      {prevNav.label}
-                    </span>
-                  </div>
-                </a>
-              ) : (
-                <div />
-              )}
-
-              {nextNav ? (
-                <a
-                  href={nextNav.path}
-                  className="flex min-w-0 flex-col items-end gap-1 group transition-all text-right"
-                >
-                  <span className="text-sm font-mono text-[var(--text-dim)] uppercase tracking-[0.2em]">
-                    Next
-                  </span>
-                  <div className="flex min-w-0 items-center gap-2 text-[var(--text-color)] group-hover:text-[var(--cyber-neon-blue)]">
-                    <span className="truncate font-cyber text-sm font-bold uppercase tracking-wider">
-                      {nextNav.label}
-                    </span>
-                    <ChevronRight
-                      className="h-5 w-5 shrink-0 transition-transform group-hover:translate-x-1"
-                      aria-hidden="true"
-                    />
-                  </div>
-                </a>
-              ) : (
-                <div />
-              )}
+              <button
+                onClick={() => setIsMenuOpen(false)}
+                className="p-1.5 text-[var(--text-dim)] hover:text-[var(--text-color)] hover:bg-[var(--overlay-bg)] rounded transition-colors"
+                aria-label="Collapse navigation menu"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
             </div>
-          </div>
+
+            <nav className="flex min-h-0 flex-1 flex-col gap-6">
+              <SideNavigationGroup
+                title="Pages"
+                items={NAV_ITEMS}
+                activeSection={activeSection}
+                pageSections={pageSections}
+                activePageSectionId={activePageSectionId}
+              />
+
+              <SideNavigationGroup
+                title="Resources"
+                items={RESOURCE_ITEMS}
+                activeSection={activeSection}
+                pageSections={pageSections}
+                activePageSectionId={activePageSectionId}
+              />
+            </nav>
+          </aside>
         )}
-        {relatedLinks.length > 0 && (
-          <div className="w-full border-t border-[var(--border-light)]">
-            <div className="mx-auto max-w-7xl px-4 py-12 sm:px-8">
-              <div className="mb-5 text-sm font-mono uppercase tracking-[0.2em] text-[var(--text-dim)]">
-                Related
-              </div>
-              <div className="grid gap-3 md:grid-cols-3">
-                {relatedLinks.map((item) => (
-                  <a
-                    key={`${activeSection}-${item.id}`}
-                    href={item.path}
-                    className="group rounded-md border border-[var(--border-light)] bg-[var(--overlay-bg)] p-4 transition-colors hover:border-[var(--cyber-neon-blue)]/40 hover:bg-[var(--cyber-neon-blue)]/10"
+
+        <AnimatePresence>
+          {isMenuOpen && (
+            <>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setIsMenuOpen(false)}
+                className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[110] md:hidden"
+                aria-hidden="true"
+              />
+
+              <motion.div
+                id="mobile-menu"
+                role="dialog"
+                aria-modal="true"
+                aria-label="Navigation Menu"
+                initial={{ x: "-100%" }}
+                animate={{ x: 0 }}
+                exit={{ x: "-100%" }}
+                transition={{ type: "spring", damping: 30, stiffness: 300 }}
+                className="fixed top-0 left-0 bottom-0 w-full max-w-sm z-[120] bg-[var(--bg-color)]/95 border-r border-[var(--border-light)] shadow-2xl flex flex-col backdrop-blur-md md:hidden"
+              >
+                <div className="h-[64px] flex items-center justify-between px-4 sm:px-8 border-b border-[var(--border-light)]">
+                  <div className="flex items-center gap-2">
+                    <div
+                      className="w-6 h-6 bg-[var(--cyber-neon-blue)]/10 rounded border border-[var(--cyber-neon-blue)]/30 flex items-center justify-center"
+                      aria-hidden="true"
+                    >
+                      <Cpu className="w-3.5 h-3.5 text-[var(--cyber-neon-blue)]" />
+                    </div>
+                    <span className="font-cyber font-bold text-[var(--cyber-neon-blue)] text-sm tracking-[0.2em] uppercase">
+                      Navigation
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => setIsMenuOpen(false)}
+                    className="p-2 text-[var(--text-dim)] hover:text-[var(--text-color)] transition-colors"
+                    aria-label="Close menu"
                   >
-                    <div className="flex items-center justify-between gap-3">
-                      <span className="font-cyber text-sm font-bold uppercase tracking-wider text-[var(--text-color)] group-hover:text-[var(--cyber-neon-blue)]">
-                        {item.label}
+                    <X className="w-6 h-6" aria-hidden="true" />
+                  </button>
+                </div>
+
+                <nav className="flex-1 overflow-y-auto py-6 px-4 sm:px-8 custom-scrollbar">
+                  <button
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                      setIsSearchOpen(true);
+                    }}
+                    className="mb-5 flex w-full items-center justify-between rounded-md border border-[var(--cyber-neon-blue)]/30 bg-[var(--cyber-neon-blue)]/5 px-4 py-3 text-left text-[var(--cyber-neon-blue)] transition-colors hover:bg-[var(--cyber-neon-blue)]/15"
+                  >
+                    <span className="flex items-center gap-3">
+                      <Search className="h-5 w-5" aria-hidden="true" />
+                      <span className="font-cyber text-sm font-bold uppercase tracking-wider">
+                        Search
+                      </span>
+                    </span>
+                    <ChevronRight className="h-4 w-4" aria-hidden="true" />
+                  </button>
+                  <div className="flex flex-col gap-6">
+                    <SideNavigationGroup
+                      title="Pages"
+                      items={NAV_ITEMS}
+                      activeSection={activeSection}
+                      pageSections={pageSections}
+                      activePageSectionId={activePageSectionId}
+                      onNavigate={() => setIsMenuOpen(false)}
+                    />
+
+                    <SideNavigationGroup
+                      title="Resources"
+                      items={RESOURCE_ITEMS}
+                      activeSection={activeSection}
+                      pageSections={pageSections}
+                      activePageSectionId={activePageSectionId}
+                      onNavigate={() => setIsMenuOpen(false)}
+                    />
+                  </div>
+                </nav>
+
+                <div className="p-8 border-t border-[var(--border-light)] bg-[var(--overlay-bg)]">
+                  <div className="text-sm font-mono text-[var(--text-dim)] uppercase tracking-widest mb-4">
+                    Quick Links
+                  </div>
+                  <div className="flex gap-4">
+                    <a
+                      href="https://kmcd.dev"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-2 bg-[var(--overlay-bg)] rounded hover:bg-[var(--border-light)] transition-colors text-[var(--text-dim)] hover:text-[var(--cyber-neon-blue)]"
+                      title="KMCD.DEV"
+                      aria-label="Visit KMCD.DEV"
+                    >
+                      <Fingerprint className="w-4 h-4" aria-hidden="true" />
+                    </a>
+                    <a
+                      href="https://github.com/sudorandom/protobuf.kmcd.dev"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-2 bg-[var(--overlay-bg)] rounded hover:bg-[var(--border-light)] transition-colors text-[var(--text-dim)] hover:text-[var(--cyber-neon-pink)]"
+                      title="GitHub Repository"
+                      aria-label="Visit GitHub Repository"
+                    >
+                      <Code2 className="w-4 h-4" aria-hidden="true" />
+                    </a>
+                    <a
+                      href="https://protobuf.dev/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-2 bg-[var(--overlay-bg)] rounded hover:bg-[var(--border-light)] transition-colors text-[var(--text-dim)] hover:text-[var(--cyber-neon-green)]"
+                      title="Protobuf Docs"
+                      aria-label="Visit Protobuf Documentation"
+                    >
+                      <Database className="w-4 h-4" aria-hidden="true" />
+                    </a>
+                  </div>
+                </div>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
+
+        <main
+          id="main-content"
+          className="flex-1 min-w-0 flex flex-col pt-0"
+          data-pagefind-body
+          data-pagefind-meta={`category:${SECTION_LABELS[activeSection] || "Protobuf"}`}
+        >
+          {children}
+          {activeSection !== "hero" && (prevNav || nextNav) && (
+            <div className="mt-auto w-full border-t border-[var(--border-light)]">
+              <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-10 sm:px-8">
+                {prevNav ? (
+                  <a
+                    href={prevNav.path}
+                    className="flex min-w-0 flex-col items-start gap-1 group transition-all"
+                  >
+                    <span className="text-sm font-mono text-[var(--text-dim)] uppercase tracking-[0.2em]">
+                      Previous
+                    </span>
+                    <div className="flex min-w-0 items-center gap-2 text-[var(--text-color)] group-hover:text-[var(--cyber-neon-blue)]">
+                      <ChevronLeft
+                        className="h-5 w-5 shrink-0 transition-transform group-hover:-translate-x-1"
+                        aria-hidden="true"
+                      />
+                      <span className="truncate font-cyber text-sm font-bold uppercase tracking-wider">
+                        {prevNav.label}
+                      </span>
+                    </div>
+                  </a>
+                ) : (
+                  <div />
+                )}
+
+                {nextNav ? (
+                  <a
+                    href={nextNav.path}
+                    className="flex min-w-0 flex-col items-end gap-1 group transition-all text-right"
+                  >
+                    <span className="text-sm font-mono text-[var(--text-dim)] uppercase tracking-[0.2em]">
+                      Next
+                    </span>
+                    <div className="flex min-w-0 items-center gap-2 text-[var(--text-color)] group-hover:text-[var(--cyber-neon-blue)]">
+                      <span className="truncate font-cyber text-sm font-bold uppercase tracking-wider">
+                        {nextNav.label}
                       </span>
                       <ChevronRight
-                        className="h-4 w-4 text-[var(--cyber-neon-blue)] transition-transform group-hover:translate-x-1"
+                        className="h-5 w-5 shrink-0 transition-transform group-hover:translate-x-1"
                         aria-hidden="true"
                       />
                     </div>
-                    <p className="mt-2 text-sm leading-relaxed text-[var(--text-dim)]">
-                      {item.description}
-                    </p>
                   </a>
-                ))}
+                ) : (
+                  <div />
+                )}
               </div>
             </div>
-          </div>
-        )}
-      </main>
+          )}
+          {relatedLinks.length > 0 && (
+            <div className="w-full border-t border-[var(--border-light)]">
+              <div className="mx-auto max-w-7xl px-4 py-12 sm:px-8">
+                <div className="mb-5 text-sm font-mono uppercase tracking-[0.2em] text-[var(--text-dim)]">
+                  Related
+                </div>
+                <div className="grid gap-3 md:grid-cols-3">
+                  {relatedLinks.map((item) => (
+                    <a
+                      key={`${activeSection}-${item.id}`}
+                      href={item.path}
+                      className="group rounded-md border border-[var(--border-light)] bg-[var(--overlay-bg)] p-4 transition-colors hover:border-[var(--cyber-neon-blue)]/40 hover:bg-[var(--cyber-neon-blue)]/10"
+                    >
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="font-cyber text-sm font-bold uppercase tracking-wider text-[var(--text-color)] group-hover:text-[var(--cyber-neon-blue)]">
+                          {item.label}
+                        </span>
+                        <ChevronRight
+                          className="h-4 w-4 text-[var(--cyber-neon-blue)] transition-transform group-hover:translate-x-1"
+                          aria-hidden="true"
+                        />
+                      </div>
+                      <p className="mt-2 text-sm leading-relaxed text-[var(--text-dim)]">
+                        {item.description}
+                      </p>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+        </main>
+      </div>
 
       <SearchModal
         isOpen={isSearchOpen}
