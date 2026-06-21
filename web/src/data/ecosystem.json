@@ -1621,7 +1621,7 @@
       "owner": "pawitp",
       "repo": "protobuf-decoder",
       "desc": "A lightweight, browser-based tool to decode and inspect raw binary Protocol Buffers logs and payloads on-the-fly.",
-      "url": "https://pawitp.github.io/protobuf-decoder/",
+      "url": "https://protobuf-decoder.netlify.app/",
       "github": "https://github.com/pawitp/protobuf-decoder",
       "languages": [
         "Agnostic"
