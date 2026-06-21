@@ -153,7 +153,7 @@ const SideNavigationGroup = ({
               {item.label}
             </a>
             {isActive && pageSections.length > 1 && (
-              <div className="mt-1 max-h-[42vh] space-y-1 overflow-y-auto border-l border-[var(--border-light)] ml-3 pl-2 pr-1 custom-scrollbar">
+              <div className="mt-1 space-y-1 border-l border-[var(--border-light)] ml-3 pl-2 pr-1">
                 {pageSections.map((section) => {
                   const isCurrentSection = activePageSectionId === section.id;
                   return (
@@ -871,7 +871,7 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
       <div className="flex min-h-[calc(100vh-64px)] pt-[64px] relative w-full">
         {isMenuOpen && (
           <aside
-            className="hidden md:flex w-64 shrink-0 flex-col border-r border-[var(--border-light)] bg-[var(--bg-color)]/90 px-4 py-6 sticky top-[64px] h-[calc(100vh-64px)] overflow-y-auto z-[90] backdrop-blur-md"
+            className="hidden md:flex w-64 shrink-0 flex-col border-r border-[var(--border-light)] bg-[var(--bg-color)]/90 px-4 py-6 z-[90] backdrop-blur-md"
             aria-label="Page navigation"
           >
             <div className="flex justify-between items-center mb-6 border-b border-[var(--border-light)] pb-4">
