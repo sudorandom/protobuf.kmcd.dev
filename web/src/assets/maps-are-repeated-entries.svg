@@ -1,0 +1,80 @@
+<svg viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg" font-family="Inter, ui-sans-serif, system-ui, sans-serif">
+  <defs>
+    <linearGradient id="maps-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00f3ff" />
+      <stop offset="55%" stop-color="#00ff9f" />
+      <stop offset="100%" stop-color="#ff66ff" />
+    </linearGradient>
+    <filter id="maps-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="10" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+    <marker id="maps-arrow" markerWidth="9" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 9 3, 0 6" fill="#00f3ff" opacity="0.9" />
+    </marker>
+    <pattern id="maps-grid" width="44" height="44" patternUnits="userSpaceOnUse">
+      <path d="M 44 0 L 0 0 0 44" fill="none" stroke="#00f3ff" stroke-width="1" opacity="0.12" />
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="630" fill="#050505" />
+  <rect width="1200" height="630" fill="url(#maps-grid)" />
+  <circle cx="610" cy="315" r="320" fill="#00f3ff" opacity="0.035" filter="url(#maps-glow)" />
+
+  <text x="72" y="34" fill="#00f3ff" font-size="14" font-weight="800" letter-spacing="2">PROTOBUF SIMPLIFIED</text>
+  <text x="72" y="82" fill="#e2e8f0" font-size="46" font-weight="800">Fun fact: maps are repeated entries</text>
+  <text x="74" y="120" fill="#94a3b8" font-size="22">A protobuf map is encoded as repeated key/value messages.</text>
+
+  <g transform="translate(70 182)">
+    <rect width="380" height="270" rx="10" fill="#0d0d12" stroke="#00f3ff" stroke-width="2" />
+    <text x="28" y="44" fill="#94a3b8" font-size="14" font-weight="800" letter-spacing="3">SCHEMA</text>
+    <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15">
+      <text x="28" y="104"><tspan fill="#ff66ff">message</tspan><tspan fill="#e2e8f0"> Cart {</tspan></text>
+      <text x="48" y="142"><tspan fill="#00f3ff">map</tspan><tspan fill="#e2e8f0">&lt;</tspan><tspan fill="#00f3ff">string</tspan><tspan fill="#e2e8f0">, </tspan><tspan fill="#00f3ff">int32</tspan><tspan fill="#e2e8f0">&gt; quantities = </tspan><tspan fill="#facc15">1</tspan><tspan fill="#e2e8f0">;</tspan></text>
+      <text x="28" y="180" fill="#e2e8f0">}</text>
+    </g>
+  </g>
+
+  <path d="M 466 318 L 507 318" fill="none" stroke="#00f3ff" stroke-width="3.5" marker-end="url(#maps-arrow)" />
+
+  <g transform="translate(525 182)">
+    <rect width="270" height="270" rx="10" fill="#0d0d12" stroke="url(#maps-gradient)" stroke-width="3" filter="url(#maps-glow)" />
+    <text x="28" y="44" fill="#94a3b8" font-size="14" font-weight="800" letter-spacing="3">ENTRY TYPE</text>
+    <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="19">
+      <text x="28" y="88"><tspan fill="#ff66ff">message</tspan><tspan fill="#e2e8f0"> Entry {</tspan></text>
+      <text x="48" y="132">
+        <tspan fill="#00f3ff">string</tspan>
+        <tspan fill="#e2e8f0"> key = </tspan>
+        <tspan fill="#facc15">1</tspan>
+        <tspan fill="#e2e8f0">;</tspan>
+      </text>
+      <text x="48" y="174">
+        <tspan fill="#00f3ff">int32</tspan>
+        <tspan fill="#e2e8f0"> value = </tspan>
+        <tspan fill="#facc15">2</tspan>
+        <tspan fill="#e2e8f0">;</tspan>
+      </text>
+      <text x="28" y="216" fill="#e2e8f0">}</text>
+    </g>
+  </g>
+
+  <path d="M 811 318 L 852 318" fill="none" stroke="#00f3ff" stroke-width="3.5" marker-end="url(#maps-arrow)" />
+
+  <g transform="translate(870 182)">
+    <rect width="260" height="270" rx="10" fill="#0d0d12" stroke="#ff66ff" stroke-width="2" />
+    <text x="28" y="44" fill="#94a3b8" font-size="14" font-weight="800" letter-spacing="3">WIRE SHAPE</text>
+    <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="17" font-weight="800">
+      <rect x="26" y="70" width="208" height="44" rx="8" fill="#00f3ff" fill-opacity="0.13" stroke="#00f3ff" stroke-opacity="0.45" />
+      <text x="46" y="99" fill="#00f3ff">"tea" -> 2</text>
+      <rect x="26" y="124" width="208" height="44" rx="8" fill="#00ff9f" fill-opacity="0.13" stroke="#00ff9f" stroke-opacity="0.45" />
+      <text x="46" y="153" fill="#00ff9f">"jam" -> 1</text>
+      <rect x="26" y="178" width="208" height="44" rx="8" fill="#ff66ff" fill-opacity="0.13" stroke="#ff66ff" stroke-opacity="0.45" />
+      <text x="46" y="207" fill="#ff66ff">"fig" -> 4</text>
+    </g>
+  </g>
+
+  <g transform="translate(232 530)">
+    <rect width="736" height="50" rx="25" fill="#ff66ff" fill-opacity="0.12" stroke="#ff66ff" stroke-opacity="0.55" />
+    <text x="368" y="33" fill="#e2e8f0" font-size="21" font-weight="800" text-anchor="middle">Each map item travels as one tiny key/value message</text>
+  </g>
+</svg>

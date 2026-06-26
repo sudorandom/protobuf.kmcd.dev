@@ -13,6 +13,9 @@ const diagrams = [
   "src/assets/reserved-fields.svg",
   "src/assets/deprecated-field.svg",
   "src/assets/protovalidate-json-errors.svg",
+  "src/assets/maps-are-repeated-entries.svg",
+  "src/assets/well-known-types.svg",
+  "src/assets/field-presence-proto3.svg",
 ];
 
 async function generateImages() {
