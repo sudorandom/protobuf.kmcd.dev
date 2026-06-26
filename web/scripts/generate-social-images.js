@@ -3,8 +3,32 @@ import fs from "fs";
 import path from "path";
 
 const outputDir = "public";
+const diagramOutputDir = path.join(outputDir, "diagrams");
+
+const diagrams = [
+  "src/assets/how-it-works.svg",
+  "src/assets/hero-social.svg",
+  "src/assets/schema-data-binary.svg",
+  "src/assets/schema-compiler-generated-code.svg",
+  "src/assets/reserved-field-numbers.svg",
+  "src/assets/reserved-field-names.svg",
+  "src/assets/protovalidate-json-errors.svg",
+];
 
 async function generateImages() {
+  fs.mkdirSync(diagramOutputDir, { recursive: true });
+
+  for (const input of diagrams) {
+    if (!fs.existsSync(input)) {
+      console.warn(`Input SVG not found: ${input}, skipping SVG copy...`);
+      continue;
+    }
+
+    const output = path.join(diagramOutputDir, path.basename(input));
+    fs.copyFileSync(input, output);
+    console.log(`Rendered ${output} from ${input}.`);
+  }
+
   const tasks = [
     {
       input: "src/assets/how-it-works.svg",
