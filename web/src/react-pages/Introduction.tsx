@@ -432,23 +432,29 @@ export const Introduction = ({
             <div className="flex flex-col items-center gap-2">
               <ArrowRight className="w-8 h-8 text-[var(--cyber-neon-blue)] rotate-90 md:rotate-0" />
               <span className="text-sm font-mono text-[var(--text-dim)] uppercase">
-                <ExternalLinkText href="https://github.com/protocolbuffers/protobuf/releases">
-                  protoc
-                </ExternalLinkText>{" "}
-                /{" "}
-                <ExternalLinkText href="https://buf.build/">
-                  Buf
-                </ExternalLinkText>
+                generate
               </span>
             </div>
             <CyberPanel
-              title="COMPILER"
+              title="COMPILE"
               className="w-full md:w-64 text-center border-[var(--cyber-neon-blue)] shadow-[0_0_15px_rgba(0,243,255,0.2)]"
             >
               <Cpu className="w-12 h-12 text-[var(--cyber-neon-blue)] mx-auto mb-4 animate-pulse" />
-              <span className="font-cyber text-sm text-[var(--cyber-neon-blue)]">
-                CODE_GENERATION
-              </span>
+              <div className="text-sm text-[var(--cyber-neon-blue)]">
+                <span className="font-cyber">
+                  <ExternalLinkText href="https://buf.build/">
+                    BUF
+                  </ExternalLinkText>{" "}
+                  /{" "}
+                  <ExternalLinkText href="https://github.com/protocolbuffers/protobuf/releases">
+                    PROTOC
+                  </ExternalLinkText>{" "}
+                  + PLUGINS{" "}
+                  <span className="font-mono text-xs text-[var(--text-dim)]">
+                    (protoc-gen-*)
+                  </span>
+                </span>
+              </div>
             </CyberPanel>
             <div className="flex flex-col items-center gap-2">
               <ArrowRight className="w-8 h-8 text-[var(--cyber-neon-pink)] rotate-90 md:rotate-0" />
