@@ -61,17 +61,15 @@ export const NextSteps = () => (
           </p>
         </a>
         <a
-          href="https://github.com/protocolbuffers/protobuf"
-          target="_blank"
-          rel="noopener noreferrer"
+          href="/ecosystem/"
           className="p-6 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-xl hover:border-[var(--cyber-neon-yellow)] transition-all group"
         >
           <h3 className="font-cyber font-bold text-[var(--cyber-neon-yellow)] uppercase mb-2">
-            GitHub Repo
+            Ecosystem
           </h3>
           <p className="text-sm text-[var(--text-dim)]">
-            Dive into the source code of the compilers and runtimes for every
-            major language.
+            Explore protobuf libraries, runtimes, plugins, and tools across the
+            wider ecosystem.
           </p>
         </a>
       </div>

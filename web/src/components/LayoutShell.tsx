@@ -72,6 +72,12 @@ const NAV_ITEMS: NavItemDef[] = [
     path: "/community/",
     description: "Explore protobuf adoption, history, and community resources.",
   },
+  {
+    id: "conclusion",
+    label: "Conclusion",
+    path: "/conclusion/",
+    description: "Wrap up the protobuf concepts and next steps.",
+  },
 ];
 
 const SECTION_LABELS: Record<string, string> = {
@@ -109,6 +115,7 @@ const RELATED_LINKS: Record<string, NavItemDef[]> = {
   efficiency: [navItem("basics"), navItem("binary"), navItem("advanced")],
   ecosystem: [navItem("tooling"), navItem("binary"), navItem("efficiency")],
   community: [navItem("ecosystem"), navItem("tooling"), navItem("intro")],
+  conclusion: [navItem("community"), navItem("ecosystem"), navItem("intro")],
 };
 
 interface PageSectionLink {
@@ -505,7 +512,8 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
   currentPath,
   children,
 }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(true);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isNavDropdownOpen, setIsNavDropdownOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [theme, setTheme] = useState<"dark" | "light">("dark");
@@ -534,6 +542,10 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
       (normalizedPathname === "/" && item.path === "/"),
   );
   const activeSection = ALL_PAGE_ITEMS[currentPageIndex]?.id || "hero";
+  const visibleNavItems =
+    activeSection === "conclusion"
+      ? NAV_ITEMS
+      : NAV_ITEMS.filter((item) => item.id !== "conclusion");
   const relatedLinks = RELATED_LINKS[activeSection] || [];
   const prevNav = currentNavIndex > 0 ? NAV_ITEMS[currentNavIndex - 1] : null;
   const nextNav =
@@ -546,10 +558,6 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
       const isLight = document.documentElement.classList.contains("light");
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setTheme(isLight ? "light" : "dark");
-
-      if (window.innerWidth >= 768) {
-        setIsMenuOpen(true);
-      }
     }
   }, []);
 
@@ -648,6 +656,7 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setIsMenuOpen(false);
+        setIsMobileMenuOpen(false);
         setIsNavDropdownOpen(false);
         setIsSearchOpen(false);
       }
@@ -745,7 +754,7 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
                       className="absolute top-full left-1/2 mt-2 w-[240px] -translate-x-1/2 bg-[var(--panel-bg)] border border-[var(--border-light)] rounded shadow-2xl overflow-hidden z-[110] backdrop-blur-2xl"
                     >
                       <div className="py-1 bg-[var(--panel-bg)]/95">
-                        {NAV_ITEMS.map((item) => {
+                        {visibleNavItems.map((item) => {
                           const isActive = activeSection === item.id;
                           return (
                             <a
@@ -858,7 +867,22 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
           onClick={() => setIsMenuOpen(true)}
           aria-expanded={isMenuOpen}
           aria-controls="mobile-menu"
-          className="fixed top-20 left-4 sm:left-8 z-[80] p-2 text-[var(--cyber-neon-blue)] bg-[var(--bg-color)]/90 backdrop-blur-md hover:bg-[var(--cyber-neon-blue)]/10 rounded-md border border-[var(--cyber-neon-blue)]/30 transition-all group shadow-[0_0_15px_rgba(0,243,255,0.1)]"
+          className="fixed top-20 left-4 sm:left-8 z-[80] hidden p-2 text-[var(--cyber-neon-blue)] bg-[var(--bg-color)]/90 backdrop-blur-md hover:bg-[var(--cyber-neon-blue)]/10 rounded-md border border-[var(--cyber-neon-blue)]/30 transition-all group shadow-[0_0_15px_rgba(0,243,255,0.1)] md:block"
+          aria-label="Open navigation menu"
+        >
+          <AlignLeft
+            className="w-6 h-6 group-hover:scale-110 transition-transform"
+            aria-hidden="true"
+          />
+        </button>
+      )}
+
+      {!isMobileMenuOpen && (
+        <button
+          onClick={() => setIsMobileMenuOpen(true)}
+          aria-expanded={isMobileMenuOpen}
+          aria-controls="mobile-menu"
+          className="fixed top-20 left-4 sm:left-8 z-[80] p-2 text-[var(--cyber-neon-blue)] bg-[var(--bg-color)]/90 backdrop-blur-md hover:bg-[var(--cyber-neon-blue)]/10 rounded-md border border-[var(--cyber-neon-blue)]/30 transition-all group shadow-[0_0_15px_rgba(0,243,255,0.1)] md:hidden"
           aria-label="Open navigation menu"
         >
           <AlignLeft
@@ -898,7 +922,7 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
             <nav className="flex min-h-0 flex-1 flex-col gap-6">
               <SideNavigationGroup
                 title="Pages"
-                items={NAV_ITEMS}
+                items={visibleNavItems}
                 activeSection={activeSection}
                 pageSections={pageSections}
                 activePageSectionId={activePageSectionId}
@@ -916,13 +940,13 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
         )}
 
         <AnimatePresence>
-          {isMenuOpen && (
+          {isMobileMenuOpen && (
             <>
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                onClick={() => setIsMenuOpen(false)}
+                onClick={() => setIsMobileMenuOpen(false)}
                 className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[110] md:hidden"
                 aria-hidden="true"
               />
@@ -951,7 +975,7 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
                     </span>
                   </div>
                   <button
-                    onClick={() => setIsMenuOpen(false)}
+                    onClick={() => setIsMobileMenuOpen(false)}
                     className="p-2 text-[var(--text-dim)] hover:text-[var(--text-color)] transition-colors"
                     aria-label="Close menu"
                   >
@@ -962,7 +986,7 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
                 <nav className="flex-1 overflow-y-auto py-6 px-4 sm:px-8 custom-scrollbar">
                   <button
                     onClick={() => {
-                      setIsMenuOpen(false);
+                      setIsMobileMenuOpen(false);
                       setIsSearchOpen(true);
                     }}
                     className="mb-5 flex w-full items-center justify-between rounded-md border border-[var(--cyber-neon-blue)]/30 bg-[var(--cyber-neon-blue)]/5 px-4 py-3 text-left text-[var(--cyber-neon-blue)] transition-colors hover:bg-[var(--cyber-neon-blue)]/15"
@@ -978,11 +1002,11 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
                   <div className="flex flex-col gap-6">
                     <SideNavigationGroup
                       title="Pages"
-                      items={NAV_ITEMS}
+                      items={visibleNavItems}
                       activeSection={activeSection}
                       pageSections={pageSections}
                       activePageSectionId={activePageSectionId}
-                      onNavigate={() => setIsMenuOpen(false)}
+                      onNavigate={() => setIsMobileMenuOpen(false)}
                     />
 
                     <SideNavigationGroup
@@ -991,7 +1015,7 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
                       activeSection={activeSection}
                       pageSections={pageSections}
                       activePageSectionId={activePageSectionId}
-                      onNavigate={() => setIsMenuOpen(false)}
+                      onNavigate={() => setIsMobileMenuOpen(false)}
                     />
                   </div>
                 </nav>
