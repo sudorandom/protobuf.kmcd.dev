@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-06-26T11:30:19.487Z",
+  "fetchedAt": "2026-06-26T13:35:30.553Z",
   "projects": [
     {
       "category": "tools",
@@ -115,7 +115,7 @@
       "pushedAt": "2026-06-14T17:42:44Z",
       "inactive": false,
       "starsWeekly": 0,
-      "starsMonthly": 5,
+      "starsMonthly": 4,
       "archived": false
     },
     {
@@ -132,7 +132,7 @@
       "pushedAt": "2026-06-26T11:10:45Z",
       "inactive": false,
       "starsWeekly": 17,
-      "starsMonthly": 59,
+      "starsMonthly": 58,
       "archived": false
     },
     {
@@ -146,10 +146,10 @@
       "languages": ["C++", "C#", "Java", "Python", "Go", "Ruby", "PHP"],
       "relevance": 4,
       "stars": 44931,
-      "pushedAt": "2026-06-26T11:26:01Z",
+      "pushedAt": "2026-06-26T11:35:18Z",
       "inactive": false,
       "starsWeekly": 46,
-      "starsMonthly": 150,
+      "starsMonthly": 149,
       "archived": false
     },
     {
@@ -179,7 +179,7 @@
       "stars": 6181,
       "pushedAt": "2026-06-25T16:11:45Z",
       "inactive": false,
-      "starsWeekly": 19,
+      "starsWeekly": 18,
       "starsMonthly": 74,
       "archived": false
     },
@@ -483,7 +483,7 @@
       "languages": ["Agnostic"],
       "relevance": 2,
       "stars": 162,
-      "pushedAt": "2026-06-22T11:05:15Z",
+      "pushedAt": "2026-06-26T13:00:08Z",
       "inactive": false,
       "starsWeekly": 1,
       "starsMonthly": 2,
@@ -585,7 +585,7 @@
       "languages": ["TypeScript", "JavaScript"],
       "relevance": 3,
       "stars": 1613,
-      "pushedAt": "2026-06-25T09:01:54Z",
+      "pushedAt": "2026-06-26T12:08:39Z",
       "inactive": false,
       "starsWeekly": 4,
       "starsMonthly": 16,
@@ -656,7 +656,7 @@
       "pushedAt": "2026-06-09T13:15:54Z",
       "inactive": false,
       "starsWeekly": 3,
-      "starsMonthly": 23,
+      "starsMonthly": 22,
       "archived": false
     },
     {
@@ -703,11 +703,11 @@
       "github": "https://github.com/go-kratos/kratos",
       "languages": ["Go"],
       "relevance": 1,
-      "stars": 25751,
-      "pushedAt": "2026-06-21T09:40:51Z",
+      "stars": 25752,
+      "pushedAt": "2026-06-26T12:59:12Z",
       "inactive": false,
-      "starsWeekly": 25,
-      "starsMonthly": 86,
+      "starsWeekly": 26,
+      "starsMonthly": 87,
       "archived": false
     },
     {
@@ -720,10 +720,10 @@
       "github": "https://github.com/fullstorydev/grpcurl",
       "languages": ["Agnostic"],
       "relevance": 1,
-      "stars": 12709,
+      "stars": 12710,
       "pushedAt": "2026-06-15T15:10:28Z",
       "inactive": false,
-      "starsWeekly": 15,
+      "starsWeekly": 16,
       "starsMonthly": 65,
       "archived": false
     },
@@ -755,7 +755,7 @@
       "languages": ["Kotlin"],
       "relevance": 1,
       "stars": 5928,
-      "pushedAt": "2026-06-25T19:34:58Z",
+      "pushedAt": "2026-06-26T12:38:04Z",
       "inactive": false,
       "starsWeekly": 3,
       "starsMonthly": 17,
@@ -789,7 +789,7 @@
       "languages": ["Agnostic"],
       "relevance": 1,
       "stars": 5782,
-      "pushedAt": "2026-06-26T08:39:29Z",
+      "pushedAt": "2026-06-26T12:50:11Z",
       "inactive": false,
       "starsWeekly": 7,
       "starsMonthly": 42,
@@ -873,11 +873,11 @@
       "github": "https://github.com/protocolbuffers/protobuf",
       "languages": ["C++", "C#", "C", "Java", "Objective-C", "Python", "Go"],
       "relevance": 4,
-      "stars": 71412,
-      "pushedAt": "2026-06-26T11:05:44Z",
+      "stars": 71413,
+      "pushedAt": "2026-06-26T13:07:39Z",
       "inactive": false,
       "starsWeekly": 57,
-      "starsMonthly": 211,
+      "starsMonthly": 212,
       "archived": false
     },
     {
@@ -958,10 +958,10 @@
       "github": "https://github.com/Kong/insomnia",
       "languages": ["Agnostic"],
       "relevance": 1,
-      "stars": 39757,
-      "pushedAt": "2026-06-26T10:08:00Z",
+      "stars": 39769,
+      "pushedAt": "2026-06-26T12:58:14Z",
       "inactive": false,
-      "starsWeekly": 983,
+      "starsWeekly": 974,
       "starsMonthly": 1000,
       "archived": false
     },
@@ -992,11 +992,11 @@
       "github": "https://github.com/grafana/k6",
       "languages": ["Agnostic"],
       "relevance": 1,
-      "stars": 30891,
+      "stars": 30893,
       "pushedAt": "2026-06-26T08:40:39Z",
       "inactive": false,
-      "starsWeekly": 62,
-      "starsMonthly": 251,
+      "starsWeekly": 63,
+      "starsMonthly": 252,
       "archived": false
     },
     {
@@ -1027,7 +1027,7 @@
       "languages": ["Agnostic"],
       "relevance": 1,
       "stars": 9525,
-      "pushedAt": "2026-06-25T17:28:53Z",
+      "pushedAt": "2026-06-26T12:08:58Z",
       "inactive": false,
       "starsWeekly": 34,
       "starsMonthly": 142,
@@ -1097,7 +1097,7 @@
       "stars": 28476,
       "pushedAt": "2026-06-26T10:57:25Z",
       "inactive": false,
-      "starsWeekly": 54,
+      "starsWeekly": 53,
       "starsMonthly": 259,
       "archived": false
     },
@@ -1265,7 +1265,7 @@
       "languages": ["Agnostic"],
       "relevance": 1,
       "stars": 2448,
-      "pushedAt": "2026-06-26T11:13:10Z",
+      "pushedAt": "2026-06-26T13:06:44Z",
       "inactive": false,
       "starsWeekly": 4,
       "starsMonthly": 14,
@@ -1333,7 +1333,7 @@
       "languages": ["C++"],
       "relevance": 2,
       "stars": 272,
-      "pushedAt": "2026-06-26T11:00:00Z",
+      "pushedAt": "2026-06-26T12:09:06Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 1,
@@ -1485,11 +1485,11 @@
       "github": "https://github.com/grpc/grpc-go",
       "languages": ["Go"],
       "relevance": 1,
-      "stars": 22979,
+      "stars": 22981,
       "pushedAt": "2026-06-25T20:20:07Z",
       "inactive": false,
-      "starsWeekly": 26,
-      "starsMonthly": 67,
+      "starsWeekly": 27,
+      "starsMonthly": 69,
       "archived": false
     },
     {
@@ -1503,7 +1503,7 @@
       "languages": ["Java"],
       "relevance": 1,
       "stars": 12035,
-      "pushedAt": "2026-06-25T09:58:06Z",
+      "pushedAt": "2026-06-26T11:37:40Z",
       "inactive": false,
       "starsWeekly": 4,
       "starsMonthly": 27,
@@ -2219,11 +2219,11 @@
       ],
       "languages": ["Agnostic"],
       "relevance": 2,
-      "stars": 2353,
+      "stars": 2354,
       "pushedAt": "2026-06-25T14:03:15Z",
       "inactive": false,
-      "starsWeekly": 6,
-      "starsMonthly": 19,
+      "starsWeekly": 7,
+      "starsMonthly": 20,
       "archived": false
     }
   ]
