@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   Cpu,
@@ -105,6 +105,8 @@ const RESOURCE_ITEMS: NavItemDef[] = [
 const ALL_PAGE_ITEMS = [...NAV_ITEMS, ...RESOURCE_ITEMS];
 const navItem = (id: string) =>
   ALL_PAGE_ITEMS.find((item) => item.id === id) as NavItemDef;
+const useIsomorphicLayoutEffect =
+  typeof window === "undefined" ? useEffect : useLayoutEffect;
 
 const RELATED_LINKS: Record<string, NavItemDef[]> = {
   intro: [navItem("basics"), navItem("binary"), navItem("efficiency")],
@@ -351,7 +353,7 @@ const SearchModal = ({
     };
   }, [isOpen, pagefind, query]);
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (!isOpen) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -584,12 +586,35 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
       });
   }, []);
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (typeof window === "undefined") return;
 
-    let cleanupSectionListeners: (() => void) | undefined;
-    const timeoutId = window.setTimeout(() => {
-      const sectionElements = Array.from(
+    let sectionElements: HTMLElement[] = [];
+
+    const updateActiveSection = () => {
+      const marker = window.scrollY + 160;
+      let activeId = sectionElements[0]?.id || null;
+
+      for (const section of sectionElements) {
+        if (section.offsetTop <= marker) {
+          activeId = section.id;
+        } else {
+          break;
+        }
+      }
+
+      const pageBottom =
+        window.scrollY + window.innerHeight >=
+        document.documentElement.scrollHeight - 8;
+      if (pageBottom) {
+        activeId = sectionElements[sectionElements.length - 1]?.id || activeId;
+      }
+
+      setActivePageSectionId(activeId);
+    };
+
+    const refreshSections = () => {
+      sectionElements = Array.from(
         document.querySelectorAll<HTMLElement>("main section[id]"),
       );
       const nextSections = sectionElements.map((section) => {
@@ -598,44 +623,40 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
         return { id: section.id, label };
       });
 
-      setPageSections(nextSections);
+      setPageSections((currentSections) => {
+        const unchanged =
+          currentSections.length === nextSections.length &&
+          currentSections.every(
+            (section, index) =>
+              section.id === nextSections[index]?.id &&
+              section.label === nextSections[index]?.label,
+          );
 
-      const updateActiveSection = () => {
-        const marker = window.scrollY + 160;
-        let activeId = sectionElements[0]?.id || null;
-
-        for (const section of sectionElements) {
-          if (section.offsetTop <= marker) {
-            activeId = section.id;
-          } else {
-            break;
-          }
+        if (unchanged) {
+          return currentSections;
         }
 
-        const pageBottom =
-          window.scrollY + window.innerHeight >=
-          document.documentElement.scrollHeight - 8;
-        if (pageBottom) {
-          activeId =
-            sectionElements[sectionElements.length - 1]?.id || activeId;
-        }
-
-        setActivePageSectionId(activeId);
-      };
+        return nextSections;
+      });
 
       updateActiveSection();
-      window.addEventListener("scroll", updateActiveSection, { passive: true });
-      window.addEventListener("resize", updateActiveSection);
+    };
 
-      cleanupSectionListeners = () => {
-        window.removeEventListener("scroll", updateActiveSection);
-        window.removeEventListener("resize", updateActiveSection);
-      };
-    }, 150);
+    refreshSections();
+
+    const main = document.querySelector("main");
+    const observer = new MutationObserver(refreshSections);
+    if (main) {
+      observer.observe(main, { childList: true, subtree: true });
+    }
+
+    window.addEventListener("scroll", updateActiveSection, { passive: true });
+    window.addEventListener("resize", refreshSections);
 
     return () => {
-      window.clearTimeout(timeoutId);
-      cleanupSectionListeners?.();
+      observer.disconnect();
+      window.removeEventListener("scroll", updateActiveSection);
+      window.removeEventListener("resize", refreshSections);
     };
   }, [normalizedPathname]);
 
