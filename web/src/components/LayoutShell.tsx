@@ -925,7 +925,7 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
                   className="w-6 h-6 bg-[var(--cyber-neon-blue)]/10 rounded border border-[var(--cyber-neon-blue)]/30 flex items-center justify-center"
                   aria-hidden="true"
                 >
-                  <Cpu className="w-3.5 h-3.5 text-[var(--cyber-neon-blue)]" />
+                  <AlignLeft className="w-3.5 h-3.5 text-[var(--cyber-neon-blue)]" />
                 </div>
                 <span className="font-cyber font-bold text-xs uppercase tracking-[0.2em] text-[var(--cyber-neon-blue)]">
                   Navigation
@@ -989,7 +989,7 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
                       className="w-6 h-6 bg-[var(--cyber-neon-blue)]/10 rounded border border-[var(--cyber-neon-blue)]/30 flex items-center justify-center"
                       aria-hidden="true"
                     >
-                      <Cpu className="w-3.5 h-3.5 text-[var(--cyber-neon-blue)]" />
+                      <AlignLeft className="w-3.5 h-3.5 text-[var(--cyber-neon-blue)]" />
                     </div>
                     <span className="font-cyber font-bold text-[var(--cyber-neon-blue)] text-sm tracking-[0.2em] uppercase">
                       Navigation
