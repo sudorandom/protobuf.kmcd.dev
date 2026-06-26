@@ -22,6 +22,7 @@
 
   <text x="72" y="82" fill="#e2e8f0" font-size="46" font-weight="800">Schema to generated code</text>
   <text x="74" y="120" fill="#94a3b8" font-size="22">buf or protoc runs plugins that produce language-specific files.</text>
+  <text x="72" y="34" fill="#00f3ff" font-size="14" font-weight="800" letter-spacing="2">PROTOBUF SIMPLIFIED</text>
 
   <g transform="translate(70 190)">
     <rect width="300" height="255" rx="10" fill="#0d0d12" stroke="#00f3ff" stroke-width="2" />
@@ -46,7 +47,7 @@
     <text x="130" y="104" fill="#94a3b8" font-size="22" text-anchor="middle">or</text>
     <text x="130" y="154" fill="#e2e8f0" font-size="34" font-weight="900" text-anchor="middle">protoc</text>
     <rect x="50" y="184" width="160" height="36" rx="18" fill="#00f3ff" fill-opacity="0.14" stroke="#00f3ff" stroke-opacity="0.45" />
-    <text x="130" y="209" fill="#00f3ff" font-size="16" font-weight="800" text-anchor="middle">plugins run</text>
+    <text x="130" y="209" fill="#00f3ff" font-size="16" font-weight="800" text-anchor="middle">protoc plugins</text>
   </g>
 
   <path d="M 734 318 L 808 318" fill="none" stroke="#00f3ff" stroke-width="4" marker-end="url(#compiler-arrow)" />
@@ -66,5 +67,8 @@
     </g>
   </g>
 
-  <text x="600" y="540" fill="#e2e8f0" font-size="24" text-anchor="middle">One schema can generate code for many runtimes.</text>
+  <g transform="translate(312 512)">
+    <rect width="576" height="50" rx="25" fill="#ff66ff" fill-opacity="0.12" stroke="#ff66ff" stroke-opacity="0.55" />
+    <text x="288" y="33" fill="#e2e8f0" font-size="21" font-weight="800" text-anchor="middle">One schema can generate code for many runtimes</text>
+  </g>
 </svg>

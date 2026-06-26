@@ -10,8 +10,8 @@ const diagrams = [
   "src/assets/hero-social.svg",
   "src/assets/schema-data-binary.svg",
   "src/assets/schema-compiler-generated-code.svg",
-  "src/assets/reserved-field-numbers.svg",
-  "src/assets/reserved-field-names.svg",
+  "src/assets/reserved-fields.svg",
+  "src/assets/deprecated-field.svg",
   "src/assets/protovalidate-json-errors.svg",
 ];
 

@@ -1,0 +1,90 @@
+<svg viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg" font-family="Inter, ui-sans-serif, system-ui, sans-serif">
+  <defs>
+    <linearGradient id="reserved-fields-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00f3ff" />
+      <stop offset="100%" stop-color="#ff66ff" />
+    </linearGradient>
+    <filter id="reserved-fields-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="10" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+    <pattern id="reserved-fields-grid" width="44" height="44" patternUnits="userSpaceOnUse">
+      <path d="M 44 0 L 0 0 0 44" fill="none" stroke="#00f3ff" stroke-width="1" opacity="0.12" />
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="630" fill="#050505" />
+  <rect width="1200" height="630" fill="url(#reserved-fields-grid)" />
+  <circle cx="585" cy="324" r="315" fill="#00f3ff" opacity="0.035" filter="url(#reserved-fields-glow)" />
+
+  <text x="72" y="82" fill="#e2e8f0" font-size="46" font-weight="800">Reserve removed fields</text>
+  <text x="74" y="120" fill="#94a3b8" font-size="22">APIs evolve over time. Protobuf lets you safely remove unused fields.</text>
+  <text x="72" y="34" fill="#00f3ff" font-size="14" font-weight="800" letter-spacing="2">PROTOBUF SIMPLIFIED</text>
+
+  <g transform="translate(70 178)">
+    <rect width="510" height="330" rx="10" fill="#0d0d12" stroke="#00f3ff" stroke-width="2" />
+    <text x="28" y="44" fill="#94a3b8" font-size="14" font-weight="800" letter-spacing="3">BEFORE</text>
+    <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="22">
+      <text x="28" y="84" fill="#ff66ff">message</text>
+      <text x="140" y="84" fill="#e2e8f0">User {</text>
+      <text x="48" y="124">
+        <tspan fill="#00f3ff">string</tspan>
+        <tspan fill="#e2e8f0"> name = </tspan>
+        <tspan fill="#facc15">1</tspan>
+        <tspan fill="#e2e8f0">;</tspan>
+      </text>
+      <text x="48" y="164">
+        <tspan fill="#00f3ff">string</tspan>
+        <tspan fill="#e2e8f0"> display_name = </tspan>
+        <tspan fill="#facc15">2</tspan>
+        <tspan fill="#e2e8f0">;</tspan>
+      </text>
+      <text x="48" y="204">
+        <tspan fill="#00f3ff">string</tspan>
+        <tspan fill="#e2e8f0"> email = </tspan>
+        <tspan fill="#facc15">3</tspan>
+        <tspan fill="#e2e8f0">;</tspan>
+      </text>
+      <text x="28" y="276" fill="#e2e8f0">}</text>
+    </g>
+  </g>
+
+  <g transform="translate(620 178)">
+    <rect width="510" height="330" rx="10" fill="#0d0d12" stroke="url(#reserved-fields-gradient)" stroke-width="3" filter="url(#reserved-fields-glow)" />
+    <text x="28" y="44" fill="#94a3b8" font-size="14" font-weight="800" letter-spacing="3">AFTER</text>
+    <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="22">
+      <text x="28" y="84" fill="#ff66ff">message</text>
+      <text x="140" y="84" fill="#e2e8f0">User {</text>
+      <text x="48" y="126">
+        <tspan fill="#00f3ff">string</tspan>
+        <tspan fill="#e2e8f0"> name = </tspan>
+        <tspan fill="#facc15">1</tspan>
+        <tspan fill="#e2e8f0">;</tspan>
+      </text>
+      <text x="48" y="168">
+        <tspan fill="#ff66ff">reserved</tspan>
+        <tspan fill="#e2e8f0"> </tspan>
+        <tspan fill="#facc15">2</tspan>
+        <tspan fill="#e2e8f0">;</tspan>
+      </text>
+      <text x="48" y="210">
+        <tspan fill="#ff66ff">reserved</tspan>
+        <tspan fill="#e2e8f0"> </tspan>
+        <tspan fill="#00ff9f">"display_name"</tspan>
+        <tspan fill="#e2e8f0">;</tspan>
+      </text>
+      <text x="48" y="252">
+        <tspan fill="#00f3ff">string</tspan>
+        <tspan fill="#e2e8f0"> email = </tspan>
+        <tspan fill="#facc15">3</tspan>
+        <tspan fill="#e2e8f0">;</tspan>
+      </text>
+      <text x="28" y="294" fill="#e2e8f0">}</text>
+    </g>
+  </g>
+
+  <g transform="translate(230 544)">
+    <rect width="740" height="50" rx="25" fill="#ff66ff" fill-opacity="0.12" stroke="#ff66ff" stroke-opacity="0.55" />
+    <text x="370" y="33" fill="#e2e8f0" font-size="21" font-weight="800" text-anchor="middle">Reserve both the old number and name so neither can be reused</text>
+  </g>
+</svg>

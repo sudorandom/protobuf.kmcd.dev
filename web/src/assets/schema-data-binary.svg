@@ -23,6 +23,7 @@
 
   <text x="72" y="82" fill="#e2e8f0" font-size="46" font-weight="800">Schema + data becomes bytes</text>
   <text x="74" y="120" fill="#94a3b8" font-size="22">Protobuf encodes field numbers and values, not field names.</text>
+  <text x="72" y="34" fill="#00f3ff" font-size="14" font-weight="800" letter-spacing="2">PROTOBUF SIMPLIFIED</text>
 
   <g transform="translate(70 190)">
     <rect width="300" height="255" rx="10" fill="#0d0d12" stroke="#00f3ff" stroke-width="2" />
@@ -88,5 +89,8 @@
     <text x="145" y="235" fill="#94a3b8" font-size="18" text-anchor="middle">tags + lengths + values</text>
   </g>
 
-  <text x="600" y="540" fill="#e2e8f0" font-size="24" text-anchor="middle">The schema tells readers what field 1 and field 2 mean.</text>
+  <g transform="translate(280 512)">
+    <rect width="640" height="50" rx="25" fill="#ff66ff" fill-opacity="0.12" stroke="#ff66ff" stroke-opacity="0.55" />
+    <text x="320" y="33" fill="#e2e8f0" font-size="21" font-weight="800" text-anchor="middle">The schema tells readers what field 1 and field 2 mean</text>
+  </g>
 </svg>
