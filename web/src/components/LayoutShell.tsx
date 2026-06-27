@@ -928,7 +928,7 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
       <div className="flex min-h-[calc(100vh-64px)] pt-[64px] relative w-full">
         {isMenuOpen && (
           <aside
-            className="hidden md:flex w-64 shrink-0 flex-col border-r border-[var(--border-light)] bg-[var(--bg-color)]/90 px-4 py-6 z-[90] backdrop-blur-md"
+            className="hidden md:flex w-64 shrink-0 flex-col border-r border-[var(--border-light)] bg-[var(--bg-color)]/90 px-4 py-6 z-[90] backdrop-blur-md fixed top-[64px] left-0 h-[calc(100vh-64px)] overflow-y-auto"
             aria-label="Page navigation"
           >
             <div className="flex justify-between items-center mb-6 border-b border-[var(--border-light)] pb-4">
@@ -968,6 +968,8 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
                 pageSections={pageSections}
                 activePageSectionId={activePageSectionId}
               />
+
+              <div className="h-20 shrink-0" aria-hidden="true" />
             </nav>
           </aside>
         )}
@@ -1097,7 +1099,7 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
 
         <main
           id="main-content"
-          className="flex-1 min-w-0 flex flex-col pt-0"
+          className={`flex-1 min-w-0 flex flex-col pt-0 transition-all ${isMenuOpen ? "md:ml-64" : ""}`}
           data-pagefind-body
           data-pagefind-meta={`category:${SECTION_LABELS[activeSection] || "Protobuf"}`}
         >
