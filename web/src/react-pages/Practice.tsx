@@ -561,7 +561,7 @@ export const Practice = ({ activeId }: { activeId: string }) => {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-xs text-[var(--cyber-neon-blue)] hover:text-[var(--text-color)] transition-colors font-mono uppercase tracking-wider hover:underline"
                 >
-                  Read Theory Guide
+                  {activeExercise.guideLabel || "Read Theory Guide"}
                   <ExternalLink className="w-3 h-3" />
                 </a>
               </div>
