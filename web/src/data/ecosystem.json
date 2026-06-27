@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-06-27T15:51:48.566Z",
+  "fetchedAt": "2026-06-27T18:50:32.579Z",
   "projects": [
     {
       "category": "tools",
@@ -9,13 +9,15 @@
       "desc": "The modern standard for Protobuf management. Includes a linter, formatter, breaking change detector, editor LSP support, and a high-performance code generator.",
       "url": "https://buf.build/docs/introduction",
       "github": "https://github.com/bufbuild/buf",
-      "languages": ["Agnostic"],
+      "languages": [
+        "Agnostic"
+      ],
       "relevance": 4,
       "stars": 11222,
       "pushedAt": "2026-06-22T16:50:40Z",
       "inactive": false,
-      "starsWeekly": 15,
-      "starsMonthly": 89,
+      "starsWeekly": 14,
+      "starsMonthly": 88,
       "archived": false
     },
     {
@@ -26,7 +28,9 @@
       "desc": "A highly configurable linter for Protocol Buffer files to ensure style consistency and best practices.",
       "url": "https://github.com/yoheimuta/protolint",
       "github": "https://github.com/yoheimuta/protolint",
-      "languages": ["Agnostic"],
+      "languages": [
+        "Agnostic"
+      ],
       "relevance": 2,
       "stars": 695,
       "pushedAt": "2026-05-27T04:40:26Z",
@@ -75,7 +79,9 @@
       "desc": "CLI tool for inspecting and routing messages in Kafka, RabbitMQ, and SQS with native on-the-fly Protobuf decoding.",
       "url": "https://github.com/streamdal/plumber",
       "github": "https://github.com/streamdal/plumber",
-      "languages": ["Agnostic"],
+      "languages": [
+        "Agnostic"
+      ],
       "relevance": 1,
       "stars": 2159,
       "pushedAt": "2025-07-16T23:04:58Z",
@@ -92,7 +98,9 @@
       "desc": "Generates beautiful documentation (HTML, Markdown, PDF) from your .proto files.",
       "url": "https://github.com/pseudomuto/protoc-gen-doc",
       "github": "https://github.com/pseudomuto/protoc-gen-doc",
-      "languages": ["Agnostic"],
+      "languages": [
+        "Agnostic"
+      ],
       "relevance": 3,
       "stars": 2831,
       "pushedAt": "2025-02-11T14:03:18Z",
@@ -109,7 +117,9 @@
       "desc": "Generates high-quality OpenAPI 3.x definitions from your Protobuf services, with excellent support for ConnectRPC and gRPC-Gateway.",
       "url": "https://github.com/sudorandom/protoc-gen-connect-openapi",
       "github": "https://github.com/sudorandom/protoc-gen-connect-openapi",
-      "languages": ["Agnostic"],
+      "languages": [
+        "Agnostic"
+      ],
       "relevance": 2,
       "stars": 292,
       "pushedAt": "2026-06-14T17:42:44Z",
@@ -126,29 +136,42 @@
       "desc": "Automatically generates a reverse proxy server that translates RESTful JSON APIs into gRPC, allowing you to support both protocols easily.",
       "url": "https://github.com/grpc-ecosystem/grpc-gateway",
       "github": "https://github.com/grpc-ecosystem/grpc-gateway",
-      "languages": ["Agnostic"],
+      "languages": [
+        "Agnostic"
+      ],
       "relevance": 3,
       "stars": 19940,
       "pushedAt": "2026-06-27T04:59:46Z",
       "inactive": false,
-      "starsWeekly": 18,
-      "starsMonthly": 57,
+      "starsWeekly": 17,
+      "starsMonthly": 56,
       "archived": false
     },
     {
-      "category": ["plugins", "libraries"],
+      "category": [
+        "plugins",
+        "libraries"
+      ],
       "name": "gRPC",
       "owner": "grpc",
       "repo": "grpc",
       "desc": "The industry standard for high-performance RPC. Originally developed by Google, it uses HTTP/2 and supports advanced features like bidirectional streaming and server reflection.",
       "url": "https://grpc.io/",
       "github": "https://github.com/grpc/grpc",
-      "languages": ["C++", "C#", "Java", "Python", "Go", "Ruby", "PHP"],
+      "languages": [
+        "C++",
+        "C#",
+        "Java",
+        "Python",
+        "Go",
+        "Ruby",
+        "PHP"
+      ],
       "relevance": 4,
-      "stars": 44927,
-      "pushedAt": "2026-06-27T14:39:58Z",
+      "stars": 44928,
+      "pushedAt": "2026-06-27T16:53:59Z",
       "inactive": false,
-      "starsWeekly": 36,
+      "starsWeekly": 34,
       "starsMonthly": 136,
       "archived": false
     },
@@ -191,12 +214,14 @@
       "desc": "A Tower-based Rust implementation of the ConnectRPC protocol, supporting Connect, gRPC, and gRPC-Web.",
       "url": "https://github.com/anthropics/connect-rust",
       "github": "https://github.com/anthropics/connect-rust",
-      "languages": ["Rust"],
+      "languages": [
+        "Rust"
+      ],
       "relevance": 4,
       "stars": 443,
       "pushedAt": "2026-06-27T00:57:50Z",
       "inactive": false,
-      "starsWeekly": 12,
+      "starsWeekly": 11,
       "starsMonthly": 48,
       "archived": false
     },
@@ -208,7 +233,9 @@
       "desc": "A simple and minimalist RPC framework by Twitch. It focuses on reliability and simplicity, using Protobuf over HTTP/1.1 without the complexity of gRPC.",
       "url": "https://twitchtv.github.io/twirp/",
       "github": "https://github.com/twitchtv/twirp",
-      "languages": ["Go"],
+      "languages": [
+        "Go"
+      ],
       "relevance": 3,
       "stars": 7517,
       "pushedAt": "2024-08-05T21:36:11Z",
@@ -225,7 +252,9 @@
       "desc": "A lightweight Go replacement for gRPC by Storj. Designed to be leaner and faster, it reduces memory overhead while remaining compatible with existing Protobuf definitions.",
       "url": "https://github.com/storj/drpc",
       "github": "https://github.com/storj/drpc",
-      "languages": ["Go"],
+      "languages": [
+        "Go"
+      ],
       "relevance": 1,
       "stars": 1629,
       "pushedAt": "2026-05-14T12:11:27Z",
@@ -242,7 +271,9 @@
       "desc": "An industrial-grade C++ RPC framework by Baidu. It is heavily optimized for extreme concurrency and low latency, often used in massive service deployments.",
       "url": "https://brpc.apache.org/",
       "github": "https://github.com/apache/brpc",
-      "languages": ["C++"],
+      "languages": [
+        "C++"
+      ],
       "relevance": 1,
       "stars": 17545,
       "pushedAt": "2026-06-25T02:51:43Z",
@@ -259,7 +290,10 @@
       "desc": "A popular microservices framework from Alibaba. Its 'Triple' protocol natively adopts HTTP/2 and Protobuf for modern, gRPC-compatible serialization.",
       "url": "https://dubbo.apache.org/",
       "github": "https://github.com/apache/dubbo",
-      "languages": ["Java", "Go"],
+      "languages": [
+        "Java",
+        "Go"
+      ],
       "relevance": 1,
       "stars": 41522,
       "pushedAt": "2026-06-24T09:06:10Z",
@@ -276,7 +310,9 @@
       "desc": "An implementation of Protocol Buffers in C, generating C code from .proto files and supporting runtime serialization.",
       "url": "https://github.com/protobuf-c/protobuf-c",
       "github": "https://github.com/protobuf-c/protobuf-c",
-      "languages": ["C"],
+      "languages": [
+        "C"
+      ],
       "relevance": 2,
       "stars": 2975,
       "pushedAt": "2025-04-07T01:18:13Z",
@@ -293,7 +329,9 @@
       "desc": "A lightweight C library for Protocol Buffers, focusing on speed and minimal memory footprint.",
       "url": "https://github.com/squidfunk/protobluff",
       "github": "https://github.com/squidfunk/protobluff",
-      "languages": ["C"],
+      "languages": [
+        "C"
+      ],
       "relevance": 2,
       "stars": 100,
       "pushedAt": "2026-01-21T08:09:56Z",
@@ -310,7 +348,9 @@
       "desc": "Dart: https://github.com/dart-lang/dart-protobuf (runtime) https://github.com/dart-lang/dart-protoc-plugin (code generator)",
       "url": "https://github.com/dart-lang/dart-protobuf",
       "github": "https://github.com/dart-lang/dart-protobuf",
-      "languages": ["Dart"],
+      "languages": [
+        "Dart"
+      ],
       "relevance": 2,
       "stars": 572,
       "pushedAt": "2026-06-03T01:17:54Z",
@@ -320,16 +360,23 @@
       "archived": false
     },
     {
-      "category": ["plugins", "libraries"],
+      "category": [
+        "plugins",
+        "libraries"
+      ],
       "name": "Wire",
       "owner": "square",
       "repo": "wire",
       "desc": "A clean, lightweight implementation built by Square, generating idiomatic JVM/Android models and service interfaces.",
       "url": "https://square.github.io/wire/",
       "github": "https://github.com/square/wire",
-      "languages": ["Java", "Kotlin", "Swift"],
+      "languages": [
+        "Java",
+        "Kotlin",
+        "Swift"
+      ],
       "relevance": 3,
-      "stars": 4422,
+      "stars": 4421,
       "pushedAt": "2026-06-26T16:47:49Z",
       "inactive": false,
       "starsWeekly": 2,
@@ -344,7 +391,9 @@
       "desc": "A popular, comprehensive JavaScript library for serializing and deserializing Protobuf messages, supporting both node and browser environments.",
       "url": "https://github.com/dcodeIO/ProtoBuf.js",
       "github": "https://github.com/dcodeIO/ProtoBuf.js",
-      "languages": ["JavaScript"],
+      "languages": [
+        "JavaScript"
+      ],
       "relevance": 2,
       "stars": 10563,
       "pushedAt": "2026-06-24T18:49:49Z",
@@ -361,7 +410,9 @@
       "desc": "Julia: https://github.com/tanmaykm/ProtoBuf.jl",
       "url": "https://github.com/tanmaykm/ProtoBuf.jl",
       "github": "https://github.com/tanmaykm/ProtoBuf.jl",
-      "languages": ["Julia"],
+      "languages": [
+        "Julia"
+      ],
       "relevance": 2,
       "stars": 221,
       "pushedAt": "2026-06-22T20:32:37Z",
@@ -378,7 +429,9 @@
       "desc": "A high-performance PHP extension implementing Protocol Buffers for fast serialization and deserialization.",
       "url": "https://github.com/chobie/php-protocolbuffers",
       "github": "https://github.com/chobie/php-protocolbuffers",
-      "languages": ["PHP"],
+      "languages": [
+        "PHP"
+      ],
       "relevance": 2,
       "stars": 127,
       "pushedAt": "2026-04-18T11:43:30Z",
@@ -395,7 +448,9 @@
       "desc": "A native Ruby implementation of Protocol Buffers, providing message definitions and serialization support.",
       "url": "https://github.com/localshred/protobuf",
       "github": "https://github.com/localshred/protobuf",
-      "languages": ["Ruby"],
+      "languages": [
+        "Ruby"
+      ],
       "relevance": 2,
       "stars": 469,
       "pushedAt": "2024-01-12T19:41:17Z",
@@ -412,7 +467,9 @@
       "desc": "A classic Rust implementation of Google Protocol Buffers, providing a code generator and runtime library.",
       "url": "https://github.com/stepancheg/rust-protobuf",
       "github": "https://github.com/stepancheg/rust-protobuf",
-      "languages": ["Rust"],
+      "languages": [
+        "Rust"
+      ],
       "relevance": 2,
       "stars": 2974,
       "pushedAt": "2025-09-21T22:00:37Z",
@@ -429,7 +486,9 @@
       "desc": "Swift: https://github.com/alexeyxo/protobuf-swift",
       "url": "https://github.com/alexeyxo/protobuf-swift",
       "github": "https://github.com/alexeyxo/protobuf-swift",
-      "languages": ["Swift"],
+      "languages": [
+        "Swift"
+      ],
       "relevance": 2,
       "stars": 937,
       "pushedAt": "2024-04-28T06:44:58Z",
@@ -446,7 +505,9 @@
       "desc": "https://github.com/BaiduPS/sofa-pbrpc (C++)",
       "url": "https://github.com/BaiduPS/sofa-pbrpc",
       "github": "https://github.com/BaiduPS/sofa-pbrpc",
-      "languages": ["C++"],
+      "languages": [
+        "C++"
+      ],
       "relevance": 1,
       "stars": 2142,
       "pushedAt": "2023-08-24T08:55:55Z",
@@ -463,7 +524,9 @@
       "desc": "Intellij IDEA plugin",
       "url": "https://github.com/nnmatveev/idea-plugin-protobuf",
       "github": "https://github.com/nnmatveev/idea-plugin-protobuf",
-      "languages": ["Agnostic"],
+      "languages": [
+        "Agnostic"
+      ],
       "relevance": 1,
       "stars": 118,
       "pushedAt": "2017-04-04T15:27:37Z",
@@ -480,7 +543,9 @@
       "desc": "A modern Maven plugin for compiling Protocol Buffers utilizing protoc.",
       "url": "https://github.com/ascopes/protobuf-maven-plugin",
       "github": "https://github.com/ascopes/protobuf-maven-plugin",
-      "languages": ["Agnostic"],
+      "languages": [
+        "Agnostic"
+      ],
       "relevance": 2,
       "stars": 162,
       "pushedAt": "2026-06-26T13:00:08Z",
@@ -497,7 +562,9 @@
       "desc": "https://github.com/os72/protoc-jar-maven-plugin",
       "url": "https://github.com/os72/protoc-jar-maven-plugin",
       "github": "https://github.com/os72/protoc-jar-maven-plugin",
-      "languages": ["Agnostic"],
+      "languages": [
+        "Agnostic"
+      ],
       "relevance": 1,
       "stars": 261,
       "pushedAt": "2023-04-27T14:21:30Z",
@@ -514,7 +581,9 @@
       "desc": "Multi-platform executable JAR and Java API for protoc",
       "url": "https://github.com/os72/protoc-jar",
       "github": "https://github.com/os72/protoc-jar",
-      "languages": ["Java"],
+      "languages": [
+        "Java"
+      ],
       "relevance": 2,
       "stars": 148,
       "pushedAt": "2024-08-07T06:43:14Z",
@@ -531,7 +600,9 @@
       "desc": "Python scripts to convert between Protocol Buffers and JSON",
       "url": "https://github.com/NextTuesday/py-pb-converters",
       "github": "https://github.com/NextTuesday/py-pb-converters",
-      "languages": ["Python"],
+      "languages": [
+        "Python"
+      ],
       "relevance": 2,
       "stars": 111,
       "pushedAt": "2023-01-11T11:19:16Z",
@@ -548,7 +619,9 @@
       "desc": "C++ library for serialization/de-serialization between Protocol Buffers and JSON.",
       "url": "https://github.com/yinqiwen/pbjson",
       "github": "https://github.com/yinqiwen/pbjson",
-      "languages": ["C++"],
+      "languages": [
+        "C++"
+      ],
       "relevance": 2,
       "stars": 160,
       "pushedAt": "2017-09-05T12:15:03Z",
@@ -565,7 +638,9 @@
       "desc": "Linter for .proto files",
       "url": "https://github.com/ckaznocha/protoc-gen-lint",
       "github": "https://github.com/ckaznocha/protoc-gen-lint",
-      "languages": ["Agnostic"],
+      "languages": [
+        "Agnostic"
+      ],
       "relevance": 2,
       "stars": 289,
       "pushedAt": "2024-12-23T22:35:00Z",
@@ -575,19 +650,25 @@
       "archived": false
     },
     {
-      "category": ["plugins", "libraries"],
+      "category": [
+        "plugins",
+        "libraries"
+      ],
       "name": "protobuf-es",
       "owner": "bufbuild",
       "repo": "protobuf-es",
       "desc": "The official ECMAScript runtime and code generator (protoc-gen-es) for Protocol Buffers from Buf.",
       "url": "https://github.com/bufbuild/protobuf-es",
       "github": "https://github.com/bufbuild/protobuf-es",
-      "languages": ["TypeScript", "JavaScript"],
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
       "relevance": 3,
-      "stars": 1613,
+      "stars": 1614,
       "pushedAt": "2026-06-26T12:08:39Z",
       "inactive": false,
-      "starsWeekly": 4,
+      "starsWeekly": 5,
       "starsMonthly": 16,
       "archived": false
     },
@@ -599,7 +680,10 @@
       "desc": "TypeScript-first expansion pack for TanStack Query (React Query) within the ConnectRPC ecosystem.",
       "url": "https://github.com/connectrpc/connect-query-es",
       "github": "https://github.com/connectrpc/connect-query-es",
-      "languages": ["TypeScript", "JavaScript"],
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
       "relevance": 1,
       "stars": 374,
       "pushedAt": "2026-06-15T22:53:02Z",
@@ -609,14 +693,20 @@
       "archived": false
     },
     {
-      "category": ["plugins", "libraries"],
+      "category": [
+        "plugins",
+        "libraries"
+      ],
       "name": "protobuf-ts",
       "owner": "timostamm",
       "repo": "protobuf-ts",
       "desc": "A highly popular community plugin (protoc-gen-ts) to generate TypeScript interfaces, RPC clients, and validation from .proto files.",
       "url": "https://github.com/timostamm/protobuf-ts",
       "github": "https://github.com/timostamm/protobuf-ts",
-      "languages": ["TypeScript", "JavaScript"],
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
       "relevance": 2,
       "stars": 1344,
       "pushedAt": "2026-06-19T10:40:48Z",
@@ -626,14 +716,19 @@
       "archived": false
     },
     {
-      "category": ["plugins", "libraries"],
+      "category": [
+        "plugins",
+        "libraries"
+      ],
       "name": "betterproto",
       "owner": "betterproto",
       "repo": "python-betterproto2",
       "desc": "A clean, modern Python generator and library for Protobuf and gRPC, providing dataclass-based messages.",
       "url": "https://github.com/betterproto/python-betterproto2",
       "github": "https://github.com/betterproto/python-betterproto2",
-      "languages": ["Python"],
+      "languages": [
+        "Python"
+      ],
       "relevance": 2,
       "stars": 160,
       "pushedAt": "2026-06-19T04:30:32Z",
@@ -643,14 +738,20 @@
       "archived": false
     },
     {
-      "category": ["plugins", "libraries"],
+      "category": [
+        "plugins",
+        "libraries"
+      ],
       "name": "gRPC-Web",
       "owner": "grpc",
       "repo": "grpc-web",
       "desc": "A JavaScript client library and protoc plugin (protoc-gen-grpc-web) for enabling gRPC in web browsers.",
       "url": "https://github.com/grpc/grpc-web",
       "github": "https://github.com/grpc/grpc-web",
-      "languages": ["TypeScript", "JavaScript"],
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
       "relevance": 1,
       "stars": 9228,
       "pushedAt": "2026-06-09T13:15:54Z",
@@ -660,14 +761,20 @@
       "archived": false
     },
     {
-      "category": ["plugins", "libraries"],
+      "category": [
+        "plugins",
+        "libraries"
+      ],
       "name": "gRPC Node",
       "owner": "grpc",
       "repo": "grpc-node",
       "desc": "gRPC implementation for Node.js, including native code generation plugins.",
       "url": "https://github.com/grpc/grpc-node",
       "github": "https://github.com/grpc/grpc-node",
-      "languages": ["TypeScript", "JavaScript"],
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
       "relevance": 1,
       "stars": 4834,
       "pushedAt": "2026-06-17T16:50:46Z",
@@ -684,7 +791,9 @@
       "desc": "High-performance contract-based serialization library for .NET that implements the Protocol Buffers wire format.",
       "url": "https://protobuf-net.github.io/protobuf-net/",
       "github": "https://github.com/protobuf-net/protobuf-net",
-      "languages": ["C#"],
+      "languages": [
+        "C#"
+      ],
       "relevance": 2,
       "stars": 4954,
       "pushedAt": "2026-05-17T15:43:12Z",
@@ -701,7 +810,9 @@
       "desc": "A Go microservices framework for the cloud-native era, using Protobuf and gRPC as its foundation.",
       "url": "https://go-kratos.dev/",
       "github": "https://github.com/go-kratos/kratos",
-      "languages": ["Go"],
+      "languages": [
+        "Go"
+      ],
       "relevance": 1,
       "stars": 25756,
       "pushedAt": "2026-06-26T12:59:12Z",
@@ -718,7 +829,9 @@
       "desc": "Like cURL, but for gRPC: Command-line tool for interacting with gRPC servers.",
       "url": "https://github.com/fullstorydev/grpcurl",
       "github": "https://github.com/fullstorydev/grpcurl",
-      "languages": ["Agnostic"],
+      "languages": [
+        "Agnostic"
+      ],
       "relevance": 1,
       "stars": 12711,
       "pushedAt": "2026-06-15T15:10:28Z",
@@ -735,13 +848,15 @@
       "desc": "High-performance Go RPC framework for building microservices, natively supporting Protobuf.",
       "url": "https://www.cloudwego.io/docs/kitex/",
       "github": "https://github.com/cloudwego/kitex",
-      "languages": ["Go"],
+      "languages": [
+        "Go"
+      ],
       "relevance": 1,
-      "stars": 7981,
+      "stars": 7982,
       "pushedAt": "2026-06-25T07:14:12Z",
       "inactive": false,
-      "starsWeekly": 7,
-      "starsMonthly": 32,
+      "starsWeekly": 8,
+      "starsMonthly": 33,
       "archived": false
     },
     {
@@ -752,7 +867,9 @@
       "desc": "Kotlin multiplatform / multi-format serialization library supporting JSON, CBOR, and Protocol Buffers.",
       "url": "https://github.com/Kotlin/kotlinx.serialization",
       "github": "https://github.com/Kotlin/kotlinx.serialization",
-      "languages": ["Kotlin"],
+      "languages": [
+        "Kotlin"
+      ],
       "relevance": 1,
       "stars": 5928,
       "pushedAt": "2026-06-26T20:34:13Z",
@@ -769,7 +886,10 @@
       "desc": "Super-fast runtime validators and serialization library for TypeScript using transformers, supporting Protobuf.",
       "url": "https://typia.io/",
       "github": "https://github.com/samchon/typia",
-      "languages": ["TypeScript", "JavaScript"],
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
       "relevance": 1,
       "stars": 5840,
       "pushedAt": "2026-06-27T02:31:31Z",
@@ -786,7 +906,9 @@
       "desc": "A highly extensible API design language from Microsoft that compiles to OpenAPI, JSON Schema, and Protobuf.",
       "url": "https://typespec.io/",
       "github": "https://github.com/microsoft/typespec",
-      "languages": ["Agnostic"],
+      "languages": [
+        "Agnostic"
+      ],
       "relevance": 1,
       "stars": 5780,
       "pushedAt": "2026-06-27T06:04:36Z",
@@ -803,7 +925,9 @@
       "desc": "Ultra fast distributed actors for Go, C#, Java and Kotlin using Protobuf for network communication.",
       "url": "https://proto.actor/",
       "github": "https://github.com/asynkron/protoactor-go",
-      "languages": ["Go"],
+      "languages": [
+        "Go"
+      ],
       "relevance": 1,
       "stars": 5470,
       "pushedAt": "2026-04-08T21:41:59Z",
@@ -820,7 +944,9 @@
       "desc": "Your Swiss Army Knife for Protocol Buffers - compile, lint, and format protos easily.",
       "url": "https://github.com/uber/prototool",
       "github": "https://github.com/uber/prototool",
-      "languages": ["Agnostic"],
+      "languages": [
+        "Agnostic"
+      ],
       "relevance": 2,
       "stars": 5036,
       "pushedAt": "2022-03-01T12:56:26Z",
@@ -837,7 +963,9 @@
       "desc": "A fast, memory-efficient Protocol Buffers implementation for the Rust programming language.",
       "url": "https://github.com/tokio-rs/prost",
       "github": "https://github.com/tokio-rs/prost",
-      "languages": ["Rust"],
+      "languages": [
+        "Rust"
+      ],
       "relevance": 3,
       "stars": 4718,
       "pushedAt": "2026-06-22T05:13:47Z",
@@ -854,7 +982,9 @@
       "desc": "A high performance, simple, and extensible network server library for Go supporting TCP, WebSocket, and Protobuf.",
       "url": "https://github.com/davyxu/cellnet",
       "github": "https://github.com/davyxu/cellnet",
-      "languages": ["Go"],
+      "languages": [
+        "Go"
+      ],
       "relevance": 1,
       "stars": 4061,
       "pushedAt": "2024-03-14T09:01:56Z",
@@ -864,20 +994,32 @@
       "archived": false
     },
     {
-      "category": ["tools", "plugins", "libraries"],
+      "category": [
+        "tools",
+        "plugins",
+        "libraries"
+      ],
       "name": "Protocol Buffers (Google)",
       "owner": "protocolbuffers",
       "repo": "protobuf",
       "desc": "Google's language-neutral, platform-neutral, extensible mechanism for serializing structured data. Contains the protoc compiler, code generator stubs, and official runtimes.",
       "url": "https://protobuf.dev/",
       "github": "https://github.com/protocolbuffers/protobuf",
-      "languages": ["C++", "C#", "C", "Java", "Objective-C", "Python", "Go"],
+      "languages": [
+        "C++",
+        "C#",
+        "C",
+        "Java",
+        "Objective-C",
+        "Python",
+        "Go"
+      ],
       "relevance": 4,
-      "stars": 71416,
+      "stars": 71418,
       "pushedAt": "2026-06-27T05:33:06Z",
       "inactive": false,
-      "starsWeekly": 56,
-      "starsMonthly": 209,
+      "starsWeekly": 58,
+      "starsMonthly": 211,
       "archived": false
     },
     {
@@ -888,7 +1030,9 @@
       "desc": "Adds support for the gRPC Server Reflection API to any Go net/http server, including those built with Connect.",
       "url": "https://github.com/connectrpc/grpcreflect-go",
       "github": "https://github.com/connectrpc/grpcreflect-go",
-      "languages": ["Go"],
+      "languages": [
+        "Go"
+      ],
       "relevance": 1,
       "stars": 111,
       "pushedAt": "2026-06-22T12:26:37Z",
@@ -905,7 +1049,9 @@
       "desc": "Provides OpenTelemetry metrics and tracing instrumentation for Connect Go clients and servers.",
       "url": "https://github.com/connectrpc/otelconnect-go",
       "github": "https://github.com/connectrpc/otelconnect-go",
-      "languages": ["Go"],
+      "languages": [
+        "Go"
+      ],
       "relevance": 1,
       "stars": 160,
       "pushedAt": "2026-04-13T22:47:19Z",
@@ -922,7 +1068,10 @@
       "desc": "TypeScript and JavaScript examples demonstrating ConnectRPC integrations with web frameworks and tools.",
       "url": "https://github.com/connectrpc/examples-es",
       "github": "https://github.com/connectrpc/examples-es",
-      "languages": ["TypeScript", "JavaScript"],
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
       "relevance": 1,
       "stars": 164,
       "pushedAt": "2026-06-19T20:29:20Z",
@@ -939,7 +1088,9 @@
       "desc": "A library for net/http Go servers enabling transcoding between gRPC, gRPC-Web, Connect, and REST.",
       "url": "https://github.com/connectrpc/vanguard-go",
       "github": "https://github.com/connectrpc/vanguard-go",
-      "languages": ["Go"],
+      "languages": [
+        "Go"
+      ],
       "relevance": 1,
       "stars": 405,
       "pushedAt": "2026-06-22T17:22:36Z",
@@ -956,12 +1107,14 @@
       "desc": "A collaborative API client that supports debugging, testing, and mocking gRPC and Protobuf APIs.",
       "url": "https://insomnia.rest",
       "github": "https://github.com/Kong/insomnia",
-      "languages": ["Agnostic"],
+      "languages": [
+        "Agnostic"
+      ],
       "relevance": 1,
-      "stars": 39806,
+      "stars": 39808,
       "pushedAt": "2026-06-27T00:36:12Z",
       "inactive": false,
-      "starsWeekly": 637,
+      "starsWeekly": 589,
       "starsMonthly": 1000,
       "archived": false
     },
@@ -973,7 +1126,9 @@
       "desc": "A popular API platform that includes support for creating, testing, and debugging gRPC requests and mocking Protobuf endpoints.",
       "url": "https://learning.postman.com/docs/use/send-requests/protocols/grpc/first-grpc-request",
       "github": "https://github.com/postmanlabs/postman-app-support",
-      "languages": ["Agnostic"],
+      "languages": [
+        "Agnostic"
+      ],
       "relevance": 1,
       "stars": 6003,
       "pushedAt": "2026-03-03T22:08:08Z",
@@ -990,13 +1145,15 @@
       "desc": "An open-source, developer-centric performance testing tool by Grafana that supports load testing gRPC services using custom JavaScript scenarios.",
       "url": "https://k6.io",
       "github": "https://github.com/grafana/k6",
-      "languages": ["Agnostic"],
+      "languages": [
+        "Agnostic"
+      ],
       "relevance": 1,
-      "stars": 30894,
-      "pushedAt": "2026-06-27T15:22:41Z",
+      "stars": 30896,
+      "pushedAt": "2026-06-27T17:17:32Z",
       "inactive": false,
-      "starsWeekly": 55,
-      "starsMonthly": 245,
+      "starsWeekly": 57,
+      "starsMonthly": 247,
       "archived": false
     },
     {
@@ -1007,7 +1164,9 @@
       "desc": "A popular Kotlin-specific compiler plugin and runtime generator for Protocol Buffers, producing idiomatic Kotlin code.",
       "url": "https://github.com/open-toast/protokt",
       "github": "https://github.com/open-toast/protokt",
-      "languages": ["Kotlin"],
+      "languages": [
+        "Kotlin"
+      ],
       "relevance": 2,
       "stars": 166,
       "pushedAt": "2026-06-22T03:13:47Z",
@@ -1024,13 +1183,15 @@
       "desc": "A network packet sniffer with built-in Protocol Buffers and gRPC dissectors, enabling you to decode and inspect raw binary protobuf messages over the wire.",
       "url": "https://www.wireshark.org",
       "github": "https://github.com/wireshark/wireshark",
-      "languages": ["Agnostic"],
+      "languages": [
+        "Agnostic"
+      ],
       "relevance": 1,
-      "stars": 9526,
+      "stars": 9529,
       "pushedAt": "2026-06-27T14:37:28Z",
       "inactive": false,
-      "starsWeekly": 33,
-      "starsMonthly": 137,
+      "starsWeekly": 35,
+      "starsMonthly": 139,
       "archived": false
     },
     {
@@ -1041,7 +1202,9 @@
       "desc": "A track-and-lock utility designed to prevent backward-incompatible changes to Protobuf schema files, saving downstream clients from breakage.",
       "url": "https://github.com/nilslice/protolock",
       "github": "https://github.com/nilslice/protolock",
-      "languages": ["Agnostic"],
+      "languages": [
+        "Agnostic"
+      ],
       "relevance": 2,
       "stars": 634,
       "pushedAt": "2024-02-12T21:22:32Z",
@@ -1058,7 +1221,9 @@
       "desc": "A tool to generate fake service implementations directly from Protobuf schemas, supporting gRPC, ConnectRPC, gRPC-Web, and REST on-the-fly.",
       "url": "https://fauxrpc.com",
       "github": "https://github.com/sudorandom/fauxrpc",
-      "languages": ["Agnostic"],
+      "languages": [
+        "Agnostic"
+      ],
       "relevance": 2,
       "stars": 130,
       "pushedAt": "2026-06-25T17:36:00Z",
@@ -1075,7 +1240,9 @@
       "desc": "A specialized Go library for parsing protobufs with zero memory allocation, useful for high-throughput edge systems.",
       "url": "https://github.com/richardartoul/molecule",
       "github": "https://github.com/richardartoul/molecule",
-      "languages": ["Go"],
+      "languages": [
+        "Go"
+      ],
       "relevance": 1,
       "stars": 418,
       "pushedAt": "2024-06-07T13:24:02Z",
@@ -1092,13 +1259,15 @@
       "desc": "A high-performance edge and service proxy with native, deep support for routing, translating, and observing gRPC/Protobuf traffic.",
       "url": "https://www.envoyproxy.io",
       "github": "https://github.com/envoyproxy/envoy",
-      "languages": ["Agnostic"],
+      "languages": [
+        "Agnostic"
+      ],
       "relevance": 1,
       "stars": 28473,
-      "pushedAt": "2026-06-27T13:28:18Z",
+      "pushedAt": "2026-06-27T18:43:55Z",
       "inactive": false,
       "starsWeekly": 46,
-      "starsMonthly": 248,
+      "starsMonthly": 247,
       "archived": false
     },
     {
@@ -1109,7 +1278,9 @@
       "desc": "An interactive web UI for gRPC, allowing you to explore and test gRPC services directly from your browser.",
       "url": "https://github.com/fullstorydev/grpcui",
       "github": "https://github.com/fullstorydev/grpcui",
-      "languages": ["Agnostic"],
+      "languages": [
+        "Agnostic"
+      ],
       "relevance": 2,
       "stars": 5909,
       "pushedAt": "2026-06-15T21:55:37Z",
@@ -1126,7 +1297,9 @@
       "desc": "A popular graphical desktop client for gRPC and REST APIs, with support for server reflection and environments.",
       "url": "https://kreya.app",
       "github": "https://github.com/riok/kreya",
-      "languages": ["Agnostic"],
+      "languages": [
+        "Agnostic"
+      ],
       "relevance": 1,
       "stars": 345,
       "pushedAt": "2026-02-25T17:11:22Z",
@@ -1143,7 +1316,9 @@
       "desc": "A highly interactive, REPL-style command-line client for gRPC that makes exploring services via terminal intuitive.",
       "url": "https://github.com/ktr0731/evans",
       "github": "https://github.com/ktr0731/evans",
-      "languages": ["Agnostic"],
+      "languages": [
+        "Agnostic"
+      ],
       "relevance": 1,
       "stars": 4481,
       "pushedAt": "2023-12-26T08:27:59Z",
@@ -1160,13 +1335,15 @@
       "desc": "A native gRPC client and server implementation for Rust, built on top of Hyper, Tokio, and Prost.",
       "url": "https://github.com/hyperium/tonic",
       "github": "https://github.com/hyperium/tonic",
-      "languages": ["Rust"],
+      "languages": [
+        "Rust"
+      ],
       "relevance": 1,
       "stars": 12343,
       "pushedAt": "2026-06-26T22:54:11Z",
       "inactive": false,
-      "starsWeekly": 19,
-      "starsMonthly": 183,
+      "starsWeekly": 17,
+      "starsMonthly": 180,
       "archived": false
     },
     {
@@ -1177,10 +1354,13 @@
       "desc": "A popular Protobuf compiler plugin for TypeScript that generates plain-object interfaces and simple helper classes.",
       "url": "https://github.com/stephenh/ts-proto",
       "github": "https://github.com/stephenh/ts-proto",
-      "languages": ["TypeScript", "JavaScript"],
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
       "relevance": 2,
       "stars": 2578,
-      "pushedAt": "2026-05-07T14:02:54Z",
+      "pushedAt": "2026-06-27T16:49:51Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 7,
@@ -1194,7 +1374,9 @@
       "desc": "Apple's official plugin and runtime library for using Protocol Buffers within Swift projects.",
       "url": "https://github.com/apple/swift-protobuf",
       "github": "https://github.com/apple/swift-protobuf",
-      "languages": ["Swift"],
+      "languages": [
+        "Swift"
+      ],
       "relevance": 2,
       "stars": 4942,
       "pushedAt": "2026-06-25T20:47:01Z",
@@ -1211,7 +1393,9 @@
       "desc": "The official Swift gRPC library, providing client and server capabilities built on SwiftNIO.",
       "url": "https://github.com/grpc/grpc-swift",
       "github": "https://github.com/grpc/grpc-swift",
-      "languages": ["Swift"],
+      "languages": [
+        "Swift"
+      ],
       "relevance": 1,
       "stars": 2241,
       "pushedAt": "2026-04-01T10:01:41Z",
@@ -1228,7 +1412,9 @@
       "desc": "The definitive Protocol Buffer compiler plugin for Scala, generating idiomatic case classes and native gRPC bindings.",
       "url": "https://scalapb.github.io",
       "github": "https://github.com/scalapb/ScalaPB",
-      "languages": ["Scala"],
+      "languages": [
+        "Scala"
+      ],
       "relevance": 3,
       "stars": 1337,
       "pushedAt": "2026-06-25T00:36:57Z",
@@ -1245,7 +1431,11 @@
       "desc": "An asynchronous HTTP/2 microservices framework for the JVM supporting gRPC, REST, and GraphQL simultaneously.",
       "url": "https://armeria.dev",
       "github": "https://github.com/line/armeria",
-      "languages": ["Java", "Kotlin", "Scala"],
+      "languages": [
+        "Java",
+        "Kotlin",
+        "Scala"
+      ],
       "relevance": 1,
       "stars": 5119,
       "pushedAt": "2026-06-26T07:51:24Z",
@@ -1262,10 +1452,12 @@
       "desc": "A shared registry for schema management that provides serialization/deserialization helpers and compatibility verification for Kafka.",
       "url": "https://docs.confluent.io/platform/current/schema-registry/index.html",
       "github": "https://github.com/confluentinc/schema-registry",
-      "languages": ["Agnostic"],
+      "languages": [
+        "Agnostic"
+      ],
       "relevance": 1,
       "stars": 2448,
-      "pushedAt": "2026-06-27T02:35:56Z",
+      "pushedAt": "2026-06-27T17:26:07Z",
       "inactive": false,
       "starsWeekly": 4,
       "starsMonthly": 14,
@@ -1279,7 +1471,9 @@
       "desc": "A reverse-engineering toolkit for Protocol Buffers, helping you extract schemas from binaries and analyze payloads.",
       "url": "https://github.com/marin-m/pbtk",
       "github": "https://github.com/marin-m/pbtk",
-      "languages": ["Agnostic"],
+      "languages": [
+        "Agnostic"
+      ],
       "relevance": 1,
       "stars": 1671,
       "pushedAt": "2026-05-19T22:40:01Z",
@@ -1296,12 +1490,14 @@
       "desc": "A security and analysis utility that allows decoding and editing of Protobuf messages without having the original schemas.",
       "url": "https://github.com/nccgroup/blackboxprotobuf",
       "github": "https://github.com/nccgroup/blackboxprotobuf",
-      "languages": ["Python"],
+      "languages": [
+        "Python"
+      ],
       "relevance": 1,
       "stars": 730,
       "pushedAt": "2026-04-13T17:08:18Z",
       "inactive": false,
-      "starsWeekly": 4,
+      "starsWeekly": 3,
       "starsMonthly": 10,
       "archived": false
     },
@@ -1313,7 +1509,9 @@
       "desc": "A modern package manager for Protocol Buffers, providing dependency management and registry publication capabilities.",
       "url": "https://github.com/helsing-ai/buffrs",
       "github": "https://github.com/helsing-ai/buffrs",
-      "languages": ["Agnostic"],
+      "languages": [
+        "Agnostic"
+      ],
       "relevance": 2,
       "stars": 370,
       "pushedAt": "2026-06-27T06:56:00Z",
@@ -1330,7 +1528,9 @@
       "desc": "A lightweight C++ Protobuf generator optimized for microcontrollers and embedded systems, featuring zero dynamic allocations.",
       "url": "https://embeddedproto.com/",
       "github": "https://github.com/Embedded-AMS/EmbeddedProto",
-      "languages": ["C++"],
+      "languages": [
+        "C++"
+      ],
       "relevance": 2,
       "stars": 272,
       "pushedAt": "2026-06-26T12:09:06Z",
@@ -1347,7 +1547,9 @@
       "desc": "A mock gRPC service (similar to httpbin) that is extremely useful for testing and debugging gRPC clients.",
       "url": "https://grpcb.in/",
       "github": "https://github.com/moul/grpcbin",
-      "languages": ["Agnostic"],
+      "languages": [
+        "Agnostic"
+      ],
       "relevance": 1,
       "stars": 169,
       "pushedAt": "2026-06-26T23:20:06Z",
@@ -1364,7 +1566,9 @@
       "desc": "A pure Elixir compiler and runtime library implementation for Protocol Buffers.",
       "url": "https://github.com/elixir-protobuf/protobuf",
       "github": "https://github.com/elixir-protobuf/protobuf",
-      "languages": ["Elixir"],
+      "languages": [
+        "Elixir"
+      ],
       "relevance": 2,
       "stars": 900,
       "pushedAt": "2026-06-08T09:31:34Z",
@@ -1381,7 +1585,9 @@
       "desc": "A reasonably fast, easy to use and 100% conformant Elixir library for Google Protocol Buffers (aka protobuf).",
       "url": "https://github.com/ahamez/protox",
       "github": "https://github.com/ahamez/protox",
-      "languages": ["Elixir"],
+      "languages": [
+        "Elixir"
+      ],
       "relevance": 2,
       "stars": 297,
       "pushedAt": "2026-06-22T06:58:33Z",
@@ -1398,7 +1604,9 @@
       "desc": "A pure-Python asyncio-based implementation of a gRPC client and server, with zero external C dependencies.",
       "url": "https://grpclib.readthedocs.io/",
       "github": "https://github.com/vmagamedov/grpclib",
-      "languages": ["Python"],
+      "languages": [
+        "Python"
+      ],
       "relevance": 1,
       "stars": 985,
       "pushedAt": "2025-12-14T22:22:50Z",
@@ -1415,7 +1623,9 @@
       "desc": "A lightweight, browser-based tool to decode and inspect raw binary Protocol Buffers logs and payloads on-the-fly.",
       "url": "https://protobuf-decoder.netlify.app/",
       "github": "https://github.com/pawitp/protobuf-decoder",
-      "languages": ["Agnostic"],
+      "languages": [
+        "Agnostic"
+      ],
       "relevance": 2,
       "stars": 664,
       "pushedAt": "2026-06-22T11:59:21Z",
@@ -1432,7 +1642,9 @@
       "desc": "A command-line tool (similar to cURL) to make requests to HTTP endpoints that accept or return Protocol Buffers.",
       "url": "https://github.com/qaware/protocurl",
       "github": "https://github.com/qaware/protocurl",
-      "languages": ["Agnostic"],
+      "languages": [
+        "Agnostic"
+      ],
       "relevance": 2,
       "stars": 251,
       "pushedAt": "2026-06-19T13:42:25Z",
@@ -1449,7 +1661,9 @@
       "desc": "The official JavaScript Protocol Buffers code generator plugin (protoc-gen-js).",
       "url": "https://github.com/protocolbuffers/protobuf-javascript",
       "github": "https://github.com/protocolbuffers/protobuf-javascript",
-      "languages": ["JavaScript"],
+      "languages": [
+        "JavaScript"
+      ],
       "relevance": 2,
       "stars": 464,
       "pushedAt": "2026-06-25T13:25:00Z",
@@ -1466,7 +1680,9 @@
       "desc": "The official Dart code generator plugin (protoc-gen-dart) and runtime library for Protocol Buffers.",
       "url": "https://github.com/dart-lang/protobuf",
       "github": "https://github.com/dart-lang/protobuf",
-      "languages": ["Dart"],
+      "languages": [
+        "Dart"
+      ],
       "relevance": 2,
       "stars": 572,
       "pushedAt": "2026-06-03T01:17:54Z",
@@ -1483,13 +1699,15 @@
       "desc": "The official Go implementation of gRPC, including the protoc-gen-go-grpc code generator plugin.",
       "url": "https://grpc.io/",
       "github": "https://github.com/grpc/grpc-go",
-      "languages": ["Go"],
+      "languages": [
+        "Go"
+      ],
       "relevance": 1,
       "stars": 22983,
       "pushedAt": "2026-06-25T20:20:07Z",
       "inactive": false,
       "starsWeekly": 25,
-      "starsMonthly": 68,
+      "starsMonthly": 67,
       "archived": false
     },
     {
@@ -1500,13 +1718,15 @@
       "desc": "The official Java implementation of gRPC, including the protoc-gen-grpc-java code generator plugin.",
       "url": "https://grpc.io/",
       "github": "https://github.com/grpc/grpc-java",
-      "languages": ["Java"],
+      "languages": [
+        "Java"
+      ],
       "relevance": 1,
       "stars": 12034,
       "pushedAt": "2026-06-26T11:37:40Z",
       "inactive": false,
       "starsWeekly": 2,
-      "starsMonthly": 27,
+      "starsMonthly": 26,
       "archived": false
     },
     {
@@ -1517,7 +1737,12 @@
       "desc": "A protoc compiler plugin to generate polymorphic validation rules for Go, Java, C++, and Python schemas.",
       "url": "https://github.com/bufbuild/protoc-gen-validate",
       "github": "https://github.com/bufbuild/protoc-gen-validate",
-      "languages": ["Go", "Java", "C++", "Python"],
+      "languages": [
+        "Go",
+        "Java",
+        "C++",
+        "Python"
+      ],
       "relevance": 2,
       "stars": 4124,
       "pushedAt": "2026-05-27T16:21:14Z",
@@ -1534,7 +1759,9 @@
       "desc": "10x faster dynamic Protobuf parsing in Go, acting as a high-performance VM-based replacement for dynamicpb.",
       "url": "https://github.com/bufbuild/hyperpb-go",
       "github": "https://github.com/bufbuild/hyperpb-go",
-      "languages": ["Go"],
+      "languages": [
+        "Go"
+      ],
       "relevance": 2,
       "stars": 674,
       "pushedAt": "2026-03-19T00:27:16Z",
@@ -1551,13 +1778,15 @@
       "desc": "Protocol Buffers with small code size",
       "url": "https://github.com/nanopb/nanopb",
       "github": "https://github.com/nanopb/nanopb",
-      "languages": ["C"],
+      "languages": [
+        "C"
+      ],
       "relevance": 2,
       "stars": 5449,
       "pushedAt": "2026-05-22T11:01:47Z",
       "inactive": false,
       "starsWeekly": 9,
-      "starsMonthly": 40,
+      "starsMonthly": 39,
       "archived": false
     },
     {
@@ -1568,7 +1797,9 @@
       "desc": "A protocol buffers library for C",
       "url": "https://github.com/cloudwu/pbc",
       "github": "https://github.com/cloudwu/pbc",
-      "languages": ["C"],
+      "languages": [
+        "C"
+      ],
       "relevance": 2,
       "stars": 1624,
       "pushedAt": "2022-11-03T03:00:02Z",
@@ -1585,7 +1816,9 @@
       "desc": "地表最强C++Class序列化",
       "url": "https://github.com/yksten/struct2x",
       "github": "https://github.com/yksten/struct2x",
-      "languages": ["C++"],
+      "languages": [
+        "C++"
+      ],
       "relevance": 2,
       "stars": 204,
       "pushedAt": "2025-10-22T12:33:48Z",
@@ -1602,7 +1835,9 @@
       "desc": "A fast, zero-allocation C# code generator and runtime for encoding and decoding Protocol Buffers binaries.",
       "url": "https://github.com/silentorbit/protobuf",
       "github": "https://github.com/silentorbit/protobuf",
-      "languages": ["C#"],
+      "languages": [
+        "C#"
+      ],
       "relevance": 2,
       "stars": 318,
       "pushedAt": "2022-08-26T06:54:43Z",
@@ -1619,7 +1854,9 @@
       "desc": "Google protocol buffers wrapper for Clojure.",
       "url": "https://github.com/ninjudd/clojure-protobuf",
       "github": "https://github.com/ninjudd/clojure-protobuf",
-      "languages": ["Clojure"],
+      "languages": [
+        "Clojure"
+      ],
       "relevance": 2,
       "stars": 218,
       "pushedAt": "2017-09-01T21:32:43Z",
@@ -1636,7 +1873,9 @@
       "desc": "Common Lisp implementation of Google's protocol buffers",
       "url": "https://github.com/brown/protobuf",
       "github": "https://github.com/brown/protobuf",
-      "languages": ["Common Lisp"],
+      "languages": [
+        "Common Lisp"
+      ],
       "relevance": 2,
       "stars": 115,
       "pushedAt": "2023-03-24T23:52:11Z",
@@ -1653,7 +1892,9 @@
       "desc": "A native Delphi generator and support library for Google Protocol Buffers schemas.",
       "url": "http://sourceforge.net/projects/protobuf-delphi",
       "github": "https://github.com/marat1961/protobuf-delphi",
-      "languages": ["Delphi"],
+      "languages": [
+        "Delphi"
+      ],
       "relevance": 2,
       "stars": 55,
       "pushedAt": "2021-04-25T15:20:29Z",
@@ -1670,7 +1911,9 @@
       "desc": "A pure Elixir implementation of Google Protobuf.",
       "url": "https://github.com/tony612/protobuf-elixir",
       "github": "https://github.com/tony612/protobuf-elixir",
-      "languages": ["Elixir"],
+      "languages": [
+        "Elixir"
+      ],
       "relevance": 2,
       "stars": 900,
       "pushedAt": "2026-06-08T09:31:34Z",
@@ -1687,7 +1930,9 @@
       "desc": "A Google Protobuf implementation for Erlang",
       "url": "https://github.com/tomas-abrahamsson/gpb",
       "github": "https://github.com/tomas-abrahamsson/gpb",
-      "languages": ["Erlang"],
+      "languages": [
+        "Erlang"
+      ],
       "relevance": 2,
       "stars": 579,
       "pushedAt": "2026-05-27T20:15:53Z",
@@ -1704,7 +1949,9 @@
       "desc": "An implementation of Google's Protocol Buffers for Erlang, based on ngerakines/erlang_protobuffs.",
       "url": "https://github.com/basho/erlang_protobuffs",
       "github": "https://github.com/basho/erlang_protobuffs",
-      "languages": ["Erlang"],
+      "languages": [
+        "Erlang"
+      ],
       "relevance": 2,
       "stars": 392,
       "pushedAt": "2020-07-10T14:00:30Z",
@@ -1721,7 +1968,9 @@
       "desc": "A Google Protobuf implementation for Godot / GDScript",
       "url": "https://github.com/oniksan/godobuf",
       "github": "https://github.com/oniksan/godobuf",
-      "languages": ["GDScript"],
+      "languages": [
+        "GDScript"
+      ],
       "relevance": 2,
       "stars": 394,
       "pushedAt": "2026-05-06T14:57:24Z",
@@ -1738,7 +1987,9 @@
       "desc": "[Deprecated] Protocol Buffers for Go with Gadgets",
       "url": "https://github.com/gogo/protobuf",
       "github": "https://github.com/gogo/protobuf",
-      "languages": ["Go"],
+      "languages": [
+        "Go"
+      ],
       "relevance": 2,
       "stars": 5669,
       "pushedAt": "2023-07-27T11:52:49Z",
@@ -1755,7 +2006,9 @@
       "desc": "A compiler plugin and library that generates Haskell data types and serialization functions from Protocol Buffers.",
       "url": "https://hackage.haskell.org/package/hprotoc",
       "github": "https://github.com/k-bx/protocol-buffers",
-      "languages": ["Haskell"],
+      "languages": [
+        "Haskell"
+      ],
       "relevance": 2,
       "stars": 81,
       "pushedAt": "2024-07-01T02:30:21Z",
@@ -1772,7 +2025,9 @@
       "desc": "API for protocol buffers using modern Haskell language and library patterns.",
       "url": "https://github.com/google/proto-lens",
       "github": "https://github.com/google/proto-lens",
-      "languages": ["Haskell"],
+      "languages": [
+        "Haskell"
+      ],
       "relevance": 2,
       "stars": 507,
       "pushedAt": "2026-05-02T00:11:42Z",
@@ -1789,7 +2044,9 @@
       "desc": "Java Protobuf implementation suitable for real-time enviroments",
       "url": "https://github.com/HebiRobotics/QuickBuffers",
       "github": "https://github.com/HebiRobotics/QuickBuffers",
-      "languages": ["Java"],
+      "languages": [
+        "Java"
+      ],
       "relevance": 2,
       "stars": 137,
       "pushedAt": "2024-09-19T16:21:54Z",
@@ -1806,7 +2063,9 @@
       "desc": "A compact Java Micro Edition (Java ME) library for parsing and serializing Protocol Buffers on resource-constrained devices.",
       "url": "http://swingme.sourceforge.net/encode.shtml",
       "github": "",
-      "languages": ["Java ME"],
+      "languages": [
+        "Java ME"
+      ],
       "relevance": 2,
       "stars": 0,
       "pushedAt": "1970-01-01T00:00:00.000Z",
@@ -1823,7 +2082,9 @@
       "desc": "Protobuf implementation in javascript",
       "url": "https://github.com/sirikata/protojs",
       "github": "https://github.com/sirikata/protojs",
-      "languages": ["Javascript"],
+      "languages": [
+        "Javascript"
+      ],
       "relevance": 2,
       "stars": 210,
       "pushedAt": "2013-11-22T18:44:12Z",
@@ -1840,7 +2101,9 @@
       "desc": "Julia protobuf implementation",
       "url": "https://github.com/JuliaIO/ProtoBuf.jl",
       "github": "https://github.com/JuliaIO/ProtoBuf.jl",
-      "languages": ["Julia"],
+      "languages": [
+        "Julia"
+      ],
       "relevance": 2,
       "stars": 221,
       "pushedAt": "2026-06-22T20:32:37Z",
@@ -1857,7 +2120,9 @@
       "desc": "gRPC Kotlin Coroutines, Protobuf DSL, Scripting for Protoc",
       "url": "https://github.com/marcoferrer/kroto-plus",
       "github": "https://github.com/marcoferrer/kroto-plus",
-      "languages": ["Kotlin"],
+      "languages": [
+        "Kotlin"
+      ],
       "relevance": 2,
       "stars": 492,
       "pushedAt": "2020-12-18T08:55:26Z",
@@ -1874,7 +2139,9 @@
       "desc": "Modern gRPC back-end development framework base on JVM.",
       "url": "https://github.com/ButterCam/sisyphus",
       "github": "https://github.com/ButterCam/sisyphus",
-      "languages": ["Kotlin"],
+      "languages": [
+        "Kotlin"
+      ],
       "relevance": 1,
       "stars": 100,
       "pushedAt": "2024-04-08T21:08:26Z",
@@ -1891,7 +2158,9 @@
       "desc": "Kotlin Multiplatform Code Generator and Runtime for Protocol Buffers (Protobuf)",
       "url": "https://github.com/streem/pbandk",
       "github": "https://github.com/streem/pbandk",
-      "languages": ["Kotlin Multiplatform"],
+      "languages": [
+        "Kotlin Multiplatform"
+      ],
       "relevance": 2,
       "stars": 296,
       "pushedAt": "2026-01-23T08:22:43Z",
@@ -1908,7 +2177,9 @@
       "desc": "Lua Protocol Buffers",
       "url": "https://github.com/Neopallium/lua-pb",
       "github": "https://github.com/Neopallium/lua-pb",
-      "languages": ["Lua"],
+      "languages": [
+        "Lua"
+      ],
       "relevance": 2,
       "stars": 293,
       "pushedAt": "2018-05-31T14:59:37Z",
@@ -1925,7 +2196,9 @@
       "desc": "An Objective-C code generator and library for encoding and decoding structured Protocol Buffers.",
       "url": "https://github.com/alexeyxo/protobuf-objc",
       "github": "https://github.com/alexeyxo/protobuf-objc",
-      "languages": ["Objective C"],
+      "languages": [
+        "Objective C"
+      ],
       "relevance": 2,
       "stars": 667,
       "pushedAt": "2018-05-11T20:42:44Z",
@@ -1942,7 +2215,9 @@
       "desc": "A Perl module for generating message accessor code and serializing data structures to Protobuf wire format.",
       "url": "https://metacpan.org/pod/Google::ProtocolBuffers",
       "github": "https://github.com/csirtgadgets/google-protocolbuffers-perl",
-      "languages": ["Perl"],
+      "languages": [
+        "Perl"
+      ],
       "relevance": 2,
       "stars": 14,
       "pushedAt": "2020-10-29T20:40:37Z",
@@ -1959,7 +2234,9 @@
       "desc": "PHP Protobuf - Google's Protocol Buffers for PHP",
       "url": "https://github.com/allegro/php-protobuf",
       "github": "https://github.com/allegro/php-protobuf",
-      "languages": ["PHP"],
+      "languages": [
+        "PHP"
+      ],
       "relevance": 2,
       "stars": 910,
       "pushedAt": "2021-01-12T07:01:07Z",
@@ -1976,7 +2253,9 @@
       "desc": "SWI-Prolog library for parsing, generating, and serializing Google's Protocol Buffers wire format.",
       "url": "http://www.swi-prolog.org/pldoc/package/protobufs.html",
       "github": "https://github.com/SWI-Prolog/contrib-protobufs",
-      "languages": ["Prolog"],
+      "languages": [
+        "Prolog"
+      ],
       "relevance": 2,
       "stars": 8,
       "pushedAt": "2026-06-25T10:39:40Z",
@@ -1993,7 +2272,9 @@
       "desc": "Python implementation of Protocol Buffers with dataclass-based schemaʼs",
       "url": "https://github.com/eigenein/protobuf",
       "github": "https://github.com/eigenein/protobuf",
-      "languages": ["Python"],
+      "languages": [
+        "Python"
+      ],
       "relevance": 2,
       "stars": 291,
       "pushedAt": "2026-05-14T18:13:30Z",
@@ -2010,7 +2291,9 @@
       "desc": "Clean, modern, Python 3.6+ code generator & library for Protobuf 3 and async gRPC",
       "url": "https://github.com/danielgtaylor/python-betterproto",
       "github": "https://github.com/danielgtaylor/python-betterproto",
-      "languages": ["Python"],
+      "languages": [
+        "Python"
+      ],
       "relevance": 2,
       "stars": 1766,
       "pushedAt": "2025-07-17T12:50:40Z",
@@ -2027,7 +2310,9 @@
       "desc": "R package offering comprehensive bindings to the C++ Protocol Buffers library for importing and exporting data structures.",
       "url": "https://cran.r-project.org/web/packages/RProtoBuf/index.html",
       "github": "https://github.com/eddelbuettel/rprotobuf",
-      "languages": ["R"],
+      "languages": [
+        "R"
+      ],
       "relevance": 2,
       "stars": 81,
       "pushedAt": "2026-06-11T21:26:38Z",
@@ -2044,7 +2329,9 @@
       "desc": "A lightweight Ruby library for encoding and decoding Protocol Buffers, focusing on speed and simplicity.",
       "url": "https://github.com/bmizerany/beefcake",
       "github": "https://github.com/bmizerany/beefcake",
-      "languages": ["Ruby"],
+      "languages": [
+        "Ruby"
+      ],
       "relevance": 2,
       "stars": 274,
       "pushedAt": "2016-08-15T22:43:08Z",
@@ -2061,7 +2348,9 @@
       "desc": "A fast, lightweight, and easy-to-use Rust implementation of Google Protocol Buffers serialization format.",
       "url": "https://github.com/tafia/quick-protobuf",
       "github": "https://github.com/tafia/quick-protobuf",
-      "languages": ["Rust"],
+      "languages": [
+        "Rust"
+      ],
       "relevance": 2,
       "stars": 472,
       "pushedAt": "2024-02-14T05:48:24Z",
@@ -2078,7 +2367,9 @@
       "desc": "A Scala Protocol Buffers compiler plugin that generates idiomatic case classes and helper methods.",
       "url": "https://github.com/SandroGrzicic/ScalaBuff",
       "github": "https://github.com/SandroGrzicic/ScalaBuff",
-      "languages": ["Scala"],
+      "languages": [
+        "Scala"
+      ],
       "relevance": 2,
       "stars": 219,
       "pushedAt": "2017-08-18T01:06:05Z",
@@ -2095,7 +2386,9 @@
       "desc": "A compiler plugin that generates TypeScript interfaces and client/server gRPC service definitions for ts-proto.",
       "url": "https://github.com/improbable-eng/ts-protoc-gen",
       "github": "https://github.com/improbable-eng/ts-protoc-gen",
-      "languages": ["Typescript"],
+      "languages": [
+        "Typescript"
+      ],
       "relevance": 2,
       "stars": 1398,
       "pushedAt": "2026-01-21T23:30:21Z",
@@ -2105,14 +2398,19 @@
       "archived": false
     },
     {
-      "category": ["plugins", "libraries"],
+      "category": [
+        "plugins",
+        "libraries"
+      ],
       "name": "protoc-gen-ts",
       "owner": "thesayyn",
       "repo": "protoc-gen-ts",
       "desc": "A lightweight TypeScript code generator for Protocol Buffers, providing type-safe message objects.",
       "url": "https://github.com/thesayyn/protoc-gen-ts",
       "github": "https://github.com/thesayyn/protoc-gen-ts",
-      "languages": ["Typescript"],
+      "languages": [
+        "Typescript"
+      ],
       "relevance": 2,
       "stars": 406,
       "pushedAt": "2026-03-19T00:09:38Z",
@@ -2129,7 +2427,9 @@
       "desc": "An ecosystem of tools for Protocol Buffers in TypeScript and Deno, featuring a pure TS compiler and formatter.",
       "url": "https://github.com/pbkit/pbkit",
       "github": "https://github.com/pbkit/pbkit",
-      "languages": ["Typescript"],
+      "languages": [
+        "Typescript"
+      ],
       "relevance": 2,
       "stars": 340,
       "pushedAt": "2025-05-18T14:39:36Z",
@@ -2146,7 +2446,9 @@
       "desc": "Vala bindings and code generator for compiling Google Protocol Buffers schemas into native C libraries.",
       "url": "https://launchpad.net/protobuf-vala",
       "github": "",
-      "languages": ["Vala"],
+      "languages": [
+        "Vala"
+      ],
       "relevance": 2,
       "stars": 0,
       "pushedAt": "1970-01-01T00:00:00.000Z",
@@ -2163,7 +2465,9 @@
       "desc": "A native Zig implementation of Protocol Buffers, providing automatic type conversion and code generation.",
       "url": "https://github.com/Arwalk/zig-protobuf",
       "github": "https://github.com/Arwalk/zig-protobuf",
-      "languages": ["Zig"],
+      "languages": [
+        "Zig"
+      ],
       "relevance": 2,
       "stars": 417,
       "pushedAt": "2026-06-27T09:40:14Z",
@@ -2180,7 +2484,9 @@
       "desc": "A tool and language designed to inspect, write, and verify Protocol Buffers binary wire format payloads.",
       "url": "https://github.com/protocolbuffers/protoscope",
       "github": "https://github.com/protocolbuffers/protoscope",
-      "languages": ["Go"],
+      "languages": [
+        "Go"
+      ],
       "relevance": 2,
       "stars": 431,
       "pushedAt": "2024-03-13T21:46:35Z",
@@ -2197,7 +2503,9 @@
       "desc": "A high-performance Protobuf compiler engine written in Go, implementing parsing, linking, and descriptor compilation.",
       "url": "https://github.com/bufbuild/protocompile",
       "github": "https://github.com/bufbuild/protocompile",
-      "languages": ["Go"],
+      "languages": [
+        "Go"
+      ],
       "relevance": 2,
       "stars": 338,
       "pushedAt": "2026-06-22T20:32:56Z",
@@ -2217,7 +2525,9 @@
         "https://github.com/aip-dev/google.aip.dev",
         "https://github.com/googleapis/api-linter"
       ],
-      "languages": ["Agnostic"],
+      "languages": [
+        "Agnostic"
+      ],
       "relevance": 2,
       "stars": 2354,
       "pushedAt": "2026-06-25T14:03:15Z",
