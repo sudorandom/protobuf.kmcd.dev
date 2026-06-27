@@ -3,26 +3,23 @@ edition = "2023";
 package demo.v1;
 
 import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
 
 message User {
   string id = 1 [(buf.validate.field).string.uuid = true];
-  string name = 2 [(buf.validate.field).string.min_len = 1];
+  string name = 2 [
+    (buf.validate.field).string.min_len = 2,
+    (buf.validate.field).string.max_len = 50
+  ];
   string email = 3 [(buf.validate.field).string.email = true];
 
-  // Numeric data for efficiency demo
-  uint32 age = 4 [(buf.validate.field).uint32.lt = 150];
-  float height_cm = 5 [(buf.validate.field).float = {
-    gte: 0
-    lte: 500
-  }];
-  double weight_kg = 6 [(buf.validate.field).double = {
-    gte: 0
-    lte: 2000
+  uint32 age = 4 [(buf.validate.field).uint32 = {
+    gte: 18
+    lt: 120
   }];
 
-  Role role = 7;
+  Role role = 7 [(buf.validate.field).enum.defined_only = true];
   Date birth_date = 8;
-  User manager = 9;
 
   enum Role {
     ROLE_UNSPECIFIED = 0;
@@ -44,4 +41,9 @@ message Date {
     gte: 1
     lte: 31
   }];
+}
+
+message LoginEvent {
+  string user_id = 1 [(buf.validate.field).string.uuid = true];
+  google.protobuf.Timestamp event_time = 2 [(buf.validate.field).required = true];
 }

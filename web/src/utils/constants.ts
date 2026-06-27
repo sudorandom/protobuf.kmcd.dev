@@ -1,3 +1,6 @@
+import validationProto from "../proto/validation.proto?raw";
+import descriptorProto from "../proto/descriptor.proto?raw";
+
 export const APP_ROUTES = [
   "intro",
   "basics",
@@ -8,59 +11,8 @@ export const APP_ROUTES = [
   "conclusion",
 ] as const;
 
-export const VALIDATION_PROTO = `edition = "2023";
-
-package demo.v1;
-
-import "buf/validate/validate.proto";
-import "google/protobuf/timestamp.proto";
-
-message User {
-  string id = 1 [(buf.validate.field).string.uuid = true];
-  string name = 2 [(buf.validate.field).string.min_len = 2, (buf.validate.field).string.max_len = 50];
-  string email = 3 [(buf.validate.field).string.email = true];
-  
-  uint32 age = 4 [(buf.validate.field).uint32 = { gte: 18, lt: 120 }];
-  
-  Role role = 7 [(buf.validate.field).enum.defined_only = true];
-  Date birth_date = 8;
-
-  enum Role {
-    ROLE_UNSPECIFIED = 0;
-    ROLE_USER = 1;
-    ROLE_ADMIN = 2;
-  }
-}
-
-message Date {
-  int32 year = 1 [(buf.validate.field).int32 = { gte: 1900, lte: 2100 }];
-  int32 month = 2 [(buf.validate.field).int32 = { gte: 1, lte: 12 }];
-  int32 day = 3 [(buf.validate.field).int32 = { gte: 1, lte: 31 }];
-}
-
-message LoginEvent {
-    string user_id = 1 [(buf.validate.field).string.uuid = true];
-    google.protobuf.Timestamp event_time = 2 [(buf.validate.field).required = true];
-}`;
-
-export const DESCRIPTOR_PROTO = `edition = "2023";
-
-package demo.v1;
-
-import "buf/validate/validate.proto";
-
-message User {
-  string id = 1 [json_name = "uid"];
-  string name = 2;
-  uint32 age = 3 [(buf.validate.field).uint32.lt = 150];
-  Role role = 4;
-
-  enum Role {
-    ROLE_UNSPECIFIED = 0;
-    ROLE_USER = 1;
-    ROLE_ADMIN = 2;
-  }
-}`;
+export const VALIDATION_PROTO = validationProto;
+export const DESCRIPTOR_PROTO = descriptorProto;
 
 export const SIZE_EXAMPLES = {
   BASIC: {

@@ -1,0 +1,18 @@
+edition = "2023";
+
+package demo.v1;
+
+import "buf/validate/validate.proto";
+
+message User {
+  string id = 1 [json_name = "uid"];
+  string name = 2;
+  uint32 age = 3 [(buf.validate.field).uint32.lt = 150];
+  Role role = 4;
+
+  enum Role {
+    ROLE_UNSPECIFIED = 0;
+    ROLE_USER = 1;
+    ROLE_ADMIN = 2;
+  }
+}
