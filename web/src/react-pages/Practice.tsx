@@ -465,7 +465,8 @@ export const Practice = ({ activeId }: { activeId: string }) => {
                 PROTOBUF <span className="cyber-text-gradient">MASTERY</span>
               </h1>
               <p className="text-sm text-[var(--text-dim)] max-w-xl mx-auto leading-relaxed">
-                You have repaired schemas, optimized wire formats, and mastered the core rules of backward compatibility.
+                You have repaired schemas, optimized wire formats, and mastered
+                the core rules of backward compatibility.
               </p>
             </div>
 
@@ -509,7 +510,8 @@ export const Practice = ({ activeId }: { activeId: string }) => {
               PROTOBUF PRACTICE
             </h1>
             <p className="text-sm text-[var(--text-dim)] mt-1">
-              Interactive sandbox to practice writing and optimizing schema definitions.
+              Interactive sandbox to practice writing and optimizing schema
+              definitions.
             </p>
           </div>
           <button
@@ -524,7 +526,10 @@ export const Practice = ({ activeId }: { activeId: string }) => {
         {/* Dynamic Stepper */}
         {renderStepperBar()}
 
-        <CyberPanel title={`${activeExercise.id}. ${activeExercise.title}`} className="space-y-4">
+        <CyberPanel
+          title={`${activeExercise.id}. ${activeExercise.title}`}
+          className="space-y-4"
+        >
           {/* The Scenario (Context) */}
           <div className="space-y-1.5">
             <span className="text-xs font-mono uppercase tracking-[0.2em] text-[var(--cyber-neon-pink)]">

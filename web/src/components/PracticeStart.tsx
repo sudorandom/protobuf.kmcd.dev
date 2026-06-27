@@ -10,7 +10,9 @@ export const PracticeStart = () => {
           PROTOBUF <span className="cyber-text-gradient">PRACTICE</span>
         </h1>
         <p className="text-sm text-[var(--text-dim)] leading-relaxed max-w-lg mx-auto">
-          Test your Protocol Buffers proficiency through interactive schema exercises. Repair files, correct types, and learn rules of backward compatibility.
+          Test your Protocol Buffers proficiency through interactive schema
+          exercises. Repair files, correct types, and learn rules of backward
+          compatibility.
         </p>
       </div>
 
@@ -20,22 +22,37 @@ export const PracticeStart = () => {
           <div className="flex gap-3">
             <Code className="w-5 h-5 text-[var(--cyber-neon-blue)] shrink-0 mt-0.5" />
             <div>
-              <strong className="text-[var(--text-color)] uppercase">1. Write Schema</strong>
-              <p className="mt-0.5">Write and edit standard proto3 schema code directly in the code editor.</p>
+              <strong className="text-[var(--text-color)] uppercase">
+                1. Write Schema
+              </strong>
+              <p className="mt-0.5">
+                Write and edit standard proto3 schema code directly in the code
+                editor.
+              </p>
             </div>
           </div>
           <div className="flex gap-3">
             <Terminal className="w-5 h-5 text-[var(--cyber-neon-pink)] shrink-0 mt-0.5" />
             <div>
-              <strong className="text-[var(--text-color)] uppercase">2. Compiled Live</strong>
-              <p className="mt-0.5">Your schema compiles live as you type, printing syntax errors instantly.</p>
+              <strong className="text-[var(--text-color)] uppercase">
+                2. Compiled Live
+              </strong>
+              <p className="mt-0.5">
+                Your schema compiles live as you type, printing syntax errors
+                instantly.
+              </p>
             </div>
           </div>
           <div className="flex gap-3">
             <ListChecks className="w-5 h-5 text-[var(--cyber-neon-green)] shrink-0 mt-0.5" />
             <div>
-              <strong className="text-[var(--text-color)] uppercase">3. AST Validation</strong>
-              <p className="mt-0.5">Automatic checks verify your field tags, types, repeated rules, enums, and compatibility boundaries.</p>
+              <strong className="text-[var(--text-color)] uppercase">
+                3. AST Validation
+              </strong>
+              <p className="mt-0.5">
+                Automatic checks verify your field tags, types, repeated rules,
+                enums, and compatibility boundaries.
+              </p>
             </div>
           </div>
         </div>
@@ -43,7 +60,9 @@ export const PracticeStart = () => {
 
       {/* Concepts Tested */}
       <div className="p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg space-y-3 text-xs">
-        <span className="font-mono text-[var(--cyber-neon-blue)] uppercase tracking-wider font-bold block">Concepts Tested:</span>
+        <span className="font-mono text-[var(--cyber-neon-blue)] uppercase tracking-wider font-bold block">
+          Concepts Tested:
+        </span>
         <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 list-disc list-inside text-[var(--text-dim)]">
           <li>Tag numbers & field styles</li>
           <li>Varint integer optimizations</li>

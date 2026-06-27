@@ -24,7 +24,7 @@ export const Hero = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="max-w-4xl z-10 text-center w-full flex flex-col items-center flex-1 justify-center"
+        className="max-w-4xl z-10 text-center w-full flex flex-col items-center flex-1 justify-center pb-16 sm:pb-24"
       >
         <h1 className="text-4xl sm:text-6xl md:text-8xl font-cyber font-black mb-6 tracking-tight leading-none">
           PROTOBUF
