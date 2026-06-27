@@ -172,28 +172,29 @@ const SideNavigationGroup = ({
             >
               {item.label}
             </a>
-            {isActive && pageSections.length > (item.id === "practice" ? 0 : 1) && (
-              <div className="mt-1 space-y-1 border-l border-[var(--border-light)] ml-3 pl-2 pr-1">
-                {pageSections.map((section) => {
-                  const isCurrentSection = activePageSectionId === section.id;
-                  return (
-                    <a
-                      key={section.id}
-                      href={section.path || `#${section.id}`}
-                      onClick={onNavigate}
-                      aria-current={isCurrentSection ? "location" : undefined}
-                      className={`block rounded px-2 py-1.5 text-sm leading-snug transition-colors ${
-                        isCurrentSection
-                          ? "bg-[var(--cyber-neon-blue)]/10 text-[var(--text-color)]"
-                          : "text-[var(--text-dim)] hover:bg-[var(--overlay-bg)] hover:text-[var(--text-color)]"
-                      }`}
-                    >
-                      {section.label}
-                    </a>
-                  );
-                })}
-              </div>
-            )}
+            {isActive &&
+              pageSections.length > (item.id === "practice" ? 0 : 1) && (
+                <div className="mt-1 space-y-1 border-l border-[var(--border-light)] ml-3 pl-2 pr-1">
+                  {pageSections.map((section) => {
+                    const isCurrentSection = activePageSectionId === section.id;
+                    return (
+                      <a
+                        key={section.id}
+                        href={section.path || `#${section.id}`}
+                        onClick={onNavigate}
+                        aria-current={isCurrentSection ? "location" : undefined}
+                        className={`block rounded px-2 py-1.5 text-sm leading-snug transition-colors ${
+                          isCurrentSection
+                            ? "bg-[var(--cyber-neon-blue)]/10 text-[var(--text-color)]"
+                            : "text-[var(--text-dim)] hover:bg-[var(--overlay-bg)] hover:text-[var(--text-color)]"
+                        }`}
+                      >
+                        {section.label}
+                      </a>
+                    );
+                  })}
+                </div>
+              )}
           </div>
         );
       })}
@@ -594,11 +595,19 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
     if (typeof window === "undefined") return;
 
     const updatePracticeLevels = () => {
-      const savedHighest = localStorage.getItem("protobuf_practice_highest_unlocked");
-      const highestUnlockedIndex = savedHighest ? parseInt(savedHighest, 10) : 0;
+      const savedHighest = localStorage.getItem(
+        "protobuf_practice_highest_unlocked",
+      );
+      const highestUnlockedIndex = savedHighest
+        ? parseInt(savedHighest, 10)
+        : 0;
 
-      const savedCompleted = localStorage.getItem("protobuf_practice_completed");
-      const completedExercises = savedCompleted ? JSON.parse(savedCompleted) : {};
+      const savedCompleted = localStorage.getItem(
+        "protobuf_practice_completed",
+      );
+      const completedExercises = savedCompleted
+        ? JSON.parse(savedCompleted)
+        : {};
 
       const levels: PageSectionLink[] = [];
 
@@ -626,11 +635,17 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
 
     updatePracticeLevels();
 
-    window.addEventListener("protobuf_practice_progress_changed", updatePracticeLevels);
+    window.addEventListener(
+      "protobuf_practice_progress_changed",
+      updatePracticeLevels,
+    );
     window.addEventListener("storage", updatePracticeLevels);
 
     return () => {
-      window.removeEventListener("protobuf_practice_progress_changed", updatePracticeLevels);
+      window.removeEventListener(
+        "protobuf_practice_progress_changed",
+        updatePracticeLevels,
+      );
       window.removeEventListener("storage", updatePracticeLevels);
     };
   }, []);
@@ -1025,8 +1040,14 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
                 title="Resources"
                 items={RESOURCE_ITEMS}
                 activeSection={activeSection}
-                pageSections={activeSection === "practice" ? practiceLevels : pageSections}
-                activePageSectionId={activeSection === "practice" ? currentActivePageSectionId : activePageSectionId}
+                pageSections={
+                  activeSection === "practice" ? practiceLevels : pageSections
+                }
+                activePageSectionId={
+                  activeSection === "practice"
+                    ? currentActivePageSectionId
+                    : activePageSectionId
+                }
               />
 
               <div className="h-20 shrink-0" aria-hidden="true" />
@@ -1108,8 +1129,16 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
                       title="Resources"
                       items={RESOURCE_ITEMS}
                       activeSection={activeSection}
-                      pageSections={activeSection === "practice" ? practiceLevels : pageSections}
-                      activePageSectionId={activeSection === "practice" ? currentActivePageSectionId : activePageSectionId}
+                      pageSections={
+                        activeSection === "practice"
+                          ? practiceLevels
+                          : pageSections
+                      }
+                      activePageSectionId={
+                        activeSection === "practice"
+                          ? currentActivePageSectionId
+                          : activePageSectionId
+                      }
                       onNavigate={() => setIsMobileMenuOpen(false)}
                     />
                   </div>
