@@ -7,8 +7,8 @@ import {
   RotateCcw,
   Sparkles,
   AlertTriangle,
-  ArrowRight,
   Trophy,
+  ExternalLink,
 } from "lucide-react";
 import { fromBinary } from "@bufbuild/protobuf";
 import { FileDescriptorSetSchema } from "@bufbuild/protobuf/wkt";
@@ -16,9 +16,16 @@ import { EXERCISES } from "../data/practice-data";
 import { createDynamicRegistry } from "../utils/dynamic-registry";
 import { type CompilationError } from "../utils/wasm-parser";
 import { SchemaEditor } from "../components/shared/SchemaEditor";
-import { Section, CyberPanel, SyntaxHighlighter } from "../components/shared/Common";
+import {
+  Section,
+  CyberPanel,
+  SyntaxHighlighter,
+} from "../components/shared/Common";
 
-const formatCodeText = (text: string, highlightColorClass: string = "text-[var(--cyber-neon-blue)]") => {
+const formatCodeText = (
+  text: string,
+  highlightColorClass: string = "text-[var(--cyber-neon-blue)]",
+) => {
   const parts = text.split(/`([^`]+)`/g);
   return parts.map((part, i) => {
     if (i % 2 === 1) {
@@ -41,12 +48,19 @@ const formatScenarioText = (text: string) => {
     if (part.startsWith("```")) {
       const lines = part.split("\n").slice(1, -1).join("\n");
       return (
-        <div key={i} className="bg-[var(--overlay-bg)] border border-[var(--border-light)] p-3 rounded my-3 text-xs">
+        <div
+          key={i}
+          className="bg-[var(--overlay-bg)] border border-[var(--border-light)] p-3 rounded my-3 text-xs"
+        >
           <SyntaxHighlighter language="proto" code={lines} />
         </div>
       );
     }
-    return <span key={i} className="whitespace-pre-wrap">{part}</span>;
+    return (
+      <span key={i} className="whitespace-pre-wrap">
+        {part}
+      </span>
+    );
   });
 };
 
@@ -58,7 +72,9 @@ export const Practice = ({ activeId }: { activeId: string }) => {
 
   const [highestUnlockedIndex, setHighestUnlockedIndex] = useState(() => {
     if (typeof window !== "undefined") {
-      const savedHighest = localStorage.getItem("protobuf_practice_highest_unlocked");
+      const savedHighest = localStorage.getItem(
+        "protobuf_practice_highest_unlocked",
+      );
       if (savedHighest) {
         return parseInt(savedHighest, 10);
       }
@@ -67,28 +83,34 @@ export const Practice = ({ activeId }: { activeId: string }) => {
   });
 
   // Track code edits per exercise index
-  const [exerciseCodes, setExerciseCodes] = useState<Record<number, string>>(() => {
-    if (typeof window !== "undefined") {
-      const savedCodes = localStorage.getItem("protobuf_practice_codes");
-      if (savedCodes) {
-        try {
-          return JSON.parse(savedCodes);
-        } catch (e) {
-          console.error("Failed to parse saved practice codes", e);
+  const [exerciseCodes, setExerciseCodes] = useState<Record<number, string>>(
+    () => {
+      if (typeof window !== "undefined") {
+        const savedCodes = localStorage.getItem("protobuf_practice_codes");
+        if (savedCodes) {
+          try {
+            return JSON.parse(savedCodes);
+          } catch (e) {
+            console.error("Failed to parse saved practice codes", e);
+          }
         }
       }
-    }
-    const initial: Record<number, string> = {};
-    EXERCISES.forEach((ex) => {
-      initial[ex.id] = ex.initialCode;
-    });
-    return initial;
-  });
+      const initial: Record<number, string> = {};
+      EXERCISES.forEach((ex) => {
+        initial[ex.id] = ex.initialCode;
+      });
+      return initial;
+    },
+  );
 
   // Track completed exercises
-  const [completedExercises, setCompletedExercises] = useState<Record<number, boolean>>(() => {
+  const [completedExercises, setCompletedExercises] = useState<
+    Record<number, boolean>
+  >(() => {
     if (typeof window !== "undefined") {
-      const savedCompleted = localStorage.getItem("protobuf_practice_completed");
+      const savedCompleted = localStorage.getItem(
+        "protobuf_practice_completed",
+      );
       if (savedCompleted) {
         try {
           return JSON.parse(savedCompleted);
@@ -101,17 +123,22 @@ export const Practice = ({ activeId }: { activeId: string }) => {
   });
 
   const activeExercise = EXERCISES[isConclusion ? 0 : currentExerciseIndex];
-  const activeCode = exerciseCodes[activeExercise.id] ?? activeExercise.initialCode;
+  const activeCode =
+    exerciseCodes[activeExercise.id] ?? activeExercise.initialCode;
 
   // Compilation & Assertion states
   const [isValidating, setIsValidating] = useState(false);
-  const [compilationErrors, setCompilationErrors] = useState<CompilationError[]>([]);
-  const [assertionResults, setAssertionResults] = useState<{
-    id: string;
-    description: string;
-    passed: boolean;
-    errorMsg?: string;
-  }[]>([]);
+  const [compilationErrors, setCompilationErrors] = useState<
+    CompilationError[]
+  >([]);
+  const [assertionResults, setAssertionResults] = useState<
+    {
+      id: string;
+      description: string;
+      passed: boolean;
+      errorMsg?: string;
+    }[]
+  >([]);
 
   const [showHint, setShowHint] = useState(false);
   const [isCompletedJustNow, setIsCompletedJustNow] = useState(false);
@@ -119,30 +146,45 @@ export const Practice = ({ activeId }: { activeId: string }) => {
   // Save codes to localStorage when updated
   useEffect(() => {
     if (typeof window !== "undefined") {
-      localStorage.setItem("protobuf_practice_codes", JSON.stringify(exerciseCodes));
+      localStorage.setItem(
+        "protobuf_practice_codes",
+        JSON.stringify(exerciseCodes),
+      );
     }
   }, [exerciseCodes]);
 
   // Save completion state to localStorage
   useEffect(() => {
     if (typeof window !== "undefined") {
-      localStorage.setItem("protobuf_practice_completed", JSON.stringify(completedExercises));
-      localStorage.setItem("protobuf_practice_highest_unlocked", highestUnlockedIndex.toString());
+      localStorage.setItem(
+        "protobuf_practice_completed",
+        JSON.stringify(completedExercises),
+      );
+      localStorage.setItem(
+        "protobuf_practice_highest_unlocked",
+        highestUnlockedIndex.toString(),
+      );
     }
   }, [completedExercises, highestUnlockedIndex]);
 
   // Redirect guard for locked stages
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const savedCompleted = localStorage.getItem("protobuf_practice_completed");
-      const savedHighest = localStorage.getItem("protobuf_practice_highest_unlocked");
+      const savedCompleted = localStorage.getItem(
+        "protobuf_practice_completed",
+      );
+      const savedHighest = localStorage.getItem(
+        "protobuf_practice_highest_unlocked",
+      );
       let currentHighest = 0;
       if (savedHighest) {
         currentHighest = parseInt(savedHighest, 10);
       }
 
       if (isConclusion) {
-        const savedCompletedObj = savedCompleted ? JSON.parse(savedCompleted) : {};
+        const savedCompletedObj = savedCompleted
+          ? JSON.parse(savedCompleted)
+          : {};
         const allCompleted = EXERCISES.every((k) => savedCompletedObj[k.id]);
         if (!allCompleted) {
           window.location.replace(`/practice/${currentHighest + 1}/`);
@@ -181,7 +223,7 @@ export const Practice = ({ activeId }: { activeId: string }) => {
               description: a.description,
               passed: false,
               errorMsg: "Compilation failed.",
-            }))
+            })),
           );
           setIsValidating(false);
           return;
@@ -189,8 +231,11 @@ export const Practice = ({ activeId }: { activeId: string }) => {
 
         setCompilationErrors([]);
 
-        const fds = fromBinary(FileDescriptorSetSchema, result.userFileDescriptorSet);
-        
+        const fds = fromBinary(
+          FileDescriptorSetSchema,
+          result.userFileDescriptorSet,
+        );
+
         const results = activeExercise.assertions.map((a) => {
           try {
             a.validate(fds);
@@ -210,7 +255,10 @@ export const Practice = ({ activeId }: { activeId: string }) => {
         const allPassed = results.every((r) => r.passed);
         if (allPassed) {
           if (!completedExercises[activeExercise.id]) {
-            setCompletedExercises((prev) => ({ ...prev, [activeExercise.id]: true }));
+            setCompletedExercises((prev) => ({
+              ...prev,
+              [activeExercise.id]: true,
+            }));
             setIsCompletedJustNow(true);
 
             const nextIdx = currentExerciseIndex + 1;
@@ -228,7 +276,6 @@ export const Practice = ({ activeId }: { activeId: string }) => {
             return prev;
           });
         }
-
       } catch (e: any) {
         console.error("Evaluation loop crashed", e);
         if (isMounted) {
@@ -267,7 +314,11 @@ export const Practice = ({ activeId }: { activeId: string }) => {
 
   const handleReset = () => {
     if (isConclusion) return;
-    if (confirm("Are you sure you want to reset this exercise's code to its initial template?")) {
+    if (
+      confirm(
+        "Are you sure you want to reset this exercise's code to its initial template?",
+      )
+    ) {
       handleCodeChange(activeExercise.initialCode);
       setCompletedExercises((prev) => {
         const updated = { ...prev };
@@ -278,7 +329,11 @@ export const Practice = ({ activeId }: { activeId: string }) => {
   };
 
   const handleResetAll = () => {
-    if (confirm("Reset all practice progress? This will clear all code changes and locked states.")) {
+    if (
+      confirm(
+        "Reset all practice progress? This will clear all code changes and locked states.",
+      )
+    ) {
       const initial: Record<number, string> = {};
       EXERCISES.forEach((ex) => {
         initial[ex.id] = ex.initialCode;
@@ -313,9 +368,15 @@ export const Practice = ({ activeId }: { activeId: string }) => {
         url: "/practice/conclusion/",
       },
     ];
-  }, [completedExercises, highestUnlockedIndex, isConclusion, currentExerciseIndex]);
+  }, [
+    completedExercises,
+    highestUnlockedIndex,
+    isConclusion,
+    currentExerciseIndex,
+  ]);
 
-  const isExerciseCompleted = !!completedExercises[activeExercise.id] || isCompletedJustNow;
+  const isExerciseCompleted =
+    !!completedExercises[activeExercise.id] || isCompletedJustNow;
 
   // Stepper Header helper
   const renderStepperBar = () => (
@@ -326,7 +387,9 @@ export const Practice = ({ activeId }: { activeId: string }) => {
           Practice Progress
         </span>
         <h3 className="text-xs font-cyber font-bold text-[var(--text-color)] uppercase tracking-wider">
-          {isConclusion ? "Mastery Achieved" : `Exercise ${activeExercise.id}: ${activeExercise.title}`}
+          {isConclusion
+            ? "Mastery Achieved"
+            : `Exercise ${activeExercise.id}: ${activeExercise.title}`}
         </h3>
       </div>
       {/* Stepper Track Row */}
@@ -349,8 +412,8 @@ export const Practice = ({ activeId }: { activeId: string }) => {
                     step.isActive
                       ? "bg-[var(--cyber-neon-blue)]/20 border-[var(--cyber-neon-blue)] text-[var(--cyber-neon-blue)] shadow-[0_0_10px_rgba(0,243,255,0.3)] ring-2 ring-[var(--cyber-neon-blue)]/25 animate-pulse"
                       : step.isCompleted
-                      ? "bg-[var(--cyber-neon-green)]/15 border-[var(--cyber-neon-green)] text-[var(--cyber-neon-green)]"
-                      : "bg-[var(--overlay-bg)] border-[var(--border-light)] text-[var(--text-dim)] hover:border-[var(--cyber-neon-blue)] hover:text-[var(--text-color)]"
+                        ? "bg-[var(--cyber-neon-green)]/15 border-[var(--cyber-neon-green)] text-[var(--cyber-neon-green)]"
+                        : "bg-[var(--overlay-bg)] border-[var(--border-light)] text-[var(--text-dim)] hover:border-[var(--cyber-neon-blue)] hover:text-[var(--text-color)]"
                   }`}
                   title={step.title}
                 >
@@ -366,7 +429,9 @@ export const Practice = ({ activeId }: { activeId: string }) => {
               {!isLast && (
                 <div
                   className={`h-0.5 w-3 sm:w-5 md:w-6 shrink-0 transition-colors mx-1 ${
-                    step.isCompleted ? "bg-[var(--cyber-neon-green)]" : "bg-[var(--border-light)]"
+                    step.isCompleted
+                      ? "bg-[var(--cyber-neon-green)]"
+                      : "bg-[var(--border-light)]"
                   }`}
                 />
               )}
@@ -380,10 +445,13 @@ export const Practice = ({ activeId }: { activeId: string }) => {
   // Render Conclusion View
   if (isConclusion) {
     return (
-      <Section id="practice" className="min-h-[calc(100vh-var(--header-height))] p-4 sm:p-6 lg:p-8 pt-[74px] flex items-center justify-center">
+      <Section
+        id="practice"
+        className="min-h-[calc(100vh-var(--header-height))] p-4 sm:p-6 lg:p-8 pt-[74px] flex items-center justify-center"
+      >
         <div className="max-w-7xl w-full mx-auto space-y-6">
           {renderStepperBar()}
-          
+
           <CyberPanel className="text-center p-8 space-y-6 flex flex-col items-center">
             <div className="relative">
               <div className="absolute -inset-4 bg-[var(--cyber-neon-green)]/20 rounded-full blur-xl animate-pulse" />
@@ -397,14 +465,18 @@ export const Practice = ({ activeId }: { activeId: string }) => {
                 PROTOBUF <span className="cyber-text-gradient">MASTERY</span>
               </h1>
               <p className="text-sm text-[var(--text-dim)] max-w-xl mx-auto leading-relaxed">
-                You have repaired schemas, inspected compiled AST descriptors, and learned the core rules of backward compatibility.
+                You have repaired schemas, optimized wire formats, and mastered the core rules of backward compatibility.
               </p>
             </div>
 
             <div className="flex justify-center w-full pt-4">
               <div className="p-4 border border-[var(--border-light)] bg-[var(--overlay-bg)] rounded-lg flex flex-col items-center space-y-1 min-w-[200px]">
-                <span className="text-[10px] font-mono text-[var(--text-dim)] uppercase tracking-wider">Stages Completed</span>
-                <span className="text-2xl font-cyber font-bold text-[var(--cyber-neon-green)]">8 / 8</span>
+                <span className="text-[10px] font-mono text-[var(--text-dim)] uppercase tracking-wider">
+                  Stages Completed
+                </span>
+                <span className="text-2xl font-cyber font-bold text-[var(--cyber-neon-green)]">
+                  8 / 8
+                </span>
               </div>
             </div>
 
@@ -424,7 +496,10 @@ export const Practice = ({ activeId }: { activeId: string }) => {
 
   // Render Standard Exercise View
   return (
-    <Section id="practice" className="min-h-[calc(100vh-var(--header-height))] p-4 sm:p-6 lg:p-8 pt-[74px]">
+    <Section
+      id="practice"
+      className="min-h-[calc(100vh-var(--header-height))] p-4 sm:p-6 lg:p-8 pt-[74px]"
+    >
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Page Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-[var(--border-light)] pb-4">
@@ -434,7 +509,7 @@ export const Practice = ({ activeId }: { activeId: string }) => {
               PROTOBUF PRACTICE
             </h1>
             <p className="text-sm text-[var(--text-dim)] mt-1">
-              Refactor schemas, compile AST descriptors, and achieve Protobuf mastery.
+              Interactive sandbox to practice writing and optimizing schema definitions.
             </p>
           </div>
           <button
@@ -449,12 +524,7 @@ export const Practice = ({ activeId }: { activeId: string }) => {
         {/* Dynamic Stepper */}
         {renderStepperBar()}
 
-
-
-        <CyberPanel
-          title={activeExercise.title}
-          className="space-y-4"
-        >
+        <CyberPanel title={`${activeExercise.id}. ${activeExercise.title}`} className="space-y-4">
           {/* The Scenario (Context) */}
           <div className="space-y-1.5">
             <span className="text-xs font-mono uppercase tracking-[0.2em] text-[var(--cyber-neon-pink)]">
@@ -473,8 +543,24 @@ export const Practice = ({ activeId }: { activeId: string }) => {
               The Task
             </span>
             <p className="text-sm text-[var(--text-color)] leading-relaxed">
-              {formatCodeText(activeExercise.task, "text-[var(--cyber-neon-blue)]")}
+              {formatCodeText(
+                activeExercise.task,
+                "text-[var(--cyber-neon-blue)]",
+              )}
             </p>
+            {activeExercise.guideUrl && (
+              <div className="pt-1">
+                <a
+                  href={activeExercise.guideUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-xs text-[var(--cyber-neon-blue)] hover:text-[var(--text-color)] transition-colors font-mono uppercase tracking-wider hover:underline"
+                >
+                  Read Theory Guide
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              </div>
+            )}
           </div>
 
           {/* Hint button & details */}
@@ -492,7 +578,10 @@ export const Practice = ({ activeId }: { activeId: string }) => {
             </button>
             {showHint && (
               <div className="mt-3 text-xs text-[var(--text-dim)] leading-relaxed font-sans animate-in fade-in slide-in-from-top-2 duration-200">
-                {formatCodeText(activeExercise.hint, "text-[var(--cyber-neon-yellow)]")}
+                {formatCodeText(
+                  activeExercise.hint,
+                  "text-[var(--cyber-neon-yellow)]",
+                )}
               </div>
             )}
           </div>
@@ -642,18 +731,16 @@ export const Practice = ({ activeId }: { activeId: string }) => {
                   {currentExerciseIndex + 1 < EXERCISES.length ? (
                     <a
                       href={`/practice/${currentExerciseIndex + 2}/`}
-                      className="w-full py-2 bg-[var(--cyber-neon-green)] text-[var(--neon-contrast-text)] hover:shadow-[0_0_15px_rgba(0,255,159,0.5)] font-cyber font-bold uppercase tracking-wider text-xs rounded flex items-center justify-center gap-1.5 transition-all text-center"
+                      className="w-full py-2 bg-[var(--cyber-neon-green)] text-[var(--neon-contrast-text)] hover:shadow-[0_0_15px_rgba(0,255,159,0.5)] font-cyber font-bold uppercase tracking-wider text-xs rounded block transition-all text-center"
                     >
                       Next Exercise: {EXERCISES[currentExerciseIndex + 1].title}
-                      <ArrowRight className="w-4 h-4" />
                     </a>
                   ) : (
                     <a
                       href="/practice/conclusion/"
-                      className="w-full py-2 bg-[var(--cyber-neon-green)] text-[var(--neon-contrast-text)] hover:shadow-[0_0_15px_rgba(0,255,159,0.5)] font-cyber font-bold uppercase tracking-wider text-xs rounded flex items-center justify-center gap-1.5 transition-all text-center"
+                      className="w-full py-2 bg-[var(--cyber-neon-green)] text-[var(--neon-contrast-text)] hover:shadow-[0_0_15px_rgba(0,255,159,0.5)] font-cyber font-bold uppercase tracking-wider text-xs rounded block transition-all text-center"
                     >
                       Go to Conclusion
-                      <ArrowRight className="w-4 h-4" />
                     </a>
                   )}
                 </div>

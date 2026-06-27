@@ -108,7 +108,8 @@ const STANDALONE_ITEMS: NavItemDef[] = [
     id: "practice",
     label: "Practice",
     path: "/practice/",
-    description: "Learn by fixing broken schemas in an interactive browser-based evaluation loop.",
+    description:
+      "Learn by fixing broken schemas in an interactive browser-based evaluation loop.",
   },
 ];
 
