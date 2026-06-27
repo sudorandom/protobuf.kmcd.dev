@@ -15,6 +15,7 @@ import {
   Search,
   Command,
 } from "lucide-react";
+import { EXERCISES } from "../data/practice-data";
 
 interface NavItemDef {
   id: string;
@@ -101,9 +102,6 @@ const RESOURCE_ITEMS: NavItemDef[] = [
     path: "/ecosystem/",
     description: "Find implementations, libraries, and protobuf projects.",
   },
-];
-
-const STANDALONE_ITEMS: NavItemDef[] = [
   {
     id: "practice",
     label: "Practice",
@@ -113,7 +111,7 @@ const STANDALONE_ITEMS: NavItemDef[] = [
   },
 ];
 
-const ALL_PAGE_ITEMS = [...NAV_ITEMS, ...RESOURCE_ITEMS, ...STANDALONE_ITEMS];
+const ALL_PAGE_ITEMS = [...NAV_ITEMS, ...RESOURCE_ITEMS];
 const navItem = (id: string) =>
   ALL_PAGE_ITEMS.find((item) => item.id === id) as NavItemDef;
 const useIsomorphicLayoutEffect =
@@ -135,6 +133,7 @@ const RELATED_LINKS: Record<string, NavItemDef[]> = {
 interface PageSectionLink {
   id: string;
   label: string;
+  path?: string;
 }
 
 const SideNavigationGroup = ({
@@ -173,14 +172,14 @@ const SideNavigationGroup = ({
             >
               {item.label}
             </a>
-            {isActive && pageSections.length > 1 && (
+            {isActive && pageSections.length > (item.id === "practice" ? 0 : 1) && (
               <div className="mt-1 space-y-1 border-l border-[var(--border-light)] ml-3 pl-2 pr-1">
                 {pageSections.map((section) => {
                   const isCurrentSection = activePageSectionId === section.id;
                   return (
                     <a
                       key={section.id}
-                      href={`#${section.id}`}
+                      href={section.path || `#${section.id}`}
                       onClick={onNavigate}
                       aria-current={isCurrentSection ? "location" : undefined}
                       className={`block rounded px-2 py-1.5 text-sm leading-snug transition-colors ${
@@ -535,6 +534,7 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
   const [activePageSectionId, setActivePageSectionId] = useState<string | null>(
     null,
   );
+  const [practiceLevels, setPracticeLevels] = useState<PageSectionLink[]>([]);
 
   const normalizedPathname =
     currentPath === "/"
@@ -548,7 +548,9 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
       item.path === normalizedPathname ||
       (normalizedPathname === "/" && item.path === "/") ||
       (item.path === "/ecosystem/" &&
-        normalizedPathname.startsWith("/ecosystem/")),
+        normalizedPathname.startsWith("/ecosystem/")) ||
+      (item.path === "/practice/" &&
+        normalizedPathname.startsWith("/practice/")),
   );
   const currentNavIndex = NAV_ITEMS.findIndex(
     (item) =>
@@ -567,12 +569,70 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
       ? NAV_ITEMS[currentNavIndex + 1]
       : null;
 
+  const currentActivePageSectionId = (() => {
+    if (activeSection === "practice") {
+      if (normalizedPathname === "/practice/conclusion/") {
+        return "practice-conclusion";
+      }
+      const match = normalizedPathname.match(/\/practice\/(\d+)\//);
+      if (match) {
+        return `practice-${match[1]}`;
+      }
+    }
+    return activePageSectionId;
+  })();
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       const isLight = document.documentElement.classList.contains("light");
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setTheme(isLight ? "light" : "dark");
     }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const updatePracticeLevels = () => {
+      const savedHighest = localStorage.getItem("protobuf_practice_highest_unlocked");
+      const highestUnlockedIndex = savedHighest ? parseInt(savedHighest, 10) : 0;
+
+      const savedCompleted = localStorage.getItem("protobuf_practice_completed");
+      const completedExercises = savedCompleted ? JSON.parse(savedCompleted) : {};
+
+      const levels: PageSectionLink[] = [];
+
+      EXERCISES.forEach((ex, idx) => {
+        if (idx <= highestUnlockedIndex) {
+          levels.push({
+            id: `practice-${ex.id}`,
+            label: `Exercise ${ex.id}: ${ex.title}`,
+            path: `/practice/${ex.id}/`,
+          });
+        }
+      });
+
+      const allCompleted = EXERCISES.every((ex) => completedExercises[ex.id]);
+      if (allCompleted) {
+        levels.push({
+          id: "practice-conclusion",
+          label: "Conclusion",
+          path: "/practice/conclusion/",
+        });
+      }
+
+      setPracticeLevels(levels);
+    };
+
+    updatePracticeLevels();
+
+    window.addEventListener("protobuf_practice_progress_changed", updatePracticeLevels);
+    window.addEventListener("storage", updatePracticeLevels);
+
+    return () => {
+      window.removeEventListener("protobuf_practice_progress_changed", updatePracticeLevels);
+      window.removeEventListener("storage", updatePracticeLevels);
+    };
   }, []);
 
   useEffect(() => {
@@ -965,8 +1025,8 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
                 title="Resources"
                 items={RESOURCE_ITEMS}
                 activeSection={activeSection}
-                pageSections={pageSections}
-                activePageSectionId={activePageSectionId}
+                pageSections={activeSection === "practice" ? practiceLevels : pageSections}
+                activePageSectionId={activeSection === "practice" ? currentActivePageSectionId : activePageSectionId}
               />
 
               <div className="h-20 shrink-0" aria-hidden="true" />
@@ -1048,8 +1108,8 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
                       title="Resources"
                       items={RESOURCE_ITEMS}
                       activeSection={activeSection}
-                      pageSections={pageSections}
-                      activePageSectionId={activePageSectionId}
+                      pageSections={activeSection === "practice" ? practiceLevels : pageSections}
+                      activePageSectionId={activeSection === "practice" ? currentActivePageSectionId : activePageSectionId}
                       onNavigate={() => setIsMobileMenuOpen(false)}
                     />
                   </div>

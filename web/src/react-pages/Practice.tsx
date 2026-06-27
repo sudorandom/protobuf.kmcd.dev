@@ -164,6 +164,7 @@ export const Practice = ({ activeId }: { activeId: string }) => {
         "protobuf_practice_highest_unlocked",
         highestUnlockedIndex.toString(),
       );
+      window.dispatchEvent(new Event("protobuf_practice_progress_changed"));
     }
   }, [completedExercises, highestUnlockedIndex]);
 

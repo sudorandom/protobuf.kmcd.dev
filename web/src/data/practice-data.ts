@@ -171,7 +171,7 @@ message user_profile {
   },
   {
     id: 3,
-    title: "The Weight of Data (Integers)",
+    title: "Choosing the correct integer",
     guideUrl: "/basics/#guidelines-for-integers",
     guideLabel: "Basics > Guidelines for Integers",
     scenario:
