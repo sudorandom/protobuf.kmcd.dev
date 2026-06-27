@@ -1,0 +1,41 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { Practice } from "../../react-pages/Practice";
+
+export function getStaticPaths() {
+  return [
+    { params: { id: "1" } },
+    { params: { id: "2" } },
+    { params: { id: "3" } },
+    { params: { id: "4" } },
+    { params: { id: "5" } },
+    { params: { id: "6" } },
+    { params: { id: "7" } },
+    { params: { id: "8" } },
+    { params: { id: "conclusion" } },
+  ];
+}
+
+const { id } = Astro.params;
+
+const titleMap: Record<string, string> = {
+  "1": "Exercise 1: The Foundation",
+  "2": "Exercise 2: The Style Guide",
+  "3": "Exercise 3: The Weight of Data",
+  "4": "Exercise 4: The Shape of Lists",
+  "5": "Exercise 5: The Immutable Law",
+  "6": "Exercise 6: The Illusion of Presence",
+  "7": "Exercise 7: Mutually Exclusive Reality",
+  "8": "Exercise 8: The Well-Known Path",
+  "conclusion": "Protobuf Mastery Achieved",
+};
+
+const pageTitle = titleMap[id] || `Exercise ${id}`;
+---
+
+<Layout
+  title={`${pageTitle} | Protobuf Visualized`}
+  description="Learn Protocol Buffers interactively in the browser. Repair broken schemas, verify AST descriptors, and achieve Protobuf mastery."
+>
+  <Practice activeId={id} client:load />
+</Layout>

@@ -44,7 +44,7 @@
       <text x="48" y="222" fill="#00f3ff">wire: none</text>
       <rect x="245" y="178" width="185" height="58" rx="8" fill="#00ff9f" fill-opacity="0.13" stroke="#00ff9f" stroke-opacity="0.45" />
       <text x="265" y="200" fill="#e2e8f0">age: 0</text>
-      <text x="265" y="222" fill="#00ff9f">wire: field 1</text>
+      <text x="265" y="222" fill="#00ff9f">wire: 1</text>
     </g>
   </g>
 

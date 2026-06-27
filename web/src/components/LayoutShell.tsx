@@ -84,6 +84,7 @@ const SECTION_LABELS: Record<string, string> = {
   hero: "Home",
   intro: "Introduction",
   basics: "Basics",
+  practice: "Practice",
   advanced: "Advanced",
   tooling: "Tooling",
   efficiency: "Efficiency",
@@ -102,7 +103,16 @@ const RESOURCE_ITEMS: NavItemDef[] = [
   },
 ];
 
-const ALL_PAGE_ITEMS = [...NAV_ITEMS, ...RESOURCE_ITEMS];
+const STANDALONE_ITEMS: NavItemDef[] = [
+  {
+    id: "practice",
+    label: "Practice",
+    path: "/practice/",
+    description: "Learn by fixing broken schemas in an interactive browser-based evaluation loop.",
+  },
+];
+
+const ALL_PAGE_ITEMS = [...NAV_ITEMS, ...RESOURCE_ITEMS, ...STANDALONE_ITEMS];
 const navItem = (id: string) =>
   ALL_PAGE_ITEMS.find((item) => item.id === id) as NavItemDef;
 const useIsomorphicLayoutEffect =
@@ -118,6 +128,7 @@ const RELATED_LINKS: Record<string, NavItemDef[]> = {
   ecosystem: [navItem("tooling"), navItem("binary"), navItem("efficiency")],
   community: [navItem("ecosystem"), navItem("tooling"), navItem("intro")],
   conclusion: [navItem("community"), navItem("ecosystem"), navItem("intro")],
+  practice: [navItem("basics"), navItem("advanced"), navItem("binary")],
 };
 
 interface PageSectionLink {
