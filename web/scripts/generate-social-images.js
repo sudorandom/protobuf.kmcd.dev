@@ -16,6 +16,8 @@ const diagrams = [
   "src/assets/maps-are-repeated-entries.svg",
   "src/assets/well-known-types.svg",
   "src/assets/field-presence-proto3.svg",
+  "src/assets/how-it-works-vertical.svg",
+  "src/assets/hero-social-vertical.svg",
 ];
 
 async function generateImages() {
@@ -43,6 +45,18 @@ async function generateImages() {
     {
       input: "src/assets/hero-social.svg",
       outputs: [{ name: "hero-social.png", width: 1200, height: 630 }],
+    },
+    {
+      input: "src/assets/how-it-works-vertical.svg",
+      outputs: [
+        { name: "how-it-works-vertical.png", width: 1080, height: 1920 },
+      ],
+    },
+    {
+      input: "src/assets/hero-social-vertical.svg",
+      outputs: [
+        { name: "hero-social-vertical.png", width: 1080, height: 1920 },
+      ],
     },
   ];
 

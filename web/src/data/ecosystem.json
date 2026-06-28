@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-06-28T14:26:04.154Z",
+  "fetchedAt": "2026-06-28T14:34:15.945Z",
   "projects": [
     {
       "category": "tools",
@@ -171,7 +171,7 @@
       "stars": 44932,
       "pushedAt": "2026-06-27T16:53:59Z",
       "inactive": false,
-      "starsWeekly": 37,
+      "starsWeekly": 36,
       "starsMonthly": 133,
       "archived": false
     },
@@ -1188,7 +1188,7 @@
       ],
       "relevance": 1,
       "stars": 9529,
-      "pushedAt": "2026-06-28T14:04:13Z",
+      "pushedAt": "2026-06-28T14:28:59Z",
       "inactive": false,
       "starsWeekly": 29,
       "starsMonthly": 137,
@@ -2534,6 +2534,26 @@
       "inactive": false,
       "starsWeekly": 6,
       "starsMonthly": 20,
+      "archived": false
+    },
+    {
+      "category": "libraries",
+      "name": "nice-grpc",
+      "owner": "deeplay-io",
+      "repo": "nice-grpc",
+      "desc": "A gRPC library for Node.js and TypeScript. Built on top of @grpc/grpc-js, providing a user-friendly, type-safe, and robust interface with support for middleware and cancellation.",
+      "url": "https://github.com/deeplay-io/nice-grpc",
+      "github": "https://github.com/deeplay-io/nice-grpc",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "relevance": 2,
+      "stars": 535,
+      "pushedAt": "2026-06-25T00:08:40Z",
+      "inactive": false,
+      "starsWeekly": 0,
+      "starsMonthly": 2,
       "archived": false
     }
   ]
