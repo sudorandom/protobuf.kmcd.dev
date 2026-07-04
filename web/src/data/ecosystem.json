@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-07-04T19:50:06.045Z",
+  "fetchedAt": "2026-07-04T21:36:21.373Z",
   "projects": [
     {
       "category": "tools",
@@ -64,7 +64,7 @@
         "Rust"
       ],
       "relevance": 3,
-      "stars": 2239,
+      "stars": 2237,
       "pushedAt": "2026-07-03T01:04:19Z",
       "inactive": false,
       "starsWeekly": 3,
@@ -278,7 +278,7 @@
       "stars": 17550,
       "pushedAt": "2026-07-04T12:10:43Z",
       "inactive": false,
-      "starsWeekly": 7,
+      "starsWeekly": 6,
       "starsMonthly": 51,
       "archived": false
     },
@@ -1111,10 +1111,10 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 39835,
+      "stars": 39838,
       "pushedAt": "2026-07-04T18:32:12Z",
       "inactive": false,
-      "starsWeekly": 54,
+      "starsWeekly": 57,
       "starsMonthly": 1000,
       "archived": false
     },
@@ -1188,10 +1188,10 @@
       ],
       "relevance": 1,
       "stars": 9557,
-      "pushedAt": "2026-07-04T19:36:44Z",
+      "pushedAt": "2026-07-04T21:03:02Z",
       "inactive": false,
-      "starsWeekly": 34,
-      "starsMonthly": 144,
+      "starsWeekly": 33,
+      "starsMonthly": 143,
       "archived": false
     },
     {
@@ -1244,7 +1244,7 @@
         "Go"
       ],
       "relevance": 1,
-      "stars": 418,
+      "stars": 417,
       "pushedAt": "2024-06-07T13:24:02Z",
       "inactive": true,
       "starsWeekly": 0,
@@ -1264,7 +1264,7 @@
       ],
       "relevance": 1,
       "stars": 28521,
-      "pushedAt": "2026-07-04T18:35:32Z",
+      "pushedAt": "2026-07-04T20:06:51Z",
       "inactive": false,
       "starsWeekly": 55,
       "starsMonthly": 234,
@@ -1285,7 +1285,7 @@
       "stars": 5908,
       "pushedAt": "2026-07-04T12:30:00Z",
       "inactive": false,
-      "starsWeekly": 1,
+      "starsWeekly": 0,
       "starsMonthly": 16,
       "archived": false
     },
@@ -1976,7 +1976,7 @@
       "pushedAt": "2026-06-29T04:59:24Z",
       "inactive": false,
       "starsWeekly": 1,
-      "starsMonthly": 6,
+      "starsMonthly": 5,
       "archived": false
     },
     {
