@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-07-05T17:43:13.966Z",
+  "fetchedAt": "2026-07-05T18:44:59.169Z",
   "projects": [
     {
       "category": "tools",
@@ -221,7 +221,7 @@
       "stars": 452,
       "pushedAt": "2026-07-02T18:36:25Z",
       "inactive": false,
-      "starsWeekly": 11,
+      "starsWeekly": 10,
       "starsMonthly": 40,
       "archived": false
     },
@@ -317,7 +317,7 @@
       "stars": 2980,
       "pushedAt": "2025-04-07T01:18:13Z",
       "inactive": true,
-      "starsWeekly": 5,
+      "starsWeekly": 4,
       "starsMonthly": 13,
       "archived": false
     },
@@ -817,7 +817,7 @@
       "stars": 25771,
       "pushedAt": "2026-07-01T18:22:24Z",
       "inactive": false,
-      "starsWeekly": 23,
+      "starsWeekly": 22,
       "starsMonthly": 85,
       "archived": false
     },
@@ -871,11 +871,11 @@
         "Kotlin"
       ],
       "relevance": 1,
-      "stars": 5926,
+      "stars": 5927,
       "pushedAt": "2026-07-03T12:30:00Z",
       "inactive": false,
-      "starsWeekly": 4,
-      "starsMonthly": 19,
+      "starsWeekly": 5,
+      "starsMonthly": 20,
       "archived": false
     },
     {
@@ -1016,9 +1016,9 @@
       ],
       "relevance": 4,
       "stars": 71456,
-      "pushedAt": "2026-07-05T10:45:37Z",
+      "pushedAt": "2026-07-05T18:36:01Z",
       "inactive": false,
-      "starsWeekly": 48,
+      "starsWeekly": 47,
       "starsMonthly": 201,
       "archived": false
     },
@@ -1111,10 +1111,10 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 39845,
+      "stars": 39846,
       "pushedAt": "2026-07-05T08:50:03Z",
       "inactive": false,
-      "starsWeekly": 56,
+      "starsWeekly": 57,
       "starsMonthly": 1000,
       "archived": false
     },
@@ -1975,7 +1975,7 @@
       "stars": 395,
       "pushedAt": "2026-06-29T04:59:24Z",
       "inactive": false,
-      "starsWeekly": 1,
+      "starsWeekly": 0,
       "starsMonthly": 4,
       "archived": false
     },
@@ -2532,7 +2532,7 @@
       "stars": 2358,
       "pushedAt": "2026-07-03T16:16:58Z",
       "inactive": false,
-      "starsWeekly": 5,
+      "starsWeekly": 4,
       "starsMonthly": 20,
       "archived": false
     },
