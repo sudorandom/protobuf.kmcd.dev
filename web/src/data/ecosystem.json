@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-07-10T18:10:38.965Z",
+  "fetchedAt": "2026-07-11T04:47:00.227Z",
   "projects": [
     {
       "category": "tools",
@@ -11,7 +11,7 @@
       "github": "https://github.com/bufbuild/buf",
       "languages": ["Agnostic"],
       "relevance": 4,
-      "stars": 11250,
+      "stars": 11251,
       "pushedAt": "2026-07-06T14:11:41Z",
       "inactive": false,
       "starsWeekly": 21,
@@ -129,9 +129,9 @@
       "languages": ["Agnostic"],
       "relevance": 3,
       "stars": 19948,
-      "pushedAt": "2026-07-10T16:39:51Z",
+      "pushedAt": "2026-07-10T23:02:46Z",
       "inactive": false,
-      "starsWeekly": 12,
+      "starsWeekly": 10,
       "starsMonthly": 51,
       "archived": false
     },
@@ -247,11 +247,11 @@
       "github": "https://github.com/grpc/grpc",
       "languages": ["C++", "C#", "Java", "Python", "Go", "Ruby", "PHP"],
       "relevance": 4,
-      "stars": 45106,
-      "pushedAt": "2026-07-10T18:09:19Z",
+      "stars": 45155,
+      "pushedAt": "2026-07-11T01:48:24Z",
       "inactive": false,
-      "starsWeekly": 173,
-      "starsMonthly": 274,
+      "starsWeekly": 220,
+      "starsMonthly": 322,
       "archived": false
     },
     {
@@ -279,9 +279,9 @@
       ],
       "relevance": 4,
       "stars": 6217,
-      "pushedAt": "2026-07-10T01:40:49Z",
+      "pushedAt": "2026-07-11T01:01:04Z",
       "inactive": false,
-      "starsWeekly": 28,
+      "starsWeekly": 27,
       "starsMonthly": 81,
       "archived": false
     },
@@ -295,7 +295,7 @@
       "github": "https://github.com/anthropics/connect-rust",
       "languages": ["Rust"],
       "relevance": 4,
-      "stars": 458,
+      "stars": 459,
       "pushedAt": "2026-07-09T21:57:24Z",
       "inactive": false,
       "starsWeekly": 7,
@@ -332,7 +332,7 @@
       "stars": 1629,
       "pushedAt": "2026-05-14T12:11:27Z",
       "inactive": false,
-      "starsWeekly": 1,
+      "starsWeekly": 0,
       "starsMonthly": 2,
       "archived": false
     },
@@ -347,7 +347,7 @@
       "languages": ["C++"],
       "relevance": 1,
       "stars": 17554,
-      "pushedAt": "2026-07-09T12:51:46Z",
+      "pushedAt": "2026-07-10T23:54:09Z",
       "inactive": false,
       "starsWeekly": 10,
       "starsMonthly": 41,
@@ -366,7 +366,7 @@
       "stars": 41529,
       "pushedAt": "2026-07-10T09:59:27Z",
       "inactive": false,
-      "starsWeekly": 16,
+      "starsWeekly": 14,
       "starsMonthly": 52,
       "archived": false
     },
@@ -431,10 +431,10 @@
       "github": "https://github.com/square/wire",
       "languages": ["Java", "Kotlin", "Swift"],
       "relevance": 3,
-      "stars": 4421,
+      "stars": 4422,
       "pushedAt": "2026-07-09T22:12:24Z",
       "inactive": false,
-      "starsWeekly": 2,
+      "starsWeekly": 3,
       "starsMonthly": 8,
       "archived": false
     },
@@ -449,9 +449,9 @@
       "languages": ["JavaScript"],
       "relevance": 2,
       "stars": 10572,
-      "pushedAt": "2026-07-10T17:27:32Z",
+      "pushedAt": "2026-07-11T00:05:34Z",
       "inactive": false,
-      "starsWeekly": 8,
+      "starsWeekly": 7,
       "starsMonthly": 23,
       "archived": false
     },
@@ -754,11 +754,11 @@
       "github": "https://github.com/grpc/grpc-web",
       "languages": ["TypeScript", "JavaScript"],
       "relevance": 1,
-      "stars": 9232,
+      "stars": 9233,
       "pushedAt": "2026-07-09T05:38:47Z",
       "inactive": false,
-      "starsWeekly": 2,
-      "starsMonthly": 15,
+      "starsWeekly": 3,
+      "starsMonthly": 16,
       "archived": false
     },
     {
@@ -771,11 +771,11 @@
       "github": "https://github.com/grpc/grpc-node",
       "languages": ["TypeScript", "JavaScript"],
       "relevance": 1,
-      "stars": 4842,
+      "stars": 4844,
       "pushedAt": "2026-06-17T16:50:46Z",
       "inactive": false,
-      "starsWeekly": 3,
-      "starsMonthly": 11,
+      "starsWeekly": 5,
+      "starsMonthly": 13,
       "archived": false
     },
     {
@@ -805,10 +805,10 @@
       "github": "https://github.com/go-kratos/kratos",
       "languages": ["Go"],
       "relevance": 1,
-      "stars": 25781,
+      "stars": 25782,
       "pushedAt": "2026-07-01T18:22:24Z",
       "inactive": false,
-      "starsWeekly": 25,
+      "starsWeekly": 23,
       "starsMonthly": 89,
       "archived": false
     },
@@ -822,11 +822,11 @@
       "github": "https://github.com/fullstorydev/grpcurl",
       "languages": ["Agnostic"],
       "relevance": 1,
-      "stars": 12723,
+      "stars": 12724,
       "pushedAt": "2026-07-08T17:41:30Z",
       "inactive": false,
-      "starsWeekly": 14,
-      "starsMonthly": 53,
+      "starsWeekly": 13,
+      "starsMonthly": 52,
       "archived": false
     },
     {
@@ -877,7 +877,7 @@
       "pushedAt": "2026-07-10T11:09:26Z",
       "inactive": false,
       "starsWeekly": 4,
-      "starsMonthly": 35,
+      "starsMonthly": 34,
       "archived": false
     },
     {
@@ -891,10 +891,10 @@
       "languages": ["Agnostic"],
       "relevance": 1,
       "stars": 5791,
-      "pushedAt": "2026-07-10T18:03:24Z",
+      "pushedAt": "2026-07-11T00:00:05Z",
       "inactive": false,
-      "starsWeekly": 6,
-      "starsMonthly": 29,
+      "starsWeekly": 5,
+      "starsMonthly": 28,
       "archived": false
     },
     {
@@ -975,11 +975,11 @@
       "github": "https://github.com/protocolbuffers/protobuf",
       "languages": ["C++", "C#", "C", "Java", "Objective-C", "Python", "Go"],
       "relevance": 4,
-      "stars": 71479,
-      "pushedAt": "2026-07-10T18:09:15Z",
+      "stars": 71483,
+      "pushedAt": "2026-07-11T04:40:31Z",
       "inactive": false,
-      "starsWeekly": 47,
-      "starsMonthly": 210,
+      "starsWeekly": 48,
+      "starsMonthly": 213,
       "archived": false
     },
     {
@@ -1060,10 +1060,10 @@
       "github": "https://github.com/Kong/insomnia",
       "languages": ["Agnostic"],
       "relevance": 1,
-      "stars": 39879,
-      "pushedAt": "2026-07-10T18:07:30Z",
+      "stars": 39885,
+      "pushedAt": "2026-07-10T19:27:32Z",
       "inactive": false,
-      "starsWeekly": 63,
+      "starsWeekly": 67,
       "starsMonthly": 1000,
       "archived": false
     },
@@ -1094,11 +1094,11 @@
       "github": "https://github.com/grafana/k6",
       "languages": ["Agnostic"],
       "relevance": 1,
-      "stars": 30979,
-      "pushedAt": "2026-07-10T18:01:44Z",
+      "stars": 30985,
+      "pushedAt": "2026-07-10T20:25:55Z",
       "inactive": false,
-      "starsWeekly": 65,
-      "starsMonthly": 250,
+      "starsWeekly": 69,
+      "starsMonthly": 253,
       "archived": false
     },
     {
@@ -1128,11 +1128,11 @@
       "github": "https://github.com/wireshark/wireshark",
       "languages": ["Agnostic"],
       "relevance": 1,
-      "stars": 9579,
-      "pushedAt": "2026-07-10T12:26:12Z",
+      "stars": 9582,
+      "pushedAt": "2026-07-10T18:27:39Z",
       "inactive": false,
-      "starsWeekly": 32,
-      "starsMonthly": 147,
+      "starsWeekly": 33,
+      "starsMonthly": 149,
       "archived": false
     },
     {
@@ -1197,10 +1197,10 @@
       "languages": ["Agnostic"],
       "relevance": 1,
       "stars": 28549,
-      "pushedAt": "2026-07-10T17:05:32Z",
+      "pushedAt": "2026-07-11T02:05:46Z",
       "inactive": false,
-      "starsWeekly": 41,
-      "starsMonthly": 221,
+      "starsWeekly": 40,
+      "starsMonthly": 216,
       "archived": false
     },
     {
@@ -1217,7 +1217,7 @@
       "pushedAt": "2026-07-06T13:18:37Z",
       "inactive": false,
       "starsWeekly": 4,
-      "starsMonthly": 18,
+      "starsMonthly": 17,
       "archived": false
     },
     {
@@ -1247,11 +1247,11 @@
       "github": "https://github.com/ktr0731/evans",
       "languages": ["Agnostic"],
       "relevance": 1,
-      "stars": 4487,
+      "stars": 4488,
       "pushedAt": "2023-12-26T08:27:59Z",
       "inactive": true,
-      "starsWeekly": 4,
-      "starsMonthly": 7,
+      "starsWeekly": 5,
+      "starsMonthly": 8,
       "archived": false
     },
     {
@@ -1264,10 +1264,10 @@
       "github": "https://github.com/hyperium/tonic",
       "languages": ["Rust"],
       "relevance": 1,
-      "stars": 12367,
+      "stars": 12368,
       "pushedAt": "2026-07-09T13:21:32Z",
       "inactive": false,
-      "starsWeekly": 18,
+      "starsWeekly": 17,
       "starsMonthly": 115,
       "archived": false
     },
@@ -1302,7 +1302,7 @@
       "pushedAt": "2026-07-09T00:25:22Z",
       "inactive": false,
       "starsWeekly": 6,
-      "starsMonthly": 26,
+      "starsMonthly": 25,
       "archived": false
     },
     {
@@ -1315,10 +1315,10 @@
       "github": "https://github.com/grpc/grpc-swift",
       "languages": ["Swift"],
       "relevance": 1,
-      "stars": 2241,
+      "stars": 2242,
       "pushedAt": "2026-04-01T10:01:41Z",
       "inactive": false,
-      "starsWeekly": 0,
+      "starsWeekly": 1,
       "starsMonthly": 5,
       "archived": false
     },
@@ -1333,7 +1333,7 @@
       "languages": ["Scala"],
       "relevance": 3,
       "stars": 1338,
-      "pushedAt": "2026-07-08T20:30:15Z",
+      "pushedAt": "2026-07-11T00:30:20Z",
       "inactive": false,
       "starsWeekly": 1,
       "starsMonthly": 3,
@@ -1367,7 +1367,7 @@
       "languages": ["Agnostic"],
       "relevance": 1,
       "stars": 2447,
-      "pushedAt": "2026-07-10T18:00:42Z",
+      "pushedAt": "2026-07-10T23:41:06Z",
       "inactive": false,
       "starsWeekly": 1,
       "starsMonthly": 13,
@@ -1472,7 +1472,7 @@
       "pushedAt": "2026-06-08T09:31:34Z",
       "inactive": false,
       "starsWeekly": 0,
-      "starsMonthly": 4,
+      "starsMonthly": 3,
       "archived": false
     },
     {
@@ -1587,10 +1587,10 @@
       "github": "https://github.com/grpc/grpc-go",
       "languages": ["Go"],
       "relevance": 1,
-      "stars": 23002,
-      "pushedAt": "2026-07-08T11:25:42Z",
+      "stars": 23004,
+      "pushedAt": "2026-07-10T21:43:25Z",
       "inactive": false,
-      "starsWeekly": 14,
+      "starsWeekly": 16,
       "starsMonthly": 78,
       "archived": false
     },
@@ -1604,11 +1604,11 @@
       "github": "https://github.com/grpc/grpc-java",
       "languages": ["Java"],
       "relevance": 1,
-      "stars": 12040,
+      "stars": 12042,
       "pushedAt": "2026-07-09T15:27:50Z",
       "inactive": false,
-      "starsWeekly": 6,
-      "starsMonthly": 21,
+      "starsWeekly": 7,
+      "starsMonthly": 23,
       "archived": false
     },
     {
@@ -1655,11 +1655,11 @@
       "github": "https://github.com/nanopb/nanopb",
       "languages": ["C"],
       "relevance": 2,
-      "stars": 5466,
+      "stars": 5468,
       "pushedAt": "2026-07-05T10:35:35Z",
       "inactive": false,
-      "starsWeekly": 12,
-      "starsMonthly": 37,
+      "starsWeekly": 14,
+      "starsMonthly": 39,
       "archived": false
     },
     {
@@ -1778,7 +1778,7 @@
       "pushedAt": "2026-06-08T09:31:34Z",
       "inactive": false,
       "starsWeekly": 0,
-      "starsMonthly": 4,
+      "starsMonthly": 3,
       "archived": false
     },
     {
@@ -2083,7 +2083,7 @@
       "stars": 9,
       "pushedAt": "2026-07-05T08:29:06Z",
       "inactive": false,
-      "starsWeekly": 1,
+      "starsWeekly": 0,
       "starsMonthly": 1,
       "archived": false
     },
@@ -2324,7 +2324,7 @@
       "stars": 2359,
       "pushedAt": "2026-07-06T16:43:32Z",
       "inactive": false,
-      "starsWeekly": 7,
+      "starsWeekly": 6,
       "starsMonthly": 24,
       "archived": false
     },
@@ -2339,7 +2339,7 @@
       "languages": ["TypeScript", "JavaScript"],
       "relevance": 2,
       "stars": 537,
-      "pushedAt": "2026-06-25T00:08:40Z",
+      "pushedAt": "2026-07-10T18:53:44Z",
       "inactive": false,
       "starsWeekly": 2,
       "starsMonthly": 2,
@@ -2355,11 +2355,11 @@
       "github": "https://github.com/grpc/grpc-proto",
       "languages": ["Agnostic"],
       "relevance": 2,
-      "stars": 292,
+      "stars": 293,
       "pushedAt": "2026-03-31T02:09:58Z",
       "inactive": false,
-      "starsWeekly": 1,
-      "starsMonthly": 2,
+      "starsWeekly": 2,
+      "starsMonthly": 3,
       "archived": false
     }
   ]
