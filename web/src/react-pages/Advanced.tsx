@@ -2001,22 +2001,20 @@ const LimitsAndConstraints = () => (
                 </p>
               </div>
 
-              <div className="p-4 bg-[var(--cyber-neon-blue)]/5 border border-[var(--cyber-neon-blue)]/20 rounded-lg">
-                <div className="flex gap-3 items-start">
-                  <Info className="w-5 h-5 text-[var(--cyber-neon-blue)] shrink-0 mt-0.5" />
-                  <div className="space-y-2">
-                    <p className="text-sm font-bold text-[var(--cyber-neon-blue)] uppercase">
-                      In-Memory Expansion
-                    </p>
-                    <p className="text-sm text-[var(--text-dim)] leading-relaxed">
-                      As with most serialization formats, the resulting
-                      in-memory representation is significantly larger than the
-                      serialized binary. Pointers, object overhead, and data
-                      structure padding can cause memory usage to be{" "}
-                      <strong>several times</strong> the size of the original
-                      payload.
-                    </p>
-                  </div>
+              <div className="flex gap-3 items-start border-t border-[var(--border-light)] pt-6">
+                <Info className="w-5 h-5 text-[var(--cyber-neon-blue)] shrink-0 mt-0.5" />
+                <div className="space-y-2">
+                  <p className="text-sm font-bold text-[var(--cyber-neon-blue)] uppercase">
+                    In-Memory Expansion
+                  </p>
+                  <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+                    As with most serialization formats, the resulting in-memory
+                    representation is significantly larger than the serialized
+                    binary. Pointers, object overhead, and data structure
+                    padding can cause memory usage to be{" "}
+                    <strong>several times</strong> the size of the original
+                    payload.
+                  </p>
                 </div>
               </div>
             </div>
