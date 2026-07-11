@@ -20,13 +20,13 @@ export interface ExerciseDef {
 export const EXERCISES: ExerciseDef[] = [
   {
     id: 1,
-    title: "The Foundation",
+    title: "Field Numbers",
     guideUrl: "/basics/#numbers",
     guideLabel: "Basics > Field Numbers",
     scenario:
-      "Protocol Buffers use unique numeric tags (field numbers) to identify fields in their compiled binary format instead of sending long string names over the wire. This makes the payload incredibly compact and fast to parse. However, if a field is not assigned a number, the schema cannot compile.\n\nFor example, a valid message with a single field looks like this:\n\n```protobuf\nmessage Example {\n  string some_field = 1;\n}\n```\n\nHere, we are defining a UserProfile message, but we haven't assigned the mandatory numbers to ID, name, and email fields.",
-    task: "Assign valid, unique field numbers (e.g. `1`, `2`, and `3`) to the fields of `UserProfile` so the schema compiles successfully.",
-    hint: "To assign a tag number to a field, use the `= number;` syntax before the semicolon. Make sure each field within the message has a unique tag (e.g. `1`, `2`, `3`).",
+      "Every protobuf field needs a numeric tag. The tag is what appears in the binary payload; the field name is for generated code and JSON.\n\nA valid field declaration looks like this:\n\n```protobuf\nmessage Example {\n  string some_field = 1;\n}\n```\n\nThis schema defines `UserProfile`, but its fields are missing tag numbers.",
+    task: "Assign unique field numbers to `id`, `name`, and `email` so the schema compiles.",
+    hint: "Use `= number;` before the semicolon. Each field in the message needs a different number.",
     rootMessage: "practice.UserProfile",
     initialCode: `syntax = "proto3";
 
@@ -89,11 +89,11 @@ message UserProfile {
   },
   {
     id: 2,
-    title: "The Style Guide",
+    title: "Naming",
     scenario:
-      "Consistency is critical when generating SDKs across different programming languages. The official Protobuf style guide dictates that message names should use PascalCase (e.g. UserProfile) and field names should use snake_case (e.g. user_id).\n\nIf you use camelCase inside a schema, plugins converting schemas to JSON or stub stencils will produce inconsistent or broken interfaces in target languages (like Go, Java, or TypeScript).",
-    task: "Refactor the schema to adhere to standard Protobuf naming conventions (`PascalCase` for the message name, and `snake_case` for the field names).",
-    hint: "Look at the casing rules: the message name itself should use `PascalCase` (CapitalizedWords), and all field names should be renamed to use `snake_case` (lowercase_with_underscores).",
+      "Generated APIs are easier to use when schemas follow protobuf naming conventions. Message names use PascalCase. Field names use snake_case.\n\nThis schema uses names that will produce awkward generated APIs.",
+    task: "Rename the message to `UserProfile` and the fields to `user_id`, `email_address`, and `profile_image`.",
+    hint: "Use `PascalCase` for message names and `snake_case` for field names.",
     rootMessage: "practice.UserProfile",
     initialCode: `syntax = "proto3";
 
@@ -171,13 +171,13 @@ message user_profile {
   },
   {
     id: 3,
-    title: "Choosing the correct integer",
+    title: "Integer Types",
     guideUrl: "/basics/#guidelines-for-integers",
     guideLabel: "Basics > Guidelines for Integers",
     scenario:
-      "Selecting the correct numeric type is crucial for wire efficiency. Standard 'int32' and 'int64' types are encoded using sign extension for negative numbers, meaning a negative value (even a simple '-1') always takes a massive 10 bytes on the wire.\n\nTo optimize signed metrics that swing negative, Protobuf provides 'sint32' and 'sint64', which use ZigZag encoding (mapping signed values to unsigned space before compression: -1 becomes 1, 1 becomes 2, etc.). Unsigned metrics (which are always positive and can grow up to billions) should use 'uint32' or 'uint64' to enforce bounds and keep serialization lightweight.",
-    task: "Change the field types from `int32` to optimized types: use `sint64` for `ledger_balance` (efficient signed representation) and `uint32` or `uint64` for `hardware_counter` (unsigned counts).",
-    hint: "Replace the `int32` types. Prepend/change `ledger_balance` to use `sint64` (enables ZigZag encoding for values that swing negative), and `hardware_counter` to use `uint32` or `uint64` (since counters are strictly non-negative).",
+      "Numeric types affect both meaning and wire size. Plain `int32` and `int64` are inefficient for negative values. `sint32` and `sint64` use ZigZag encoding for signed values. Counts that cannot be negative should use unsigned types.",
+    task: "Change `ledger_balance` to `sint64`, and change `hardware_counter` to `uint32` or `uint64`.",
+    hint: "`ledger_balance` can go negative, so use `sint64`. `hardware_counter` cannot, so use an unsigned integer type.",
     rootMessage: "practice.Metrics",
     initialCode: `syntax = "proto3";
 
@@ -231,13 +231,13 @@ message Metrics {
   },
   {
     id: 4,
-    title: "The Shape of Lists",
+    title: "Repeated Fields",
     guideUrl: "/basics/#repeated",
     guideLabel: "Basics > Repeated Fields",
     scenario:
-      "To represent lists, arrays, or sequences of elements in Protobuf, we prepend the field declaration with the 'repeated' keyword. In proto3, repeated fields of basic numeric and boolean types use packed encoding by default, packing multiple values into a single contiguous block of bytes on the wire for maximum compression.",
-    task: "Modify the schema to support a list of tags. Rename the field to its plural form `tags` and prepend it with the correct keyword to make it repeated.",
-    hint: "Use the `repeated` keyword before the field type to declare an array/list, and rename the field from its singular form `tag` to its plural form `tags` to match list naming conventions.",
+      "Use `repeated` for lists. Repeated field names are usually plural, because generated code exposes them as collections.",
+    task: "Change `tag` into a repeated string field named `tags`.",
+    hint: "Use `repeated string tags = 3;`.",
     rootMessage: "practice.BlogPost",
     initialCode: `syntax = "proto3";
 
@@ -281,13 +281,13 @@ message BlogPost {
   },
   {
     id: 5,
-    title: "Backward Compatibility",
+    title: "Reserved Fields",
     guideUrl: "/advanced/#schema-evolution",
     guideLabel: "Advanced > Schema Evolution",
     scenario:
-      "Backward compatibility is the cornerstone of Protobuf schema design. When fields are deprecated and deleted from a message, you must ensure that their field numbers and names are never reused by future updates.\n\nIf another developer reuses tag number 3 for a new field of a different type, legacy clients still running older stubs in production will attempt to decode the new type as the old type, causing silent data corruption, deserialization crashes, or validation errors. To enforce this protection, we use the 'reserved' keyword.",
-    task: "Reserve field number `3` and field name `phone` so they are blocked from being reused in the `UserAccount` message.",
-    hint: "Use the `reserved` keyword to block the tag number `3` and the field name `phone` from being reused in the message body. You can declare them using separate `reserved` lines or on a single line.",
+      "When a field is removed from a message, its number and name should not be reused. Reserving them prevents future schema edits from accidentally colliding with old serialized data.",
+    task: "Reserve field number `3` and field name `phone` in `UserAccount`.",
+    hint: 'Use `reserved 3;` and `reserved "phone";`, or put both reservations in valid reserved declarations.',
     rootMessage: "practice.UserAccount",
     initialCode: `syntax = "proto3";
 
@@ -356,9 +356,9 @@ message UserAccount {
     guideUrl: "/advanced/#presence",
     guideLabel: "Advanced > Field Presence",
     scenario:
-      "In proto3, basic types like boolean are omitted from wire serialization if they have their default value (false). This makes it impossible to distinguish between an unset field and a false value. We need explicit presence for the 'is_admin' field.",
+      "In proto3, a scalar field with its default value is usually omitted from the wire. For a boolean, that means a receiver cannot distinguish `false` from not set unless the field has explicit presence.",
     task: "Add explicit field presence tracking to the `is_admin` field.",
-    hint: "In proto3, prepending the `optional` keyword to a field enables explicit presence tracking (giving it a nullable behavior on the wire).",
+    hint: "In proto3, add `optional` before the field type.",
     rootMessage: "practice.UserSession",
     initialCode: `syntax = "proto3";
 
@@ -392,13 +392,13 @@ message UserSession {
   },
   {
     id: 7,
-    title: "Mutually Exclusive",
+    title: "Oneof",
     guideUrl: "/basics/#oneof",
     guideLabel: "Basics > Oneof",
     scenario:
-      "A notification targets either a specific user_id or a generic email address, but must never contain both at the same time.",
-    task: "Enforce this constraint by grouping `user_id` and `email` inside a oneof block named `identifier`.",
-    hint: "Wrap the mutually exclusive fields inside a `oneof identifier { ... }` block. Make sure to keep the field types and numbers on the field declarations inside the block.",
+      "A notification target can be identified by either a `user_id` or an `email`, but not both.",
+    task: "Group `user_id` and `email` inside a `oneof` block named `identifier`.",
+    hint: "Wrap the two field declarations in `oneof identifier { ... }`.",
     rootMessage: "practice.NotificationTarget",
     initialCode: `syntax = "proto3";
 
@@ -463,9 +463,9 @@ message NotificationTarget {
     id: 8,
     title: "Well-Known Types",
     guideUrl: "/basics/#types",
-    guideLabel: "Basics > The Type System",
+    guideLabel: "Basics > Types",
     scenario:
-      "We need to track when an event occurred. Storing timestamps as custom integers or strings is error-prone. Standardizing on Protobuf's official Timestamp type is the best practice.",
+      "This event needs a creation time. Instead of inventing a string or integer convention, use protobuf's standard `Timestamp` message.",
     task: "Import `google/protobuf/timestamp.proto` and add a `created_at` field of type `google.protobuf.Timestamp` at tag number `2`.",
     hint: "Import Google's timestamp file from the standard library (`google/protobuf/timestamp.proto`) at the top of the schema file. Then declare the field `created_at` using the fully qualified type `google.protobuf.Timestamp`.",
     rootMessage: "practice.EventLog",

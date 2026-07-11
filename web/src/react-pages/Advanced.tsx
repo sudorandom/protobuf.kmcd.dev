@@ -550,7 +550,7 @@ message User {
     "fieldmask",
     "services",
   ]);
-  const evolutionTopicIds = new Set(["compat", "editions"]);
+  const evolutionTopicIds = new Set(["editions"]);
   const modelingTopics = topics.filter((topic) =>
     modelingTopicIds.has(topic.id),
   );
@@ -568,7 +568,7 @@ message User {
     {
       id: "schema-evolution",
       title: "Evolution Track",
-      desc: "Compatibility, editions, presence, required fields, and limits.",
+      desc: "Compatibility, editions, presence, and limits.",
       color: "blue",
     },
     {
@@ -588,6 +588,18 @@ message User {
       title: "Services",
       desc: "Defining RPC interfaces for networked communication.",
       color: "yellow",
+    },
+    {
+      id: "options",
+      title: "Standard Options",
+      desc: "Built-in metadata for generated code and runtime behavior.",
+      color: "green",
+    },
+    {
+      id: "breaking-levels",
+      title: "Breaking Changes",
+      desc: "Compatibility checks for evolving schemas safely.",
+      color: "pink",
     },
     {
       id: "presence",
@@ -623,8 +635,8 @@ message User {
           <div className="mb-16 max-w-4xl space-y-6 mx-auto text-center">
             <p className="text-lg text-[var(--text-dim)] leading-relaxed">
               Protobuf offers advanced features for modeling richer APIs and
-              evolving schemas safely over time. Reflection, plugins, custom
-              options, and validation now live in the Tooling section.
+              evolving schemas safely over time. Descriptor-based extension,
+              reflection, and validation workflows now have dedicated pages.
             </p>
             <div className="pt-8 text-left">
               <RoadmapGrid items={roadmapItems} cols="lg:grid-cols-4" />
@@ -654,11 +666,13 @@ message User {
         />
       ))}
 
+      <SchemaEngineering includeIds={["options", "breaking-levels"]} />
+
       <TrackIntro
         id="schema-evolution"
         subtitle="03_TRACK_B"
         title="Schema Evolution"
-        desc="Compatibility is the difficult part of long-lived Protobuf systems. These sections focus on what can change, what must be reserved, and how presence affects API behavior."
+        desc="Compatibility is the difficult part of long-lived Protobuf systems. These sections focus on edition features and how presence affects API behavior."
       />
 
       {evolutionTopics.map((topic) => (
@@ -947,7 +961,11 @@ message DescriptorProto {
   );
 };
 
-export const SchemaEngineering = () => {
+export const SchemaEngineering = ({
+  includeIds,
+}: {
+  includeIds?: string[];
+} = {}) => {
   const topics: {
     id: string;
     icon: React.ElementType;
@@ -1411,9 +1429,14 @@ message User {
     },
   ];
 
+  const selectedTopics = includeIds
+    ? topics.filter((topic) => includeIds.includes(topic.id))
+    : topics;
+  const includeLifecycle = !includeIds || includeIds.includes("lifecycle");
+
   return (
     <>
-      {topics.map((topic) => (
+      {selectedTopics.map((topic) => (
         <TopicSection
           key={topic.id}
           id={topic.id}
@@ -1429,73 +1452,76 @@ message User {
         />
       ))}
 
-      <TopicSection
-        id="lifecycle"
-        icon={ShieldCheck}
-        title="Deprecation"
-        subtitle="03k_EVOLUTION"
-        bgClass="bg-[var(--section-bg-alt)]/20"
-        desc={
+      {includeLifecycle && (
+        <TopicSection
+          id="lifecycle"
+          icon={ShieldCheck}
+          title="Deprecation"
+          subtitle="03k_EVOLUTION"
+          bgClass="bg-[var(--section-bg-alt)]/20"
+          desc={
+            <div className="space-y-4">
+              <p>
+                Protobuf identifies data on the wire using field numbers rather
+                than names, so deleting a field requires careful handling. If a
+                schema has been used in production, older clients or databases
+                may still hold data serialized with those field numbers. You
+                cannot simply remove a field and reuse its number without
+                risking collisions. Instead, you must manage its lifecycle:
+              </p>
+              <ol className="list-decimal pl-4 space-y-2 text-sm">
+                <li>
+                  <strong>Deprecate:</strong> Add{" "}
+                  <code>[deprecated = true]</code>. This warns developers in
+                  their IDEs (via generated code annotations like{" "}
+                  <code>@Deprecated</code>) not to use it for new features.
+                </li>
+                <li>
+                  <strong>Stop Using:</strong> Wait until metrics show zero
+                  traffic using the field.
+                </li>
+                <li>
+                  <strong>Reserve:</strong> Remove the field entirely and add
+                  its number/name to a <code>reserved</code> block. This
+                  prevents future developers from accidentally reusing the
+                  number and corrupting old data that might still be in a
+                  database.
+                </li>
+              </ol>
+            </div>
+          }
+        >
           <div className="space-y-4">
-            <p>
-              Protobuf identifies data on the wire using field numbers rather
-              than names, so deleting a field requires careful handling. If a
-              schema has been used in production, older clients or databases may
-              still hold data serialized with those field numbers. You cannot
-              simply remove a field and reuse its number without risking
-              collisions. Instead, you must manage its lifecycle:
-            </p>
-            <ol className="list-decimal pl-4 space-y-2 text-sm">
-              <li>
-                <strong>Deprecate:</strong> Add <code>[deprecated = true]</code>
-                . This warns developers in their IDEs (via generated code
-                annotations like <code>@Deprecated</code>) not to use it for new
-                features.
-              </li>
-              <li>
-                <strong>Stop Using:</strong> Wait until metrics show zero
-                traffic using the field.
-              </li>
-              <li>
-                <strong>Reserve:</strong> Remove the field entirely and add its
-                number/name to a <code>reserved</code> block. This prevents
-                future developers from accidentally reusing the number and
-                corrupting old data that might still be in a database.
-              </li>
-            </ol>
+            <CyberPanel title="Step 1: The original schema">
+              <div className="p-2">
+                <SyntaxHighlighter
+                  language="proto"
+                  code={`message Product {\n  int32 price_cents = 1;\n}`}
+                  wrap={true}
+                />
+              </div>
+            </CyberPanel>
+            <CyberPanel title="Step 2: Deprecate the old field, add the new one">
+              <div className="p-2">
+                <SyntaxHighlighter
+                  language="proto"
+                  code={`message Product {\n  int32 price_cents = 1 [deprecated = true];\n  int64 price_micros = 2;\n}`}
+                  wrap={true}
+                />
+              </div>
+            </CyberPanel>
+            <CyberPanel title="Step 3: Remove the old field and reserve its ID/name">
+              <div className="p-2">
+                <SyntaxHighlighter
+                  language="proto"
+                  code={`message Product {\n  reserved 1, "price_cents";\n\n  int64 price_micros = 2;\n}`}
+                  wrap={true}
+                />
+              </div>
+            </CyberPanel>
           </div>
-        }
-      >
-        <div className="space-y-4">
-          <CyberPanel title="Step 1: The original schema">
-            <div className="p-2">
-              <SyntaxHighlighter
-                language="proto"
-                code={`message Product {\n  int32 price_cents = 1;\n}`}
-                wrap={true}
-              />
-            </div>
-          </CyberPanel>
-          <CyberPanel title="Step 2: Deprecate the old field, add the new one">
-            <div className="p-2">
-              <SyntaxHighlighter
-                language="proto"
-                code={`message Product {\n  int32 price_cents = 1 [deprecated = true];\n  int64 price_micros = 2;\n}`}
-                wrap={true}
-              />
-            </div>
-          </CyberPanel>
-          <CyberPanel title="Step 3: Remove the old field and reserve its ID/name">
-            <div className="p-2">
-              <SyntaxHighlighter
-                language="proto"
-                code={`message Product {\n  reserved 1, "price_cents";\n\n  int64 price_micros = 2;\n}`}
-                wrap={true}
-              />
-            </div>
-          </CyberPanel>
-        </div>
-      </TopicSection>
+        </TopicSection>
+      )}
     </>
   );
 };
@@ -1641,9 +1667,9 @@ export const ValidationLab = () => {
               The Source of Truth
             </h3>
             <p className="text-[var(--text-dim)] leading-relaxed text-sm">
-              Protobuf goes beyond simple types. By using{" "}
-              <strong>extensions</strong>, you can augment your schema with rich
-              metadata. A powerful example is{" "}
+              Protobuf allows you to build additional structure on top of basic
+              field types. By using <strong>extensions</strong>, you can augment
+              your schema with rich metadata. A powerful example is{" "}
               <ExternalLinkText href="https://protovalidate.com/">
                 <strong>protovalidate</strong>
               </ExternalLinkText>
@@ -1893,8 +1919,11 @@ export const ValidationLab = () => {
             <span className="text-sm font-cyber font-bold text-[var(--cyber-neon-cyan)] uppercase mb-2 tracking-widest">
               Learn More
             </span>
+            <ExternalLinkText href="https://protovalidate.com/">
+              Protovalidate
+            </ExternalLinkText>
             <ExternalLinkText href="https://protovalidate.com/playground/">
-              Official protovalidate Playground
+              Protovalidate Playground
             </ExternalLinkText>
           </div>
         </div>
@@ -2097,7 +2126,7 @@ message Profile {
   </Section>
 );
 
-const RequiredFields = () => (
+export const RequiredFields = () => (
   <Section
     id="required-fields"
     className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]"
@@ -2209,7 +2238,6 @@ const Advanced = () => (
   <>
     <AdvancedProtobuf />
     <FieldPresence />
-    <RequiredFields />
     <LimitsAndConstraints />
   </>
 );

@@ -5,7 +5,6 @@ import {
   HelpCircle,
   Lock,
   RotateCcw,
-  Sparkles,
   AlertTriangle,
   Trophy,
   ExternalLink,
@@ -168,7 +167,7 @@ export const Practice = ({ activeId }: { activeId: string }) => {
     }
   }, [completedExercises, highestUnlockedIndex]);
 
-  // Redirect guard for locked stages
+  // Redirect guard for locked exercises
   useEffect(() => {
     if (typeof window !== "undefined") {
       const savedCompleted = localStorage.getItem(
@@ -385,11 +384,11 @@ export const Practice = ({ activeId }: { activeId: string }) => {
       {/* Header Info Row */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-[var(--border-light)] pb-2.5">
         <span className="text-[10px] font-mono tracking-widest text-[var(--cyber-neon-pink)] uppercase">
-          Practice Progress
+          Progress
         </span>
         <h3 className="text-xs font-cyber font-bold text-[var(--text-color)] uppercase tracking-wider">
           {isConclusion
-            ? "Mastery Achieved"
+            ? "All exercises complete"
             : `Exercise ${activeExercise.id}: ${activeExercise.title}`}
         </h3>
       </div>
@@ -454,31 +453,45 @@ export const Practice = ({ activeId }: { activeId: string }) => {
           {renderStepperBar()}
 
           <CyberPanel className="text-center p-8 space-y-6 flex flex-col items-center">
-            <div className="relative">
-              <div className="absolute -inset-4 bg-[var(--cyber-neon-green)]/20 rounded-full blur-xl animate-pulse" />
-              <div className="relative w-20 h-20 rounded-full bg-[var(--cyber-neon-green)]/15 border-2 border-[var(--cyber-neon-green)] flex items-center justify-center shadow-[0_0_20px_rgba(0,255,159,0.4)]">
-                <Trophy className="w-10 h-10 text-[var(--cyber-neon-green)]" />
-              </div>
+            <div className="w-16 h-16 rounded-full bg-[var(--cyber-neon-green)]/10 border border-[var(--cyber-neon-green)]/40 flex items-center justify-center">
+              <Trophy className="w-8 h-8 text-[var(--cyber-neon-green)]" />
             </div>
 
             <div className="space-y-2">
-              <h1 className="text-3xl sm:text-4xl font-cyber font-black tracking-widest text-[var(--text-color)]">
-                PROTOBUF <span className="cyber-text-gradient">MASTERY</span>
+              <h1 className="text-3xl sm:text-4xl font-cyber font-black tracking-wider text-[var(--text-color)]">
+                Practice Complete
               </h1>
               <p className="text-sm text-[var(--text-dim)] max-w-xl mx-auto leading-relaxed">
-                You have repaired schemas, optimized wire formats, and mastered
-                the core rules of backward compatibility.
+                You finished the schema exercises: field numbers, naming, type
+                choices, repeated fields, reserved fields, presence, oneof, and
+                well-known types.
               </p>
             </div>
 
-            <div className="flex justify-center w-full pt-4">
-              <div className="p-4 border border-[var(--border-light)] bg-[var(--overlay-bg)] rounded-lg flex flex-col items-center space-y-1 min-w-[200px]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-xl pt-4 text-left">
+              <div className="p-4 border border-[var(--border-light)] bg-[var(--overlay-bg)] rounded-lg space-y-1">
                 <span className="text-[10px] font-mono text-[var(--text-dim)] uppercase tracking-wider">
-                  Stages Completed
+                  Completed
                 </span>
-                <span className="text-2xl font-cyber font-bold text-[var(--cyber-neon-green)]">
-                  8 / 8
+                <div className="text-xl font-cyber font-bold text-[var(--cyber-neon-green)]">
+                  8 / 8 exercises
+                </div>
+              </div>
+              <div className="p-4 border border-[var(--border-light)] bg-[var(--overlay-bg)] rounded-lg space-y-1">
+                <span className="text-[10px] font-mono text-[var(--text-dim)] uppercase tracking-wider">
+                  Next
                 </span>
+                <div className="text-sm text-[var(--text-color)]">
+                  Revisit the relevant guide sections or{" "}
+                  <button
+                    type="button"
+                    onClick={handleResetAll}
+                    className="text-[var(--cyber-neon-blue)] underline decoration-dotted underline-offset-4 hover:text-[var(--text-color)] transition-colors"
+                  >
+                    reset progress
+                  </button>{" "}
+                  to run the exercises again.
+                </div>
               </div>
             </div>
 
@@ -487,7 +500,7 @@ export const Practice = ({ activeId }: { activeId: string }) => {
                 href="/"
                 className="px-8 py-2.5 bg-[var(--cyber-neon-blue)] text-[var(--neon-contrast-text)] hover:shadow-[0_0_15px_rgba(0,243,255,0.4)] font-cyber font-bold uppercase tracking-wider text-xs rounded transition-all text-center"
               >
-                Return to Home Page
+                Return to home
               </a>
             </div>
           </CyberPanel>
@@ -508,11 +521,11 @@ export const Practice = ({ activeId }: { activeId: string }) => {
           <div>
             <h1 className="text-2xl sm:text-3xl font-cyber font-bold tracking-wider text-[var(--text-color)] uppercase flex items-center gap-2">
               <Award className="w-7 h-7 text-[var(--cyber-neon-pink)]" />
-              PROTOBUF PRACTICE
+              Protobuf Practice
             </h1>
             <p className="text-sm text-[var(--text-dim)] mt-1">
-              Interactive sandbox to practice writing and optimizing schema
-              definitions.
+              Edit the schema, wait for the descriptor checks, and continue when
+              everything passes.
             </p>
           </div>
           <button
@@ -520,7 +533,7 @@ export const Practice = ({ activeId }: { activeId: string }) => {
             className="flex items-center gap-1.5 px-3 py-1.5 border border-[var(--error-border)] hover:bg-[var(--text-error)]/10 text-[var(--text-error)] transition-colors text-xs font-cyber font-bold uppercase tracking-wider rounded"
           >
             <RotateCcw className="w-3.5 h-3.5" />
-            Reset All Progress
+            Reset progress
           </button>
         </div>
 
@@ -534,7 +547,7 @@ export const Practice = ({ activeId }: { activeId: string }) => {
           {/* The Scenario (Context) */}
           <div className="space-y-1.5">
             <span className="text-xs font-mono uppercase tracking-[0.2em] text-[var(--cyber-neon-pink)]">
-              The Scenario
+              Context
             </span>
             <div className="text-sm text-[var(--text-color)] leading-relaxed space-y-2">
               {formatScenarioText(activeExercise.scenario)}
@@ -546,7 +559,7 @@ export const Practice = ({ activeId }: { activeId: string }) => {
           {/* The Task (Primary Objective) */}
           <div className="space-y-1.5">
             <span className="text-xs font-mono uppercase tracking-[0.2em] text-[var(--cyber-neon-blue)]">
-              The Task
+              Task
             </span>
             <p className="text-sm text-[var(--text-color)] leading-relaxed">
               {formatCodeText(
@@ -623,7 +636,7 @@ export const Practice = ({ activeId }: { activeId: string }) => {
                   onClick={handleReset}
                   className="flex items-center gap-1 px-2.5 py-1 text-[10px] font-mono uppercase text-[var(--text-dim)] hover:text-[var(--text-color)] transition-colors border border-[var(--border-light)] rounded"
                 >
-                  Reset stage
+                  Reset exercise
                 </button>
               </div>
             </div>
@@ -719,18 +732,18 @@ export const Practice = ({ activeId }: { activeId: string }) => {
                 </div>
               )}
 
-              {/* Stage Progression Banner (Completed / Incomplete States) */}
+              {/* Exercise Progression Banner (Completed / Incomplete States) */}
               {isExerciseCompleted ? (
-                <div className="bg-[var(--cyber-neon-green)]/15 border border-[var(--cyber-neon-green)]/30 rounded p-4 text-center space-y-3 animate-in fade-in slide-in-from-bottom-2 duration-300">
-                  <div className="inline-flex w-10 h-10 rounded-full bg-[var(--cyber-neon-green)]/20 items-center justify-center text-[var(--cyber-neon-green)] shadow-[0_0_15px_rgba(0,255,159,0.4)]">
-                    <Sparkles className="w-5 h-5" />
+                <div className="bg-[var(--cyber-neon-green)]/10 border border-[var(--cyber-neon-green)]/25 rounded p-4 text-center space-y-3 animate-in fade-in slide-in-from-bottom-2 duration-300">
+                  <div className="inline-flex w-10 h-10 rounded-full bg-[var(--cyber-neon-green)]/10 items-center justify-center text-[var(--cyber-neon-green)] border border-[var(--cyber-neon-green)]/40">
+                    <CheckCircle2 className="w-5 h-5" />
                   </div>
                   <div className="space-y-1">
                     <h4 className="text-sm font-cyber font-bold text-[var(--cyber-neon-green)] uppercase tracking-widest">
-                      Mastery Passed!
+                      Checks passed
                     </h4>
                     <p className="text-xs text-[var(--text-color)]">
-                      Your descriptor satisfies all strict constraints.
+                      The compiled descriptor matches the exercise requirements.
                     </p>
                   </div>
 

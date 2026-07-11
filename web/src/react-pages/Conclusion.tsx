@@ -72,6 +72,18 @@ export const NextSteps = () => (
             wider ecosystem.
           </p>
         </a>
+        <a
+          href="/practice/"
+          className="p-6 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-xl hover:border-[var(--cyber-neon-blue)] transition-all group md:col-span-2"
+        >
+          <h3 className="font-cyber font-bold text-[var(--cyber-neon-blue)] uppercase mb-2">
+            Practice
+          </h3>
+          <p className="text-sm text-[var(--text-dim)]">
+            Apply the concepts by fixing broken schemas in the interactive
+            practice exercises.
+          </p>
+        </a>
       </div>
     </div>
   </Section>

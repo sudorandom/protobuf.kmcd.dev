@@ -19,15 +19,15 @@ export function getStaticPaths() {
 const { id } = Astro.params;
 
 const titleMap: Record<string, string> = {
-  "1": "Exercise 1: The Foundation",
-  "2": "Exercise 2: The Style Guide",
-  "3": "Exercise 3: Choosing the correct integer",
-  "4": "Exercise 4: The Shape of Lists",
-  "5": "Exercise 5: Backward Compatibility",
+  "1": "Exercise 1: Field Numbers",
+  "2": "Exercise 2: Naming",
+  "3": "Exercise 3: Integer Types",
+  "4": "Exercise 4: Repeated Fields",
+  "5": "Exercise 5: Reserved Fields",
   "6": "Exercise 6: Field Presence",
-  "7": "Exercise 7: Mutually Exclusive",
+  "7": "Exercise 7: Oneof",
   "8": "Exercise 8: Well-Known Types",
-  "conclusion": "Protobuf Mastery Achieved",
+  "conclusion": "Practice Complete",
 };
 
 const pageTitle = titleMap[id] || `Exercise ${id}`;
@@ -35,7 +35,7 @@ const pageTitle = titleMap[id] || `Exercise ${id}`;
 
 <Layout
   title={`${pageTitle} | Protobuf Visualized`}
-  description="Learn Protocol Buffers interactively. Repair broken schemas, satisfy compiler checks, and optimize your designs."
+  description="Practice Protocol Buffers by repairing schemas and satisfying descriptor checks."
 >
   <Practice activeId={id} client:load />
 </Layout>

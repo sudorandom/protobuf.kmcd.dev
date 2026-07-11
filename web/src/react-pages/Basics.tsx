@@ -49,11 +49,6 @@ const SubsectionTitle = ({
 export const SchemaDrivenAPIs = () => {
   const roadmapItems = [
     {
-      id: "generating-code",
-      title: "Generating Code",
-      desc: "The contract-first workflow using protoc and buf.",
-    },
-    {
       id: "messages",
       title: "Messages",
       desc: "The primary containers for Protobuf data.",
@@ -62,6 +57,11 @@ export const SchemaDrivenAPIs = () => {
       id: "fields",
       title: "Fields",
       desc: "Strongly-typed data points with unique identifiers.",
+    },
+    {
+      id: "types",
+      title: "Types",
+      desc: "Reference for scalar and well-known types.",
     },
     {
       id: "numbers",
@@ -97,11 +97,6 @@ export const SchemaDrivenAPIs = () => {
       id: "oneof",
       title: "Oneof",
       desc: "Polymorphic fields for mutually exclusive data.",
-    },
-    {
-      id: "types",
-      title: "Type Reference",
-      desc: "Reference for all scalar and well-known types.",
     },
   ];
 
@@ -501,20 +496,31 @@ message SearchResponse {
     },
   ];
 
+  const introTopics = topics.filter((topic) =>
+    ["messages", "fields"].includes(topic.id),
+  );
+  const remainingTopics = topics.filter(
+    (topic) => !["messages", "fields"].includes(topic.id),
+  );
+
+  const renderTopic = (topic: (typeof topics)[number]) => (
+    <TopicSection
+      key={topic.id}
+      id={topic.id}
+      icon={topic.icon}
+      title={topic.title}
+      subtitle={topic.subtitle}
+      panelTitle={topic.panelTitle}
+      desc={topic.desc}
+      example={topic.example}
+    />
+  );
+
   return (
     <>
-      {topics.map((topic) => (
-        <TopicSection
-          key={topic.id}
-          id={topic.id}
-          icon={topic.icon}
-          title={topic.title}
-          subtitle={topic.subtitle}
-          panelTitle={topic.panelTitle}
-          desc={topic.desc}
-          example={topic.example}
-        />
-      ))}
+      {introTopics.map(renderTopic)}
+      <TypeSystem />
+      {remainingTopics.map(renderTopic)}
     </>
   );
 };
@@ -709,7 +715,7 @@ export const TypeSystem = () => {
       <div className="max-w-7xl mx-auto space-y-16">
         <div>
           <SectionTitle icon={Combine} subtitle="02k_TYPE_REFERENCE">
-            The Type System
+            Types
           </SectionTitle>
           <div className="mb-12 space-y-4 text-sm text-[var(--text-dim)] leading-relaxed max-w-4xl">
             <p>
@@ -1052,7 +1058,7 @@ export const TypeSystem = () => {
   );
 };
 
-const GeneratingCode = () => (
+export const GeneratingCode = () => (
   <Section
     id="generating-code"
     className="py-24 px-4 sm:px-8 bg-[var(--section-bg-alt)] border-t border-[var(--border-light)]"
@@ -1248,9 +1254,7 @@ const GeneratingCode = () => (
 const Basics = () => (
   <>
     <SchemaDrivenAPIs />
-    <GeneratingCode />
     <ProtobufBasics />
-    <TypeSystem />
   </>
 );
 

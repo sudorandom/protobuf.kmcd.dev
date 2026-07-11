@@ -41,7 +41,7 @@ const NAV_ITEMS: NavItemDef[] = [
     id: "basics",
     label: "Basics",
     path: "/basics/",
-    description: "Generate code and write practical schemas.",
+    description: "Write practical schemas with messages, fields, and types.",
   },
   {
     id: "advanced",
@@ -50,10 +50,22 @@ const NAV_ITEMS: NavItemDef[] = [
     description: "Evolve messages without breaking deployed systems.",
   },
   {
-    id: "tooling",
-    label: "Tooling",
-    path: "/tooling/",
-    description: "Use descriptors, plugins, options, and validation.",
+    id: "descriptors",
+    label: "Descriptors",
+    path: "/descriptors/",
+    description: "Inspect schemas as machine-readable data.",
+  },
+  {
+    id: "extending",
+    label: "Extending",
+    path: "/extending/",
+    description: "Use plugins, extensions, and custom options.",
+  },
+  {
+    id: "validation",
+    label: "Validation",
+    path: "/validation/",
+    description: "Enforce type and business-rule validation.",
   },
   {
     id: "efficiency",
@@ -87,7 +99,9 @@ const SECTION_LABELS: Record<string, string> = {
   basics: "Basics",
   practice: "Practice",
   advanced: "Advanced",
-  tooling: "Tooling",
+  descriptors: "Descriptors",
+  extending: "Extending",
+  validation: "Validation",
   efficiency: "Efficiency",
   binary: "Binary",
   community: "Community",
@@ -118,14 +132,20 @@ const useIsomorphicLayoutEffect =
   typeof window === "undefined" ? useEffect : useLayoutEffect;
 
 const RELATED_LINKS: Record<string, NavItemDef[]> = {
-  intro: [navItem("basics"), navItem("binary"), navItem("efficiency")],
-  basics: [navItem("intro"), navItem("advanced"), navItem("tooling")],
-  binary: [navItem("basics"), navItem("tooling"), navItem("efficiency")],
-  advanced: [navItem("basics"), navItem("tooling"), navItem("efficiency")],
-  tooling: [navItem("advanced"), navItem("ecosystem"), navItem("binary")],
+  intro: [navItem("basics"), navItem("advanced"), navItem("efficiency")],
+  basics: [navItem("intro"), navItem("advanced"), navItem("binary")],
+  binary: [navItem("basics"), navItem("descriptors"), navItem("efficiency")],
+  advanced: [navItem("basics"), navItem("descriptors"), navItem("validation")],
+  descriptors: [navItem("advanced"), navItem("extending"), navItem("binary")],
+  extending: [
+    navItem("descriptors"),
+    navItem("validation"),
+    navItem("ecosystem"),
+  ],
+  validation: [navItem("extending"), navItem("advanced"), navItem("practice")],
   efficiency: [navItem("basics"), navItem("binary"), navItem("advanced")],
-  ecosystem: [navItem("tooling"), navItem("binary"), navItem("efficiency")],
-  community: [navItem("ecosystem"), navItem("tooling"), navItem("intro")],
+  ecosystem: [navItem("extending"), navItem("binary"), navItem("efficiency")],
+  community: [navItem("ecosystem"), navItem("extending"), navItem("intro")],
   conclusion: [navItem("community"), navItem("ecosystem"), navItem("intro")],
   practice: [navItem("basics"), navItem("advanced"), navItem("binary")],
 };
@@ -704,11 +724,19 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
       sectionElements = Array.from(
         document.querySelectorAll<HTMLElement>("main section[id]"),
       );
-      const nextSections = sectionElements.map((section) => {
-        const heading = section.querySelector("h1, h2, h3");
-        const label = heading?.textContent?.trim() || section.id;
-        return { id: section.id, label };
-      });
+      const pageTitleLabel = SECTION_LABELS[activeSection];
+      const nextSections = sectionElements
+        .map((section) => {
+          const heading = section.querySelector("h1, h2, h3");
+          const label = heading?.textContent?.trim() || section.id;
+          return { id: section.id, label };
+        })
+        .filter(
+          (section, index) =>
+            index !== 0 ||
+            !pageTitleLabel ||
+            section.label.toLowerCase() !== pageTitleLabel.toLowerCase(),
+        );
 
       setPageSections((currentSections) => {
         const unchanged =
