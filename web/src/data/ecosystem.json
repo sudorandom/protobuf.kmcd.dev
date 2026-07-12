@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-07-12T19:47:03.044Z",
+  "fetchedAt": "2026-07-12T21:29:10.091Z",
   "projects": [
     {
       "category": "tools",
@@ -144,7 +144,7 @@
       "pushedAt": "2026-07-11T13:42:23Z",
       "inactive": false,
       "starsWeekly": 9,
-      "starsMonthly": 50,
+      "starsMonthly": 49,
       "archived": false
     },
     {
@@ -951,7 +951,7 @@
       "pushedAt": "2026-07-08T17:41:30Z",
       "inactive": false,
       "starsWeekly": 13,
-      "starsMonthly": 52,
+      "starsMonthly": 51,
       "archived": false
     },
     {
@@ -1130,7 +1130,7 @@
       ],
       "relevance": 4,
       "stars": 71488,
-      "pushedAt": "2026-07-12T11:41:38Z",
+      "pushedAt": "2026-07-12T21:22:09Z",
       "inactive": false,
       "starsWeekly": 49,
       "starsMonthly": 201,
@@ -1244,11 +1244,11 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 6009,
+      "stars": 6010,
       "pushedAt": "2026-03-03T22:08:08Z",
       "inactive": false,
-      "starsWeekly": 5,
-      "starsMonthly": 9,
+      "starsWeekly": 6,
+      "starsMonthly": 10,
       "archived": false
     },
     {
@@ -1302,7 +1302,7 @@
       ],
       "relevance": 1,
       "stars": 9591,
-      "pushedAt": "2026-07-12T16:31:00Z",
+      "pushedAt": "2026-07-12T21:24:45Z",
       "inactive": false,
       "starsWeekly": 34,
       "starsMonthly": 142,
@@ -1400,7 +1400,7 @@
       "pushedAt": "2026-07-06T13:18:37Z",
       "inactive": false,
       "starsWeekly": 4,
-      "starsMonthly": 15,
+      "starsMonthly": 14,
       "archived": false
     },
     {
@@ -1745,7 +1745,7 @@
       "pushedAt": "2026-06-22T11:59:21Z",
       "inactive": false,
       "starsWeekly": 3,
-      "starsMonthly": 9,
+      "starsMonthly": 8,
       "archived": false
     },
     {
@@ -1817,7 +1817,7 @@
         "Go"
       ],
       "relevance": 1,
-      "stars": 23002,
+      "stars": 23001,
       "pushedAt": "2026-07-10T21:43:25Z",
       "inactive": false,
       "starsWeekly": 16,
@@ -2048,11 +2048,11 @@
         "Erlang"
       ],
       "relevance": 2,
-      "stars": 579,
+      "stars": 580,
       "pushedAt": "2026-05-27T20:15:53Z",
       "inactive": false,
-      "starsWeekly": 0,
-      "starsMonthly": 1,
+      "starsWeekly": 1,
+      "starsMonthly": 2,
       "archived": false
     },
     {
