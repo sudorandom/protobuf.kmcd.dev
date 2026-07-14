@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-07-14T21:36:50.050Z",
+  "fetchedAt": "2026-07-14T22:36:07.250Z",
   "projects": [
     {
       "category": "tools",
@@ -313,11 +313,11 @@
         "Python"
       ],
       "relevance": 4,
-      "stars": 6238,
+      "stars": 6239,
       "pushedAt": "2026-07-14T02:24:11Z",
       "inactive": false,
-      "starsWeekly": 36,
-      "starsMonthly": 93,
+      "starsWeekly": 37,
+      "starsMonthly": 94,
       "archived": false
     },
     {
@@ -1130,7 +1130,7 @@
       ],
       "relevance": 4,
       "stars": 71495,
-      "pushedAt": "2026-07-14T20:28:43Z",
+      "pushedAt": "2026-07-14T22:29:22Z",
       "inactive": false,
       "starsWeekly": 45,
       "starsMonthly": 204,
@@ -1226,7 +1226,7 @@
       ],
       "relevance": 1,
       "stars": 39898,
-      "pushedAt": "2026-07-14T20:34:04Z",
+      "pushedAt": "2026-07-14T22:21:02Z",
       "inactive": false,
       "starsWeekly": 48,
       "starsMonthly": 1000,
@@ -1378,7 +1378,7 @@
       ],
       "relevance": 1,
       "stars": 28570,
-      "pushedAt": "2026-07-14T21:17:46Z",
+      "pushedAt": "2026-07-14T22:33:38Z",
       "inactive": false,
       "starsWeekly": 48,
       "starsMonthly": 218,
@@ -1457,7 +1457,7 @@
       "pushedAt": "2026-07-14T21:35:33Z",
       "inactive": false,
       "starsWeekly": 11,
-      "starsMonthly": 99,
+      "starsMonthly": 97,
       "archived": false
     },
     {
@@ -1571,7 +1571,7 @@
       ],
       "relevance": 1,
       "stars": 2449,
-      "pushedAt": "2026-07-14T21:09:46Z",
+      "pushedAt": "2026-07-14T22:17:17Z",
       "inactive": false,
       "starsWeekly": 2,
       "starsMonthly": 9,
@@ -1817,11 +1817,11 @@
         "Go"
       ],
       "relevance": 1,
-      "stars": 23005,
+      "stars": 23006,
       "pushedAt": "2026-07-14T20:53:22Z",
       "inactive": false,
-      "starsWeekly": 15,
-      "starsMonthly": 72,
+      "starsWeekly": 16,
+      "starsMonthly": 73,
       "archived": false
     },
     {
@@ -2584,7 +2584,7 @@
       ],
       "relevance": 2,
       "stars": 421,
-      "pushedAt": "2026-06-27T09:40:14Z",
+      "pushedAt": "2026-07-14T21:37:44Z",
       "inactive": false,
       "starsWeekly": 1,
       "starsMonthly": 9,
