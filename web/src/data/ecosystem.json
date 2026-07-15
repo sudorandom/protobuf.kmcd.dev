@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-07-15T22:37:12.061Z",
+  "fetchedAt": "2026-07-15T23:37:26.327Z",
   "projects": [
     {
       "category": "tools",
@@ -844,11 +844,11 @@
         "Python"
       ],
       "relevance": 2,
-      "stars": 167,
+      "stars": 168,
       "pushedAt": "2026-07-01T15:09:30Z",
       "inactive": false,
-      "starsWeekly": 6,
-      "starsMonthly": 9,
+      "starsWeekly": 7,
+      "starsMonthly": 10,
       "archived": false
     },
     {
@@ -1028,7 +1028,7 @@
       "pushedAt": "2026-07-15T22:18:06Z",
       "inactive": false,
       "starsWeekly": 7,
-      "starsMonthly": 29,
+      "starsMonthly": 28,
       "archived": false
     },
     {
@@ -1130,7 +1130,7 @@
       ],
       "relevance": 4,
       "stars": 71499,
-      "pushedAt": "2026-07-15T22:23:24Z",
+      "pushedAt": "2026-07-15T23:35:17Z",
       "inactive": false,
       "starsWeekly": 38,
       "starsMonthly": 208,
@@ -1226,7 +1226,7 @@
       ],
       "relevance": 1,
       "stars": 39897,
-      "pushedAt": "2026-07-15T22:10:43Z",
+      "pushedAt": "2026-07-15T23:07:19Z",
       "inactive": false,
       "starsWeekly": 43,
       "starsMonthly": 1000,
@@ -1267,7 +1267,7 @@
       "pushedAt": "2026-07-15T14:34:57Z",
       "inactive": false,
       "starsWeekly": 71,
-      "starsMonthly": 265,
+      "starsMonthly": 264,
       "archived": false
     },
     {
@@ -1571,7 +1571,7 @@
       ],
       "relevance": 1,
       "stars": 2451,
-      "pushedAt": "2026-07-15T21:58:48Z",
+      "pushedAt": "2026-07-15T23:36:19Z",
       "inactive": false,
       "starsWeekly": 4,
       "starsMonthly": 11,
@@ -1818,7 +1818,7 @@
       ],
       "relevance": 1,
       "stars": 23007,
-      "pushedAt": "2026-07-15T22:35:30Z",
+      "pushedAt": "2026-07-15T23:31:12Z",
       "inactive": false,
       "starsWeekly": 14,
       "starsMonthly": 72,
