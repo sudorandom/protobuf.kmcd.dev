@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-07-15T18:43:10.735Z",
+  "fetchedAt": "2026-07-15T19:50:51.914Z",
   "projects": [
     {
       "category": "tools",
@@ -282,11 +282,11 @@
         "PHP"
       ],
       "relevance": 4,
-      "stars": 45203,
+      "stars": 45204,
       "pushedAt": "2026-07-15T17:18:53Z",
       "inactive": false,
       "starsWeekly": 230,
-      "starsMonthly": 361,
+      "starsMonthly": 362,
       "archived": false
     },
     {
@@ -317,7 +317,7 @@
       "pushedAt": "2026-07-15T14:25:06Z",
       "inactive": false,
       "starsWeekly": 39,
-      "starsMonthly": 100,
+      "starsMonthly": 98,
       "archived": false
     },
     {
@@ -1129,11 +1129,11 @@
         "Go"
       ],
       "relevance": 4,
-      "stars": 71498,
-      "pushedAt": "2026-07-15T18:34:59Z",
+      "stars": 71499,
+      "pushedAt": "2026-07-15T19:40:10Z",
       "inactive": false,
-      "starsWeekly": 37,
-      "starsMonthly": 207,
+      "starsWeekly": 38,
+      "starsMonthly": 208,
       "archived": false
     },
     {
@@ -1225,7 +1225,7 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 39898,
+      "stars": 39897,
       "pushedAt": "2026-07-15T18:16:24Z",
       "inactive": false,
       "starsWeekly": 45,
@@ -1266,7 +1266,7 @@
       "stars": 31028,
       "pushedAt": "2026-07-15T14:34:57Z",
       "inactive": false,
-      "starsWeekly": 73,
+      "starsWeekly": 71,
       "starsMonthly": 265,
       "archived": false
     },
@@ -1302,7 +1302,7 @@
       ],
       "relevance": 1,
       "stars": 9600,
-      "pushedAt": "2026-07-15T17:41:15Z",
+      "pushedAt": "2026-07-15T19:43:32Z",
       "inactive": false,
       "starsWeekly": 32,
       "starsMonthly": 140,
@@ -1380,8 +1380,8 @@
       "stars": 28576,
       "pushedAt": "2026-07-15T10:26:42Z",
       "inactive": false,
-      "starsWeekly": 47,
-      "starsMonthly": 214,
+      "starsWeekly": 46,
+      "starsMonthly": 212,
       "archived": false
     },
     {
@@ -1571,7 +1571,7 @@
       ],
       "relevance": 1,
       "stars": 2451,
-      "pushedAt": "2026-07-15T17:41:49Z",
+      "pushedAt": "2026-07-15T19:46:50Z",
       "inactive": false,
       "starsWeekly": 4,
       "starsMonthly": 11,
@@ -1836,10 +1836,10 @@
         "Java"
       ],
       "relevance": 1,
-      "stars": 12048,
+      "stars": 12049,
       "pushedAt": "2026-07-09T15:27:50Z",
       "inactive": false,
-      "starsWeekly": 7,
+      "starsWeekly": 8,
       "starsMonthly": 23,
       "archived": false
     },
@@ -1878,7 +1878,7 @@
       ],
       "relevance": 2,
       "stars": 679,
-      "pushedAt": "2026-07-15T18:32:08Z",
+      "pushedAt": "2026-07-15T19:47:35Z",
       "inactive": false,
       "starsWeekly": 2,
       "starsMonthly": 8,
