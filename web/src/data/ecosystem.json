@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-07-16T22:37:11.780Z",
+  "fetchedAt": "2026-07-16T23:33:53.856Z",
   "projects": [
     {
       "category": "tools",
@@ -85,7 +85,7 @@
       "relevance": 1,
       "stars": 2158,
       "pushedAt": "2025-07-16T23:04:58Z",
-      "inactive": false,
+      "inactive": true,
       "starsWeekly": 1,
       "starsMonthly": 3,
       "archived": false
@@ -144,7 +144,7 @@
       "pushedAt": "2026-07-16T17:48:47Z",
       "inactive": false,
       "starsWeekly": 12,
-      "starsMonthly": 53,
+      "starsMonthly": 52,
       "archived": false
     },
     {
@@ -393,7 +393,7 @@
       "pushedAt": "2026-07-16T09:19:07Z",
       "inactive": false,
       "starsWeekly": 7,
-      "starsMonthly": 36,
+      "starsMonthly": 35,
       "archived": false
     },
     {
@@ -509,11 +509,11 @@
         "JavaScript"
       ],
       "relevance": 2,
-      "stars": 10573,
+      "stars": 10574,
       "pushedAt": "2026-07-15T13:33:06Z",
       "inactive": false,
-      "starsWeekly": 3,
-      "starsMonthly": 22,
+      "starsWeekly": 4,
+      "starsMonthly": 23,
       "archived": false
     },
     {
@@ -1006,7 +1006,7 @@
       ],
       "relevance": 1,
       "stars": 5855,
-      "pushedAt": "2026-07-16T22:32:37Z",
+      "pushedAt": "2026-07-16T23:15:45Z",
       "inactive": false,
       "starsWeekly": 9,
       "starsMonthly": 36,
@@ -1025,7 +1025,7 @@
       ],
       "relevance": 1,
       "stars": 5795,
-      "pushedAt": "2026-07-16T22:32:30Z",
+      "pushedAt": "2026-07-16T23:11:56Z",
       "inactive": false,
       "starsWeekly": 5,
       "starsMonthly": 27,
@@ -1378,7 +1378,7 @@
       ],
       "relevance": 1,
       "stars": 28578,
-      "pushedAt": "2026-07-16T21:55:21Z",
+      "pushedAt": "2026-07-16T23:04:16Z",
       "inactive": false,
       "starsWeekly": 41,
       "starsMonthly": 206,
@@ -1571,7 +1571,7 @@
       ],
       "relevance": 1,
       "stars": 2452,
-      "pushedAt": "2026-07-16T21:43:06Z",
+      "pushedAt": "2026-07-16T22:43:36Z",
       "inactive": false,
       "starsWeekly": 4,
       "starsMonthly": 12,
