@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-07-17T22:28:36.597Z",
+  "fetchedAt": "2026-07-17T23:31:22.428Z",
   "projects": [
     {
       "category": "tools",
@@ -285,7 +285,7 @@
       "stars": 45174,
       "pushedAt": "2026-07-17T21:58:43Z",
       "inactive": false,
-      "starsWeekly": 109,
+      "starsWeekly": 108,
       "starsMonthly": 329,
       "archived": false
     },
@@ -333,7 +333,7 @@
       ],
       "relevance": 4,
       "stars": 466,
-      "pushedAt": "2026-07-17T22:27:35Z",
+      "pushedAt": "2026-07-17T22:36:42Z",
       "inactive": false,
       "starsWeekly": 6,
       "starsMonthly": 43,
@@ -1025,7 +1025,7 @@
       ],
       "relevance": 1,
       "stars": 5796,
-      "pushedAt": "2026-07-17T22:23:23Z",
+      "pushedAt": "2026-07-17T23:24:21Z",
       "inactive": false,
       "starsWeekly": 6,
       "starsMonthly": 28,
@@ -1129,11 +1129,11 @@
         "Go"
       ],
       "relevance": 4,
-      "stars": 71532,
-      "pushedAt": "2026-07-17T22:13:12Z",
+      "stars": 71537,
+      "pushedAt": "2026-07-17T23:26:53Z",
       "inactive": false,
-      "starsWeekly": 70,
-      "starsMonthly": 235,
+      "starsWeekly": 75,
+      "starsMonthly": 240,
       "archived": false
     },
     {
@@ -1226,9 +1226,9 @@
       ],
       "relevance": 1,
       "stars": 39895,
-      "pushedAt": "2026-07-17T22:00:06Z",
+      "pushedAt": "2026-07-17T23:00:28Z",
       "inactive": false,
-      "starsWeekly": 37,
+      "starsWeekly": 35,
       "starsMonthly": 1000,
       "archived": false
     },
@@ -1377,11 +1377,11 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 28588,
+      "stars": 28589,
       "pushedAt": "2026-07-17T21:01:14Z",
       "inactive": false,
-      "starsWeekly": 47,
-      "starsMonthly": 209,
+      "starsWeekly": 48,
+      "starsMonthly": 210,
       "archived": false
     },
     {
@@ -1571,7 +1571,7 @@
       ],
       "relevance": 1,
       "stars": 2453,
-      "pushedAt": "2026-07-17T17:36:06Z",
+      "pushedAt": "2026-07-17T23:27:16Z",
       "inactive": false,
       "starsWeekly": 5,
       "starsMonthly": 13,
