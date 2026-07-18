@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-07-18T21:31:58.673Z",
+  "fetchedAt": "2026-07-18T22:29:21.914Z",
   "projects": [
     {
       "category": "tools",
@@ -285,7 +285,7 @@
       "stars": 45181,
       "pushedAt": "2026-07-18T05:11:33Z",
       "inactive": false,
-      "starsWeekly": 50,
+      "starsWeekly": 49,
       "starsMonthly": 331,
       "archived": false
     },
@@ -1005,11 +1005,11 @@
         "JavaScript"
       ],
       "relevance": 1,
-      "stars": 5854,
-      "pushedAt": "2026-07-18T21:31:43Z",
+      "stars": 5855,
+      "pushedAt": "2026-07-18T22:22:42Z",
       "inactive": false,
       "starsWeekly": 8,
-      "starsMonthly": 32,
+      "starsMonthly": 33,
       "archived": false
     },
     {
@@ -1130,10 +1130,10 @@
       ],
       "relevance": 4,
       "stars": 71582,
-      "pushedAt": "2026-07-18T20:17:26Z",
+      "pushedAt": "2026-07-18T21:44:42Z",
       "inactive": false,
-      "starsWeekly": 112,
-      "starsMonthly": 277,
+      "starsWeekly": 111,
+      "starsMonthly": 276,
       "archived": false
     },
     {
@@ -1266,7 +1266,7 @@
       "stars": 31049,
       "pushedAt": "2026-07-18T11:26:21Z",
       "inactive": false,
-      "starsWeekly": 61,
+      "starsWeekly": 60,
       "starsMonthly": 251,
       "archived": false
     },
@@ -1302,7 +1302,7 @@
       ],
       "relevance": 1,
       "stars": 9614,
-      "pushedAt": "2026-07-18T21:21:23Z",
+      "pushedAt": "2026-07-18T22:13:13Z",
       "inactive": false,
       "starsWeekly": 32,
       "starsMonthly": 138,
@@ -1381,7 +1381,7 @@
       "pushedAt": "2026-07-18T07:43:41Z",
       "inactive": false,
       "starsWeekly": 52,
-      "starsMonthly": 208,
+      "starsMonthly": 207,
       "archived": false
     },
     {
