@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-07-19T15:34:59.902Z",
+  "fetchedAt": "2026-07-19T16:32:01.842Z",
   "projects": [
     {
       "category": "tools",
@@ -16,7 +16,7 @@
       "stars": 11295,
       "pushedAt": "2026-07-19T04:32:28Z",
       "inactive": false,
-      "starsWeekly": 32,
+      "starsWeekly": 31,
       "starsMonthly": 97,
       "archived": false
     },
@@ -282,11 +282,11 @@
         "PHP"
       ],
       "relevance": 4,
-      "stars": 45185,
+      "stars": 45188,
       "pushedAt": "2026-07-18T05:11:33Z",
       "inactive": false,
-      "starsWeekly": 52,
-      "starsMonthly": 333,
+      "starsWeekly": 54,
+      "starsMonthly": 336,
       "archived": false
     },
     {
@@ -1085,7 +1085,7 @@
       "pushedAt": "2026-07-05T08:44:34Z",
       "inactive": false,
       "starsWeekly": 4,
-      "starsMonthly": 20,
+      "starsMonthly": 19,
       "archived": false
     },
     {
@@ -1263,11 +1263,11 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 31055,
+      "stars": 31056,
       "pushedAt": "2026-07-19T11:17:05Z",
       "inactive": false,
       "starsWeekly": 62,
-      "starsMonthly": 252,
+      "starsMonthly": 253,
       "archived": false
     },
     {
@@ -1301,11 +1301,11 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 9617,
-      "pushedAt": "2026-07-19T14:46:35Z",
+      "stars": 9618,
+      "pushedAt": "2026-07-19T16:27:54Z",
       "inactive": false,
-      "starsWeekly": 33,
-      "starsMonthly": 138,
+      "starsWeekly": 32,
+      "starsMonthly": 139,
       "archived": false
     },
     {
@@ -1380,8 +1380,8 @@
       "stars": 28597,
       "pushedAt": "2026-07-18T07:43:41Z",
       "inactive": false,
-      "starsWeekly": 52,
-      "starsMonthly": 204,
+      "starsWeekly": 49,
+      "starsMonthly": 203,
       "archived": false
     },
     {
@@ -1457,7 +1457,7 @@
       "pushedAt": "2026-07-17T21:30:07Z",
       "inactive": false,
       "starsWeekly": 11,
-      "starsMonthly": 74,
+      "starsMonthly": 72,
       "archived": false
     },
     {
