@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-07-19T19:49:20.110Z",
+  "fetchedAt": "2026-07-19T21:30:36.804Z",
   "projects": [
     {
       "category": "tools",
@@ -313,11 +313,11 @@
         "Python"
       ],
       "relevance": 4,
-      "stars": 6261,
-      "pushedAt": "2026-07-19T15:28:32Z",
+      "stars": 6262,
+      "pushedAt": "2026-07-19T20:55:17Z",
       "inactive": false,
-      "starsWeekly": 29,
-      "starsMonthly": 95,
+      "starsWeekly": 30,
+      "starsMonthly": 96,
       "archived": false
     },
     {
@@ -970,7 +970,7 @@
       "pushedAt": "2026-07-15T09:56:29Z",
       "inactive": false,
       "starsWeekly": 5,
-      "starsMonthly": 35,
+      "starsMonthly": 34,
       "archived": false
     },
     {
@@ -1247,7 +1247,7 @@
       "stars": 6010,
       "pushedAt": "2026-03-03T22:08:08Z",
       "inactive": false,
-      "starsWeekly": 2,
+      "starsWeekly": 1,
       "starsMonthly": 9,
       "archived": false
     },
@@ -1263,11 +1263,11 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 31056,
+      "stars": 31057,
       "pushedAt": "2026-07-19T11:17:05Z",
       "inactive": false,
-      "starsWeekly": 61,
-      "starsMonthly": 253,
+      "starsWeekly": 62,
+      "starsMonthly": 254,
       "archived": false
     },
     {
@@ -1302,7 +1302,7 @@
       ],
       "relevance": 1,
       "stars": 9618,
-      "pushedAt": "2026-07-19T19:36:17Z",
+      "pushedAt": "2026-07-19T20:55:11Z",
       "inactive": false,
       "starsWeekly": 31,
       "starsMonthly": 139,
@@ -1378,10 +1378,10 @@
       ],
       "relevance": 1,
       "stars": 28597,
-      "pushedAt": "2026-07-19T17:40:46Z",
+      "pushedAt": "2026-07-19T21:12:08Z",
       "inactive": false,
       "starsWeekly": 46,
-      "starsMonthly": 202,
+      "starsMonthly": 200,
       "archived": false
     },
     {
@@ -2051,7 +2051,7 @@
       "stars": 580,
       "pushedAt": "2026-05-27T20:15:53Z",
       "inactive": false,
-      "starsWeekly": 1,
+      "starsWeekly": 0,
       "starsMonthly": 2,
       "archived": false
     },
