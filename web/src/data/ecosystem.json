@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-07-19T04:54:25.906Z",
+  "fetchedAt": "2026-07-19T07:48:13.529Z",
   "projects": [
     {
       "category": "tools",
@@ -68,7 +68,7 @@
       "pushedAt": "2026-07-17T01:37:30Z",
       "inactive": false,
       "starsWeekly": 3,
-      "starsMonthly": 28,
+      "starsMonthly": 27,
       "archived": false
     },
     {
@@ -140,10 +140,10 @@
         "Agnostic"
       ],
       "relevance": 3,
-      "stars": 19955,
+      "stars": 19956,
       "pushedAt": "2026-07-18T10:08:27Z",
       "inactive": false,
-      "starsWeekly": 9,
+      "starsWeekly": 10,
       "starsMonthly": 46,
       "archived": false
     },
@@ -317,7 +317,7 @@
       "pushedAt": "2026-07-19T02:07:31Z",
       "inactive": false,
       "starsWeekly": 35,
-      "starsMonthly": 97,
+      "starsMonthly": 95,
       "archived": false
     },
     {
@@ -390,9 +390,9 @@
       ],
       "relevance": 1,
       "stars": 17562,
-      "pushedAt": "2026-07-18T09:42:52Z",
+      "pushedAt": "2026-07-19T05:02:08Z",
       "inactive": false,
-      "starsWeekly": 12,
+      "starsWeekly": 11,
       "starsMonthly": 36,
       "archived": false
     },
@@ -783,7 +783,7 @@
       "pushedAt": "2026-07-17T17:42:32Z",
       "inactive": false,
       "starsWeekly": 4,
-      "starsMonthly": 20,
+      "starsMonthly": 19,
       "archived": false
     },
     {
@@ -803,7 +803,7 @@
       "pushedAt": "2026-07-01T07:03:28Z",
       "inactive": false,
       "starsWeekly": 3,
-      "starsMonthly": 13,
+      "starsMonthly": 12,
       "archived": false
     },
     {
@@ -947,10 +947,10 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 12739,
+      "stars": 12740,
       "pushedAt": "2026-07-08T17:41:30Z",
       "inactive": false,
-      "starsWeekly": 13,
+      "starsWeekly": 14,
       "starsMonthly": 53,
       "archived": false
     },
@@ -988,7 +988,7 @@
       "stars": 5933,
       "pushedAt": "2026-07-17T14:07:35Z",
       "inactive": false,
-      "starsWeekly": 7,
+      "starsWeekly": 6,
       "starsMonthly": 18,
       "archived": false
     },
@@ -1006,7 +1006,7 @@
       ],
       "relevance": 1,
       "stars": 5855,
-      "pushedAt": "2026-07-19T04:16:29Z",
+      "pushedAt": "2026-07-19T05:03:36Z",
       "inactive": false,
       "starsWeekly": 7,
       "starsMonthly": 33,
@@ -1129,11 +1129,11 @@
         "Go"
       ],
       "relevance": 4,
-      "stars": 71582,
+      "stars": 71584,
       "pushedAt": "2026-07-19T04:27:57Z",
       "inactive": false,
-      "starsWeekly": 111,
-      "starsMonthly": 276,
+      "starsWeekly": 113,
+      "starsMonthly": 278,
       "archived": false
     },
     {
@@ -1225,10 +1225,10 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 39894,
+      "stars": 39895,
       "pushedAt": "2026-07-18T07:47:26Z",
       "inactive": false,
-      "starsWeekly": 31,
+      "starsWeekly": 32,
       "starsMonthly": 1000,
       "archived": false
     },
@@ -1267,7 +1267,7 @@
       "pushedAt": "2026-07-19T00:02:52Z",
       "inactive": false,
       "starsWeekly": 58,
-      "starsMonthly": 252,
+      "starsMonthly": 251,
       "archived": false
     },
     {
@@ -1301,11 +1301,11 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 9614,
+      "stars": 9615,
       "pushedAt": "2026-07-19T04:20:49Z",
       "inactive": false,
-      "starsWeekly": 32,
-      "starsMonthly": 137,
+      "starsWeekly": 33,
+      "starsMonthly": 138,
       "archived": false
     },
     {
@@ -1381,7 +1381,7 @@
       "pushedAt": "2026-07-18T07:43:41Z",
       "inactive": false,
       "starsWeekly": 51,
-      "starsMonthly": 206,
+      "starsMonthly": 204,
       "archived": false
     },
     {
@@ -1457,7 +1457,7 @@
       "pushedAt": "2026-07-17T21:30:07Z",
       "inactive": false,
       "starsWeekly": 12,
-      "starsMonthly": 77,
+      "starsMonthly": 76,
       "archived": false
     },
     {
@@ -1492,11 +1492,11 @@
         "Swift"
       ],
       "relevance": 2,
-      "stars": 4953,
+      "stars": 4954,
       "pushedAt": "2026-07-13T14:49:09Z",
       "inactive": false,
-      "starsWeekly": 5,
-      "starsMonthly": 20,
+      "starsWeekly": 6,
+      "starsMonthly": 21,
       "archived": false
     },
     {
@@ -1817,7 +1817,7 @@
         "Go"
       ],
       "relevance": 1,
-      "stars": 23011,
+      "stars": 23010,
       "pushedAt": "2026-07-17T17:06:06Z",
       "inactive": false,
       "starsWeekly": 11,
@@ -1839,7 +1839,7 @@
       "stars": 12053,
       "pushedAt": "2026-07-09T15:27:50Z",
       "inactive": false,
-      "starsWeekly": 8,
+      "starsWeekly": 7,
       "starsMonthly": 24,
       "archived": false
     },
@@ -1896,11 +1896,11 @@
         "C"
       ],
       "relevance": 2,
-      "stars": 5491,
+      "stars": 5492,
       "pushedAt": "2026-07-16T12:13:03Z",
       "inactive": false,
-      "starsWeekly": 21,
-      "starsMonthly": 55,
+      "starsWeekly": 22,
+      "starsMonthly": 56,
       "archived": false
     },
     {
