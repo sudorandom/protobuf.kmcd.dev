@@ -488,3 +488,37 @@ export const CyberButton = ({
     </button>
   );
 };
+
+export const CollapsibleSection = ({
+  title = "Historical Context: protoc",
+  children,
+  defaultOpen = false,
+}: {
+  title?: string;
+  children: React.ReactNode;
+  defaultOpen?: boolean;
+}) => {
+  const [isOpen, setIsOpen] = React.useState(defaultOpen);
+
+  return (
+    <div className="border border-[var(--border-light)] bg-[var(--section-bg-dark)]/50 rounded-lg overflow-hidden transition-all">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full px-4 py-3 flex items-center justify-between bg-[var(--overlay-bg)] text-left hover:bg-[var(--overlay-bg)]/80 transition-colors border-b border-[var(--border-light)]/50 focus:outline-none"
+        aria-expanded={isOpen}
+      >
+        <span className="text-xs font-mono font-bold uppercase tracking-widest text-[var(--text-dim)] flex items-center gap-2">
+          <span className="text-[var(--cyber-neon-blue)]">▸</span> {title}
+        </span>
+        <span className="text-xs font-mono text-[var(--cyber-neon-blue)] px-2 py-0.5 rounded bg-[var(--cyber-neon-blue)]/10 border border-[var(--cyber-neon-blue)]/30">
+          {isOpen ? "HIDE" : "SHOW"}
+        </span>
+      </button>
+      {isOpen && (
+        <div className="p-4 space-y-4 animate-in fade-in slide-in-from-top-1">
+          {children}
+        </div>
+      )}
+    </div>
+  );
+};

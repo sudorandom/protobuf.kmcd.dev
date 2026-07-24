@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
+import { create, toBinary, toJsonString } from "@bufbuild/protobuf";
+import { UserSchema } from "../gen/demo/v1/user_pb";
 import {
   Box,
   Type,
@@ -9,15 +11,19 @@ import {
   Braces,
   GitBranch,
   FileCode,
+  Play,
+  Check,
   Link as LinkIcon,
 } from "lucide-react";
 import {
   Section,
   SectionTitle,
   CyberPanel,
+  CyberButton,
   ExternalLinkText,
   SyntaxHighlighter,
   TechnicalNuance,
+  CollapsibleSection,
   RoadmapGrid,
 } from "../components/shared/Common";
 
@@ -1058,6 +1064,195 @@ export const TypeSystem = () => {
   );
 };
 
+const BufGenerationDemo = () => {
+  const [generated, setGenerated] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
+
+  const combinedYaml = `version: v2
+plugins:
+  - remote: buf.build/bufbuild/es:v2.12.0
+    out: src/gen
+    opt: target=ts
+  - remote: buf.build/protocolbuffers/go:v1.36.11
+    out: gen/go
+    opt: paths=source_relative`;
+
+  const files = [
+    { path: "src/gen/demo/v1/user_pb.ts", desc: "TypeScript interface, classes, & binary/JSON codec metadata" },
+    { path: "gen/go/demo/v1/user.pb.go", desc: "Go structs, field getters, ProtoReflect, & binary marshal/unmarshal" }
+  ];
+
+  const handleGenerate = () => {
+    setIsGenerating(true);
+    setGenerated(false);
+    setTimeout(() => {
+      setIsGenerating(false);
+      setGenerated(true);
+    }, 400);
+  };
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <CyberPanel title="buf.gen.yaml">
+        <div className="p-4">
+          <SyntaxHighlighter
+            language="yaml"
+            code={combinedYaml}
+            wrap={true}
+          />
+        </div>
+      </CyberPanel>
+
+      <CyberPanel
+        title="GENERATE CODE"
+        headerExtra={
+          <CyberButton
+            onClick={handleGenerate}
+            disabled={isGenerating}
+            variant="pink"
+            size="sm"
+            icon={generated ? Check : Play}
+          >
+            {isGenerating ? "GENERATING..." : generated ? "RE-GENERATE" : "RUN BUF GENERATE"}
+          </CyberButton>
+        }
+      >
+        <div className="p-4 space-y-4">
+          <SyntaxHighlighter
+            language="bash"
+            code={`$ buf generate`}
+            wrap={true}
+          />
+          <p className="text-xs text-[var(--text-dim)]">
+            Runs multi-language schema generation in one command.
+          </p>
+
+          {generated && (
+            <div className="mt-4 pt-4 border-t border-[var(--cyber-neon-green)]/30 space-y-2 animate-in fade-in slide-in-from-top-2">
+              <div className="flex items-center justify-between text-xs font-mono text-[var(--cyber-neon-green)]">
+                <span>✓ GENERATION COMPLETE</span>
+                <span>{files.length} FILE(S) CREATED</span>
+              </div>
+              <div className="bg-[var(--section-bg-dark)] border border-[var(--cyber-neon-green)]/20 rounded p-3 space-y-3">
+                {files.map((file) => (
+                  <div key={file.path} className="space-y-1">
+                    <div className="font-mono text-xs font-bold text-[var(--cyber-neon-green)] flex items-center gap-1.5">
+                      <FileCode className="w-3.5 h-3.5 text-[var(--cyber-neon-green)] shrink-0" />
+                      {file.path}
+                    </div>
+                    <div className="text-[11px] text-[var(--text-dim)] pl-5">
+                      {file.desc}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </CyberPanel>
+    </div>
+  );
+};
+
+const InteractiveMainTsDemo = () => {
+  const [ran, setRan] = useState(false);
+  const [isRunning, setIsRunning] = useState(false);
+  const [output, setOutput] = useState<{ json: string; binaryUint8ArrayStr: string; bytesLen: number } | null>(null);
+
+  const mainTsCode = `import { create, toBinary, toJsonString } from "@bufbuild/protobuf";
+import { UserSchema } from "./gen/demo/v1/user_pb";
+
+const user = create(UserSchema, {
+  id: "usr_123",
+  name: "cyber_ninja",
+  email: "ninja@example.com",
+  age: 28,
+});
+
+const bytes = toBinary(UserSchema, user);
+const json = toJsonString(UserSchema, user);
+
+console.log("JSON Output:", json);
+console.log("Binary Output:", bytes);`;
+
+  const handleRun = () => {
+    setIsRunning(true);
+    setRan(false);
+    setTimeout(() => {
+      // Real protobuf-es runtime execution
+      const userObj = create(UserSchema, {
+        id: "usr_123",
+        name: "cyber_ninja",
+        email: "ninja@example.com",
+        age: 28,
+      });
+
+      const jsonStr = toJsonString(UserSchema, userObj);
+      const binaryBytes = toBinary(UserSchema, userObj);
+      const arrayStr = `Uint8Array(${binaryBytes.length}) [ ${Array.from(binaryBytes).join(", ")} ]`;
+
+      setOutput({
+        json: jsonStr,
+        binaryUint8ArrayStr: arrayStr,
+        bytesLen: binaryBytes.length,
+      });
+      setIsRunning(false);
+      setRan(true);
+    }, 200);
+  };
+
+  return (
+    <CyberPanel
+      title="src/main.ts"
+      headerExtra={
+        <CyberButton
+          onClick={handleRun}
+          disabled={isRunning}
+          variant="blue"
+          size="sm"
+          icon={ran ? Check : Play}
+        >
+          {isRunning ? "RUNNING..." : ran ? "RE-RUN" : "RUN CODE"}
+        </CyberButton>
+      }
+    >
+      <div className="p-4 space-y-4">
+        <SyntaxHighlighter
+          language="typescript"
+          code={mainTsCode}
+          wrap={true}
+        />
+
+        {ran && output && (
+          <div className="mt-4 pt-4 border-t border-[var(--cyber-neon-blue)]/30 space-y-2 animate-in fade-in slide-in-from-top-2">
+            <div className="flex items-center justify-between text-xs font-mono text-[var(--cyber-neon-blue)]">
+              <span>DEVELOPER CONSOLE</span>
+              <span>main.ts:12</span>
+            </div>
+            <div className="bg-[#0f141d] border border-[var(--border-light)]/40 rounded p-4 font-mono text-xs space-y-2 text-gray-300">
+              <div className="flex items-start gap-2">
+                <span className="text-[var(--text-dim)] select-none">&gt;</span>
+                <div>
+                  <span className="text-gray-400">JSON Output:</span>{" "}
+                  <span className="text-[var(--cyber-neon-green)]">"{output.json}"</span>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-2 pt-2 border-t border-gray-800/60">
+                <span className="text-[var(--text-dim)] select-none">&gt;</span>
+                <div>
+                  <span className="text-gray-400">Binary Output:</span>{" "}
+                  <span className="text-[var(--cyber-neon-pink)]">{output.binaryUint8ArrayStr}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </CyberPanel>
+  );
+};
+
 export const GeneratingCode = () => (
   <Section
     id="generating-code"
@@ -1116,71 +1311,49 @@ export const GeneratingCode = () => (
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-        <div className="space-y-6">
-          <h4 className="text-[var(--cyber-neon-blue)] font-cyber font-bold text-sm tracking-widest uppercase">
-            Option 1: The Classic protoc
-          </h4>
-          <p className="text-sm text-[var(--text-dim)] leading-relaxed">
-            The <code>protoc</code> compiler is the original tool for Protobuf.
-            It requires manual management of plugins and CLI flags. Using{" "}
-            <code>--es_out</code> assumes that a binary named{" "}
-            <code>protoc-gen-es</code> is available on your system's{" "}
-            <code>PATH</code>.
-          </p>
-          <div className="space-y-4">
-            <CyberPanel title="INSTALL PLUGIN">
-              <div className="p-4">
-                <SyntaxHighlighter
-                  language="bash"
-                  code={`$ npm install --save-dev @bufbuild/protoc-gen-es`}
-                  wrap={true}
-                />
-              </div>
-            </CyberPanel>
-            <CyberPanel title="GENERATE CODE">
-              <div className="p-4">
-                <SyntaxHighlighter
-                  language="bash"
-                  code={`$ protoc --es_out=src/gen --es_opt=target=ts proto/demo/v1/user.proto`}
-                  wrap={true}
-                />
-              </div>
-            </CyberPanel>
-          </div>
-        </div>
+      <div className="space-y-6">
+        <h4 className="text-[var(--cyber-neon-pink)] font-cyber font-bold text-sm tracking-widest uppercase">
+          Generating Code with buf (Recommended)
+        </h4>
+        <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+          <code>buf</code> keeps generation declarative with a{" "}
+          <code>buf.gen.yaml</code> file, making the workflow reproducible and
+          easier to share across a team without needing local plugin binaries installed manually.
+        </p>
 
-        <div className="space-y-6">
-          <h4 className="text-[var(--cyber-neon-pink)] font-cyber font-bold text-sm tracking-widest uppercase">
-            Option 2: The Modern buf
-          </h4>
-          <p className="text-sm text-[var(--text-dim)] leading-relaxed">
-            <code>buf</code> keeps generation declarative with a{" "}
-            <code>buf.gen.yaml</code> file, making the workflow reproducible and
-            easier to share across a team.
-          </p>
-          <div className="space-y-4">
-            <CyberPanel title="buf.gen.yaml">
-              <div className="p-4">
-                <SyntaxHighlighter
-                  language="yaml"
-                  code={`version: v2\nplugins:\n  - remote: buf.build/bufbuild/es:v2.12.0\n    out: src/gen\n    opt: target=ts`}
-                  wrap={true}
-                />
-              </div>
-            </CyberPanel>
-            <CyberPanel title="GENERATE CODE">
-              <div className="p-4">
-                <SyntaxHighlighter
-                  language="bash"
-                  code={`$ buf generate`}
-                  wrap={true}
-                />
-              </div>
-            </CyberPanel>
-          </div>
-        </div>
+        <BufGenerationDemo />
       </div>
+
+        <CollapsibleSection title="Legacy / Historical: Generating with protoc">
+          <div className="space-y-4">
+            <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+              The standard <code>protoc</code> compiler is the original tool for
+              Protobuf. It requires manually installing compiler binaries and
+              managing plugin executables (like <code>protoc-gen-es</code>) on
+              your system's <code>PATH</code>.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <CyberPanel title="INSTALL PLUGIN">
+                <div className="p-4">
+                  <SyntaxHighlighter
+                    language="bash"
+                    code={`$ npm install --save-dev @bufbuild/protoc-gen-es`}
+                    wrap={true}
+                  />
+                </div>
+              </CyberPanel>
+              <CyberPanel title="GENERATE CODE">
+                <div className="p-4">
+                  <SyntaxHighlighter
+                    language="bash"
+                    code={`$ protoc --es_out=src/gen --es_opt=target=ts proto/demo/v1/user.proto`}
+                    wrap={true}
+                  />
+                </div>
+              </CyberPanel>
+            </div>
+          </div>
+        </CollapsibleSection>
 
       <div className="space-y-8">
         <div className="space-y-4">
@@ -1196,15 +1369,7 @@ export const GeneratingCode = () => (
           </p>
         </div>
 
-        <CyberPanel title="src/main.ts">
-          <div className="p-4">
-            <SyntaxHighlighter
-              language="typescript"
-              code={`import { create, toBinary, toJsonString } from "@bufbuild/protobuf";\nimport { UserSchema } from "./gen/demo/v1/user_pb";\n\nconst user = create(UserSchema, {\n  id: "usr_123",\n  username: "cyber_ninja",\n  isActive: true,\n});\n\nconst bytes = toBinary(UserSchema, user);\nconst json = toJsonString(UserSchema, user);`}
-              wrap={true}
-            />
-          </div>
-        </CyberPanel>
+        <InteractiveMainTsDemo />
 
         <TechnicalNuance title="Different languages and runtimes">
           <div className="space-y-4">

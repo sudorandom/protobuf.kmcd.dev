@@ -32,6 +32,7 @@ import {
   ExternalLinkText,
   SyntaxHighlighter,
   TechnicalNuance,
+  CollapsibleSection,
   RoadmapGrid,
   CyberButton,
 } from "../components/shared/Common";
@@ -148,40 +149,30 @@ export const AdvancedProtobuf = () => {
       desc: (
         <div className="space-y-4">
           <p>
-            You can use definitions from other .proto files using the{" "}
-            <code>import</code> statement. However, managing these paths
-            correctly is one of the most common points of friction in Protobuf
-            development.
-          </p>
-          <TechnicalNuance title="Import Resolution">
-            <p className="leading-relaxed">
-              The standard <code>protoc</code> compiler requires you to manually
-              specify every include directory via <code>-I</code> (or{" "}
-              <code>--proto_path</code>) flags. The compiler resolves files
-              based on the current working directory combined with these flags.
-            </p>
-            <p className="leading-relaxed">
-              If your import paths are inconsistent across your project (e.g.,
-              one file uses <code>import "proto/user.proto"</code> and another
-              uses <code>import "user.proto"</code>), the compiler will treat
-              them as entirely different types. This commonly leads to baffling
-              "Duplicate Symbol" errors.
-            </p>
-          </TechnicalNuance>
-          <p>
-            To avoid these issues, always import using the fully qualified path
-            from the root of your project or your <code>--proto_path</code>.
+            You can use definitions from other <code>.proto</code> files using
+            the <code>import</code> statement. With{" "}
+            <ExternalLinkText href="https://buf.build/">Buf</ExternalLinkText>,
+            imports are managed deterministically via <code>buf.yaml</code> and
+            remote modules (similar to NPM or Cargo), preventing resolution
+            friction.
           </p>
           <p>
-            <ExternalLinkText href="https://buf.build/">Buf</ExternalLinkText>{" "}
-            eliminates this by using a <code>buf.yaml</code> to define your
-            deterministic module root. It handles{" "}
-            <ExternalLinkText href="https://buf.build/docs/reference/protobuf-files-and-packages/">
-              imports and paths
-            </ExternalLinkText>{" "}
-            gracefully and allows for remote dependencies (similar to
-            NPM/Cargo).
+            Always import using fully qualified paths from your module root to
+            avoid baffling "Duplicate Symbol" errors.
           </p>
+          <CollapsibleSection title="Historical Context: protoc Import Resolution & Flags">
+            <TechnicalNuance title="protoc Include Paths (-I / --proto_path)">
+              <p className="leading-relaxed">
+                The legacy <code>protoc</code> compiler requires manually
+                specifying every include directory via <code>-I</code> (or{" "}
+                <code>--proto_path</code>) flags. If import paths are
+                inconsistent across your project (e.g.{" "}
+                <code>import "proto/user.proto"</code> vs{" "}
+                <code>import "user.proto"</code>), <code>protoc</code> treats
+                them as different types.
+              </p>
+            </TechnicalNuance>
+          </CollapsibleSection>
         </div>
       ),
       children: (
@@ -218,15 +209,12 @@ message LoginResponse {
               />
             </div>
           </CyberPanel>
-          <CyberPanel title="TERMINAL" className="h-auto">
+          <CyberPanel title="BUF CLI / TERMINAL" className="h-auto">
             <div className="p-2">
               <SyntaxHighlighter
                 language="bash"
-                code={`# Set the root as the import path (-I .)
-# This forces imports to use fully qualified paths
-protoc -I . \\
-  --go_out=. \\
-  auth/v1/service.proto`}
+                code={`# Buf automatically handles import resolution relative to your buf.yaml root
+$ buf build`}
                 wrap={true}
               />
             </div>
@@ -1004,11 +992,12 @@ export const SchemaEngineering = ({
           </p>
         </div>
       ),
-      example: `// Example: Running a custom plugin
-$ protoc --plugin=protoc-gen-custom=./my-plugin \\
-         --custom_opt=log_level=debug,other_flag=true \\
-         --custom_out=./generated \\
-         schema.proto`,
+      example: `# Example: Running a local plugin with buf generate (buf.gen.yaml)
+version: v2
+plugins:
+  - local: ./my-plugin
+    out: ./generated
+    opt: log_level=debug,other_flag=true`,
       fullWidthContent: (
         <div className="space-y-8 mt-4 text-[var(--text-color)] text-sm leading-relaxed">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
