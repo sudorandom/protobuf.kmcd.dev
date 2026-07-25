@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-07-25T10:54:44.516Z",
+  "fetchedAt": "2026-07-25T12:41:18.104Z",
   "projects": [
     {
       "category": "tools",
@@ -313,7 +313,7 @@
         "Python"
       ],
       "relevance": 4,
-      "stars": 6279,
+      "stars": 6280,
       "pushedAt": "2026-07-25T03:46:35Z",
       "inactive": false,
       "starsWeekly": 25,
@@ -910,7 +910,7 @@
       ],
       "relevance": 2,
       "stars": 4961,
-      "pushedAt": "2026-07-25T10:09:26Z",
+      "pushedAt": "2026-07-25T12:27:31Z",
       "inactive": false,
       "starsWeekly": 3,
       "starsMonthly": 10,
@@ -985,7 +985,7 @@
         "Kotlin"
       ],
       "relevance": 1,
-      "stars": 5936,
+      "stars": 5935,
       "pushedAt": "2026-07-24T19:01:10Z",
       "inactive": false,
       "starsWeekly": 7,
@@ -1129,7 +1129,7 @@
         "Go"
       ],
       "relevance": 4,
-      "stars": 71640,
+      "stars": 71641,
       "pushedAt": "2026-07-25T10:32:51Z",
       "inactive": false,
       "starsWeekly": 127,
@@ -1302,7 +1302,7 @@
       ],
       "relevance": 1,
       "stars": 9640,
-      "pushedAt": "2026-07-25T03:20:29Z",
+      "pushedAt": "2026-07-25T12:28:35Z",
       "inactive": false,
       "starsWeekly": 34,
       "starsMonthly": 138,
@@ -1817,7 +1817,7 @@
         "Go"
       ],
       "relevance": 1,
-      "stars": 23013,
+      "stars": 23014,
       "pushedAt": "2026-07-24T20:52:24Z",
       "inactive": false,
       "starsWeekly": 11,
