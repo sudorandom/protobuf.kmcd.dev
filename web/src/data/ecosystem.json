@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-07-25T21:31:56.999Z",
+  "fetchedAt": "2026-07-25T22:34:15.304Z",
   "projects": [
     {
       "category": "tools",
@@ -282,7 +282,7 @@
         "PHP"
       ],
       "relevance": 4,
-      "stars": 45215,
+      "stars": 45216,
       "pushedAt": "2026-07-24T19:56:59Z",
       "inactive": false,
       "starsWeekly": 51,
@@ -1081,7 +1081,7 @@
         "Rust"
       ],
       "relevance": 3,
-      "stars": 4731,
+      "stars": 4732,
       "pushedAt": "2026-07-20T05:16:29Z",
       "inactive": false,
       "starsWeekly": 6,
@@ -1453,7 +1453,7 @@
         "Rust"
       ],
       "relevance": 1,
-      "stars": 12388,
+      "stars": 12389,
       "pushedAt": "2026-07-24T18:03:58Z",
       "inactive": false,
       "starsWeekly": 15,
