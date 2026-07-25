@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-07-25T12:41:18.104Z",
+  "fetchedAt": "2026-07-25T14:16:23.569Z",
   "projects": [
     {
       "category": "tools",
@@ -313,7 +313,7 @@
         "Python"
       ],
       "relevance": 4,
-      "stars": 6280,
+      "stars": 6281,
       "pushedAt": "2026-07-25T03:46:35Z",
       "inactive": false,
       "starsWeekly": 25,
@@ -351,7 +351,7 @@
         "Go"
       ],
       "relevance": 3,
-      "stars": 7523,
+      "stars": 7524,
       "pushedAt": "2024-08-05T21:36:11Z",
       "inactive": true,
       "starsWeekly": 5,
@@ -1129,7 +1129,7 @@
         "Go"
       ],
       "relevance": 4,
-      "stars": 71641,
+      "stars": 71643,
       "pushedAt": "2026-07-25T10:32:51Z",
       "inactive": false,
       "starsWeekly": 127,
@@ -1301,8 +1301,8 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 9640,
-      "pushedAt": "2026-07-25T12:28:35Z",
+      "stars": 9641,
+      "pushedAt": "2026-07-25T13:38:55Z",
       "inactive": false,
       "starsWeekly": 34,
       "starsMonthly": 138,
@@ -1377,7 +1377,7 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 28632,
+      "stars": 28633,
       "pushedAt": "2026-07-24T23:56:45Z",
       "inactive": false,
       "starsWeekly": 53,
