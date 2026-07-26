@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-07-26T22:38:00.315Z",
+  "fetchedAt": "2026-07-26T23:37:38.555Z",
   "projects": [
     {
       "category": "tools",
@@ -313,7 +313,7 @@
         "Python"
       ],
       "relevance": 4,
-      "stars": 6287,
+      "stars": 6288,
       "pushedAt": "2026-07-25T03:46:35Z",
       "inactive": false,
       "starsWeekly": 25,
@@ -1378,7 +1378,7 @@
       ],
       "relevance": 1,
       "stars": 28643,
-      "pushedAt": "2026-07-24T23:56:45Z",
+      "pushedAt": "2026-07-26T22:47:29Z",
       "inactive": false,
       "starsWeekly": 53,
       "starsMonthly": 209,
@@ -1552,7 +1552,7 @@
       ],
       "relevance": 1,
       "stars": 5126,
-      "pushedAt": "2026-07-25T20:54:27Z",
+      "pushedAt": "2026-07-26T22:57:40Z",
       "inactive": false,
       "starsWeekly": 3,
       "starsMonthly": 10,
@@ -2466,7 +2466,7 @@
         "Rust"
       ],
       "relevance": 2,
-      "stars": 471,
+      "stars": 472,
       "pushedAt": "2024-02-14T05:48:24Z",
       "inactive": true,
       "starsWeekly": 0,
