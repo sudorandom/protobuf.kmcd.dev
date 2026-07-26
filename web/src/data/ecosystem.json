@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-07-26T19:50:57.300Z",
+  "fetchedAt": "2026-07-26T21:34:11.481Z",
   "projects": [
     {
       "category": "tools",
@@ -140,8 +140,8 @@
         "Agnostic"
       ],
       "relevance": 3,
-      "stars": 19958,
-      "pushedAt": "2026-07-25T17:07:34Z",
+      "stars": 19959,
+      "pushedAt": "2026-07-26T20:46:11Z",
       "inactive": false,
       "starsWeekly": 5,
       "starsMonthly": 41,
@@ -282,7 +282,7 @@
         "PHP"
       ],
       "relevance": 4,
-      "stars": 45223,
+      "stars": 45224,
       "pushedAt": "2026-07-24T19:56:59Z",
       "inactive": false,
       "starsWeekly": 51,
@@ -662,7 +662,7 @@
       ],
       "relevance": 2,
       "stars": 165,
-      "pushedAt": "2026-07-20T00:29:30Z",
+      "pushedAt": "2026-07-26T21:32:58Z",
       "inactive": false,
       "starsWeekly": 1,
       "starsMonthly": 4,
@@ -1225,7 +1225,7 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 39904,
+      "stars": 39905,
       "pushedAt": "2026-07-26T12:32:00Z",
       "inactive": false,
       "starsWeekly": 28,
@@ -1301,7 +1301,7 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 9649,
+      "stars": 9650,
       "pushedAt": "2026-07-26T13:57:30Z",
       "inactive": false,
       "starsWeekly": 34,
@@ -1377,7 +1377,7 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 28642,
+      "stars": 28643,
       "pushedAt": "2026-07-24T23:56:45Z",
       "inactive": false,
       "starsWeekly": 53,
@@ -1511,7 +1511,7 @@
         "Swift"
       ],
       "relevance": 1,
-      "stars": 2244,
+      "stars": 2245,
       "pushedAt": "2026-04-01T10:01:41Z",
       "inactive": false,
       "starsWeekly": 1,
