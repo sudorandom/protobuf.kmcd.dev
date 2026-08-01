@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-08-01T10:19:52.537Z",
+  "fetchedAt": "2026-08-01T11:47:33.646Z",
   "projects": [
     {
       "category": "tools",
@@ -283,7 +283,7 @@
       ],
       "relevance": 4,
       "stars": 45233,
-      "pushedAt": "2026-08-01T00:38:20Z",
+      "pushedAt": "2026-08-01T10:44:26Z",
       "inactive": false,
       "starsWeekly": 51,
       "starsMonthly": 332,
@@ -313,7 +313,7 @@
         "Python"
       ],
       "relevance": 4,
-      "stars": 6298,
+      "stars": 6300,
       "pushedAt": "2026-08-01T07:04:29Z",
       "inactive": false,
       "starsWeekly": 25,
@@ -1130,7 +1130,7 @@
       ],
       "relevance": 4,
       "stars": 71671,
-      "pushedAt": "2026-08-01T09:52:57Z",
+      "pushedAt": "2026-08-01T10:33:56Z",
       "inactive": false,
       "starsWeekly": 127,
       "starsMonthly": 295,
@@ -1302,7 +1302,7 @@
       ],
       "relevance": 1,
       "stars": 9671,
-      "pushedAt": "2026-07-31T17:35:48Z",
+      "pushedAt": "2026-08-01T11:36:28Z",
       "inactive": false,
       "starsWeekly": 34,
       "starsMonthly": 138,
@@ -1377,7 +1377,7 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 28670,
+      "stars": 28672,
       "pushedAt": "2026-08-01T09:43:35Z",
       "inactive": false,
       "starsWeekly": 53,
@@ -1492,7 +1492,7 @@
         "Swift"
       ],
       "relevance": 2,
-      "stars": 4955,
+      "stars": 4956,
       "pushedAt": "2026-07-13T14:49:09Z",
       "inactive": false,
       "starsWeekly": 5,
@@ -1836,7 +1836,7 @@
         "Java"
       ],
       "relevance": 1,
-      "stars": 12056,
+      "stars": 12055,
       "pushedAt": "2026-07-31T10:26:19Z",
       "inactive": false,
       "starsWeekly": 7,
