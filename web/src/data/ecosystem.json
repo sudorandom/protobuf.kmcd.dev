@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-08-01T18:35:53.516Z",
+  "fetchedAt": "2026-08-01T19:50:05.053Z",
   "projects": [
     {
       "category": "tools",
@@ -282,7 +282,7 @@
         "PHP"
       ],
       "relevance": 4,
-      "stars": 45235,
+      "stars": 45234,
       "pushedAt": "2026-08-01T10:44:26Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1130,7 +1130,7 @@
       ],
       "relevance": 4,
       "stars": 71673,
-      "pushedAt": "2026-08-01T18:17:38Z",
+      "pushedAt": "2026-08-01T19:20:38Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -1264,7 +1264,7 @@
       ],
       "relevance": 1,
       "stars": 31156,
-      "pushedAt": "2026-08-01T06:13:37Z",
+      "pushedAt": "2026-08-01T19:34:58Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -1377,7 +1377,7 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 28672,
+      "stars": 28674,
       "pushedAt": "2026-08-01T09:43:35Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1571,7 +1571,7 @@
       ],
       "relevance": 1,
       "stars": 2459,
-      "pushedAt": "2026-08-01T16:42:37Z",
+      "pushedAt": "2026-08-01T19:01:34Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
