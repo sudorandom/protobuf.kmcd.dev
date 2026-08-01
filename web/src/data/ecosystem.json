@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-08-01T15:41:40.563Z",
+  "fetchedAt": "2026-08-01T16:36:51.687Z",
   "projects": [
     {
       "category": "tools",
@@ -282,7 +282,7 @@
         "PHP"
       ],
       "relevance": 4,
-      "stars": 45233,
+      "stars": 45234,
       "pushedAt": "2026-08-01T10:44:26Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -490,7 +490,7 @@
         "Swift"
       ],
       "relevance": 3,
-      "stars": 4423,
+      "stars": 4422,
       "pushedAt": "2026-08-01T07:58:53Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1024,7 +1024,7 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 5809,
+      "stars": 5810,
       "pushedAt": "2026-08-01T02:00:05Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1129,7 +1129,7 @@
         "Go"
       ],
       "relevance": 4,
-      "stars": 71671,
+      "stars": 71672,
       "pushedAt": "2026-08-01T10:33:56Z",
       "inactive": false,
       "starsWeekly": 0,
