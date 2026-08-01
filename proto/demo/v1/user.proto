@@ -2,6 +2,9 @@ edition = "2023";
 
 package demo.v1;
 
+option go_package = "github.com/sudorandom/protobuf.kmcd.dev/gen/go/demo/v1;demov1";
+
+
 import "buf/validate/validate.proto";
 
 message User {

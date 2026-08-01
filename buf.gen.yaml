@@ -3,3 +3,6 @@ plugins:
   - local: protoc-gen-es
     out: web/src/gen
     opt: target=ts
+  - local: protoc-gen-go
+    out: gen/go
+    opt: paths=source_relative
