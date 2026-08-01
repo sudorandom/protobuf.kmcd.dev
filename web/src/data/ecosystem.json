@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-08-01T14:10:19.194Z",
+  "fetchedAt": "2026-08-01T15:41:40.563Z",
   "projects": [
     {
       "category": "tools",
@@ -585,7 +585,7 @@
         "Rust"
       ],
       "relevance": 2,
-      "stars": 2978,
+      "stars": 2977,
       "pushedAt": "2025-09-21T22:00:37Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -845,7 +845,7 @@
       ],
       "relevance": 2,
       "stars": 172,
-      "pushedAt": "2026-08-01T13:16:51Z",
+      "pushedAt": "2026-08-01T13:16:59Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -947,7 +947,7 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 12756,
+      "stars": 12757,
       "pushedAt": "2026-07-27T19:38:18Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -2504,7 +2504,7 @@
         "Typescript"
       ],
       "relevance": 2,
-      "stars": 1396,
+      "stars": 1395,
       "pushedAt": "2026-01-21T23:30:21Z",
       "inactive": false,
       "starsWeekly": 0,
