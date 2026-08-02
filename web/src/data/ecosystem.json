@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-08-02T19:49:23.364Z",
+  "fetchedAt": "2026-08-02T21:32:24.869Z",
   "projects": [
     {
       "category": "tools",
@@ -1263,7 +1263,7 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 31158,
+      "stars": 31159,
       "pushedAt": "2026-08-01T19:34:58Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1302,7 +1302,7 @@
       ],
       "relevance": 1,
       "stars": 9674,
-      "pushedAt": "2026-08-02T19:45:29Z",
+      "pushedAt": "2026-08-02T20:05:21Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -1378,7 +1378,7 @@
       ],
       "relevance": 1,
       "stars": 28679,
-      "pushedAt": "2026-08-02T09:02:35Z",
+      "pushedAt": "2026-08-02T20:38:18Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -1684,7 +1684,7 @@
         "Elixir"
       ],
       "relevance": 2,
-      "stars": 902,
+      "stars": 901,
       "pushedAt": "2026-08-01T06:47:51Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -2029,7 +2029,7 @@
         "Elixir"
       ],
       "relevance": 2,
-      "stars": 902,
+      "stars": 901,
       "pushedAt": "2026-08-01T06:47:51Z",
       "inactive": false,
       "starsWeekly": 0,
