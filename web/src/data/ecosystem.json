@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-08-02T11:44:35.316Z",
+  "fetchedAt": "2026-08-02T14:12:19.921Z",
   "projects": [
     {
       "category": "tools",
@@ -121,7 +121,7 @@
         "Agnostic"
       ],
       "relevance": 2,
-      "stars": 300,
+      "stars": 301,
       "pushedAt": "2026-07-10T05:30:45Z",
       "inactive": false,
       "starsWeekly": 3,
@@ -313,7 +313,7 @@
         "Python"
       ],
       "relevance": 4,
-      "stars": 6301,
+      "stars": 6302,
       "pushedAt": "2026-08-01T07:04:29Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -910,7 +910,7 @@
       ],
       "relevance": 2,
       "stars": 4958,
-      "pushedAt": "2026-08-02T11:34:28Z",
+      "pushedAt": "2026-08-02T13:41:56Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -1225,7 +1225,7 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 39914,
+      "stars": 39915,
       "pushedAt": "2026-07-31T21:09:22Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1263,7 +1263,7 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 31158,
+      "stars": 31157,
       "pushedAt": "2026-08-01T19:34:58Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -2086,7 +2086,7 @@
         "GDScript"
       ],
       "relevance": 2,
-      "stars": 397,
+      "stars": 396,
       "pushedAt": "2026-06-29T04:59:24Z",
       "inactive": false,
       "starsWeekly": 0,
