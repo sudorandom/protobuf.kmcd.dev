@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-08-02T10:18:02.200Z",
+  "fetchedAt": "2026-08-02T11:44:35.316Z",
   "projects": [
     {
       "category": "tools",
@@ -13,7 +13,7 @@
         "Agnostic"
       ],
       "relevance": 4,
-      "stars": 11315,
+      "stars": 11316,
       "pushedAt": "2026-08-02T04:32:30Z",
       "inactive": false,
       "starsWeekly": 17,
@@ -282,7 +282,7 @@
         "PHP"
       ],
       "relevance": 4,
-      "stars": 45239,
+      "stars": 45240,
       "pushedAt": "2026-08-01T10:44:26Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -910,7 +910,7 @@
       ],
       "relevance": 2,
       "stars": 4958,
-      "pushedAt": "2026-08-02T07:13:05Z",
+      "pushedAt": "2026-08-02T11:34:28Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -1130,7 +1130,7 @@
       ],
       "relevance": 4,
       "stars": 71675,
-      "pushedAt": "2026-08-02T01:54:59Z",
+      "pushedAt": "2026-08-02T10:33:58Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -1244,7 +1244,7 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 6011,
+      "stars": 6010,
       "pushedAt": "2026-03-03T22:08:08Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1302,7 +1302,7 @@
       ],
       "relevance": 1,
       "stars": 9674,
-      "pushedAt": "2026-08-02T09:45:58Z",
+      "pushedAt": "2026-08-02T11:32:50Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
