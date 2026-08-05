@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-08-04T23:39:14.890Z",
+  "fetchedAt": "2026-08-05T01:01:59.921Z",
   "projects": [
     {
       "category": "tools",
@@ -140,7 +140,7 @@
         "Agnostic"
       ],
       "relevance": 3,
-      "stars": 19970,
+      "stars": 19971,
       "pushedAt": "2026-08-04T22:42:18Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -282,8 +282,8 @@
         "PHP"
       ],
       "relevance": 4,
-      "stars": 45246,
-      "pushedAt": "2026-08-04T22:29:58Z",
+      "stars": 45247,
+      "pushedAt": "2026-08-05T00:48:18Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -313,7 +313,7 @@
         "Python"
       ],
       "relevance": 4,
-      "stars": 6306,
+      "stars": 6307,
       "pushedAt": "2026-08-04T13:28:35Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -928,7 +928,7 @@
         "Go"
       ],
       "relevance": 1,
-      "stars": 25843,
+      "stars": 25844,
       "pushedAt": "2026-08-01T18:23:36Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1025,7 +1025,7 @@
       ],
       "relevance": 1,
       "stars": 5811,
-      "pushedAt": "2026-08-04T22:01:23Z",
+      "pushedAt": "2026-08-05T00:21:07Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -1130,7 +1130,7 @@
       ],
       "relevance": 4,
       "stars": 71684,
-      "pushedAt": "2026-08-04T22:09:29Z",
+      "pushedAt": "2026-08-05T00:52:09Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -1225,7 +1225,7 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 39924,
+      "stars": 39925,
       "pushedAt": "2026-08-04T21:41:48Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1377,7 +1377,7 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 28708,
+      "stars": 28710,
       "pushedAt": "2026-08-04T21:37:46Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1571,7 +1571,7 @@
       ],
       "relevance": 1,
       "stars": 2459,
-      "pushedAt": "2026-08-04T22:48:54Z",
+      "pushedAt": "2026-08-05T00:59:33Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
