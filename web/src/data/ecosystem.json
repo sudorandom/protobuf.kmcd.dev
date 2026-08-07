@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-08-07T06:51:45.944Z",
+  "fetchedAt": "2026-08-07T08:37:43.695Z",
   "projects": [
     {
       "category": "tools",
@@ -141,7 +141,7 @@
       ],
       "relevance": 3,
       "stars": 19973,
-      "pushedAt": "2026-08-06T21:45:55Z",
+      "pushedAt": "2026-08-07T08:34:58Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -282,7 +282,7 @@
         "PHP"
       ],
       "relevance": 4,
-      "stars": 45258,
+      "stars": 45260,
       "pushedAt": "2026-08-07T04:15:33Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -928,7 +928,7 @@
         "Go"
       ],
       "relevance": 1,
-      "stars": 25853,
+      "stars": 25854,
       "pushedAt": "2026-08-01T18:23:36Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -985,7 +985,7 @@
         "Kotlin"
       ],
       "relevance": 1,
-      "stars": 5935,
+      "stars": 5936,
       "pushedAt": "2026-08-04T12:41:40Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1129,8 +1129,8 @@
         "Go"
       ],
       "relevance": 4,
-      "stars": 71697,
-      "pushedAt": "2026-08-07T06:42:29Z",
+      "stars": 71699,
+      "pushedAt": "2026-08-07T08:31:38Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -1225,8 +1225,8 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 39936,
-      "pushedAt": "2026-08-07T03:36:04Z",
+      "stars": 39935,
+      "pushedAt": "2026-08-07T08:34:32Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -1263,7 +1263,7 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 31201,
+      "stars": 31204,
       "pushedAt": "2026-08-06T11:52:54Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1301,8 +1301,8 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 9691,
-      "pushedAt": "2026-08-06T23:02:20Z",
+      "stars": 9692,
+      "pushedAt": "2026-08-07T07:27:41Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -1551,8 +1551,8 @@
         "Scala"
       ],
       "relevance": 1,
-      "stars": 5127,
-      "pushedAt": "2026-08-07T06:51:27Z",
+      "stars": 5128,
+      "pushedAt": "2026-08-07T08:14:49Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -1571,7 +1571,7 @@
       ],
       "relevance": 1,
       "stars": 2459,
-      "pushedAt": "2026-08-07T06:43:59Z",
+      "pushedAt": "2026-08-07T07:49:06Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
