@@ -474,7 +474,7 @@ export const Practice = ({ activeId }: { activeId: string }) => {
                   Completed
                 </span>
                 <div className="text-xl font-cyber font-bold text-[var(--cyber-neon-green)]">
-                  8 / 8 exercises
+                  {EXERCISES.length} / {EXERCISES.length} exercises
                 </div>
               </div>
               <div className="p-4 border border-[var(--border-light)] bg-[var(--overlay-bg)] rounded-lg space-y-1">

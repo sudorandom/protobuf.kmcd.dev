@@ -1,5 +1,6 @@
 import { Terminal, Play, Code, ListChecks } from "lucide-react";
 import { CyberPanel } from "./shared/Common";
+import { EXERCISES } from "../data/practice-data";
 
 export const PracticeStart = () => {
   return (
@@ -68,6 +69,7 @@ export const PracticeStart = () => {
           <li>Optionality & field presence</li>
           <li>Oneof groups & polymorphism</li>
           <li>Standard library imports</li>
+          <li>Schema rules with protovalidate</li>
         </ul>
       </div>
 
@@ -80,7 +82,7 @@ export const PracticeStart = () => {
           </button>
         </a>
         <span className="text-[9px] font-mono text-[var(--text-dim)]/60 uppercase tracking-widest">
-          8 exercises // about 15 minutes
+          {EXERCISES.length} exercises // about 15 minutes
         </span>
       </div>
     </div>

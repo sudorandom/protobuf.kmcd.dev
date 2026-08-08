@@ -33,9 +33,9 @@ export const Hero = () => {
         </h1>
 
         <p className="text-lg sm:text-xl text-[var(--text-dim)] max-w-2xl mx-auto mb-12 leading-relaxed">
-          Language-neutral, platform-neutral, extensible mechanism for
-          serializing structured data. The backbone of modern high-performance
-          systems.
+          A schema-driven binary format: define your data once, generate code
+          for every language, and put far fewer bytes on the wire than JSON.
+          This guide takes it apart, byte by byte.
         </p>
       </motion.div>
 

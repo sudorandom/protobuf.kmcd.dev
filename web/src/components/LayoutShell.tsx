@@ -1352,31 +1352,6 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
                   <Boxes className="w-5 h-5" />
                 </a>
               </div>
-              <p className="text-sm font-mono text-[var(--text-dim)] uppercase tracking-[0.2em] flex flex-wrap justify-center gap-x-4 gap-y-2">
-                <span>
-                  Created by{" "}
-                  <a
-                    href="https://kmcd.dev"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[var(--text-dim)] hover:text-[var(--cyber-neon-blue)] transition-colors"
-                  >
-                    Kevin McDonald
-                  </a>
-                </span>
-                <span className="hidden sm:inline opacity-30">|</span>
-                <span>
-                  Hosted by{" "}
-                  <a
-                    href="https://pages.github.com/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[var(--text-dim)] hover:text-[var(--cyber-neon-blue)] transition-colors"
-                  >
-                    GitHub Pages
-                  </a>
-                </span>
-              </p>
             </div>
           </footer>
         </main>
