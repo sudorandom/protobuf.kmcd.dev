@@ -30,7 +30,7 @@ export const VersionTimeline = () => {
       year: "2008",
       version: "PROTO2",
       title: "Public Open Source",
-      desc: 'First public release. Introduced the complex "required" fields and a powerful extension system.',
+      desc: 'First public release. Introduced the complex "required" fields and an extension mechanism.',
       icon: Layers,
       color: "var(--cyber-neon-blue)",
       href: "https://opensource.googleblog.com/2008/07/protocol-buffers-googles-data.html",
@@ -47,8 +47,8 @@ export const VersionTimeline = () => {
     {
       year: "2023",
       version: "EDITIONS",
-      title: "The Future of Proto",
-      desc: 'The biggest architectural shift in years. Moves away from "versions" to a flexible system of "features".',
+      title: "Editions Replace Versions",
+      desc: 'Replaces syntax "versions" with individually settable "features", so the language can add behavior without waiting on a new syntax release.',
       icon: Code2,
       color: "var(--cyber-neon-green)",
       href: "https://protobuf.dev/news/2023-06-29/",
@@ -222,7 +222,7 @@ export const PoweringTheIndustry = () => {
           <ExternalLinkText href="https://buf.build/explore">
             Buf Schema Registry
           </ExternalLinkText>{" "}
-          &mdash; including{" "}
+          , including{" "}
           <ExternalLinkText href="https://buf.build/envoyproxy/envoy">
             Envoy
           </ExternalLinkText>
@@ -233,8 +233,8 @@ export const PoweringTheIndustry = () => {
           , and{" "}
           <ExternalLinkText href="https://buf.build/googleapis/googleapis">
             googleapis
-          </ExternalLinkText>{" "}
-          &mdash; where they become versioned dependencies you declare once in{" "}
+          </ExternalLinkText>
+          . There they become versioned dependencies you declare once in{" "}
           <code>buf.yaml</code>.
         </p>
       </div>
@@ -271,12 +271,12 @@ export const Toolbox = () => {
     },
     {
       name: "protolint",
-      desc: "A highly configurable linter for Protocol Buffer files to ensure style consistency and best practices.",
+      desc: "A highly configurable linter for Protocol Buffer files for consistent style.",
       url: "https://github.com/yoheimuta/protolint",
     },
     {
       name: "Google API Linter",
-      desc: "Check your API design against Google's API Improvement Proposals (AIPs) to ensure industry-standard naming and patterns.",
+      desc: "Check your API design against Google's API Improvement Proposals (AIPs) to catch naming that diverges from Google's own APIs.",
       url: "https://github.com/googleapis/api-linter",
     },
     {
@@ -294,12 +294,12 @@ export const Toolbox = () => {
   const plugins = [
     {
       name: "protoc-gen-doc",
-      desc: "Generates beautiful documentation (HTML, Markdown, PDF) from your .proto files.",
+      desc: "Turns .proto comments into HTML, Markdown, or PDF reference docs.",
       url: "https://github.com/pseudomuto/protoc-gen-doc",
     },
     {
       name: "protoc-gen-connect-openapi",
-      desc: "Generates high-quality OpenAPI 3.x definitions from your Protobuf services, with excellent support for ConnectRPC and gRPC-Gateway.",
+      desc: "Generates high-quality OpenAPI 3.x definitions from your Protobuf services, with first-class support for ConnectRPC and gRPC-Gateway.",
       url: "https://github.com/sudorandom/protoc-gen-connect-openapi",
     },
     {
@@ -408,10 +408,9 @@ export const Toolbox = () => {
               Looking for more tools, plugins, or libraries?
             </h4>
             <p className="text-sm text-[var(--text-dim)] max-w-2xl leading-relaxed">
-              Explore our comprehensive, paginated registry containing over 80+
-              third-party tools, remote plugins, and serialization libraries
-              with real-time GitHub star counts, categories, sorting, and search
-              filtering.
+              Browse the paginated registry of 80+ third-party tools, remote
+              plugins, and serialization libraries with real-time GitHub star
+              counts, categories, sorting, and search filtering.
             </p>
           </div>
           <a

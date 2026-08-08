@@ -21,7 +21,7 @@
       "archived": false
     },
     {
-      "category": "tools",
+      "category": "services",
       "name": "Buf Schema Registry",
       "owner": "bufbuild",
       "repo": "",
@@ -1579,7 +1579,10 @@
       "archived": false
     },
     {
-      "category": "tools",
+      "category": [
+        "tools",
+        "services"
+      ],
       "name": "Confluent Schema Registry",
       "owner": "confluentinc",
       "repo": "schema-registry",
@@ -1674,7 +1677,10 @@
       "archived": false
     },
     {
-      "category": "tools",
+      "category": [
+        "tools",
+        "services"
+      ],
       "name": "grpcbin",
       "owner": "moul",
       "repo": "grpcbin",
@@ -1750,7 +1756,10 @@
       "archived": false
     },
     {
-      "category": "tools",
+      "category": [
+        "tools",
+        "services"
+      ],
       "name": "protobuf-decoder",
       "owner": "pawitp",
       "repo": "protobuf-decoder",

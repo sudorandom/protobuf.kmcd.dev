@@ -118,7 +118,7 @@ export const Conclusion = () => (
       >
         <div className="space-y-4">
           <h1 className="text-4xl md:text-6xl font-cyber font-black text-[var(--text-color)] uppercase italic tracking-tighter">
-            Congratulations!
+            Nicely done.
           </h1>
           <p className="text-[var(--text-dim)] text-xl leading-relaxed">
             From understanding the basics of protobuf files to decoding raw

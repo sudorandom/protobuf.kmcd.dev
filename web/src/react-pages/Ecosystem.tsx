@@ -7,6 +7,7 @@ import {
   Wrench,
   Puzzle,
   Library,
+  Cloud,
   ArrowUpDown,
   AlertTriangle,
   Code2,
@@ -156,10 +157,10 @@ const Ecosystem = ({ initialPage = 1 }: { initialPage?: number }) => {
   };
 
   const [selectedCategory, setSelectedCategory] = useState<
-    "all" | "tools" | "plugins" | "libraries"
+    "all" | "tools" | "services" | "plugins" | "libraries"
   >(() => {
     const val = getQueryParam("category", "all");
-    return ["all", "tools", "plugins", "libraries"].includes(val)
+    return ["all", "tools", "services", "plugins", "libraries"].includes(val)
       ? (val as any)
       : "all";
   });
@@ -200,7 +201,7 @@ const Ecosystem = ({ initialPage = 1 }: { initialPage?: number }) => {
   // Draft filter states
   const [draftSearchTerm, setDraftSearchTerm] = useState("");
   const [draftCategory, setDraftCategory] = useState<
-    "all" | "tools" | "plugins" | "libraries"
+    "all" | "tools" | "services" | "plugins" | "libraries"
   >("all");
   const [draftLanguage, setDraftLanguage] = useState("all");
   const [draftStatus, setDraftStatus] = useState<"active" | "all" | "inactive">(
@@ -330,7 +331,7 @@ const Ecosystem = ({ initialPage = 1 }: { initialPage?: number }) => {
   };
 
   const handleSetCategory = (
-    cat: "all" | "tools" | "plugins" | "libraries",
+    cat: "all" | "tools" | "services" | "plugins" | "libraries",
   ) => {
     setSelectedCategory(cat);
     setCurrentPage(1);
@@ -414,7 +415,7 @@ const Ecosystem = ({ initialPage = 1 }: { initialPage?: number }) => {
 
   // Compute category counts
   const categoryCounts = useMemo(() => {
-    const counts = { all: 0, tools: 0, plugins: 0, libraries: 0 };
+    const counts = { all: 0, tools: 0, services: 0, plugins: 0, libraries: 0 };
     projects.forEach((p) => {
       const matchesLanguage =
         selectedLanguage === "all" ||
@@ -442,7 +443,12 @@ const Ecosystem = ({ initialPage = 1 }: { initialPage?: number }) => {
         counts.all++;
         const cats = Array.isArray(p.category) ? p.category : [p.category];
         cats.forEach((c) => {
-          if (c === "tools" || c === "plugins" || c === "libraries") {
+          if (
+            c === "tools" ||
+            c === "services" ||
+            c === "plugins" ||
+            c === "libraries"
+          ) {
             counts[c as keyof typeof counts]++;
           }
         });
@@ -568,6 +574,12 @@ const Ecosystem = ({ initialPage = 1 }: { initialPage?: number }) => {
           bg: "bg-[var(--cyber-neon-blue)]/10 text-[var(--cyber-neon-blue)] border-[var(--cyber-neon-blue)]/30",
           icon: Wrench,
           color: "var(--cyber-neon-blue)",
+        };
+      case "services":
+        return {
+          bg: "bg-[var(--cyber-neon-yellow)]/10 text-[var(--cyber-neon-yellow)] border-[var(--cyber-neon-yellow)]/30",
+          icon: Cloud,
+          color: "var(--cyber-neon-yellow)",
         };
       case "plugins":
         return {
@@ -1302,7 +1314,7 @@ const Ecosystem = ({ initialPage = 1 }: { initialPage?: number }) => {
                 <label className="text-[10px] font-mono text-[var(--text-dim)] uppercase tracking-widest font-bold block">
                   Category
                 </label>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                   {[
                     {
                       id: "all",
@@ -1313,6 +1325,11 @@ const Ecosystem = ({ initialPage = 1 }: { initialPage?: number }) => {
                       id: "tools",
                       label: `Tools (${categoryCounts.tools})`,
                       icon: Wrench,
+                    },
+                    {
+                      id: "services",
+                      label: `Services (${categoryCounts.services})`,
+                      icon: Cloud,
                     },
                     {
                       id: "plugins",

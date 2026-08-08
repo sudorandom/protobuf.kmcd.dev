@@ -207,7 +207,7 @@ export const LengthDelimitedWireTypeVisualization = () => {
           transition={{ duration: 1, delay: 1.4 }}
         >
           <path
-            d="M 400 325 L 400 360"
+            d="M 400 226 L 400 250"
             fill="none"
             stroke="var(--cyber-neon-pink)"
             strokeWidth="2"

@@ -92,7 +92,7 @@ export const Introduction = ({
       ext: ".bin",
       icon: Binary,
       title: "Binary Encoding (.bin)",
-      desc: "What actually travels over the wire. Compact, extremely fast to parse, and machine-optimized.",
+      desc: "What actually travels over the wire. Compact and fast to parse, but not human-readable.",
       code: dynamicExamples.hex,
       language: null,
       category: "representation",

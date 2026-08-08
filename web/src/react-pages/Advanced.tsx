@@ -324,7 +324,7 @@ message Event {
           </p>
           <p>
             Use this sparingly, as it defeats the purpose of Protobuf's strong
-            typing, but it's essential for integrating with schemaless NoSQL
+            typing, but it's useful for integrating with schemaless NoSQL
             databases or passing untyped metadata blocks.
           </p>
         </div>
@@ -365,19 +365,18 @@ message Event {
             request.
           </p>
           <p>
-            It is extremely useful for <strong>partial updates (PATCH)</strong>,
-            allowing a client to send only the modified fields instead of the
-            entire object.
+            It is the standard way to express{" "}
+            <strong>partial updates (PATCH)</strong>, allowing a client to send
+            only the modified fields instead of the entire object.
           </p>
           <p>
-            Beyond updates, FieldMask is a powerful tool for{" "}
-            <strong>tuning read responses</strong>. You can design a single{" "}
-            <code>List</code> or <code>Get</code> response that supports many
-            optional fields and associations (e.g., <code>user.profile</code>,{" "}
-            <code>user.settings</code>). The client passes a{" "}
-            <code>read_mask</code> to tell the server exactly which subset of
-            data to return, eliminating "over-fetching" without needing multiple
-            specialized endpoints.
+            FieldMask also works for <strong>tuning read responses</strong>. You
+            can design a single <code>List</code> or <code>Get</code> response
+            that supports many optional fields and associations (e.g.,{" "}
+            <code>user.profile</code>, <code>user.settings</code>). The client
+            passes a <code>read_mask</code> to tell the server exactly which
+            subset of data to return, eliminating "over-fetching" without
+            needing multiple specialized endpoints.
           </p>
           <div className="p-3 bg-[var(--warning-bg)] border border-[var(--warning-border)] rounded text-[var(--warning-text)] text-sm">
             <strong>Important:</strong> FieldMasks are <em>not automatic</em>.
@@ -489,11 +488,19 @@ $ buf breaking --against .git#branch=main
             </li>
           </ul>
           <p>
-            This shift represents a fundamental change in the Protobuf
-            lifecycle. By decoupling features from syntax versions, Editions
-            provides a path for the ecosystem to evolve more rapidly. This
-            approach allows new features to be introduced as optional behaviors
-            without the disruption of a global "proto4" release.
+            That granularity is the whole point. Under <code>proto2</code> and{" "}
+            <code>proto3</code>, these behaviors were welded to the single
+            keyword at the top of the file, so migration was all or nothing:
+            moving a file to <code>proto3</code> opened its closed enums,
+            dropped its custom field defaults, and removed explicit presence
+            from its singular scalars, all at once.
+          </p>
+          <p>
+            Editions makes each of those a separate feature you can set per
+            file, message, or field, so a schema can adopt one new behavior
+            without taking the others. New behavior then ships as a new feature
+            with a per-edition default, rather than as a "proto4" that would
+            force the same all-or-nothing migration again.
           </p>
         </div>
       ),
@@ -521,7 +528,7 @@ message User {
           <p>
             The <code>service</code> keyword is used to define RPC (Remote
             Procedure Call) interfaces. Frameworks like <strong>gRPC</strong> or{" "}
-            <strong>Connect</strong> use these definitions to generate client
+            <strong>ConnectRPC</strong> use these definitions to generate client
             and server code.
           </p>
           <p>Services support four types of communication:</p>
@@ -544,8 +551,8 @@ message User {
             <p className="italic text-[var(--text-dim)]">
               <strong>Note:</strong> While Protobuf provides the language to
               define these interfaces, the underlying networking protocols and
-              implementation frameworks (like gRPC or Connect) are a broad topic
-              and are <strong>out of scope</strong> for this guide.
+              implementation frameworks (like gRPC or ConnectRPC) are a broad
+              topic and are <strong>out of scope</strong> for this guide.
             </p>
           </div>
         </div>
@@ -795,8 +802,8 @@ export const DescriptorsAndReflection = () => {
                 or <code>protoc --descriptor_set_out</code>.
               </p>
               <p className="text-sm leading-relaxed">
-                Fascinatingly, this <code>FileDescriptorSet</code> is itself a
-                Protobuf message! Google defines a schema (
+                This <code>FileDescriptorSet</code> is itself a Protobuf
+                message! Google defines a schema (
                 <ExternalLinkText href="https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/descriptor.proto">
                   <code>descriptor.proto</code>
                 </ExternalLinkText>
@@ -1108,12 +1115,13 @@ plugins:
                   <strong className="text-[var(--text-color)]">
                     Required Features:
                   </strong>{" "}
-                  In the <code>CodeGeneratorResponse</code>, you are heavily
-                  encouraged to explicitly declare your supported features.
-                  Setting <code>supported_features</code> along with{" "}
+                  In the <code>CodeGeneratorResponse</code>, declare the
+                  features your plugin supports. Setting{" "}
+                  <code>supported_features</code> along with{" "}
                   <code>minimum_edition</code> and <code>maximum_edition</code>{" "}
-                  is essentially required, as users cannot compile modern
-                  Protobuf Editions using your plugin without them.
+                  is required to compile files that use Protobuf Editions
+                  &mdash; without them the compiler rejects the plugin rather
+                  than risk generating code for semantics it never agreed to.
                 </p>
               </div>
             </CyberPanel>
@@ -1709,7 +1717,7 @@ export const ValidationLab = () => {
             <p className="text-[var(--text-dim)] leading-relaxed text-sm">
               Protobuf allows you to build additional structure on top of basic
               field types. By using <strong>extensions</strong>, you can augment
-              your schema with rich metadata. A powerful example is{" "}
+              your schema with rich metadata. One example is{" "}
               <ExternalLinkText href="https://protovalidate.com/">
                 <strong>protovalidate</strong>
               </ExternalLinkText>
@@ -1948,8 +1956,8 @@ export const ValidationLab = () => {
             <p className="text-[var(--text-dim)] leading-relaxed text-sm">
               By putting validation in the schema, you ensure that every part of
               your system enforcing the contract applies the exact same rules.
-              This eliminates "validation drift" not just between microservices,
-              but across your entire stack. For instance, you can use the same
+              This eliminates "validation drift" across your entire stack, not
+              only between microservices. For instance, you can use the same
               rules to validate a form on your web frontend (using TypeScript)
               before the request ever hits your backend (running Go, Java,
               etc.).
@@ -2118,7 +2126,7 @@ const FieldPresence = () => (
               <p className="text-sm text-[var(--text-dim)] leading-relaxed">
                 Due to widespread demand, the <code>optional</code> keyword was
                 re-introduced in later versions of proto3 (v3.15+). Today,{" "}
-                <strong>Protobuf Editions</strong> provides the most robust
+                <strong>Protobuf Editions</strong> provides the clearest
                 solution by allowing you to globally or locally toggle{" "}
                 <code>field_presence</code> between <code>IMPLICIT</code> and{" "}
                 <code>EXPLICIT</code>.
@@ -2184,10 +2192,9 @@ export const RequiredFields = () => (
               The Evolution of Required
             </h3>
             <p className="text-[var(--text-dim)] leading-relaxed">
-              The <code>required</code> keyword was famously removed in proto3.
-              This was a deliberate architectural decision to ensure that
-              schemas could evolve safely without breaking backward
-              compatibility.
+              The <code>required</code> keyword was removed in proto3. This was
+              a deliberate architectural decision to ensure that schemas could
+              evolve safely without breaking backward compatibility.
             </p>
           </div>
 

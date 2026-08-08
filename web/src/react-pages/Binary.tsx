@@ -1223,8 +1223,9 @@ const BinaryPage = ({
             <p className="text-[var(--text-dim)] leading-relaxed">
               Throughout this guide, we'll use <strong>Protoscope</strong>, a
               specialized human-readable language that visualizes binary
-              Protobuf streams. It's an excellent tool for bridging the gap
-              between raw hexadecimal bytes and structured data.
+              Protobuf streams. It renders binary Protobuf as readable text,
+              bridging the gap between raw hexadecimal bytes and structured
+              data.
             </p>
 
             <RoadmapGrid items={roadmapItems} />
@@ -1495,8 +1496,8 @@ const BinaryPage = ({
             <p>
               In <strong>Proto3</strong>, fields set to their default value (0,
               empty string, false) are not serialized at all. This makes the
-              wire format extremely compact, but it means you cannot distinguish
-              between "set to 0" and "not set."
+              wire format compact, but it means you cannot distinguish between
+              "set to 0" and "not set."
             </p>
             <p>
               The <code>optional</code> keyword (and <code>oneof</code>)
@@ -1654,7 +1655,7 @@ const BinaryPage = ({
                       3. Bi-directional
                     </p>
                     <p className="text-sm text-[var(--text-dim)] leading-relaxed">
-                      It can compile text back into binary, making it a powerful
+                      It can compile text back into binary, making it a capable
                       "hex editor" for Protobuf.
                     </p>
                   </div>
@@ -1688,12 +1689,12 @@ const BinaryPage = ({
               <ExternalLinkText href="https://protobuf.dev/programming-guides/encoding/">
                 official Protobuf Encoding Guide
               </ExternalLinkText>
-              . For the language itself &mdash; grammar, resolution rules, and
-              the parts the guide leaves implicit &mdash; Buf maintains a{" "}
+              . Buf maintains a{" "}
               <ExternalLinkText href="https://protobuf.com/docs/language-spec">
                 formal language specification
-              </ExternalLinkText>
-              .
+              </ExternalLinkText>{" "}
+              covering the grammar, resolution rules, and the parts that guide
+              leaves implicit.
             </p>
           </div>
         </div>

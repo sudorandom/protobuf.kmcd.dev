@@ -118,11 +118,10 @@ export const SchemaDrivenAPIs = () => {
 
         <div className="mb-16 max-w-4xl space-y-6 mx-auto text-center">
           <p className="text-lg text-[var(--text-dim)] leading-relaxed">
-            Schemas are the heart of Protobuf. A <code>.proto</code> file
-            defines the shape of your data and assigns each field a stable
-            numeric identity. The names make the schema readable to humans. The
-            numbers are what make the binary format compact and compatible over
-            time.
+            A <code>.proto</code> file defines the shape of your data and
+            assigns each field a stable numeric identity. The names make the
+            schema readable to humans. The numbers are what make the binary
+            format compact and compatible over time.
           </p>
           <div className="pt-8 text-left">
             <RoadmapGrid items={roadmapItems} cols="lg:grid-cols-4" />
@@ -294,7 +293,7 @@ message SearchRequest {
         <div className="space-y-4">
           <p>
             Enums allow you to define a restricted set of named constants. This
-            is crucial for states, roles, or configurations.
+            is useful for states, roles, or configurations.
           </p>
           <p>
             In proto3, the first constant{" "}
@@ -345,10 +344,9 @@ message User {
           </p>
           <p>
             These packages often map directly to namespaces in C++, packages in
-            Go/Java, or modules in TypeScript. They are essential for organizing
-            large-scale schemas and ensuring that an <code>Account</code> in the
-            billing service doesn't conflict with an <code>Account</code> in the
-            identity service.
+            Go/Java, or modules in TypeScript. They keep large-scale schemas and
+            ensuring that an <code>Account</code> in the billing service doesn't
+            conflict with an <code>Account</code> in the identity service.
           </p>
         </div>
       ),
@@ -826,10 +824,10 @@ export const TypeSystem = () => {
                     sint32 / sint64
                   </div>
                   <p className="text-sm text-[var(--text-dim)] leading-relaxed">
-                    Crucial when values can be negative. Uses ZigZag encoding to
-                    keep small negative numbers compact (1–2 bytes), unlike{" "}
-                    <code>int32/int64</code> which require 10 bytes for any
-                    negative value.
+                    Use when values are frequently negative. Uses ZigZag
+                    encoding to keep small negative numbers compact (1–2 bytes),
+                    unlike <code>int32/int64</code> which require 10 bytes for
+                    any negative value.
                   </p>
                   <div className="pt-2 flex flex-col gap-1 mt-auto">
                     <span className="text-[11px] font-mono text-[var(--text-dim)] uppercase tracking-wider">
@@ -1294,16 +1292,6 @@ export const GeneratingCode = () => (
           constructors, binary serialization, JSON mapping, and service bindings
           depending on the plugin.
         </p>
-        <p className="text-[var(--text-dim)] max-w-3xl leading-relaxed">
-          The <code>(buf.validate.field)</code> annotations below come from{" "}
-          <ExternalLinkText href="https://protovalidate.com/">
-            protovalidate
-          </ExternalLinkText>
-          . They are custom options, so any compiler will happily ignore them
-          &mdash; but a protovalidate runtime reads them back at runtime and
-          enforces the rules, which saves rewriting the same checks in every
-          language you generate for.
-        </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -1455,6 +1443,9 @@ export const GeneratingCode = () => (
                 </ExternalLinkText>
                 <ExternalLinkText href="https://github.com/bufbuild/protobuf-es">
                   protobuf-es
+                </ExternalLinkText>
+                <ExternalLinkText href="https://github.com/bufbuild/protobuf-py">
+                  protobuf-py
                 </ExternalLinkText>
                 <ExternalLinkText href="https://connectrpc.com/docs/web/getting-started">
                   Connect for Web

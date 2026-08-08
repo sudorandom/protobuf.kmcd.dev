@@ -494,7 +494,7 @@ export const SizeComparison = ({
             },
             {
               icon: Maximize,
-              title: "No Overhead",
+              title: "No Syntax Overhead",
               desc: "Eliminates braces, quotes, and commas required by JSON structure.",
               color: "var(--cyber-neon-pink)",
             },
