@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-08-08T18:01:18.000Z",
+  "fetchedAt": "2026-08-08T19:15:09.249Z",
   "projects": [
     {
       "category": "tools",
@@ -84,7 +84,7 @@
         "Rust"
       ],
       "relevance": 3,
-      "stars": 2267,
+      "stars": 2268,
       "pushedAt": "2026-08-07T22:42:32Z",
       "inactive": false,
       "starsWeekly": 5,
@@ -302,7 +302,7 @@
         "PHP"
       ],
       "relevance": 4,
-      "stars": 45263,
+      "stars": 45262,
       "pushedAt": "2026-08-08T01:16:00Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -334,7 +334,7 @@
       ],
       "relevance": 4,
       "stars": 6318,
-      "pushedAt": "2026-08-07T14:47:06Z",
+      "pushedAt": "2026-08-08T18:11:24Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -1044,7 +1044,7 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 5813,
+      "stars": 5812,
       "pushedAt": "2026-08-07T21:11:20Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1149,8 +1149,8 @@
         "Go"
       ],
       "relevance": 4,
-      "stars": 71702,
-      "pushedAt": "2026-08-08T10:10:59Z",
+      "stars": 71703,
+      "pushedAt": "2026-08-08T19:13:43Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -1245,7 +1245,7 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 39938,
+      "stars": 39936,
       "pushedAt": "2026-08-07T22:01:50Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1321,7 +1321,7 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 9702,
+      "stars": 9703,
       "pushedAt": "2026-08-08T14:44:07Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1397,7 +1397,7 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 28737,
+      "stars": 28739,
       "pushedAt": "2026-08-08T16:42:23Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1594,7 +1594,7 @@
       ],
       "relevance": 1,
       "stars": 2459,
-      "pushedAt": "2026-08-08T17:56:13Z",
+      "pushedAt": "2026-08-08T19:04:16Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
