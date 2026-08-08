@@ -1,3 +1,7 @@
+import { getExtension, hasExtension } from "@bufbuild/protobuf";
+import type { FieldOptions } from "@bufbuild/protobuf/wkt";
+import { field as validateField } from "../gen/buf/validate/validate_pb";
+
 export interface ExerciseAssertion {
   id: string;
   description: string;
@@ -24,7 +28,7 @@ export const EXERCISES: ExerciseDef[] = [
     guideUrl: "/basics/#numbers",
     guideLabel: "Basics > Field Numbers",
     scenario:
-      "Every protobuf field needs a numeric tag. The tag is what appears in the binary payload; the field name is for generated code and JSON.\n\nA valid field declaration looks like this:\n\n```protobuf\nmessage Example {\n  string some_field = 1;\n}\n```\n\nThis schema defines `UserProfile`, but its fields are missing tag numbers.",
+      "Every field needs a numeric tag. That number is what goes on the wire; the name is only for generated code and JSON. These fields are missing theirs.",
     task: "Assign unique field numbers to `id`, `name`, and `email` so the schema compiles.",
     hint: "Use `= number;` before the semicolon. Each field in the message needs a different number.",
     rootMessage: "practice.UserProfile",
@@ -91,7 +95,7 @@ message UserProfile {
     id: 2,
     title: "Naming",
     scenario:
-      "Generated APIs are easier to use when schemas follow protobuf naming conventions. Message names use PascalCase. Field names use snake_case.\n\nThis schema uses names that will produce awkward generated APIs.",
+      "Convention is PascalCase for messages, snake_case for fields. This schema follows neither, and the generated API will show it.",
     task: "Rename the message to `UserProfile` and the fields to `user_id`, `email_address`, and `profile_image`.",
     hint: "Use `PascalCase` for message names and `snake_case` for field names.",
     rootMessage: "practice.UserProfile",
@@ -175,7 +179,7 @@ message user_profile {
     guideUrl: "/basics/#guidelines-for-integers",
     guideLabel: "Basics > Guidelines for Integers",
     scenario:
-      "Numeric types affect both meaning and wire size. Plain `int32` and `int64` are inefficient for negative values. `sint32` and `sint64` use ZigZag encoding for signed values. Counts that cannot be negative should use unsigned types.",
+      "Integer choice affects wire size. `int32`/`int64` waste bytes on negatives; `sint32`/`sint64` ZigZag-encode them. Values that never go negative should be unsigned.",
     task: "Change `ledger_balance` to `sint64`, and change `hardware_counter` to `uint32` or `uint64`.",
     hint: "`ledger_balance` can go negative, so use `sint64`. `hardware_counter` cannot, so use an unsigned integer type.",
     rootMessage: "practice.Metrics",
@@ -285,7 +289,7 @@ message BlogPost {
     guideUrl: "/advanced/#schema-evolution",
     guideLabel: "Advanced > Schema Evolution",
     scenario:
-      "When a field is removed from a message, its number and name should not be reused. Reserving them prevents future schema edits from accidentally colliding with old serialized data.",
+      "Removing a field frees its number and name for reuse, and reuse silently misreads old data. `reserved` blocks that.",
     task: "Reserve field number `3` and field name `phone` in `UserAccount`.",
     hint: 'Use `reserved 3;` and `reserved "phone";`, or put both reservations in valid reserved declarations.',
     rootMessage: "practice.UserAccount",
@@ -356,7 +360,7 @@ message UserAccount {
     guideUrl: "/advanced/#presence",
     guideLabel: "Advanced > Field Presence",
     scenario:
-      "In proto3, a scalar field with its default value is usually omitted from the wire. For a boolean, that means a receiver cannot distinguish `false` from not set unless the field has explicit presence.",
+      "In proto3 a scalar at its default value is omitted from the wire, so a receiver cannot tell `false` from unset. Explicit presence fixes that.",
     task: "Add explicit field presence tracking to the `is_admin` field.",
     hint: "In proto3, add `optional` before the field type.",
     rootMessage: "practice.UserSession",
@@ -465,9 +469,9 @@ message NotificationTarget {
     guideUrl: "/basics/#types",
     guideLabel: "Basics > Types",
     scenario:
-      "This event needs a creation time. Instead of inventing a string or integer convention, use protobuf's standard `Timestamp` message.",
+      "This event needs a creation time. Rather than inventing a string or integer convention, use the standard `Timestamp`.",
     task: "Import `google/protobuf/timestamp.proto` and add a `created_at` field of type `google.protobuf.Timestamp` at tag number `2`.",
-    hint: "Import Google's timestamp file from the standard library (`google/protobuf/timestamp.proto`) at the top of the schema file. Then declare the field `created_at` using the fully qualified type `google.protobuf.Timestamp`.",
+    hint: "Add the import at the top, then use the fully qualified type: `google.protobuf.Timestamp created_at = 2;`",
     rootMessage: "practice.EventLog",
     initialCode: `syntax = "proto3";
 
@@ -520,4 +524,97 @@ message EventLog {
       },
     ],
   },
+  {
+    id: 9,
+    title: "Schema-Level Validation",
+    guideUrl: "/validation/",
+    guideLabel: "Validation",
+    scenario:
+      "Types stop at `string`; they cannot say which strings are valid. protovalidate puts those rules in the schema as options, so every language enforces the same ones.",
+    task: "Import `buf/validate/validate.proto`, require `email` to be a valid email address, and require `age` to be at least 18.",
+    hint: "Rules go in field options: `[(buf.validate.field).string.email = true]` and `[(buf.validate.field).uint32.gte = 18]`.",
+    rootMessage: "practice.Signup",
+    initialCode: `syntax = "proto3";
+
+package practice;
+
+// Signup is submitted when a new account is created
+message Signup {
+  string email = 1;
+  uint32 age = 2;
+}
+`,
+    assertions: [
+      {
+        id: "import_protovalidate",
+        description: "Imports 'buf/validate/validate.proto'.",
+        validate: (fds: any) => {
+          const file = fds.file.find((f: any) => f.package === "practice");
+          if (!file) throw new Error("Package 'practice' not declared.");
+          if (!file.dependency.includes("buf/validate/validate.proto")) {
+            throw new Error("Missing import of 'buf/validate/validate.proto'.");
+          }
+        },
+      },
+      {
+        id: "email_rule",
+        description: "Field 'email' requires a valid email address.",
+        validate: (fds: any) => {
+          const rules = getFieldRules(fds, "email");
+          if (rules.type.case !== "string") {
+            throw new Error(
+              "Field 'email' needs a string rule, e.g. (buf.validate.field).string.email.",
+            );
+          }
+          const wellKnown = rules.type.value.wellKnown;
+          if (wellKnown?.case !== "email" || wellKnown.value !== true) {
+            throw new Error(
+              "Set '(buf.validate.field).string.email = true' on 'email'.",
+            );
+          }
+        },
+      },
+      {
+        id: "age_rule",
+        description: "Field 'age' must be at least 18.",
+        validate: (fds: any) => {
+          const rules = getFieldRules(fds, "age");
+          if (rules.type.case !== "uint32") {
+            throw new Error(
+              "Field 'age' needs a uint32 rule, e.g. (buf.validate.field).uint32.gte.",
+            );
+          }
+          const greaterThan = rules.type.value.greaterThan;
+          if (greaterThan?.case !== "gte") {
+            throw new Error(
+              "Use 'gte' on 'age' so that 18 itself is allowed. 'gt' would require 19.",
+            );
+          }
+          if (Number(greaterThan.value) !== 18) {
+            throw new Error(
+              `Expected '(buf.validate.field).uint32.gte = 18' on 'age'. Found ${greaterThan.value}.`,
+            );
+          }
+        },
+      },
+    ],
+  },
 ];
+
+// getFieldRules pulls the buf.validate.field extension off a field in the
+// practice message. The WASM compiler hands back the extension as unknown
+// bytes on FieldOptions, which protobuf-es decodes on demand.
+function getFieldRules(fds: any, fieldName: string) {
+  const file = fds.file.find((f: any) => f.package === "practice");
+  const msg = file?.messageType.find((m: any) => m.name === "Signup");
+  if (!msg) throw new Error("Message 'Signup' not found.");
+
+  const field = msg.field.find((f: any) => f.name === fieldName);
+  if (!field) throw new Error(`Field '${fieldName}' not found.`);
+
+  const options = field.options as FieldOptions | undefined;
+  if (!options || !hasExtension(options, validateField)) {
+    throw new Error(`Field '${fieldName}' has no (buf.validate.field) rules.`);
+  }
+  return getExtension(options, validateField);
+}

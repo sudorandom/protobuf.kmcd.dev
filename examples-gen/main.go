@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"regexp"
 	"strings"
 
 	"github.com/bufbuild/protocompile/experimental/protoscope"
@@ -78,8 +79,8 @@ func main() {
 	binBytes, _ := proto.MarshalOptions{Deterministic: true}.Marshal(msg)
 
 	// Stability Round-trip:
-	// Unmarshaling from deterministic binary into a fresh message 
-	// helps ensure that subsequent text/json marshaling follows 
+	// Unmarshaling from deterministic binary into a fresh message
+	// helps ensure that subsequent text/json marshaling follows
 	// a consistent field-number order.
 	stableMsg := dynamicpb.NewMessage(messageDesc)
 	_ = proto.Unmarshal(binBytes, stableMsg)
@@ -132,10 +133,19 @@ func main() {
 	fmt.Println("")
 	fmt.Println("export const STATIC_FACES = {")
 	fmt.Printf("  idl: `%s`,\n", strings.TrimSpace(idl))
-	fmt.Printf("  fds: `%s`,\n", strings.TrimSpace(string(fdsJson)))
+	fmt.Printf("  fds: `%s`,\n", normalizeSpacing(strings.TrimSpace(string(fdsJson))))
 	fmt.Printf("  bin: \"%s\",\n", hexStr)
-	fmt.Printf("  json: `%s`,\n", strings.TrimSpace(string(jsonBytes)))
-	fmt.Printf("  txt: `%s`,\n", strings.TrimSpace(string(textBytes)))
+	fmt.Printf("  json: `%s`,\n", normalizeSpacing(strings.TrimSpace(string(jsonBytes))))
+	fmt.Printf("  txt: `%s`,\n", normalizeSpacing(strings.TrimSpace(string(textBytes))))
 	fmt.Printf("  scope: `%s`\n", strings.TrimSpace(scopeStr))
 	fmt.Println("};")
 }
+
+// normalizeSpacing collapses the extra space that protojson and prototext
+// randomly insert after a key's colon. Their output is intentionally unstable,
+// which would otherwise churn this generated file on every regeneration.
+func normalizeSpacing(s string) string {
+	return keyColonRe.ReplaceAllString(s, "$1 ")
+}
+
+var keyColonRe = regexp.MustCompile(`(?m)^(\s*(?:"[^"]*"|[A-Za-z_][A-Za-z_0-9]*):)[ ]{2,}`)

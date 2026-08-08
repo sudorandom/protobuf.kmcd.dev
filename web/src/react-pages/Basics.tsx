@@ -653,7 +653,14 @@ export const TypeSystem = () => {
           <ExternalLinkText href="https://protobuf.dev/reference/protobuf/google.protobuf/">
             google.protobuf reference
           </ExternalLinkText>
-          .
+          . These ship with every compiler, so you can import them without
+          declaring a dependency. Schemas from anywhere else are a different
+          story &mdash; rather than copying those files into your repo, you can
+          pull them from the{" "}
+          <ExternalLinkText href="https://buf.build/explore">
+            Buf Schema Registry
+          </ExternalLinkText>{" "}
+          as versioned modules.
         </>
       ),
     },
@@ -1081,12 +1088,12 @@ plugins:
     {
       path: "web/src/gen/demo/v1/user_pb.ts",
       desc: "TypeScript interface, classes, & binary/JSON codec metadata",
-      url: "https://github.com/sudorandom/protobuf.kmcd.dev/blob/main/web/src/gen/demo/v1/user_pb.ts",
+      url: "/generated/typescript/",
     },
     {
       path: "gen/go/demo/v1/user.pb.go",
       desc: "Go structs, field getters, ProtoReflect, & binary marshal/unmarshal",
-      url: "https://github.com/sudorandom/protobuf.kmcd.dev/blob/main/gen/go/demo/v1/user.pb.go",
+      url: "/generated/go/",
     },
   ];
 
@@ -1146,9 +1153,12 @@ plugins:
                   <div key={file.path} className="space-y-1">
                     <div className="font-mono text-xs font-bold flex items-center gap-1.5">
                       <FileCode className="w-3.5 h-3.5 text-[var(--cyber-neon-green)] shrink-0" />
-                      <ExternalLinkText href={file.url}>
+                      <a
+                        href={file.url}
+                        className="text-[var(--cyber-neon-blue)] underline hover:text-[var(--cyber-neon-blue)]/80 transition-colors"
+                      >
                         {file.path}
-                      </ExternalLinkText>
+                      </a>
                     </div>
                     <div className="text-[11px] text-[var(--text-dim)] pl-5">
                       {file.desc}
@@ -1286,6 +1296,16 @@ export const GeneratingCode = () => (
           <code>.proto</code> files. The generated code provides typed message
           constructors, binary serialization, JSON mapping, and service bindings
           depending on the plugin.
+        </p>
+        <p className="text-[var(--text-dim)] max-w-3xl leading-relaxed">
+          The <code>(buf.validate.field)</code> annotations below come from{" "}
+          <ExternalLinkText href="https://protovalidate.com/">
+            protovalidate
+          </ExternalLinkText>
+          . They are custom options, so any compiler will happily ignore them
+          &mdash; but a protovalidate runtime reads them back at runtime and
+          enforces the rules, which saves rewriting the same checks in every
+          language you generate for.
         </p>
       </div>
 
@@ -1425,6 +1445,25 @@ export const GeneratingCode = () => (
                 </ExternalLinkText>
                 <ExternalLinkText href="https://github.com/tokio-rs/prost">
                   Rust (prost)
+                </ExternalLinkText>
+              </div>
+            </div>
+            <div className="space-y-2 pt-2 border-t border-[var(--border-light)]">
+              <p className="font-cyber font-bold text-xs uppercase tracking-widest text-[var(--cyber-neon-pink)]">
+                Buf Toolchain:
+              </p>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-y-2 gap-x-4 text-sm">
+                <ExternalLinkText href="https://buf.build/docs/tutorials/getting-started-with-buf-cli/">
+                  Buf CLI Tutorial
+                </ExternalLinkText>
+                <ExternalLinkText href="https://github.com/bufbuild/protobuf-es">
+                  protobuf-es
+                </ExternalLinkText>
+                <ExternalLinkText href="https://connectrpc.com/docs/web/getting-started">
+                  Connect for Web
+                </ExternalLinkText>
+                <ExternalLinkText href="https://connectrpc.com/docs/go/getting-started/">
+                  Connect for Go
                 </ExternalLinkText>
               </div>
             </div>

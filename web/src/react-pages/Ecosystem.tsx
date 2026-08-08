@@ -96,6 +96,8 @@ interface Project {
   pushedAt: string;
   inactive: boolean;
   archived?: boolean;
+  /** Hosted service with no public repo, so it has no stars or commit history. */
+  hosted?: boolean;
   languages: string[];
   starsWeekly?: number;
   starsMonthly?: number;
@@ -966,7 +968,9 @@ const Ecosystem = ({ initialPage = 1 }: { initialPage?: number }) => {
                           )}
                         </div>
 
-                        <div className="relative group/star-tooltip">
+                        <div
+                          className={`relative group/star-tooltip ${project.hosted ? "hidden" : ""}`}
+                        >
                           {primaryGithubUrl ? (
                             <a
                               href={primaryGithubUrl}

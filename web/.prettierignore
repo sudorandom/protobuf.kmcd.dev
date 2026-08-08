@@ -1,0 +1,9 @@
+dist
+node_modules
+public/parser.wasm
+
+# Written by scripts/fetch-github-metadata.js and examples-gen; prettier would
+# reformat them and thrash the diff on every regeneration.
+src/data/ecosystem.json
+src/utils/static-examples.ts
+src/pages/lighthouse.json

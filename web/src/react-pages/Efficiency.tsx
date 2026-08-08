@@ -23,6 +23,7 @@ import {
   SectionTitle,
   CyberPanel,
   CyberButton,
+  ExternalLinkText,
 } from "../components/shared/Common";
 import { JsonEditor } from "../components/shared/JsonEditor";
 import { Modal } from "../components/shared/Modal";
@@ -624,6 +625,16 @@ export const SizeComparison = ({
                   runtime and the binary parser. Benchmark your real services
                   before treating generic numbers as architecture guidance.
                 </p>
+                <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+                  Runtime choice matters as much as language. The demos on this
+                  site run on{" "}
+                  <ExternalLinkText href="https://github.com/bufbuild/protobuf-es">
+                    protobuf-es
+                  </ExternalLinkText>
+                  , which generates plain ES modules and represents messages as
+                  ordinary JavaScript objects, so the cost of a message is much
+                  closer to the cost of the data it holds.
+                </p>
               </div>
 
               <div className="space-y-4">
@@ -685,6 +696,20 @@ export const SizeComparison = ({
                 <p className="text-sm text-[var(--text-dim)] leading-relaxed">
                   A detailed case study on how Jira improved p99 latency by 20%
                   and reduced CPU usage by 75% using Protobuf.
+                </p>
+              </a>
+              <a
+                href="https://buf.build/blog/hyperpb"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group p-4 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-lg hover:border-[var(--cyber-neon-yellow)]/40 transition-all"
+              >
+                <h4 className="font-cyber text-sm text-[var(--cyber-neon-yellow)] mb-2 group-hover:underline">
+                  hyperpb
+                </h4>
+                <p className="text-sm text-[var(--text-dim)] leading-relaxed">
+                  Buf's dynamic parser, built to beat the standard Go runtime by
+                  a wide margin without generating any code first.
                 </p>
               </a>
             </div>

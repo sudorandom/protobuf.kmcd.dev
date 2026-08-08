@@ -150,11 +150,25 @@ export const AdvancedProtobuf = () => {
         <div className="space-y-4">
           <p>
             You can use definitions from other <code>.proto</code> files using
-            the <code>import</code> statement. With{" "}
-            <ExternalLinkText href="https://buf.build/">Buf</ExternalLinkText>,
-            imports are managed deterministically via <code>buf.yaml</code> and
-            remote modules (similar to NPM or Cargo), preventing resolution
-            friction.
+            the <code>import</code> statement. Imports from another team or
+            project are the awkward part: the traditional answer is to copy
+            their files into your repo and re-copy them whenever they change.
+          </p>
+          <p>
+            The{" "}
+            <ExternalLinkText href="https://buf.build/docs/bsr/">
+              Buf Schema Registry
+            </ExternalLinkText>{" "}
+            treats them as versioned dependencies instead, the way NPM or Cargo
+            would. You name a module under <code>deps</code> in{" "}
+            <code>buf.yaml</code>, <code>buf dep update</code> pins exact
+            versions in <code>buf.lock</code>, and the imports resolve
+            identically for everyone who checks out the repo. The schema you are
+            editing on this site does exactly that with{" "}
+            <ExternalLinkText href="https://buf.build/bufbuild/protovalidate">
+              <code>buf.build/bufbuild/protovalidate</code>
+            </ExternalLinkText>
+            .
           </p>
           <p>
             Always import using fully qualified paths from your module root to
@@ -209,11 +223,29 @@ message LoginResponse {
               />
             </div>
           </CyberPanel>
+          <CyberPanel title="BUF.YAML" className="h-auto">
+            <div className="p-2">
+              <SyntaxHighlighter
+                language="yaml"
+                code={`version: v2
+modules:
+  - path: proto
+# Registry modules, resolved on demand. Nothing vendored.
+deps:
+  - buf.build/bufbuild/protovalidate
+  - buf.build/googleapis/googleapis`}
+                wrap={true}
+              />
+            </div>
+          </CyberPanel>
           <CyberPanel title="BUF CLI / TERMINAL" className="h-auto">
             <div className="p-2">
               <SyntaxHighlighter
                 language="bash"
-                code={`# Buf automatically handles import resolution relative to your buf.yaml root
+                code={`# Pin every dep to an exact version in buf.lock
+$ buf dep update
+
+# Imports resolve relative to your buf.yaml root
 $ buf build`}
                 wrap={true}
               />
@@ -753,10 +785,14 @@ export const DescriptorsAndReflection = () => {
                 Schemas Describing Schemas
               </h3>
               <p className="text-sm leading-relaxed">
-                When you run the Protobuf compiler (<code>protoc</code>), it
-                doesn't just generate code. It can also output a binary
-                representation of your schema called a{" "}
-                <strong>FileDescriptorSet</strong>.
+                When you compile a schema, the compiler doesn't just generate
+                code. It can also output a binary representation of the schema
+                itself, called a <strong>FileDescriptorSet</strong>. Both
+                compilers will produce one:{" "}
+                <ExternalLinkText href="https://buf.build/docs/reference/cli/buf/build/">
+                  <code>buf build -o descriptor.binpb</code>
+                </ExternalLinkText>{" "}
+                or <code>protoc --descriptor_set_out</code>.
               </p>
               <p className="text-sm leading-relaxed">
                 Fascinatingly, this <code>FileDescriptorSet</code> is itself a
@@ -796,9 +832,24 @@ export const DescriptorsAndReflection = () => {
                       Code Generation
                     </p>
                     <p>
-                      Protoc plugins (the tools that generate your code) receive
-                      these descriptors as input. This is THE way that custom
-                      code generators are built.
+                      Code generator plugins receive these descriptors as input.
+                      This is how every custom generator is built, and why the
+                      same plugin binary works under both{" "}
+                      <code>buf generate</code> and <code>protoc</code>.
+                    </p>
+                  </div>
+                  <div className="space-y-1">
+                    <p className="font-bold text-[var(--text-color)]">
+                      Server Reflection
+                    </p>
+                    <p>
+                      A server can hand out its own descriptors over the wire,
+                      so a client can call it knowing nothing in advance.{" "}
+                      <ExternalLinkText href="https://buf.build/docs/reference/cli/buf/curl/">
+                        <code>buf curl</code>
+                      </ExternalLinkText>{" "}
+                      uses this to invoke any reflection-enabled gRPC or Connect
+                      endpoint with no <code>.proto</code> files on your disk.
                     </p>
                   </div>
                 </div>
@@ -1913,6 +1964,9 @@ export const ValidationLab = () => {
             </ExternalLinkText>
             <ExternalLinkText href="https://protovalidate.com/playground/">
               Protovalidate Playground
+            </ExternalLinkText>
+            <ExternalLinkText href="https://buf.build/bufbuild/protovalidate">
+              protovalidate on the BSR
             </ExternalLinkText>
           </div>
         </div>

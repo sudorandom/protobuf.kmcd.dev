@@ -6,18 +6,20 @@ export const STATIC_FACES = {
 
 package demo.v1;
 
+// Resolved from the buf.build/bufbuild/protovalidate module,
+// declared in this project's buf.yaml. No vendored files.
 import "buf/validate/validate.proto";
 
 message User {
   string id = 1 [(buf.validate.field).string.uuid = true];
   string name = 2;
   string email = 3;
-  
+
   // Numeric data for efficiency demo
   uint32 age = 4 [(buf.validate.field).uint32.lt = 150];
   float height_cm = 5;
   double weight_kg = 6;
-  
+
   Role role = 7;
   Date birth_date = 8;
   User manager = 9;
@@ -205,5 +207,5 @@ birth_date: {
   1: 1992
   2: 5
   3: 22
-}`,
+}`
 };

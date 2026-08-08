@@ -215,6 +215,28 @@ export const PoweringTheIndustry = () => {
             </div>
           ))}
         </div>
+        <p className="text-sm text-[var(--text-dim)] leading-relaxed mt-8 max-w-3xl">
+          Reading these schemas means browsing a source tree. Building against
+          them usually means copying files into your own repo and hoping you
+          notice when upstream changes. Many are also published to the{" "}
+          <ExternalLinkText href="https://buf.build/explore">
+            Buf Schema Registry
+          </ExternalLinkText>{" "}
+          &mdash; including{" "}
+          <ExternalLinkText href="https://buf.build/envoyproxy/envoy">
+            Envoy
+          </ExternalLinkText>
+          ,{" "}
+          <ExternalLinkText href="https://buf.build/opentelemetry/opentelemetry">
+            OpenTelemetry
+          </ExternalLinkText>
+          , and{" "}
+          <ExternalLinkText href="https://buf.build/googleapis/googleapis">
+            googleapis
+          </ExternalLinkText>{" "}
+          &mdash; where they become versioned dependencies you declare once in{" "}
+          <code>buf.yaml</code>.
+        </p>
       </div>
     </Section>
   );
@@ -238,6 +260,14 @@ export const Toolbox = () => {
       name: "Buf CLI",
       desc: "The modern standard for Protobuf management. Includes a linter, formatter, breaking change detector, editor LSP support, and a high-performance code generator.",
       url: "https://buf.build/docs/introduction",
+    },
+    {
+      name: "Buf Schema Registry",
+      desc: "A package manager for Protobuf. Publish your schemas as versioned modules, depend on other people's with a line in buf.yaml instead of vendored files, and get hosted docs and generated SDKs for free.",
+      links: [
+        { label: "Docs", url: "https://buf.build/docs/bsr/" },
+        { label: "Explore Modules", url: "https://buf.build/explore" },
+      ],
     },
     {
       name: "protolint",
@@ -327,15 +357,24 @@ export const Toolbox = () => {
               Popular Plugins
             </h3>
             <a
-              href="https://buf.build/plugins/protobuf"
+              href="https://buf.build/plugins"
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm font-cyber font-bold text-[var(--cyber-neon-pink)] hover:text-[var(--cyber-neon-pink)]/80 transition-colors uppercase flex items-center gap-1 group"
             >
-              Browse BSR Registry
+              Browse Remote Plugins
               <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
             </a>
           </div>
+          <p className="text-sm text-[var(--text-dim)] leading-relaxed mb-8 max-w-3xl">
+            Plugins are conventionally named <code>protoc-gen-*</code> and
+            installed as local binaries. Many are also published to the BSR as{" "}
+            <ExternalLinkText href="https://buf.build/docs/bsr/remote-plugins/usage/">
+              remote plugins
+            </ExternalLinkText>
+            , which <code>buf generate</code> runs without anyone on your team
+            installing a toolchain first.
+          </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {plugins.map((p) => (
               <div
@@ -392,12 +431,12 @@ export const NetworkImplementations = () => {
   const frameworks = [
     {
       name: "gRPC",
-      desc: "The industry standard for high-performance RPC. Originally developed by Google, it uses HTTP/2 and supports advanced features like bidirectional streaming and server reflection.",
+      desc: "The most widely deployed Protobuf RPC framework. Originally developed by Google, it uses HTTP/2 and supports bidirectional streaming and server reflection.",
       url: "https://grpc.io/",
     },
     {
       name: "ConnectRPC",
-      desc: "A modern, multi-protocol alternative to gRPC that works natively in browsers. It supports gRPC, gRPC-Web, and its own simple HTTP-based protocol.",
+      desc: "A Protobuf RPC framework that speaks three protocols from one implementation: its own HTTP-based protocol, gRPC, and gRPC-Web. Its requests are plain HTTP, so they work natively in browsers and can be debugged with curl.",
       url: "https://connectrpc.com/",
     },
     {
@@ -474,7 +513,12 @@ export const CommunityResources = () => (
               </ExternalLinkText>
             </li>
             <li>
-              <ExternalLinkText href="https://buf.build/plugins/protobuf">
+              <ExternalLinkText href="https://buf.build/explore">
+                Buf Schema Registry
+              </ExternalLinkText>
+            </li>
+            <li>
+              <ExternalLinkText href="https://buf.build/plugins">
                 BSR Remote Plugins
               </ExternalLinkText>
             </li>
@@ -506,6 +550,16 @@ export const CommunityResources = () => (
               </ExternalLinkText>
             </li>
             <li>
+              <ExternalLinkText href="https://protovalidate.com/schemas/standard-rules/">
+                protovalidate Rules
+              </ExternalLinkText>
+            </li>
+            <li>
+              <ExternalLinkText href="https://connectrpc.com/docs/protocol/">
+                Connect Protocol
+              </ExternalLinkText>
+            </li>
+            <li>
               <ExternalLinkText href="https://en.wikipedia.org/wiki/IEEE_754">
                 IEEE 754 (Float)
               </ExternalLinkText>
@@ -520,6 +574,11 @@ export const CommunityResources = () => (
             <li>
               <ExternalLinkText href="https://groups.google.com/g/protobuf">
                 Google Group (Official)
+              </ExternalLinkText>
+            </li>
+            <li>
+              <ExternalLinkText href="https://buf.build/links/slack">
+                Buf Slack
               </ExternalLinkText>
             </li>
             <li>

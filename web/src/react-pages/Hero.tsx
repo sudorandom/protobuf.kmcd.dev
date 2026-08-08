@@ -29,9 +29,7 @@ export const Hero = () => {
         <h1 className="text-4xl sm:text-6xl md:text-8xl font-cyber font-black mb-6 tracking-tight leading-none">
           PROTOBUF
           <br />
-          <span className="cyber-text-gradient tracking-normal">
-            VISUALIZED
-          </span>
+          <span className="cyber-text-gradient tracking-normal">EXPLAINED</span>
         </h1>
 
         <p className="text-lg sm:text-xl text-[var(--text-dim)] max-w-2xl mx-auto mb-12 leading-relaxed">

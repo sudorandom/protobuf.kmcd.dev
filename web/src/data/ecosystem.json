@@ -22,6 +22,26 @@
     },
     {
       "category": "tools",
+      "name": "Buf Schema Registry",
+      "owner": "bufbuild",
+      "repo": "",
+      "desc": "A hosted registry for Protobuf schemas. Publish modules with semantic versioning, consume them as buf.yaml dependencies instead of vendored files, and get generated SDKs, hosted documentation, and breaking-change checks for each module.",
+      "url": "https://buf.build/docs/bsr/",
+      "github": "",
+      "hosted": true,
+      "languages": [
+        "Agnostic"
+      ],
+      "relevance": 4,
+      "stars": 0,
+      "pushedAt": "2026-08-06T13:14:54.362Z",
+      "inactive": false,
+      "starsWeekly": 0,
+      "starsMonthly": 0,
+      "archived": false
+    },
+    {
+      "category": "tools",
       "name": "protolint",
       "owner": "yoheimuta",
       "repo": "protolint",

@@ -12,6 +12,7 @@ import {
   Fingerprint,
   Code2,
   Database,
+  Boxes,
   Search,
   Command,
 } from "lucide-react";
@@ -826,14 +827,14 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
             <a href="/" className="hover:opacity-80 transition-opacity">
               <span className="text-xl font-mono font-bold tracking-tight text-[var(--text-color)] block">
                 protobuf
-                <span className="text-[var(--cyber-neon-blue)]">.kmcd.dev</span>
+                <span className="text-[var(--cyber-neon-blue)]">.com</span>
               </span>
             </a>
             <p className="text-sm font-mono text-[var(--cyber-neon-blue)] tracking-widest -mt-1 uppercase opacity-90 block max-w-[150px] truncate lg:max-w-none">
               <span className="lg:hidden">
                 {SECTION_LABELS[activeSection] || "Welcome"}
               </span>
-              <span className="hidden lg:inline">Protobuf Visualized</span>
+              <span className="hidden lg:inline">Protobuf Explained</span>
             </p>
           </div>
         </div>
@@ -1207,6 +1208,16 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
                     >
                       <Database className="w-4 h-4" aria-hidden="true" />
                     </a>
+                    <a
+                      href="https://buf.build/docs/bsr/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-2 bg-[var(--overlay-bg)] rounded hover:bg-[var(--border-light)] transition-colors text-[var(--text-dim)] hover:text-[var(--cyber-neon-cyan)]"
+                      title="Buf Schema Registry"
+                      aria-label="Visit the Buf Schema Registry"
+                    >
+                      <Boxes className="w-4 h-4" aria-hidden="true" />
+                    </a>
                   </div>
                 </div>
               </motion.div>
@@ -1330,6 +1341,15 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({
                   aria-label="Protobuf Documentation"
                 >
                   <Database className="w-5 h-5" />
+                </a>
+                <a
+                  href="https://buf.build/docs/bsr/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[var(--text-dim)] hover:text-[var(--cyber-neon-cyan)] transition-colors"
+                  aria-label="Buf Schema Registry"
+                >
+                  <Boxes className="w-5 h-5" />
                 </a>
               </div>
               <p className="text-sm font-mono text-[var(--text-dim)] uppercase tracking-[0.2em] flex flex-wrap justify-center gap-x-4 gap-y-2">

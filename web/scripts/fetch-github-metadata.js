@@ -357,7 +357,11 @@ async function fetchMetadata() {
     }
 
     const pushedDate = new Date(latestPushedAt);
-    const inactive = pushedDate < oneYearAgo || isArchived;
+    // Hosted services have no repo to measure, so commit recency says nothing
+    // about whether they are maintained. Never mark them inactive.
+    const inactive = project.hosted
+      ? false
+      : pushedDate < oneYearAgo || isArchived;
 
     const firstUrl = githubUrls[0] || "";
     const firstMatch = firstUrl.match(/github\.com\/([^\/]+)\/([^\/]+)/);

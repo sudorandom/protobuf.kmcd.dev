@@ -1553,12 +1553,22 @@ const BinaryPage = ({
                 Buffers wire format data.
               </p>
               <p className="text-[var(--text-dim)] leading-relaxed">
-                Standard tools like <code>protoc</code> require a{" "}
-                <code>.proto</code> schema to make sense of binary data.
-                Protoscope is different: it operates at the{" "}
+                Most tooling requires a <code>.proto</code> schema to make sense
+                of binary data. Protoscope is different: it operates at the{" "}
                 <strong>wire level</strong>, decoding the underlying binary
                 structure (varints, tags, and length-prefixes) using heuristics,
                 even when the original schema is missing.
+              </p>
+              <p className="text-[var(--text-dim)] leading-relaxed">
+                That heuristic reading is the tradeoff: without a schema
+                Protoscope can see that field 5 holds four bytes, but not that
+                they are a <code>float</code> named <code>height_cm</code>. When
+                the service is reachable and has reflection enabled,{" "}
+                <ExternalLinkText href="https://buf.build/docs/reference/cli/buf/curl/">
+                  <code>buf curl</code>
+                </ExternalLinkText>{" "}
+                skips the guesswork &mdash; it pulls the schema from the server
+                itself and prints fully typed, named output.
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
@@ -1677,6 +1687,11 @@ const BinaryPage = ({
               always refer to the{" "}
               <ExternalLinkText href="https://protobuf.dev/programming-guides/encoding/">
                 official Protobuf Encoding Guide
+              </ExternalLinkText>
+              . For the language itself &mdash; grammar, resolution rules, and
+              the parts the guide leaves implicit &mdash; Buf maintains a{" "}
+              <ExternalLinkText href="https://protobuf.com/docs/language-spec">
+                formal language specification
               </ExternalLinkText>
               .
             </p>

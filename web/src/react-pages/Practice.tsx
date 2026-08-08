@@ -57,7 +57,7 @@ const formatScenarioText = (text: string) => {
     }
     return (
       <span key={i} className="whitespace-pre-wrap">
-        {part}
+        {formatCodeText(part, "text-[var(--cyber-neon-pink)]")}
       </span>
     );
   });
@@ -66,7 +66,7 @@ const formatScenarioText = (text: string) => {
 export const Practice = ({ activeId }: { activeId: string }) => {
   const isConclusion = activeId === "conclusion";
   const currentExerciseIndex = isConclusion
-    ? 8
+    ? EXERCISES.length
     : Math.max(0, Math.min(EXERCISES.length - 1, parseInt(activeId, 10) - 1));
 
   const [highestUnlockedIndex, setHighestUnlockedIndex] = useState(() => {
@@ -544,42 +544,42 @@ export const Practice = ({ activeId }: { activeId: string }) => {
           title={`${activeExercise.id}. ${activeExercise.title}`}
           className="space-y-4"
         >
-          {/* The Scenario (Context) */}
-          <div className="space-y-1.5">
-            <span className="text-xs font-mono uppercase tracking-[0.2em] text-[var(--cyber-neon-pink)]">
-              Context
-            </span>
-            <div className="text-sm text-[var(--text-color)] leading-relaxed space-y-2">
-              {formatScenarioText(activeExercise.scenario)}
-            </div>
-          </div>
-
-          <div className="border-t border-[var(--border-light)] my-2" />
-
-          {/* The Task (Primary Objective) */}
-          <div className="space-y-1.5">
-            <span className="text-xs font-mono uppercase tracking-[0.2em] text-[var(--cyber-neon-blue)]">
-              Task
-            </span>
-            <p className="text-sm text-[var(--text-color)] leading-relaxed">
-              {formatCodeText(
-                activeExercise.task,
-                "text-[var(--cyber-neon-blue)]",
-              )}
-            </p>
-            {activeExercise.guideUrl && (
-              <div className="pt-1">
-                <a
-                  href={activeExercise.guideUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-xs text-[var(--cyber-neon-blue)] hover:text-[var(--text-color)] transition-colors font-mono uppercase tracking-wider hover:underline"
-                >
-                  {activeExercise.guideLabel || "Read Theory Guide"}
-                  <ExternalLink className="w-3 h-3" />
-                </a>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 md:divide-x md:divide-[var(--border-light)]">
+            {/* The Scenario (Context) */}
+            <div className="space-y-1.5">
+              <span className="text-xs font-mono uppercase tracking-[0.2em] text-[var(--cyber-neon-pink)]">
+                Context
+              </span>
+              <div className="text-sm text-[var(--text-color)] leading-relaxed space-y-2">
+                {formatScenarioText(activeExercise.scenario)}
               </div>
-            )}
+            </div>
+
+            {/* The Task (Primary Objective) */}
+            <div className="space-y-1.5 md:pl-8">
+              <span className="text-xs font-mono uppercase tracking-[0.2em] text-[var(--cyber-neon-blue)]">
+                Task
+              </span>
+              <p className="text-sm text-[var(--text-color)] leading-relaxed">
+                {formatCodeText(
+                  activeExercise.task,
+                  "text-[var(--cyber-neon-blue)]",
+                )}
+              </p>
+              {activeExercise.guideUrl && (
+                <div className="pt-1">
+                  <a
+                    href={activeExercise.guideUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-xs text-[var(--cyber-neon-blue)] hover:text-[var(--text-color)] transition-colors font-mono uppercase tracking-wider hover:underline"
+                  >
+                    {activeExercise.guideLabel || "Read Theory Guide"}
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Hint button & details */}

@@ -503,18 +503,23 @@ export const Introduction = ({
                       Python
                     </ExternalLinkText>
                   </CyberPanel>
-                  <CyberPanel className="flex items-center justify-center p-2 text-sm border-[var(--cyber-neon-green)]/30 bg-[var(--cyber-neon-green)]/5 hover:border-[var(--cyber-neon-green)] transition-colors group text-center">
-                    <a
-                      href="https://github.com/protocolbuffers/protobuf/blob/main/docs/third_party.md"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[var(--cyber-neon-green)] font-mono tracking-tighter flex items-center justify-center gap-1 hover:underline text-xs"
-                    >
-                      Community Plugins
-                      <ExternalLink className="w-3 h-3 opacity-60 group-hover:opacity-100" />
-                    </a>
+                  <CyberPanel className="flex items-center justify-center p-2 text-sm hover:border-[var(--cyber-neon-blue)] transition-colors group text-center">
+                    <ExternalLinkText href="https://github.com/bufbuild/protobuf-es">
+                      TypeScript
+                    </ExternalLinkText>
                   </CyberPanel>
                 </div>
+                <CyberPanel className="flex items-center justify-center p-2 text-sm w-full md:w-64 border-[var(--cyber-neon-green)]/30 bg-[var(--cyber-neon-green)]/5 hover:border-[var(--cyber-neon-green)] transition-colors group text-center">
+                  <a
+                    href="https://buf.build/plugins"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[var(--cyber-neon-green)] font-mono tracking-tighter flex items-center justify-center gap-1 hover:underline text-xs"
+                  >
+                    Browse All Plugins
+                    <ExternalLink className="w-3 h-3 opacity-60 group-hover:opacity-100" />
+                  </a>
+                </CyberPanel>
               </div>
             </div>
             <div className="mt-12 text-center text-[var(--text-dim)] space-y-4">
@@ -523,6 +528,18 @@ export const Introduction = ({
                 high-performance source code for your specific language. This
                 generated code handles all the complexity of bit-packing and
                 validation.
+              </p>
+              <p>
+                The compiler itself only parses schemas &mdash; plugins do the
+                generating, one per target language. Historically each developer
+                installed those plugin binaries locally and kept versions in
+                sync by hand.{" "}
+                <ExternalLinkText href="https://buf.build/docs/bsr/remote-plugins/usage/">
+                  Remote plugins
+                </ExternalLinkText>{" "}
+                let <code>buf generate</code> run them from the registry
+                instead, so everyone gets identical output from a checkout and a
+                single command.
               </p>
             </div>
           </div>

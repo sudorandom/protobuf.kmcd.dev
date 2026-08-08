@@ -33,17 +33,32 @@ export const NextSteps = () => (
           </p>
         </a>
         <a
-          href="https://buf.build/"
+          href="https://buf.build/docs/introduction"
           target="_blank"
           rel="noopener noreferrer"
           className="p-6 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-xl hover:border-[var(--cyber-neon-pink)] transition-all group"
         >
           <h3 className="font-cyber font-bold text-[var(--cyber-neon-pink)] uppercase mb-2">
-            Buf.build
+            Buf CLI
           </h3>
           <p className="text-sm text-[var(--text-dim)]">
-            Modern tooling for Protobuf. Linting, breaking change detection, and
-            dependency management.
+            One binary that compiles, lints, formats, generates code, and
+            catches breaking changes before they ship.
+          </p>
+        </a>
+        <a
+          href="https://buf.build/docs/bsr/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="p-6 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-xl hover:border-[var(--cyber-neon-cyan)] transition-all group"
+        >
+          <h3 className="font-cyber font-bold text-[var(--cyber-neon-cyan)] uppercase mb-2">
+            Buf Schema Registry
+          </h3>
+          <p className="text-sm text-[var(--text-dim)]">
+            Stop vendoring .proto files. Publish schemas as versioned modules
+            and depend on them from buf.yaml, with hosted docs and generated
+            SDKs.
           </p>
         </a>
         <a
@@ -74,7 +89,7 @@ export const NextSteps = () => (
         </a>
         <a
           href="/practice/"
-          className="p-6 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-xl hover:border-[var(--cyber-neon-blue)] transition-all group md:col-span-2"
+          className="p-6 bg-[var(--overlay-bg)] border border-[var(--border-light)] rounded-xl hover:border-[var(--cyber-neon-blue)] transition-all group"
         >
           <h3 className="font-cyber font-bold text-[var(--cyber-neon-blue)] uppercase mb-2">
             Practice

@@ -2,6 +2,8 @@ export const INITIAL_PROTO = `edition = "2023";
 
 package demo.v1;
 
+// Resolved from the buf.build/bufbuild/protovalidate module,
+// declared in this project's buf.yaml. No vendored files.
 import "buf/validate/validate.proto";
 
 message User {
