@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-08-08T11:04:55.058Z",
+  "fetchedAt": "2026-08-08T11:59:29.382Z",
   "projects": [
     {
       "category": "tools",
@@ -1263,8 +1263,8 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 31213,
-      "pushedAt": "2026-08-07T11:13:35Z",
+      "stars": 31214,
+      "pushedAt": "2026-08-08T11:15:25Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -1571,7 +1571,7 @@
       ],
       "relevance": 1,
       "stars": 2459,
-      "pushedAt": "2026-08-08T10:57:36Z",
+      "pushedAt": "2026-08-08T11:51:58Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
