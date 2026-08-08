@@ -25,7 +25,7 @@
       "name": "Buf Schema Registry",
       "owner": "bufbuild",
       "repo": "",
-      "desc": "A hosted registry for Protobuf schemas. Publish modules with semantic versioning, consume them as buf.yaml dependencies instead of vendored files, and get generated SDKs, hosted documentation, and breaking-change checks for each module.",
+      "desc": "A hosted registry for Protobuf schemas, commonly called the BSR. Publish modules with semantic versioning, consume them as buf.yaml dependencies instead of vendored files, and get generated SDKs, hosted documentation, and breaking-change checks for each module.",
       "url": "https://buf.build/docs/bsr/",
       "github": "",
       "hosted": true,
