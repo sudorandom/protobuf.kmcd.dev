@@ -7,3 +7,8 @@ public/parser.wasm
 src/data/ecosystem.json
 src/utils/static-examples.ts
 src/pages/lighthouse.json
+
+# Verbatim copies of the generated code, published by
+# scripts/copy-generated-files.js. Reformatting would make them differ from the
+# files they claim to be.
+public/generated

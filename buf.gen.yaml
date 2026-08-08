@@ -1,6 +1,10 @@
 version: v2
 managed:
   enabled: true
+  disable:
+    # protovalidate is a dependency we consume but don't generate code for.
+    # Managing it would rewrite its go_package to a package that doesn't exist.
+    - module: buf.build/bufbuild/protovalidate
   override:
     - file_option: go_package_prefix
       value: github.com/sudorandom/protobuf.kmcd.dev/gen/go

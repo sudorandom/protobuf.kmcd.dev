@@ -8,8 +8,8 @@
     "@babel/core": "7.29.6"
   },
   "scripts": {
-    "dev": "node scripts/generate-social-images.js && astro dev",
-    "build": "node scripts/generate-social-images.js && tsc -b && astro build && pagefind --site dist",
+    "dev": "node scripts/generate-social-images.js && node scripts/copy-generated-files.js && astro dev",
+    "build": "node scripts/generate-social-images.js && node scripts/copy-generated-files.js && tsc -b && astro build && pagefind --site dist",
     "lint": "eslint .",
     "format": "prettier --write .",
     "preview": "astro preview",

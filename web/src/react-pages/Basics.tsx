@@ -1088,12 +1088,12 @@ plugins:
     {
       path: "web/src/gen/demo/v1/user_pb.ts",
       desc: "TypeScript interface, classes, & binary/JSON codec metadata",
-      url: "/generated/typescript/",
+      url: "/generated/web/src/gen/demo/v1/user_pb.ts",
     },
     {
       path: "gen/go/demo/v1/user.pb.go",
       desc: "Go structs, field getters, ProtoReflect, & binary marshal/unmarshal",
-      url: "/generated/go/",
+      url: "/generated/gen/go/demo/v1/user.pb.go",
     },
   ];
 
@@ -1153,12 +1153,9 @@ plugins:
                   <div key={file.path} className="space-y-1">
                     <div className="font-mono text-xs font-bold flex items-center gap-1.5">
                       <FileCode className="w-3.5 h-3.5 text-[var(--cyber-neon-green)] shrink-0" />
-                      <a
-                        href={file.url}
-                        className="text-[var(--cyber-neon-blue)] underline hover:text-[var(--cyber-neon-blue)]/80 transition-colors"
-                      >
+                      <ExternalLinkText href={file.url}>
                         {file.path}
-                      </a>
+                      </ExternalLinkText>
                     </div>
                     <div className="text-[11px] text-[var(--text-dim)] pl-5">
                       {file.desc}
