@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-08-09T02:38:55.331Z",
+  "fetchedAt": "2026-08-09T04:03:30.672Z",
   "projects": [
     {
       "category": "tools",
@@ -429,7 +429,7 @@
         "Go"
       ],
       "relevance": 1,
-      "stars": 41545,
+      "stars": 41546,
       "pushedAt": "2026-08-08T05:26:39Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1149,8 +1149,8 @@
         "Go"
       ],
       "relevance": 4,
-      "stars": 71704,
-      "pushedAt": "2026-08-08T19:13:43Z",
+      "stars": 71705,
+      "pushedAt": "2026-08-09T03:24:09Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -1245,7 +1245,7 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 39935,
+      "stars": 39934,
       "pushedAt": "2026-08-07T22:01:50Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1398,7 +1398,7 @@
       ],
       "relevance": 1,
       "stars": 28741,
-      "pushedAt": "2026-08-09T00:36:55Z",
+      "pushedAt": "2026-08-09T03:35:03Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -1594,7 +1594,7 @@
       ],
       "relevance": 1,
       "stars": 2459,
-      "pushedAt": "2026-08-09T02:37:18Z",
+      "pushedAt": "2026-08-09T03:42:46Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
