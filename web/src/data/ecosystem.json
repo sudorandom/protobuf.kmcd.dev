@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-08-09T15:04:53.871Z",
+  "fetchedAt": "2026-08-09T16:02:14.130Z",
   "projects": [
     {
       "category": "tools",
@@ -13,7 +13,7 @@
         "Agnostic"
       ],
       "relevance": 4,
-      "stars": 11329,
+      "stars": 11328,
       "pushedAt": "2026-08-09T04:32:56Z",
       "inactive": false,
       "starsWeekly": 17,
@@ -160,7 +160,7 @@
         "Agnostic"
       ],
       "relevance": 3,
-      "stars": 19975,
+      "stars": 19974,
       "pushedAt": "2026-08-09T13:52:23Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -302,7 +302,7 @@
         "PHP"
       ],
       "relevance": 4,
-      "stars": 45265,
+      "stars": 45264,
       "pushedAt": "2026-08-08T01:16:00Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -429,7 +429,7 @@
         "Go"
       ],
       "relevance": 1,
-      "stars": 41546,
+      "stars": 41545,
       "pushedAt": "2026-08-08T05:26:39Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -529,7 +529,7 @@
         "JavaScript"
       ],
       "relevance": 2,
-      "stars": 10577,
+      "stars": 10576,
       "pushedAt": "2026-08-08T13:16:36Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -967,7 +967,7 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 12771,
+      "stars": 12772,
       "pushedAt": "2026-07-27T19:38:18Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1245,7 +1245,7 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 39933,
+      "stars": 39932,
       "pushedAt": "2026-08-07T22:01:50Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1398,7 +1398,7 @@
       ],
       "relevance": 1,
       "stars": 28741,
-      "pushedAt": "2026-08-09T15:01:01Z",
+      "pushedAt": "2026-08-09T15:26:43Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -1594,7 +1594,7 @@
       ],
       "relevance": 1,
       "stars": 2459,
-      "pushedAt": "2026-08-09T15:01:58Z",
+      "pushedAt": "2026-08-09T15:54:22Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
