@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-08-09T09:21:25.738Z",
+  "fetchedAt": "2026-08-09T10:07:50.321Z",
   "projects": [
     {
       "category": "tools",
@@ -1101,7 +1101,7 @@
         "Rust"
       ],
       "relevance": 3,
-      "stars": 4739,
+      "stars": 4740,
       "pushedAt": "2026-08-03T05:14:33Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1594,7 +1594,7 @@
       ],
       "relevance": 1,
       "stars": 2459,
-      "pushedAt": "2026-08-09T09:04:20Z",
+      "pushedAt": "2026-08-09T09:57:05Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
