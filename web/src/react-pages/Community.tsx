@@ -271,7 +271,7 @@ export const Toolbox = () => {
     },
     {
       name: "protolint",
-      desc: "A highly configurable linter for Protocol Buffer files for consistent style.",
+      desc: "Configurable linter for Protocol Buffer files, enforcing consistent style.",
       url: "https://github.com/yoheimuta/protolint",
     },
     {
@@ -299,7 +299,7 @@ export const Toolbox = () => {
     },
     {
       name: "protoc-gen-connect-openapi",
-      desc: "Generates high-quality OpenAPI 3.x definitions from your Protobuf services, with first-class support for ConnectRPC and gRPC-Gateway.",
+      desc: "Produces OpenAPI 3.x definitions from your Protobuf services, with first-class support for ConnectRPC and gRPC-Gateway.",
       url: "https://github.com/sudorandom/protoc-gen-connect-openapi",
     },
     {
@@ -309,7 +309,7 @@ export const Toolbox = () => {
     },
     {
       name: "protoc-gen-grpc-gateway",
-      desc: "Automatically generates a reverse proxy server that translates RESTful JSON APIs into gRPC, allowing you to support both protocols easily.",
+      desc: "Generates a reverse-proxy server that translates RESTful JSON APIs into gRPC, so you can serve both.",
       url: "https://github.com/grpc-ecosystem/grpc-gateway",
     },
   ];
@@ -440,22 +440,22 @@ export const NetworkImplementations = () => {
     },
     {
       name: "Twirp",
-      desc: "A simple and minimalist RPC framework by Twitch. It focuses on reliability and simplicity, using Protobuf over HTTP/1.1 without the complexity of gRPC.",
+      desc: "Twitch's RPC framework, using Protobuf over HTTP/1.1 instead of gRPC and HTTP/2.",
       url: "https://twitchtv.github.io/twirp/",
     },
     {
       name: "dRPC",
-      desc: "A lightweight Go replacement for gRPC by Storj. Designed to be leaner and faster, it reduces memory overhead while remaining compatible with existing Protobuf definitions.",
+      desc: "Storj's Go replacement for gRPC. Cuts memory overhead while staying compatible with existing Protobuf definitions.",
       url: "https://github.com/storj/drpc",
     },
     {
       name: "Apache brpc",
-      desc: "An industrial-grade C++ RPC framework by Baidu. It is heavily optimized for extreme concurrency and low latency, often used in massive service deployments.",
+      desc: "Baidu's C++ RPC framework, tuned for high concurrency and low latency in large service deployments.",
       url: "https://brpc.apache.org/",
     },
     {
       name: "Apache Dubbo",
-      desc: "A popular microservices framework from Alibaba. Its 'Triple' protocol natively adopts HTTP/2 and Protobuf for modern, gRPC-compatible serialization.",
+      desc: "Alibaba's microservices framework. Its Triple protocol uses HTTP/2 and Protobuf for gRPC-compatible serialization.",
       url: "https://dubbo.apache.org/",
     },
   ];

@@ -6,7 +6,7 @@
       "name": "Buf CLI",
       "owner": "bufbuild",
       "repo": "buf",
-      "desc": "The modern standard for Protobuf management. Includes a linter, formatter, breaking change detector, editor LSP support, and a high-performance code generator.",
+      "desc": "Buf's command-line tool for Protobuf management, combining a linter, formatter, breaking-change detector, and code generator with editor LSP support.",
       "url": "https://buf.build/docs/introduction",
       "github": "https://github.com/bufbuild/buf",
       "languages": [
@@ -25,7 +25,7 @@
       "name": "Buf Schema Registry",
       "owner": "bufbuild",
       "repo": "",
-      "desc": "A hosted registry for Protobuf schemas, commonly called the BSR. Publish modules with semantic versioning, consume them as buf.yaml dependencies instead of vendored files, and get generated SDKs, hosted documentation, and breaking-change checks for each module.",
+      "desc": "Hosted registry for Protobuf schemas, commonly called the BSR. Publish versioned modules and consume them as buf.yaml dependencies, with generated SDKs, hosted docs, and breaking-change checks.",
       "url": "https://buf.build/docs/bsr/",
       "github": "",
       "hosted": true,
@@ -45,7 +45,7 @@
       "name": "protolint",
       "owner": "yoheimuta",
       "repo": "protolint",
-      "desc": "A highly configurable linter for Protocol Buffer files to ensure style consistency and best practices.",
+      "desc": "Configurable linter for Protocol Buffer files that enforces style consistency and best practices.",
       "url": "https://github.com/yoheimuta/protolint",
       "github": "https://github.com/yoheimuta/protolint",
       "languages": [
@@ -64,7 +64,7 @@
       "name": "protovalidate",
       "owner": "bufbuild",
       "repo": "protovalidate",
-      "desc": "Runtime validation for Protobuf messages using rules defined directly in your .proto files.",
+      "desc": "Runtime validation for Protobuf messages, with rules defined directly in .proto files.",
       "url": "https://github.com/bufbuild/protovalidate",
       "github": [
         "https://github.com/bufbuild/protovalidate",
@@ -96,7 +96,7 @@
       "name": "Plumber",
       "owner": "streamdal",
       "repo": "plumber",
-      "desc": "CLI tool for inspecting and routing messages in Kafka, RabbitMQ, and SQS with native on-the-fly Protobuf decoding.",
+      "desc": "CLI tool for inspecting and routing messages in Kafka, RabbitMQ, and SQS, with on-the-fly Protobuf decoding.",
       "url": "https://github.com/streamdal/plumber",
       "github": "https://github.com/streamdal/plumber",
       "languages": [
@@ -115,7 +115,7 @@
       "name": "protoc-gen-doc",
       "owner": "pseudomuto",
       "repo": "protoc-gen-doc",
-      "desc": "Generates beautiful documentation (HTML, Markdown, PDF) from your .proto files.",
+      "desc": "Generates HTML, Markdown, or PDF documentation from .proto files.",
       "url": "https://github.com/pseudomuto/protoc-gen-doc",
       "github": "https://github.com/pseudomuto/protoc-gen-doc",
       "languages": [
@@ -134,7 +134,7 @@
       "name": "protoc-gen-connect-openapi",
       "owner": "sudorandom",
       "repo": "protoc-gen-connect-openapi",
-      "desc": "Generates high-quality OpenAPI 3.x definitions from your Protobuf services, with excellent support for ConnectRPC and gRPC-Gateway.",
+      "desc": "Produces OpenAPI 3.x definitions from Protobuf services, with support for ConnectRPC and gRPC-Gateway.",
       "url": "https://github.com/sudorandom/protoc-gen-connect-openapi",
       "github": "https://github.com/sudorandom/protoc-gen-connect-openapi",
       "languages": [
@@ -153,7 +153,7 @@
       "name": "protoc-gen-grpc-gateway",
       "owner": "grpc-ecosystem",
       "repo": "grpc-gateway",
-      "desc": "Automatically generates a reverse proxy server that translates RESTful JSON APIs into gRPC, allowing you to support both protocols easily.",
+      "desc": "Generates a reverse-proxy server that translates RESTful JSON APIs into gRPC, supporting both protocols.",
       "url": "https://github.com/grpc-ecosystem/grpc-gateway",
       "github": "https://github.com/grpc-ecosystem/grpc-gateway",
       "languages": [
@@ -172,7 +172,7 @@
       "name": "protoc-gen-gorm",
       "owner": "infobloxopen",
       "repo": "protoc-gen-gorm",
-      "desc": "Generates GORM models, converters, and basic persistence APIs from Protocol Buffer messages.",
+      "desc": "Compiles Protocol Buffer messages into GORM models, converters, and basic persistence APIs.",
       "url": "https://github.com/infobloxopen/protoc-gen-gorm",
       "github": "https://github.com/infobloxopen/protoc-gen-gorm",
       "languages": [
@@ -229,7 +229,7 @@
       "name": "protoc-gen-go-mcp",
       "owner": "redpanda-data",
       "repo": "protoc-gen-go-mcp",
-      "desc": "Generates Go MCP servers from gRPC service definitions.",
+      "desc": "Turns gRPC service definitions into Go MCP servers.",
       "url": "https://github.com/redpanda-data/protoc-gen-go-mcp",
       "github": "https://github.com/redpanda-data/protoc-gen-go-mcp",
       "languages": [
@@ -248,7 +248,7 @@
       "name": "protoc-gen-go-temporal",
       "owner": "cludden",
       "repo": "protoc-gen-go-temporal",
-      "desc": "Generates Temporal clients and workers in Go from Protocol Buffer service definitions.",
+      "desc": "Produces Temporal clients and workers in Go from Protocol Buffer service definitions.",
       "url": "https://github.com/cludden/protoc-gen-go-temporal",
       "github": "https://github.com/cludden/protoc-gen-go-temporal",
       "languages": [
@@ -267,7 +267,7 @@
       "name": "protoc-gen-prost",
       "owner": "neoeinstein",
       "repo": "protoc-gen-prost",
-      "desc": "Generates Rust protobuf code using the Prost code generation engine, with companion plugins for Tonic, serde, validation, and crate output.",
+      "desc": "Generates Rust protobuf code via the Prost engine, with companion plugins for Tonic, serde, validation, and crate output.",
       "url": "https://github.com/neoeinstein/protoc-gen-prost",
       "github": "https://github.com/neoeinstein/protoc-gen-prost",
       "languages": [
@@ -289,7 +289,7 @@
       "name": "gRPC",
       "owner": "grpc",
       "repo": "grpc",
-      "desc": "The industry standard for high-performance RPC. Originally developed by Google, it uses HTTP/2 and supports advanced features like bidirectional streaming and server reflection.",
+      "desc": "RPC framework originally developed by Google, using HTTP/2 with support for bidirectional streaming and server reflection.",
       "url": "https://grpc.io/",
       "github": "https://github.com/grpc/grpc",
       "languages": [
@@ -314,7 +314,7 @@
       "name": "ConnectRPC",
       "owner": "connectrpc",
       "repo": "connect-go",
-      "desc": "A simple, modern, multi-protocol alternative to gRPC for Go, TypeScript, Kotlin, Swift, and Python. Supports gRPC, gRPC-Web, and Connect HTTP protocols natively.",
+      "desc": "Multi-protocol alternative to gRPC with libraries for Go, TypeScript (browser and Node.js), Kotlin, Swift, Dart, and Python. Speaks gRPC, gRPC-Web, and the Connect protocol.",
       "url": "https://connectrpc.com/",
       "github": [
         "https://github.com/connectrpc/connect-go",
@@ -330,6 +330,7 @@
         "JavaScript",
         "Kotlin",
         "Swift",
+        "Dart",
         "Python"
       ],
       "relevance": 4,
@@ -345,7 +346,7 @@
       "name": "connect-rust",
       "owner": "anthropics",
       "repo": "connect-rust",
-      "desc": "A Tower-based Rust implementation of the ConnectRPC protocol, supporting Connect, gRPC, and gRPC-Web.",
+      "desc": "Tower-based Rust implementation of the ConnectRPC protocol, supporting Connect, gRPC, and gRPC-Web.",
       "url": "https://github.com/anthropics/connect-rust",
       "github": "https://github.com/anthropics/connect-rust",
       "languages": [
@@ -364,7 +365,7 @@
       "name": "Twirp",
       "owner": "twitchtv",
       "repo": "twirp",
-      "desc": "A simple and minimalist RPC framework by Twitch. It focuses on reliability and simplicity, using Protobuf over HTTP/1.1 without the complexity of gRPC.",
+      "desc": "Twitch's RPC framework using Protobuf over HTTP/1.1 in place of gRPC.",
       "url": "https://twitchtv.github.io/twirp/",
       "github": "https://github.com/twitchtv/twirp",
       "languages": [
@@ -383,7 +384,7 @@
       "name": "dRPC",
       "owner": "storj",
       "repo": "drpc",
-      "desc": "A lightweight Go replacement for gRPC by Storj. Designed to be leaner and faster, it reduces memory overhead while remaining compatible with existing Protobuf definitions.",
+      "desc": "Go replacement for gRPC from Storj that reduces memory overhead while staying compatible with existing Protobuf definitions.",
       "url": "https://github.com/storj/drpc",
       "github": "https://github.com/storj/drpc",
       "languages": [
@@ -402,7 +403,7 @@
       "name": "Apache brpc",
       "owner": "apache",
       "repo": "brpc",
-      "desc": "An industrial-grade C++ RPC framework by Baidu. It is heavily optimized for extreme concurrency and low latency, often used in massive service deployments.",
+      "desc": "C++ RPC framework from Baidu optimized for high concurrency and low latency, used in large-scale service deployments.",
       "url": "https://brpc.apache.org/",
       "github": "https://github.com/apache/brpc",
       "languages": [
@@ -421,7 +422,7 @@
       "name": "Apache Dubbo",
       "owner": "apache",
       "repo": "dubbo",
-      "desc": "A popular microservices framework from Alibaba. Its 'Triple' protocol natively adopts HTTP/2 and Protobuf for modern, gRPC-compatible serialization.",
+      "desc": "Microservices framework from Alibaba whose Triple protocol uses HTTP/2 and Protobuf for gRPC-compatible serialization.",
       "url": "https://dubbo.apache.org/",
       "github": "https://github.com/apache/dubbo",
       "languages": [
@@ -441,7 +442,7 @@
       "name": "protobuf-c (C)",
       "owner": "protobuf-c",
       "repo": "protobuf-c",
-      "desc": "An implementation of Protocol Buffers in C, generating C code from .proto files and supporting runtime serialization.",
+      "desc": "C implementation of Protocol Buffers, generating C code from .proto files with runtime serialization support.",
       "url": "https://github.com/protobuf-c/protobuf-c",
       "github": "https://github.com/protobuf-c/protobuf-c",
       "languages": [
@@ -460,7 +461,7 @@
       "name": "protobluff (C)",
       "owner": "squidfunk",
       "repo": "protobluff",
-      "desc": "A lightweight C library for Protocol Buffers, focusing on speed and minimal memory footprint.",
+      "desc": "Minimal-footprint C library for encoding and decoding Protocol Buffers.",
       "url": "https://github.com/squidfunk/protobluff",
       "github": "https://github.com/squidfunk/protobluff",
       "languages": [
@@ -479,7 +480,7 @@
       "name": "dart-protobuf (Dart)",
       "owner": "dart-lang",
       "repo": "dart-protobuf",
-      "desc": "Dart: https://github.com/dart-lang/dart-protobuf (runtime) https://github.com/dart-lang/dart-protoc-plugin (code generator)",
+      "desc": "Dart runtime and code-generator plugin for Protocol Buffers.",
       "url": "https://github.com/dart-lang/dart-protobuf",
       "github": "https://github.com/dart-lang/dart-protobuf",
       "languages": [
@@ -501,7 +502,7 @@
       "name": "Wire",
       "owner": "square",
       "repo": "wire",
-      "desc": "A clean, lightweight implementation built by Square, generating idiomatic JVM/Android models and service interfaces.",
+      "desc": "Square's Protobuf implementation generating idiomatic JVM and Android models and service interfaces.",
       "url": "https://square.github.io/wire/",
       "github": "https://github.com/square/wire",
       "languages": [
@@ -522,7 +523,7 @@
       "name": "ProtoBuf.js",
       "owner": "dcodeIO",
       "repo": "ProtoBuf.js",
-      "desc": "A popular, comprehensive JavaScript library for serializing and deserializing Protobuf messages, supporting both node and browser environments.",
+      "desc": "JavaScript library for serializing and deserializing Protobuf messages in Node and browser environments.",
       "url": "https://github.com/dcodeIO/ProtoBuf.js",
       "github": "https://github.com/dcodeIO/ProtoBuf.js",
       "languages": [
@@ -541,7 +542,7 @@
       "name": "ProtoBuf.jl (Julia)",
       "owner": "tanmaykm",
       "repo": "ProtoBuf.jl",
-      "desc": "Julia: https://github.com/tanmaykm/ProtoBuf.jl",
+      "desc": "Julia implementation of Protocol Buffers, providing message encoding and decoding.",
       "url": "https://github.com/tanmaykm/ProtoBuf.jl",
       "github": "https://github.com/tanmaykm/ProtoBuf.jl",
       "languages": [
@@ -560,7 +561,7 @@
       "name": "php-protocolbuffers (PHP)",
       "owner": "chobie",
       "repo": "php-protocolbuffers",
-      "desc": "A high-performance PHP extension implementing Protocol Buffers for fast serialization and deserialization.",
+      "desc": "PHP extension implementing Protocol Buffers serialization and deserialization.",
       "url": "https://github.com/chobie/php-protocolbuffers",
       "github": "https://github.com/chobie/php-protocolbuffers",
       "languages": [
@@ -579,7 +580,7 @@
       "name": "protobuf (Ruby)",
       "owner": "localshred",
       "repo": "protobuf",
-      "desc": "A native Ruby implementation of Protocol Buffers, providing message definitions and serialization support.",
+      "desc": "Ruby implementation of Protocol Buffers, providing message definitions and serialization support.",
       "url": "https://github.com/localshred/protobuf",
       "github": "https://github.com/localshred/protobuf",
       "languages": [
@@ -598,7 +599,7 @@
       "name": "rust-protobuf (Rust)",
       "owner": "stepancheg",
       "repo": "rust-protobuf",
-      "desc": "A classic Rust implementation of Google Protocol Buffers, providing a code generator and runtime library.",
+      "desc": "Rust implementation of Google Protocol Buffers, providing a code generator and runtime library.",
       "url": "https://github.com/stepancheg/rust-protobuf",
       "github": "https://github.com/stepancheg/rust-protobuf",
       "languages": [
@@ -617,7 +618,7 @@
       "name": "protobuf-swift (Swift)",
       "owner": "alexeyxo",
       "repo": "protobuf-swift",
-      "desc": "Swift: https://github.com/alexeyxo/protobuf-swift",
+      "desc": "Swift implementation of Protocol Buffers with code generation and runtime support.",
       "url": "https://github.com/alexeyxo/protobuf-swift",
       "github": "https://github.com/alexeyxo/protobuf-swift",
       "languages": [
@@ -633,10 +634,10 @@
     },
     {
       "category": "libraries",
-      "name": "sofa-pbrpc (https)",
+      "name": "sofa-pbrpc",
       "owner": "BaiduPS",
       "repo": "sofa-pbrpc",
-      "desc": "https://github.com/BaiduPS/sofa-pbrpc (C++)",
+      "desc": "C++ RPC framework from Baidu built on Protocol Buffers.",
       "url": "https://github.com/BaiduPS/sofa-pbrpc",
       "github": "https://github.com/BaiduPS/sofa-pbrpc",
       "languages": [
@@ -655,7 +656,7 @@
       "name": "idea-plugin-protobuf",
       "owner": "nnmatveev",
       "repo": "idea-plugin-protobuf",
-      "desc": "Intellij IDEA plugin",
+      "desc": "IntelliJ IDEA plugin adding Protocol Buffer file support.",
       "url": "https://github.com/nnmatveev/idea-plugin-protobuf",
       "github": "https://github.com/nnmatveev/idea-plugin-protobuf",
       "languages": [
@@ -674,7 +675,7 @@
       "name": "protobuf-maven-plugin",
       "owner": "ascopes",
       "repo": "protobuf-maven-plugin",
-      "desc": "A modern Maven plugin for compiling Protocol Buffers utilizing protoc.",
+      "desc": "Maven plugin for compiling Protocol Buffers using protoc.",
       "url": "https://github.com/ascopes/protobuf-maven-plugin",
       "github": "https://github.com/ascopes/protobuf-maven-plugin",
       "languages": [
@@ -693,7 +694,7 @@
       "name": "protoc-jar-maven-plugin",
       "owner": "os72",
       "repo": "protoc-jar-maven-plugin",
-      "desc": "https://github.com/os72/protoc-jar-maven-plugin",
+      "desc": "Wraps protoc-jar as a Maven plugin for running the Protobuf compiler.",
       "url": "https://github.com/os72/protoc-jar-maven-plugin",
       "github": "https://github.com/os72/protoc-jar-maven-plugin",
       "languages": [
@@ -712,7 +713,7 @@
       "name": "protoc-jar",
       "owner": "os72",
       "repo": "protoc-jar",
-      "desc": "Multi-platform executable JAR and Java API for protoc",
+      "desc": "Multi-platform executable JAR and Java API wrapping protoc.",
       "url": "https://github.com/os72/protoc-jar",
       "github": "https://github.com/os72/protoc-jar",
       "languages": [
@@ -731,7 +732,7 @@
       "name": "py-pb-converters",
       "owner": "NextTuesday",
       "repo": "py-pb-converters",
-      "desc": "Python scripts to convert between Protocol Buffers and JSON",
+      "desc": "Python scripts to convert between Protocol Buffers and JSON.",
       "url": "https://github.com/NextTuesday/py-pb-converters",
       "github": "https://github.com/NextTuesday/py-pb-converters",
       "languages": [
@@ -750,7 +751,7 @@
       "name": "pbjson",
       "owner": "yinqiwen",
       "repo": "pbjson",
-      "desc": "C++ library for serialization/de-serialization between Protocol Buffers and JSON.",
+      "desc": "C++ library for serialization and deserialization between Protocol Buffers and JSON.",
       "url": "https://github.com/yinqiwen/pbjson",
       "github": "https://github.com/yinqiwen/pbjson",
       "languages": [
@@ -769,7 +770,7 @@
       "name": "protoc-gen-lint",
       "owner": "ckaznocha",
       "repo": "protoc-gen-lint",
-      "desc": "Linter for .proto files",
+      "desc": "Linter plugin that checks .proto files for style issues.",
       "url": "https://github.com/ckaznocha/protoc-gen-lint",
       "github": "https://github.com/ckaznocha/protoc-gen-lint",
       "languages": [
@@ -791,7 +792,7 @@
       "name": "protobuf-es",
       "owner": "bufbuild",
       "repo": "protobuf-es",
-      "desc": "The official ECMAScript runtime and code generator (protoc-gen-es) for Protocol Buffers from Buf.",
+      "desc": "Official ECMAScript runtime and code generator (protoc-gen-es) for Protocol Buffers, from Buf.",
       "url": "https://github.com/bufbuild/protobuf-es",
       "github": "https://github.com/bufbuild/protobuf-es",
       "languages": [
@@ -834,7 +835,7 @@
       "name": "protobuf-ts",
       "owner": "timostamm",
       "repo": "protobuf-ts",
-      "desc": "A highly popular community plugin (protoc-gen-ts) to generate TypeScript interfaces, RPC clients, and validation from .proto files.",
+      "desc": "Community plugin (protoc-gen-ts) generating TypeScript interfaces, RPC clients, and validation from .proto files.",
       "url": "https://github.com/timostamm/protobuf-ts",
       "github": "https://github.com/timostamm/protobuf-ts",
       "languages": [
@@ -857,7 +858,7 @@
       "name": "betterproto",
       "owner": "betterproto",
       "repo": "python-betterproto2",
-      "desc": "A clean, modern Python generator and library for Protobuf and gRPC, providing dataclass-based messages.",
+      "desc": "Python generator and library for Protobuf and gRPC using dataclass-based messages.",
       "url": "https://github.com/betterproto/python-betterproto2",
       "github": "https://github.com/betterproto/python-betterproto2",
       "languages": [
@@ -879,7 +880,7 @@
       "name": "gRPC-Web",
       "owner": "grpc",
       "repo": "grpc-web",
-      "desc": "A JavaScript client library and protoc plugin (protoc-gen-grpc-web) for enabling gRPC in web browsers.",
+      "desc": "JavaScript client library and protoc plugin (protoc-gen-grpc-web) enabling gRPC in web browsers.",
       "url": "https://github.com/grpc/grpc-web",
       "github": "https://github.com/grpc/grpc-web",
       "languages": [
@@ -922,7 +923,7 @@
       "name": "protobuf-net",
       "owner": "protobuf-net",
       "repo": "protobuf-net",
-      "desc": "High-performance contract-based serialization library for .NET that implements the Protocol Buffers wire format.",
+      "desc": "Contract-based serialization library for .NET implementing the Protocol Buffers wire format.",
       "url": "https://protobuf-net.github.io/protobuf-net/",
       "github": "https://github.com/protobuf-net/protobuf-net",
       "languages": [
@@ -941,7 +942,7 @@
       "name": "Kratos",
       "owner": "go-kratos",
       "repo": "kratos",
-      "desc": "A Go microservices framework for the cloud-native era, using Protobuf and gRPC as its foundation.",
+      "desc": "Go microservices framework built on Protobuf and gRPC.",
       "url": "https://go-kratos.dev/",
       "github": "https://github.com/go-kratos/kratos",
       "languages": [
@@ -960,7 +961,7 @@
       "name": "grpcurl",
       "owner": "fullstorydev",
       "repo": "grpcurl",
-      "desc": "Like cURL, but for gRPC: Command-line tool for interacting with gRPC servers.",
+      "desc": "Command-line tool for interacting with gRPC servers, similar to cURL.",
       "url": "https://github.com/fullstorydev/grpcurl",
       "github": "https://github.com/fullstorydev/grpcurl",
       "languages": [
@@ -979,7 +980,7 @@
       "name": "Kitex",
       "owner": "cloudwego",
       "repo": "kitex",
-      "desc": "High-performance Go RPC framework for building microservices, natively supporting Protobuf.",
+      "desc": "Go RPC framework for building microservices with native Protobuf support.",
       "url": "https://www.cloudwego.io/docs/kitex/",
       "github": "https://github.com/cloudwego/kitex",
       "languages": [
@@ -1017,7 +1018,7 @@
       "name": "Typia",
       "owner": "samchon",
       "repo": "typia",
-      "desc": "Super-fast runtime validators and serialization library for TypeScript using transformers, supporting Protobuf.",
+      "desc": "Runtime validation and serialization library for TypeScript using transformers, with Protobuf support.",
       "url": "https://typia.io/",
       "github": "https://github.com/samchon/typia",
       "languages": [
@@ -1037,7 +1038,7 @@
       "name": "TypeSpec",
       "owner": "microsoft",
       "repo": "typespec",
-      "desc": "A highly extensible API design language from Microsoft that compiles to OpenAPI, JSON Schema, and Protobuf.",
+      "desc": "API design language from Microsoft that compiles to OpenAPI, JSON Schema, and Protobuf.",
       "url": "https://typespec.io/",
       "github": "https://github.com/microsoft/typespec",
       "languages": [
@@ -1056,7 +1057,7 @@
       "name": "Proto Actor (Go)",
       "owner": "asynkron",
       "repo": "protoactor-go",
-      "desc": "Ultra fast distributed actors for Go, C#, Java and Kotlin using Protobuf for network communication.",
+      "desc": "Distributed actor framework for Go, C#, Java, and Kotlin using Protobuf for network communication.",
       "url": "https://proto.actor/",
       "github": "https://github.com/asynkron/protoactor-go",
       "languages": [
@@ -1075,7 +1076,7 @@
       "name": "Prototool",
       "owner": "uber",
       "repo": "prototool",
-      "desc": "Your Swiss Army Knife for Protocol Buffers - compile, lint, and format protos easily.",
+      "desc": "CLI tool that compiles, lints, and formats Protocol Buffer files.",
       "url": "https://github.com/uber/prototool",
       "github": "https://github.com/uber/prototool",
       "languages": [
@@ -1094,7 +1095,7 @@
       "name": "Prost",
       "owner": "tokio-rs",
       "repo": "prost",
-      "desc": "A fast, memory-efficient Protocol Buffers implementation for the Rust programming language.",
+      "desc": "Memory-efficient Protocol Buffers implementation for the Rust programming language.",
       "url": "https://github.com/tokio-rs/prost",
       "github": "https://github.com/tokio-rs/prost",
       "languages": [
@@ -1113,7 +1114,7 @@
       "name": "Cellnet",
       "owner": "davyxu",
       "repo": "cellnet",
-      "desc": "A high performance, simple, and extensible network server library for Go supporting TCP, WebSocket, and Protobuf.",
+      "desc": "Network server library for Go supporting TCP, WebSocket, and Protobuf.",
       "url": "https://github.com/davyxu/cellnet",
       "github": "https://github.com/davyxu/cellnet",
       "languages": [
@@ -1136,7 +1137,7 @@
       "name": "Protocol Buffers (Google)",
       "owner": "protocolbuffers",
       "repo": "protobuf",
-      "desc": "Google's language-neutral, platform-neutral, extensible mechanism for serializing structured data. Contains the protoc compiler, code generator stubs, and official runtimes.",
+      "desc": "Google's language-neutral, platform-neutral mechanism for serializing structured data, including the protoc compiler and official runtimes.",
       "url": "https://protobuf.dev/",
       "github": "https://github.com/protocolbuffers/protobuf",
       "languages": [
@@ -1219,7 +1220,7 @@
       "name": "vanguard-go",
       "owner": "connectrpc",
       "repo": "vanguard-go",
-      "desc": "A library for net/http Go servers enabling transcoding between gRPC, gRPC-Web, Connect, and REST.",
+      "desc": "Library for net/http Go servers enabling transcoding between gRPC, gRPC-Web, Connect, and REST.",
       "url": "https://github.com/connectrpc/vanguard-go",
       "github": "https://github.com/connectrpc/vanguard-go",
       "languages": [
@@ -1238,7 +1239,7 @@
       "name": "Insomnia",
       "owner": "Kong",
       "repo": "insomnia",
-      "desc": "A collaborative API client that supports debugging, testing, and mocking gRPC and Protobuf APIs.",
+      "desc": "API client supporting debugging, testing, and mocking of gRPC and Protobuf APIs.",
       "url": "https://insomnia.rest",
       "github": "https://github.com/Kong/insomnia",
       "languages": [
@@ -1257,7 +1258,7 @@
       "name": "Postman",
       "owner": "postmanlabs",
       "repo": "postman-app-support",
-      "desc": "A popular API platform that includes support for creating, testing, and debugging gRPC requests and mocking Protobuf endpoints.",
+      "desc": "Platform for creating, testing, and debugging gRPC requests, with Protobuf endpoint mocking.",
       "url": "https://learning.postman.com/docs/use/send-requests/protocols/grpc/first-grpc-request",
       "github": "https://github.com/postmanlabs/postman-app-support",
       "languages": [
@@ -1276,7 +1277,7 @@
       "name": "k6",
       "owner": "grafana",
       "repo": "k6",
-      "desc": "An open-source, developer-centric performance testing tool by Grafana that supports load testing gRPC services using custom JavaScript scenarios.",
+      "desc": "Open-source performance testing tool from Grafana that load-tests gRPC services using custom JavaScript scenarios.",
       "url": "https://k6.io",
       "github": "https://github.com/grafana/k6",
       "languages": [
@@ -1295,7 +1296,7 @@
       "name": "protokt",
       "owner": "open-toast",
       "repo": "protokt",
-      "desc": "A popular Kotlin-specific compiler plugin and runtime generator for Protocol Buffers, producing idiomatic Kotlin code.",
+      "desc": "Kotlin-specific compiler plugin and runtime generator for Protocol Buffers, producing idiomatic Kotlin code.",
       "url": "https://github.com/open-toast/protokt",
       "github": "https://github.com/open-toast/protokt",
       "languages": [
@@ -1314,7 +1315,7 @@
       "name": "Wireshark",
       "owner": "wireshark",
       "repo": "wireshark",
-      "desc": "A network packet sniffer with built-in Protocol Buffers and gRPC dissectors, enabling you to decode and inspect raw binary protobuf messages over the wire.",
+      "desc": "Network packet sniffer with built-in Protocol Buffers and gRPC dissectors for inspecting messages on the wire.",
       "url": "https://www.wireshark.org",
       "github": "https://github.com/wireshark/wireshark",
       "languages": [
@@ -1333,7 +1334,7 @@
       "name": "Protolock",
       "owner": "nilslice",
       "repo": "protolock",
-      "desc": "A track-and-lock utility designed to prevent backward-incompatible changes to Protobuf schema files, saving downstream clients from breakage.",
+      "desc": "Track-and-lock utility that prevents backward-incompatible changes to Protobuf schema files.",
       "url": "https://github.com/nilslice/protolock",
       "github": "https://github.com/nilslice/protolock",
       "languages": [
@@ -1352,7 +1353,7 @@
       "name": "FauxRPC",
       "owner": "sudorandom",
       "repo": "fauxrpc",
-      "desc": "A tool to generate fake service implementations directly from Protobuf schemas, supporting gRPC, ConnectRPC, gRPC-Web, and REST on-the-fly.",
+      "desc": "Generates fake service implementations from Protobuf schemas, serving gRPC, ConnectRPC, gRPC-Web, and REST on the fly.",
       "url": "https://fauxrpc.com",
       "github": "https://github.com/sudorandom/fauxrpc",
       "languages": [
@@ -1371,7 +1372,7 @@
       "name": "molecule",
       "owner": "richardartoul",
       "repo": "molecule",
-      "desc": "A specialized Go library for parsing protobufs with zero memory allocation, useful for high-throughput edge systems.",
+      "desc": "Go library for parsing protobufs with zero memory allocation, aimed at high-throughput edge systems.",
       "url": "https://github.com/richardartoul/molecule",
       "github": "https://github.com/richardartoul/molecule",
       "languages": [
@@ -1390,7 +1391,7 @@
       "name": "Envoy",
       "owner": "envoyproxy",
       "repo": "envoy",
-      "desc": "A high-performance edge and service proxy with native, deep support for routing, translating, and observing gRPC/Protobuf traffic.",
+      "desc": "Edge and service proxy with built-in support for routing, translating, and observing gRPC/Protobuf traffic.",
       "url": "https://www.envoyproxy.io",
       "github": "https://github.com/envoyproxy/envoy",
       "languages": [
@@ -1409,7 +1410,7 @@
       "name": "gRPCui",
       "owner": "fullstorydev",
       "repo": "grpcui",
-      "desc": "An interactive web UI for gRPC, allowing you to explore and test gRPC services directly from your browser.",
+      "desc": "Interactive web UI for exploring and testing gRPC services from the browser.",
       "url": "https://github.com/fullstorydev/grpcui",
       "github": "https://github.com/fullstorydev/grpcui",
       "languages": [
@@ -1428,7 +1429,7 @@
       "name": "Kreya",
       "owner": "riok",
       "repo": "kreya",
-      "desc": "A popular graphical desktop client for gRPC and REST APIs, with support for server reflection and environments.",
+      "desc": "Graphical desktop client for gRPC and REST APIs, with server reflection and environment support.",
       "url": "https://kreya.app",
       "github": "https://github.com/riok/kreya",
       "languages": [
@@ -1447,7 +1448,7 @@
       "name": "Evans",
       "owner": "ktr0731",
       "repo": "evans",
-      "desc": "A highly interactive, REPL-style command-line client for gRPC that makes exploring services via terminal intuitive.",
+      "desc": "REPL-style command-line client for exploring and calling gRPC services.",
       "url": "https://github.com/ktr0731/evans",
       "github": "https://github.com/ktr0731/evans",
       "languages": [
@@ -1466,7 +1467,7 @@
       "name": "Tonic",
       "owner": "hyperium",
       "repo": "tonic",
-      "desc": "A native gRPC client and server implementation for Rust, built on top of Hyper, Tokio, and Prost.",
+      "desc": "gRPC client and server implementation for Rust, built on Hyper, Tokio, and Prost.",
       "url": "https://github.com/hyperium/tonic",
       "github": "https://github.com/hyperium/tonic",
       "languages": [
@@ -1485,7 +1486,7 @@
       "name": "ts-proto",
       "owner": "stephenh",
       "repo": "ts-proto",
-      "desc": "A popular Protobuf compiler plugin for TypeScript that generates plain-object interfaces and simple helper classes.",
+      "desc": "Protobuf compiler plugin for TypeScript that generates plain-object interfaces and helper classes.",
       "url": "https://github.com/stephenh/ts-proto",
       "github": "https://github.com/stephenh/ts-proto",
       "languages": [
@@ -1524,7 +1525,7 @@
       "name": "gRPC Swift",
       "owner": "grpc",
       "repo": "grpc-swift",
-      "desc": "The official Swift gRPC library, providing client and server capabilities built on SwiftNIO.",
+      "desc": "Official Swift gRPC library, providing client and server capabilities built on SwiftNIO.",
       "url": "https://github.com/grpc/grpc-swift",
       "github": "https://github.com/grpc/grpc-swift",
       "languages": [
@@ -1543,7 +1544,7 @@
       "name": "ScalaPB",
       "owner": "scalapb",
       "repo": "ScalaPB",
-      "desc": "The definitive Protocol Buffer compiler plugin for Scala, generating idiomatic case classes and native gRPC bindings.",
+      "desc": "Protocol Buffer compiler plugin for Scala, generating idiomatic case classes and gRPC bindings.",
       "url": "https://scalapb.github.io",
       "github": "https://github.com/scalapb/ScalaPB",
       "languages": [
@@ -1562,7 +1563,7 @@
       "name": "Armeria",
       "owner": "line",
       "repo": "armeria",
-      "desc": "An asynchronous HTTP/2 microservices framework for the JVM supporting gRPC, REST, and GraphQL simultaneously.",
+      "desc": "Asynchronous HTTP/2 microservices framework for the JVM, supporting gRPC, REST, and GraphQL.",
       "url": "https://armeria.dev",
       "github": "https://github.com/line/armeria",
       "languages": [
@@ -1586,7 +1587,7 @@
       "name": "Confluent Schema Registry",
       "owner": "confluentinc",
       "repo": "schema-registry",
-      "desc": "A shared registry for schema management that provides serialization/deserialization helpers and compatibility verification for Kafka.",
+      "desc": "Shared schema registry for Kafka, providing serialization/deserialization helpers and compatibility verification.",
       "url": "https://docs.confluent.io/platform/current/schema-registry/index.html",
       "github": "https://github.com/confluentinc/schema-registry",
       "languages": [
@@ -1605,7 +1606,7 @@
       "name": "pbtk",
       "owner": "marin-m",
       "repo": "pbtk",
-      "desc": "A reverse-engineering toolkit for Protocol Buffers, helping you extract schemas from binaries and analyze payloads.",
+      "desc": "Reverse-engineering toolkit for Protocol Buffers that extracts schemas from binaries and analyzes payloads.",
       "url": "https://github.com/marin-m/pbtk",
       "github": "https://github.com/marin-m/pbtk",
       "languages": [
@@ -1624,7 +1625,7 @@
       "name": "blackboxprotobuf",
       "owner": "nccgroup",
       "repo": "blackboxprotobuf",
-      "desc": "A security and analysis utility that allows decoding and editing of Protobuf messages without having the original schemas.",
+      "desc": "Security and analysis utility for decoding and editing Protobuf messages without the original schema.",
       "url": "https://github.com/nccgroup/blackboxprotobuf",
       "github": "https://github.com/nccgroup/blackboxprotobuf",
       "languages": [
@@ -1643,7 +1644,7 @@
       "name": "buffrs",
       "owner": "helsing-ai",
       "repo": "buffrs",
-      "desc": "A modern package manager for Protocol Buffers, providing dependency management and registry publication capabilities.",
+      "desc": "Package manager for Protocol Buffers, providing dependency management and registry publishing.",
       "url": "https://github.com/helsing-ai/buffrs",
       "github": "https://github.com/helsing-ai/buffrs",
       "languages": [
@@ -1662,7 +1663,7 @@
       "name": "EmbeddedProto",
       "owner": "Embedded-AMS",
       "repo": "EmbeddedProto",
-      "desc": "A lightweight C++ Protobuf generator optimized for microcontrollers and embedded systems, featuring zero dynamic allocations.",
+      "desc": "C++ Protobuf generator for microcontrollers and embedded systems, with zero dynamic allocation.",
       "url": "https://embeddedproto.com/",
       "github": "https://github.com/Embedded-AMS/EmbeddedProto",
       "languages": [
@@ -1684,7 +1685,7 @@
       "name": "grpcbin",
       "owner": "moul",
       "repo": "grpcbin",
-      "desc": "A mock gRPC service (similar to httpbin) that is extremely useful for testing and debugging gRPC clients.",
+      "desc": "Mock gRPC service, similar to httpbin, for testing and debugging gRPC clients.",
       "url": "https://grpcb.in/",
       "github": "https://github.com/moul/grpcbin",
       "languages": [
@@ -1703,7 +1704,7 @@
       "name": "elixir-protobuf",
       "owner": "elixir-protobuf",
       "repo": "protobuf",
-      "desc": "A pure Elixir compiler and runtime library implementation for Protocol Buffers.",
+      "desc": "Pure Elixir compiler and runtime library for Protocol Buffers.",
       "url": "https://github.com/elixir-protobuf/protobuf",
       "github": "https://github.com/elixir-protobuf/protobuf",
       "languages": [
@@ -1722,7 +1723,7 @@
       "name": "protox",
       "owner": "ahamez",
       "repo": "protox",
-      "desc": "A reasonably fast, easy to use and 100% conformant Elixir library for Google Protocol Buffers (aka protobuf).",
+      "desc": "Elixir library for Google Protocol Buffers that is 100% conformant with the spec.",
       "url": "https://github.com/ahamez/protox",
       "github": "https://github.com/ahamez/protox",
       "languages": [
@@ -1741,7 +1742,7 @@
       "name": "grpclib",
       "owner": "vmagamedov",
       "repo": "grpclib",
-      "desc": "A pure-Python asyncio-based implementation of a gRPC client and server, with zero external C dependencies.",
+      "desc": "Pure-Python asyncio implementation of a gRPC client and server, with zero external C dependencies.",
       "url": "https://grpclib.readthedocs.io/",
       "github": "https://github.com/vmagamedov/grpclib",
       "languages": [
@@ -1763,7 +1764,7 @@
       "name": "protobuf-decoder",
       "owner": "pawitp",
       "repo": "protobuf-decoder",
-      "desc": "A lightweight, browser-based tool to decode and inspect raw binary Protocol Buffers logs and payloads on-the-fly.",
+      "desc": "Browser-based tool for decoding and inspecting raw binary Protocol Buffers payloads on the fly.",
       "url": "https://protobuf-decoder.netlify.app/",
       "github": "https://github.com/pawitp/protobuf-decoder",
       "languages": [
@@ -1782,7 +1783,7 @@
       "name": "protocurl",
       "owner": "qaware",
       "repo": "protocurl",
-      "desc": "A command-line tool (similar to cURL) to make requests to HTTP endpoints that accept or return Protocol Buffers.",
+      "desc": "Command-line tool, similar to cURL, for calling HTTP endpoints that accept or return Protocol Buffers.",
       "url": "https://github.com/qaware/protocurl",
       "github": "https://github.com/qaware/protocurl",
       "languages": [
@@ -1801,7 +1802,7 @@
       "name": "protobuf-javascript",
       "owner": "protocolbuffers",
       "repo": "protobuf-javascript",
-      "desc": "The official JavaScript Protocol Buffers code generator plugin (protoc-gen-js).",
+      "desc": "JavaScript code generator plugin (protoc-gen-js), the official Protobuf implementation for JS.",
       "url": "https://github.com/protocolbuffers/protobuf-javascript",
       "github": "https://github.com/protocolbuffers/protobuf-javascript",
       "languages": [
@@ -1820,7 +1821,7 @@
       "name": "protobuf-dart",
       "owner": "dart-lang",
       "repo": "protobuf",
-      "desc": "The official Dart code generator plugin (protoc-gen-dart) and runtime library for Protocol Buffers.",
+      "desc": "Official Dart code generator plugin (protoc-gen-dart) and runtime library for Protocol Buffers.",
       "url": "https://github.com/dart-lang/protobuf",
       "github": "https://github.com/dart-lang/protobuf",
       "languages": [
@@ -1839,7 +1840,7 @@
       "name": "grpc-go",
       "owner": "grpc",
       "repo": "grpc-go",
-      "desc": "The official Go implementation of gRPC, including the protoc-gen-go-grpc code generator plugin.",
+      "desc": "Official Go implementation of gRPC, including the protoc-gen-go-grpc code generator plugin.",
       "url": "https://grpc.io/",
       "github": "https://github.com/grpc/grpc-go",
       "languages": [
@@ -1858,7 +1859,7 @@
       "name": "grpc-java",
       "owner": "grpc",
       "repo": "grpc-java",
-      "desc": "The official Java implementation of gRPC, including the protoc-gen-grpc-java code generator plugin.",
+      "desc": "Official Java implementation of gRPC, including the protoc-gen-grpc-java code generator plugin.",
       "url": "https://grpc.io/",
       "github": "https://github.com/grpc/grpc-java",
       "languages": [
@@ -1877,7 +1878,7 @@
       "name": "protoc-gen-validate",
       "owner": "bufbuild",
       "repo": "protoc-gen-validate",
-      "desc": "A protoc compiler plugin to generate polymorphic validation rules for Go, Java, C++, and Python schemas.",
+      "desc": "Protoc compiler plugin that generates polymorphic validation rules for Go, Java, C++, and Python schemas.",
       "url": "https://github.com/bufbuild/protoc-gen-validate",
       "github": "https://github.com/bufbuild/protoc-gen-validate",
       "languages": [
@@ -1899,7 +1900,7 @@
       "name": "hyperpb",
       "owner": "bufbuild",
       "repo": "hyperpb-go",
-      "desc": "10x faster dynamic Protobuf parsing in Go, acting as a high-performance VM-based replacement for dynamicpb.",
+      "desc": "VM-based replacement for dynamicpb offering 10x faster dynamic Protobuf parsing in Go.",
       "url": "https://github.com/bufbuild/hyperpb-go",
       "github": "https://github.com/bufbuild/hyperpb-go",
       "languages": [
@@ -1918,7 +1919,7 @@
       "name": "nanopb",
       "owner": "nanopb",
       "repo": "nanopb",
-      "desc": "Protocol Buffers with small code size",
+      "desc": "Protocol Buffers implementation with a small code footprint.",
       "url": "https://github.com/nanopb/nanopb",
       "github": "https://github.com/nanopb/nanopb",
       "languages": [
@@ -1937,7 +1938,7 @@
       "name": "pbc",
       "owner": "cloudwu",
       "repo": "pbc",
-      "desc": "A protocol buffers library for C",
+      "desc": "Library implementing Protocol Buffers for the C programming language.",
       "url": "https://github.com/cloudwu/pbc",
       "github": "https://github.com/cloudwu/pbc",
       "languages": [
@@ -1956,7 +1957,7 @@
       "name": "struct2x",
       "owner": "yksten",
       "repo": "struct2x",
-      "desc": "地表最强C++Class序列化",
+      "desc": "C++ library for automatic serialization of class instances.",
       "url": "https://github.com/yksten/struct2x",
       "github": "https://github.com/yksten/struct2x",
       "languages": [
@@ -1975,7 +1976,7 @@
       "name": "SilentOrbit-Protocol-Buffers-Compiler",
       "owner": "silentorbit",
       "repo": "protobuf",
-      "desc": "A fast, zero-allocation C# code generator and runtime for encoding and decoding Protocol Buffers binaries.",
+      "desc": "Zero-allocation C# code generator and runtime for encoding and decoding Protocol Buffers.",
       "url": "https://github.com/silentorbit/protobuf",
       "github": "https://github.com/silentorbit/protobuf",
       "languages": [
@@ -1994,7 +1995,7 @@
       "name": "clojure-protobuf",
       "owner": "ninjudd",
       "repo": "clojure-protobuf",
-      "desc": "Google protocol buffers wrapper for Clojure.",
+      "desc": "Wrapper library bringing Google's protocol buffers to Clojure.",
       "url": "https://github.com/ninjudd/clojure-protobuf",
       "github": "https://github.com/ninjudd/clojure-protobuf",
       "languages": [
@@ -2013,7 +2014,7 @@
       "name": "brown-protobuf",
       "owner": "brown",
       "repo": "protobuf",
-      "desc": "Common Lisp implementation of Google's protocol buffers",
+      "desc": "Common Lisp implementation of Google's protocol buffers format.",
       "url": "https://github.com/brown/protobuf",
       "github": "https://github.com/brown/protobuf",
       "languages": [
@@ -2032,7 +2033,7 @@
       "name": "protobuf-delphi",
       "owner": "marat1961",
       "repo": "protobuf-delphi",
-      "desc": "A native Delphi generator and support library for Google Protocol Buffers schemas.",
+      "desc": "Delphi code generator and support library for Google Protocol Buffers schemas.",
       "url": "http://sourceforge.net/projects/protobuf-delphi",
       "github": "https://github.com/marat1961/protobuf-delphi",
       "languages": [
@@ -2051,7 +2052,7 @@
       "name": "protobuf-elixir",
       "owner": "tony612",
       "repo": "protobuf-elixir",
-      "desc": "A pure Elixir implementation of Google Protobuf.",
+      "desc": "Pure Elixir implementation of Google's Protobuf wire format.",
       "url": "https://github.com/tony612/protobuf-elixir",
       "github": "https://github.com/tony612/protobuf-elixir",
       "languages": [
@@ -2070,7 +2071,7 @@
       "name": "gpb",
       "owner": "tomas-abrahamsson",
       "repo": "gpb",
-      "desc": "A Google Protobuf implementation for Erlang",
+      "desc": "Erlang implementation of Google's Protocol Buffers wire format.",
       "url": "https://github.com/tomas-abrahamsson/gpb",
       "github": "https://github.com/tomas-abrahamsson/gpb",
       "languages": [
@@ -2089,7 +2090,7 @@
       "name": "erlang_protobuffs",
       "owner": "basho",
       "repo": "erlang_protobuffs",
-      "desc": "An implementation of Google's Protocol Buffers for Erlang, based on ngerakines/erlang_protobuffs.",
+      "desc": "Implementation of Google's Protocol Buffers for Erlang, based on ngerakines/erlang_protobuffs.",
       "url": "https://github.com/basho/erlang_protobuffs",
       "github": "https://github.com/basho/erlang_protobuffs",
       "languages": [
@@ -2108,7 +2109,7 @@
       "name": "godobuf",
       "owner": "oniksan",
       "repo": "godobuf",
-      "desc": "A Google Protobuf implementation for Godot / GDScript",
+      "desc": "Google Protobuf implementation for Godot and its GDScript language.",
       "url": "https://github.com/oniksan/godobuf",
       "github": "https://github.com/oniksan/godobuf",
       "languages": [
@@ -2127,7 +2128,7 @@
       "name": "gogo-protobuf",
       "owner": "gogo",
       "repo": "protobuf",
-      "desc": "[Deprecated] Protocol Buffers for Go with Gadgets",
+      "desc": "Deprecated Protocol Buffers implementation for Go, extended with code-generation \"gadgets.\"",
       "url": "https://github.com/gogo/protobuf",
       "github": "https://github.com/gogo/protobuf",
       "languages": [
@@ -2146,7 +2147,7 @@
       "name": "hprotoc",
       "owner": "k-bx",
       "repo": "protocol-buffers",
-      "desc": "A compiler plugin and library that generates Haskell data types and serialization functions from Protocol Buffers.",
+      "desc": "Compiler plugin and library generating Haskell data types and serialization functions from Protocol Buffers.",
       "url": "https://hackage.haskell.org/package/hprotoc",
       "github": "https://github.com/k-bx/protocol-buffers",
       "languages": [
@@ -2165,7 +2166,7 @@
       "name": "proto-lens",
       "owner": "google",
       "repo": "proto-lens",
-      "desc": "API for protocol buffers using modern Haskell language and library patterns.",
+      "desc": "API for protocol buffers using Haskell language and library patterns.",
       "url": "https://github.com/google/proto-lens",
       "github": "https://github.com/google/proto-lens",
       "languages": [
@@ -2184,7 +2185,7 @@
       "name": "QuickBuffers",
       "owner": "HebiRobotics",
       "repo": "QuickBuffers",
-      "desc": "Java Protobuf implementation suitable for real-time enviroments",
+      "desc": "Java Protobuf implementation, suited for use in real-time environments.",
       "url": "https://github.com/HebiRobotics/QuickBuffers",
       "github": "https://github.com/HebiRobotics/QuickBuffers",
       "languages": [
@@ -2200,10 +2201,10 @@
     },
     {
       "category": "libraries",
-      "name": "encode.shtml",
+      "name": "SwingME Protobuf",
       "owner": "",
       "repo": "",
-      "desc": "A compact Java Micro Edition (Java ME) library for parsing and serializing Protocol Buffers on resource-constrained devices.",
+      "desc": "Compact Java ME library for parsing and serializing Protocol Buffers on resource-constrained devices.",
       "url": "http://swingme.sourceforge.net/encode.shtml",
       "github": "",
       "languages": [
@@ -2222,7 +2223,7 @@
       "name": "protojs",
       "owner": "sirikata",
       "repo": "protojs",
-      "desc": "Protobuf implementation in javascript",
+      "desc": "Protocol Buffers implementation for JavaScript, supporting message encoding and decoding.",
       "url": "https://github.com/sirikata/protojs",
       "github": "https://github.com/sirikata/protojs",
       "languages": [
@@ -2241,7 +2242,7 @@
       "name": "ProtoBuf.jl",
       "owner": "JuliaIO",
       "repo": "ProtoBuf.jl",
-      "desc": "Julia protobuf implementation",
+      "desc": "JuliaIO's implementation of Protocol Buffers for the Julia language.",
       "url": "https://github.com/JuliaIO/ProtoBuf.jl",
       "github": "https://github.com/JuliaIO/ProtoBuf.jl",
       "languages": [
@@ -2260,7 +2261,7 @@
       "name": "kroto-plus",
       "owner": "marcoferrer",
       "repo": "kroto-plus",
-      "desc": "gRPC Kotlin Coroutines, Protobuf DSL, Scripting for Protoc",
+      "desc": "Kotlin toolkit adding gRPC coroutine support, a Protobuf DSL, and protoc scripting.",
       "url": "https://github.com/marcoferrer/kroto-plus",
       "github": "https://github.com/marcoferrer/kroto-plus",
       "languages": [
@@ -2279,7 +2280,7 @@
       "name": "sisyphus",
       "owner": "ButterCam",
       "repo": "sisyphus",
-      "desc": "Modern gRPC back-end development framework base on JVM.",
+      "desc": "gRPC back-end development framework based on the JVM.",
       "url": "https://github.com/ButterCam/sisyphus",
       "github": "https://github.com/ButterCam/sisyphus",
       "languages": [
@@ -2298,7 +2299,7 @@
       "name": "pbandk",
       "owner": "streem",
       "repo": "pbandk",
-      "desc": "Kotlin Multiplatform Code Generator and Runtime for Protocol Buffers (Protobuf)",
+      "desc": "Kotlin Multiplatform code generator and runtime for Protocol Buffers.",
       "url": "https://github.com/streem/pbandk",
       "github": "https://github.com/streem/pbandk",
       "languages": [
@@ -2317,7 +2318,7 @@
       "name": "lua-pb",
       "owner": "Neopallium",
       "repo": "lua-pb",
-      "desc": "Lua Protocol Buffers",
+      "desc": "Lua implementation of Protocol Buffers for encoding and decoding messages.",
       "url": "https://github.com/Neopallium/lua-pb",
       "github": "https://github.com/Neopallium/lua-pb",
       "languages": [
@@ -2336,7 +2337,7 @@
       "name": "protobuf-objc",
       "owner": "alexeyxo",
       "repo": "protobuf-objc",
-      "desc": "An Objective-C code generator and library for encoding and decoding structured Protocol Buffers.",
+      "desc": "Objective-C code generator and library for encoding and decoding Protocol Buffers.",
       "url": "https://github.com/alexeyxo/protobuf-objc",
       "github": "https://github.com/alexeyxo/protobuf-objc",
       "languages": [
@@ -2355,7 +2356,7 @@
       "name": "Google-ProtocolBuffers",
       "owner": "csirtgadgets",
       "repo": "google-protocolbuffers-perl",
-      "desc": "A Perl module for generating message accessor code and serializing data structures to Protobuf wire format.",
+      "desc": "Perl module that generates message accessor code and serializes data structures to Protobuf wire format.",
       "url": "https://metacpan.org/pod/Google::ProtocolBuffers",
       "github": "https://github.com/csirtgadgets/google-protocolbuffers-perl",
       "languages": [
@@ -2374,7 +2375,7 @@
       "name": "php-protobuf",
       "owner": "allegro",
       "repo": "php-protobuf",
-      "desc": "PHP Protobuf - Google's Protocol Buffers for PHP",
+      "desc": "PHP library implementing Google's Protocol Buffers serialization format.",
       "url": "https://github.com/allegro/php-protobuf",
       "github": "https://github.com/allegro/php-protobuf",
       "languages": [
@@ -2412,7 +2413,7 @@
       "name": "eigenein-protobuf",
       "owner": "eigenein",
       "repo": "protobuf",
-      "desc": "Python implementation of Protocol Buffers with dataclass-based schemaʼs",
+      "desc": "Python implementation of Protocol Buffers using dataclass-based schemas.",
       "url": "https://github.com/eigenein/protobuf",
       "github": "https://github.com/eigenein/protobuf",
       "languages": [
@@ -2431,7 +2432,7 @@
       "name": "python-betterproto",
       "owner": "danielgtaylor",
       "repo": "python-betterproto",
-      "desc": "Clean, modern, Python 3.6+ code generator & library for Protobuf 3 and async gRPC",
+      "desc": "Python 3.6+ code generator and library for Protobuf 3 and async gRPC.",
       "url": "https://github.com/danielgtaylor/python-betterproto",
       "github": "https://github.com/danielgtaylor/python-betterproto",
       "languages": [
@@ -2450,7 +2451,7 @@
       "name": "RProtoBuf",
       "owner": "eddelbuettel",
       "repo": "rprotobuf",
-      "desc": "R package offering comprehensive bindings to the C++ Protocol Buffers library for importing and exporting data structures.",
+      "desc": "R package providing bindings to the C++ Protocol Buffers library for importing and exporting data structures.",
       "url": "https://cran.r-project.org/web/packages/RProtoBuf/index.html",
       "github": "https://github.com/eddelbuettel/rprotobuf",
       "languages": [
@@ -2469,7 +2470,7 @@
       "name": "beefcake",
       "owner": "bmizerany",
       "repo": "beefcake",
-      "desc": "A lightweight Ruby library for encoding and decoding Protocol Buffers, focusing on speed and simplicity.",
+      "desc": "Ruby library for encoding and decoding Protocol Buffers messages.",
       "url": "https://github.com/bmizerany/beefcake",
       "github": "https://github.com/bmizerany/beefcake",
       "languages": [
@@ -2488,7 +2489,7 @@
       "name": "quick-protobuf",
       "owner": "tafia",
       "repo": "quick-protobuf",
-      "desc": "A fast, lightweight, and easy-to-use Rust implementation of Google Protocol Buffers serialization format.",
+      "desc": "Rust implementation of the Google Protocol Buffers serialization format.",
       "url": "https://github.com/tafia/quick-protobuf",
       "github": "https://github.com/tafia/quick-protobuf",
       "languages": [
@@ -2507,7 +2508,7 @@
       "name": "ScalaBuff",
       "owner": "SandroGrzicic",
       "repo": "ScalaBuff",
-      "desc": "A Scala Protocol Buffers compiler plugin that generates idiomatic case classes and helper methods.",
+      "desc": "Scala Protocol Buffers compiler plugin generating idiomatic case classes and helper methods.",
       "url": "https://github.com/SandroGrzicic/ScalaBuff",
       "github": "https://github.com/SandroGrzicic/ScalaBuff",
       "languages": [
@@ -2526,7 +2527,7 @@
       "name": "ts-protoc-gen",
       "owner": "improbable-eng",
       "repo": "ts-protoc-gen",
-      "desc": "A compiler plugin that generates TypeScript interfaces and client/server gRPC service definitions for ts-proto.",
+      "desc": "Compiler plugin generating TypeScript interfaces and client/server gRPC service definitions for ts-proto.",
       "url": "https://github.com/improbable-eng/ts-protoc-gen",
       "github": "https://github.com/improbable-eng/ts-protoc-gen",
       "languages": [
@@ -2548,7 +2549,7 @@
       "name": "protoc-gen-ts",
       "owner": "thesayyn",
       "repo": "protoc-gen-ts",
-      "desc": "A lightweight TypeScript code generator for Protocol Buffers, providing type-safe message objects.",
+      "desc": "TypeScript code generator for Protocol Buffers, producing type-safe message objects.",
       "url": "https://github.com/thesayyn/protoc-gen-ts",
       "github": "https://github.com/thesayyn/protoc-gen-ts",
       "languages": [
@@ -2567,7 +2568,7 @@
       "name": "pbkit",
       "owner": "pbkit",
       "repo": "pbkit",
-      "desc": "An ecosystem of tools for Protocol Buffers in TypeScript and Deno, featuring a pure TS compiler and formatter.",
+      "desc": "Ecosystem of tools for Protocol Buffers in TypeScript and Deno, including a pure-TS compiler and formatter.",
       "url": "https://github.com/pbkit/pbkit",
       "github": "https://github.com/pbkit/pbkit",
       "languages": [
@@ -2586,7 +2587,7 @@
       "name": "protobuf-vala",
       "owner": "",
       "repo": "",
-      "desc": "Vala bindings and code generator for compiling Google Protocol Buffers schemas into native C libraries.",
+      "desc": "Vala bindings and code generator compiling Google Protocol Buffers schemas into native C libraries.",
       "url": "https://launchpad.net/protobuf-vala",
       "github": "",
       "languages": [
@@ -2605,7 +2606,7 @@
       "name": "zig-protobuf",
       "owner": "Arwalk",
       "repo": "zig-protobuf",
-      "desc": "A native Zig implementation of Protocol Buffers, providing automatic type conversion and code generation.",
+      "desc": "Native Zig implementation of Protocol Buffers, providing automatic type conversion and code generation.",
       "url": "https://github.com/Arwalk/zig-protobuf",
       "github": "https://github.com/Arwalk/zig-protobuf",
       "languages": [
@@ -2624,7 +2625,7 @@
       "name": "protoscope",
       "owner": "protocolbuffers",
       "repo": "protoscope",
-      "desc": "A tool and language designed to inspect, write, and verify Protocol Buffers binary wire format payloads.",
+      "desc": "Tool and language for inspecting, writing, and verifying Protocol Buffers wire-format payloads.",
       "url": "https://github.com/protocolbuffers/protoscope",
       "github": "https://github.com/protocolbuffers/protoscope",
       "languages": [
@@ -2643,7 +2644,7 @@
       "name": "protocompile",
       "owner": "bufbuild",
       "repo": "protocompile",
-      "desc": "A high-performance Protobuf compiler engine written in Go, implementing parsing, linking, and descriptor compilation.",
+      "desc": "Protobuf compiler engine written in Go, implementing parsing, linking, and descriptor compilation.",
       "url": "https://github.com/bufbuild/protocompile",
       "github": "https://github.com/bufbuild/protocompile",
       "languages": [
@@ -2662,7 +2663,7 @@
       "name": "Google AIPs",
       "owner": "aip-dev",
       "repo": "google.aip.dev",
-      "desc": "Google API Improvement Proposals (AIPs) define design guidelines for gRPC and Protocol Buffers APIs, which can be automatically enforced using the Google API Linter.",
+      "desc": "Google's API Improvement Proposals (AIPs) define design guidelines for gRPC and Protobuf APIs, enforceable via the Google API Linter.",
       "url": "https://google.aip.dev",
       "github": [
         "https://github.com/aip-dev/google.aip.dev",
@@ -2684,7 +2685,7 @@
       "name": "nice-grpc",
       "owner": "deeplay-io",
       "repo": "nice-grpc",
-      "desc": "A gRPC library for Node.js and TypeScript. Built on top of @grpc/grpc-js, providing a user-friendly, type-safe, and robust interface with support for middleware and cancellation.",
+      "desc": "gRPC library for Node.js and TypeScript, built on @grpc/grpc-js with a type-safe interface supporting middleware and cancellation.",
       "url": "https://github.com/deeplay-io/nice-grpc",
       "github": "https://github.com/deeplay-io/nice-grpc",
       "languages": [
@@ -2704,7 +2705,7 @@
       "name": "gRPC Proto",
       "owner": "grpc",
       "repo": "grpc-proto",
-      "desc": "Common gRPC proto definitions and schemas, housing standard service and message definitions for gRPC-related protocols.",
+      "desc": "Shared repository of common gRPC proto definitions and schemas for gRPC-related protocols.",
       "url": "https://github.com/grpc/grpc-proto",
       "github": "https://github.com/grpc/grpc-proto",
       "languages": [
