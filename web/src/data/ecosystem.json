@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-08-10T21:23:58.272Z",
+  "fetchedAt": "2026-08-10T22:17:54.799Z",
   "projects": [
     {
       "category": "tools",
@@ -530,7 +530,7 @@
         "JavaScript"
       ],
       "relevance": 2,
-      "stars": 10577,
+      "stars": 10578,
       "pushedAt": "2026-08-08T13:16:36Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -930,8 +930,8 @@
         "C#"
       ],
       "relevance": 2,
-      "stars": 4963,
-      "pushedAt": "2026-08-10T21:10:18Z",
+      "stars": 4964,
+      "pushedAt": "2026-08-10T21:37:16Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -1150,8 +1150,8 @@
         "Go"
       ],
       "relevance": 4,
-      "stars": 71713,
-      "pushedAt": "2026-08-10T21:05:30Z",
+      "stars": 71714,
+      "pushedAt": "2026-08-10T22:05:55Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -1284,8 +1284,8 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 31231,
-      "pushedAt": "2026-08-10T17:50:12Z",
+      "stars": 31232,
+      "pushedAt": "2026-08-10T21:41:55Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -1399,7 +1399,7 @@
       ],
       "relevance": 1,
       "stars": 28754,
-      "pushedAt": "2026-08-10T20:41:15Z",
+      "pushedAt": "2026-08-10T21:59:39Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -1595,7 +1595,7 @@
       ],
       "relevance": 1,
       "stars": 2459,
-      "pushedAt": "2026-08-10T20:56:20Z",
+      "pushedAt": "2026-08-10T22:00:02Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
