@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-08-12T10:41:09.590Z",
+  "fetchedAt": "2026-08-12T11:28:09.135Z",
   "projects": [
     {
       "category": "tools",
@@ -303,7 +303,7 @@
       ],
       "relevance": 4,
       "stars": 45274,
-      "pushedAt": "2026-08-12T10:19:49Z",
+      "pushedAt": "2026-08-12T11:11:27Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -410,7 +410,7 @@
         "C++"
       ],
       "relevance": 1,
-      "stars": 17577,
+      "stars": 17578,
       "pushedAt": "2026-08-10T02:20:11Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -931,7 +931,7 @@
       ],
       "relevance": 2,
       "stars": 4965,
-      "pushedAt": "2026-08-12T10:35:20Z",
+      "pushedAt": "2026-08-12T11:26:33Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -1246,8 +1246,8 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 39939,
-      "pushedAt": "2026-08-12T10:21:55Z",
+      "stars": 39940,
+      "pushedAt": "2026-08-12T10:45:14Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -1595,7 +1595,7 @@
       ],
       "relevance": 1,
       "stars": 2459,
-      "pushedAt": "2026-08-12T09:44:33Z",
+      "pushedAt": "2026-08-12T10:47:05Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
