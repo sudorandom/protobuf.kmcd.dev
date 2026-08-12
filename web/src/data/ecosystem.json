@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-08-12T05:17:38.943Z",
+  "fetchedAt": "2026-08-12T06:57:15.636Z",
   "projects": [
     {
       "category": "tools",
@@ -84,7 +84,7 @@
         "Rust"
       ],
       "relevance": 3,
-      "stars": 2271,
+      "stars": 2272,
       "pushedAt": "2026-08-11T18:28:50Z",
       "inactive": false,
       "starsWeekly": 5,
@@ -161,7 +161,7 @@
       ],
       "relevance": 3,
       "stars": 19979,
-      "pushedAt": "2026-08-11T23:57:45Z",
+      "pushedAt": "2026-08-12T06:26:23Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -302,8 +302,8 @@
         "PHP"
       ],
       "relevance": 4,
-      "stars": 45271,
-      "pushedAt": "2026-08-12T04:59:06Z",
+      "stars": 45273,
+      "pushedAt": "2026-08-12T06:37:59Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -334,7 +334,7 @@
         "Python"
       ],
       "relevance": 4,
-      "stars": 6325,
+      "stars": 6326,
       "pushedAt": "2026-08-11T01:07:52Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -931,7 +931,7 @@
       ],
       "relevance": 2,
       "stars": 4965,
-      "pushedAt": "2026-08-12T04:19:25Z",
+      "pushedAt": "2026-08-12T06:51:00Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -968,7 +968,7 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 12775,
+      "stars": 12776,
       "pushedAt": "2026-07-27T19:38:18Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1246,7 +1246,7 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 39936,
+      "stars": 39937,
       "pushedAt": "2026-08-12T03:07:06Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1398,7 +1398,7 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 28760,
+      "stars": 28761,
       "pushedAt": "2026-08-12T04:55:24Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1474,7 +1474,7 @@
         "Rust"
       ],
       "relevance": 1,
-      "stars": 12422,
+      "stars": 12423,
       "pushedAt": "2026-08-11T22:11:19Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1595,7 +1595,7 @@
       ],
       "relevance": 1,
       "stars": 2459,
-      "pushedAt": "2026-08-12T04:40:17Z",
+      "pushedAt": "2026-08-12T06:31:22Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -1848,7 +1848,7 @@
       ],
       "relevance": 1,
       "stars": 23038,
-      "pushedAt": "2026-08-12T04:14:08Z",
+      "pushedAt": "2026-08-12T06:55:48Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -1888,7 +1888,7 @@
         "Python"
       ],
       "relevance": 2,
-      "stars": 4121,
+      "stars": 4120,
       "pushedAt": "2026-05-27T16:21:14Z",
       "inactive": true,
       "starsWeekly": 0,
