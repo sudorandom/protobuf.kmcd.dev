@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-08-13T19:41:21.265Z",
+  "fetchedAt": "2026-08-13T20:19:04.357Z",
   "projects": [
     {
       "category": "tools",
@@ -84,7 +84,7 @@
         "Rust"
       ],
       "relevance": 3,
-      "stars": 2272,
+      "stars": 2273,
       "pushedAt": "2026-08-11T18:28:50Z",
       "inactive": false,
       "starsWeekly": 5,
@@ -161,7 +161,7 @@
       ],
       "relevance": 3,
       "stars": 19976,
-      "pushedAt": "2026-08-13T10:00:00Z",
+      "pushedAt": "2026-08-13T20:10:05Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -410,7 +410,7 @@
         "C++"
       ],
       "relevance": 1,
-      "stars": 17575,
+      "stars": 17576,
       "pushedAt": "2026-08-10T02:20:11Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -949,7 +949,7 @@
         "Go"
       ],
       "relevance": 1,
-      "stars": 25863,
+      "stars": 25862,
       "pushedAt": "2026-08-01T18:23:36Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1151,7 +1151,7 @@
       ],
       "relevance": 4,
       "stars": 71727,
-      "pushedAt": "2026-08-13T19:28:33Z",
+      "pushedAt": "2026-08-13T20:10:58Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -1189,7 +1189,7 @@
       ],
       "relevance": 1,
       "stars": 159,
-      "pushedAt": "2026-07-29T17:53:25Z",
+      "pushedAt": "2026-08-13T20:12:09Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -1265,7 +1265,7 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 6008,
+      "stars": 6009,
       "pushedAt": "2026-03-03T22:08:08Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1284,7 +1284,7 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 31251,
+      "stars": 31252,
       "pushedAt": "2026-08-13T13:18:16Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1322,7 +1322,7 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 9722,
+      "stars": 9723,
       "pushedAt": "2026-08-13T12:03:32Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1398,7 +1398,7 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 28771,
+      "stars": 28770,
       "pushedAt": "2026-08-13T19:08:35Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1474,7 +1474,7 @@
         "Rust"
       ],
       "relevance": 1,
-      "stars": 12423,
+      "stars": 12424,
       "pushedAt": "2026-08-13T19:26:27Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1595,7 +1595,7 @@
       ],
       "relevance": 1,
       "stars": 2460,
-      "pushedAt": "2026-08-13T19:33:10Z",
+      "pushedAt": "2026-08-13T20:17:31Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -1847,8 +1847,8 @@
         "Go"
       ],
       "relevance": 1,
-      "stars": 23035,
-      "pushedAt": "2026-08-13T19:31:01Z",
+      "stars": 23034,
+      "pushedAt": "2026-08-13T20:16:37Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
