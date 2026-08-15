@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-08-15T04:07:07.246Z",
+  "fetchedAt": "2026-08-15T05:00:28.117Z",
   "projects": [
     {
       "category": "tools",
@@ -303,7 +303,7 @@
       ],
       "relevance": 4,
       "stars": 45286,
-      "pushedAt": "2026-08-14T18:41:29Z",
+      "pushedAt": "2026-08-15T04:51:51Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -1572,7 +1572,7 @@
         "Scala"
       ],
       "relevance": 1,
-      "stars": 5131,
+      "stars": 5132,
       "pushedAt": "2026-08-14T01:05:47Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1848,7 +1848,7 @@
       ],
       "relevance": 1,
       "stars": 23034,
-      "pushedAt": "2026-08-14T20:33:32Z",
+      "pushedAt": "2026-08-15T04:52:37Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
