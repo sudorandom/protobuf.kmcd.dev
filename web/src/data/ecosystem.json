@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-08-15T11:53:12.291Z",
+  "fetchedAt": "2026-08-15T13:15:59.015Z",
   "projects": [
     {
       "category": "tools",
@@ -302,7 +302,7 @@
         "PHP"
       ],
       "relevance": 4,
-      "stars": 45285,
+      "stars": 45284,
       "pushedAt": "2026-08-15T11:44:15Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1150,7 +1150,7 @@
         "Go"
       ],
       "relevance": 4,
-      "stars": 71731,
+      "stars": 71732,
       "pushedAt": "2026-08-15T03:34:43Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1246,7 +1246,7 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 39946,
+      "stars": 39948,
       "pushedAt": "2026-08-14T17:20:56Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1595,7 +1595,7 @@
       ],
       "relevance": 1,
       "stars": 2460,
-      "pushedAt": "2026-08-15T08:39:24Z",
+      "pushedAt": "2026-08-15T12:31:36Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -1711,7 +1711,7 @@
         "Elixir"
       ],
       "relevance": 2,
-      "stars": 902,
+      "stars": 903,
       "pushedAt": "2026-08-10T10:48:58Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -2059,7 +2059,7 @@
         "Elixir"
       ],
       "relevance": 2,
-      "stars": 902,
+      "stars": 903,
       "pushedAt": "2026-08-10T10:48:58Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -2459,7 +2459,7 @@
       ],
       "relevance": 2,
       "stars": 81,
-      "pushedAt": "2026-08-14T21:00:35Z",
+      "pushedAt": "2026-08-15T13:04:17Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
