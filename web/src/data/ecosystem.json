@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-08-16T07:57:40.755Z",
+  "fetchedAt": "2026-08-16T09:00:44.804Z",
   "projects": [
     {
       "category": "tools",
@@ -530,7 +530,7 @@
         "JavaScript"
       ],
       "relevance": 2,
-      "stars": 10579,
+      "stars": 10578,
       "pushedAt": "2026-08-12T12:50:46Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -968,7 +968,7 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 12782,
+      "stars": 12781,
       "pushedAt": "2026-07-27T19:38:18Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1026,7 +1026,7 @@
         "JavaScript"
       ],
       "relevance": 1,
-      "stars": 5866,
+      "stars": 5865,
       "pushedAt": "2026-08-14T05:14:43Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1150,7 +1150,7 @@
         "Go"
       ],
       "relevance": 4,
-      "stars": 71734,
+      "stars": 71732,
       "pushedAt": "2026-08-16T06:31:33Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1246,7 +1246,7 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 39949,
+      "stars": 39948,
       "pushedAt": "2026-08-16T05:09:47Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -2673,7 +2673,7 @@
         "Agnostic"
       ],
       "relevance": 2,
-      "stars": 2373,
+      "stars": 2374,
       "pushedAt": "2026-08-03T19:53:03Z",
       "inactive": false,
       "starsWeekly": 0,
