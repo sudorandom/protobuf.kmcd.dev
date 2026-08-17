@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-08-17T14:05:13.891Z",
+  "fetchedAt": "2026-08-17T14:59:57.619Z",
   "projects": [
     {
       "category": "tools",
@@ -931,7 +931,7 @@
       ],
       "relevance": 2,
       "stars": 4966,
-      "pushedAt": "2026-08-17T14:03:14Z",
+      "pushedAt": "2026-08-17T14:55:55Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -1026,8 +1026,8 @@
         "JavaScript"
       ],
       "relevance": 1,
-      "stars": 5865,
-      "pushedAt": "2026-08-17T13:23:05Z",
+      "stars": 5866,
+      "pushedAt": "2026-08-17T14:37:37Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -1323,7 +1323,7 @@
       ],
       "relevance": 1,
       "stars": 9731,
-      "pushedAt": "2026-08-17T13:48:32Z",
+      "pushedAt": "2026-08-17T14:28:18Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -1474,7 +1474,7 @@
         "Rust"
       ],
       "relevance": 1,
-      "stars": 12429,
+      "stars": 12430,
       "pushedAt": "2026-08-17T06:07:55Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1595,7 +1595,7 @@
       ],
       "relevance": 1,
       "stars": 2461,
-      "pushedAt": "2026-08-17T13:47:15Z",
+      "pushedAt": "2026-08-17T14:10:17Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
