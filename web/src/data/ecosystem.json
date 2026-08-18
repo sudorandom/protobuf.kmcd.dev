@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-08-18T05:05:45.742Z",
+  "fetchedAt": "2026-08-18T05:59:07.017Z",
   "projects": [
     {
       "category": "tools",
@@ -303,7 +303,7 @@
       ],
       "relevance": 4,
       "stars": 45225,
-      "pushedAt": "2026-08-18T04:58:38Z",
+      "pushedAt": "2026-08-18T05:13:47Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -353,7 +353,7 @@
         "Rust"
       ],
       "relevance": 4,
-      "stars": 484,
+      "stars": 485,
       "pushedAt": "2026-08-07T19:14:48Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -411,7 +411,7 @@
       ],
       "relevance": 1,
       "stars": 17584,
-      "pushedAt": "2026-08-16T10:01:01Z",
+      "pushedAt": "2026-08-18T05:55:38Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -511,7 +511,7 @@
         "Swift"
       ],
       "relevance": 3,
-      "stars": 4425,
+      "stars": 4426,
       "pushedAt": "2026-08-18T04:49:39Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -949,7 +949,7 @@
         "Go"
       ],
       "relevance": 1,
-      "stars": 25867,
+      "stars": 25868,
       "pushedAt": "2026-08-01T18:23:36Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -968,7 +968,7 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 12778,
+      "stars": 12779,
       "pushedAt": "2026-08-17T12:35:49Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1027,7 +1027,7 @@
       ],
       "relevance": 1,
       "stars": 5868,
-      "pushedAt": "2026-08-18T05:01:35Z",
+      "pushedAt": "2026-08-18T05:14:25Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -1046,7 +1046,7 @@
       ],
       "relevance": 1,
       "stars": 5820,
-      "pushedAt": "2026-08-18T04:49:56Z",
+      "pushedAt": "2026-08-18T05:30:06Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -1151,7 +1151,7 @@
       ],
       "relevance": 4,
       "stars": 71735,
-      "pushedAt": "2026-08-18T04:04:01Z",
+      "pushedAt": "2026-08-18T05:13:19Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -1246,7 +1246,7 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 39954,
+      "stars": 39953,
       "pushedAt": "2026-08-18T02:46:24Z",
       "inactive": false,
       "starsWeekly": 0,
