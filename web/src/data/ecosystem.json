@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-08-18T07:23:09.539Z",
+  "fetchedAt": "2026-08-18T08:06:00.469Z",
   "projects": [
     {
       "category": "tools",
@@ -85,7 +85,7 @@
       ],
       "relevance": 3,
       "stars": 2275,
-      "pushedAt": "2026-08-18T07:08:20Z",
+      "pushedAt": "2026-08-18T07:52:37Z",
       "inactive": false,
       "starsWeekly": 5,
       "starsMonthly": 27,
@@ -122,7 +122,7 @@
         "Agnostic"
       ],
       "relevance": 3,
-      "stars": 2835,
+      "stars": 2836,
       "pushedAt": "2026-07-21T16:29:26Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -302,8 +302,8 @@
         "PHP"
       ],
       "relevance": 4,
-      "stars": 45225,
-      "pushedAt": "2026-08-18T07:10:07Z",
+      "stars": 45226,
+      "pushedAt": "2026-08-18T07:46:27Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -430,7 +430,7 @@
         "Go"
       ],
       "relevance": 1,
-      "stars": 41550,
+      "stars": 41551,
       "pushedAt": "2026-08-13T18:29:17Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1046,7 +1046,7 @@
       ],
       "relevance": 1,
       "stars": 5820,
-      "pushedAt": "2026-08-18T06:45:28Z",
+      "pushedAt": "2026-08-18T07:58:28Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -1150,7 +1150,7 @@
         "Go"
       ],
       "relevance": 4,
-      "stars": 71735,
+      "stars": 71736,
       "pushedAt": "2026-08-18T05:13:19Z",
       "inactive": false,
       "starsWeekly": 0,
@@ -1398,8 +1398,8 @@
         "Agnostic"
       ],
       "relevance": 1,
-      "stars": 28790,
-      "pushedAt": "2026-08-18T06:08:21Z",
+      "stars": 28791,
+      "pushedAt": "2026-08-18T07:36:28Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -1848,7 +1848,7 @@
       ],
       "relevance": 1,
       "stars": 23035,
-      "pushedAt": "2026-08-18T05:03:40Z",
+      "pushedAt": "2026-08-18T07:26:08Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
@@ -1867,7 +1867,7 @@
       ],
       "relevance": 1,
       "stars": 12061,
-      "pushedAt": "2026-08-17T05:21:38Z",
+      "pushedAt": "2026-08-18T07:56:58Z",
       "inactive": false,
       "starsWeekly": 0,
       "starsMonthly": 0,
